@@ -16,9 +16,9 @@ class CalendarController extends Controller
             $schedules[] = [
                 
                 'title' => $appointment2->service,
-                'date' => $appointment2->Appointmentdate,
-                'vaccinetype' => $appointment2->vaccinetype,
-                'person' => $appointment2->person,
+                'start' => $appointment2->appointmentdate,
+                // 'vaccinetype' => $appointment2->vaccinetype,
+                // 'person' => $appointment2->person,
 
         ];  
 

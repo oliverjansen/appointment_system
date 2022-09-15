@@ -30,7 +30,7 @@ Route::middleware([
 
     Route::get('/calendar', 'App\Http\Controllers\CalendarController@calendar')->name('calendar');
     Route::get('/appointment', 'App\Http\Controllers\AppointmentsController@appointment')->name('appointment');
-    Route::post('insert-data',  'App\Http\Controllers\AppointmentsController@insert')->name('insert-data');
+    Route::post('/insert-data',  'App\Http\Controllers\AppointmentsController@insert')->name('insert-data');
 });
 
 

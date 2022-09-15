@@ -22,19 +22,19 @@ class AppointmentsController extends Controller
         return view ('');
     }
 
-    // public function insert(Request $request){
+    public function insert(Request $request){
 
-    // //    $appointments = new appointment();
-    // //    $appointments ->service = $request ->input ('service');
-    // //    $appointments ->person = $request ->input ('person');
-    // //    $appointments ->vaccinetype = $request ->input ('vaccinetype');
-    // //    $appointments ->appointmentdate = $request ->input ('appointmentdate');
+       $appointment = new appointments();
+       $appointment ->service = $request ->input ('service');
+       $appointment ->person = $request ->input ('person');
+       $appointment ->vaccinetype = $request ->input ('vaccinetype');
+       $appointment ->appointmentdate = $request ->input ('appointmentdate');
 
-    // //    $appointments->save();
-    // //    return view ('calendar');
+       $appointment->save();
+       return redirect()->route('calendar');
        
 
 
 
-    // }
+    }
 }

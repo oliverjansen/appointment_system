@@ -18,12 +18,11 @@
 
 <form action="{{ url('insert-data') }}" method="POST" class= "w-50">
 
-
-
+            {{ csrf_field() }}
 
     <div class="mt-3">
     <label for="">Services</label>
-    <select name="services" id="services" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+    <select name="service" id="service" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
         <option value="vaccine">Vaccine</option>
         <option value="inquiries">Inquiry</option>
     </select>
@@ -31,7 +30,7 @@
 
     <div class="mt-3">
     <label for="">Person</label>
-    <select name="kids" id="kids" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+    <select name="Person" id="Person" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
         <option value="kids">Kids</option>
         <option value="adult">Adult</option>
     </select>
