@@ -6,6 +6,12 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
+                    <a href="{{ __('appointment') }}">
+                    <a href="{{ route('calendar') }}">
+                    <a href="{{ route('services') }}">
+                    <a href="{{ route('registration') }}">
+                        
+
                         <x-jet-application-mark class="block h-9 w-auto" />
                     </a>
                 </div>
@@ -21,6 +27,15 @@
                     <x-jet-nav-link href="{{ route('calendar') }}" :active="request()->routeIs('calendar')">
                         {{ __('Calendar') }}
                     </x-jet-nav-link>
+                    <x-jet-nav-link href="{{ route('services') }}" :active="request()->routeIs('services')">
+                        {{ __('Services') }}
+                    </x-jet-nav-link>
+                    <x-jet-nav-link href="{{ route('registration') }}" :active="request()->routeIs('registration')">
+                        {{ __('Registration') }}
+                    </x-jet-nav-link>
+                    <!-- <x-jet-nav-link href="{{ route('workers') }}" :active="request()->routeIs('workers')">
+                        {{ __('Workers') }}
+                    </x-jet-nav-link> -->
                 </div>
             </div>
 
@@ -146,6 +161,23 @@
             <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-jet-responsive-nav-link>
+            <x-jet-responsive-nav-link href="{{ route('appointment') }}" :active="request()->routeIs('appointment')">
+                        {{ __('Appointment') }}
+                    </x-jet-responsive-nav-link>
+                    <x-jet-responsive-nav-link href="{{ route('calendar') }}" :active="request()->routeIs('calendar')">
+                        {{ __('Calendar') }}
+                    </x-jet-responsive-nav-link>
+                    <x-jet-responsive-nav-link href="{{ route('services') }}" :active="request()->routeIs('services')">
+                        {{ __('Services') }}
+                    </x-jet-responsive-nav-link>
+                    <x-jet-responsive-nav-link href="{{ route('registration') }}" :active="request()->routeIs('registration')">
+                        {{ __('Registration') }}
+                    </x-jet-responsive-nav-link>
+                    <!-- <x-jet-responsive-nav-link href="{{ route('workers') }}" :active="request()->routeIs('workers')">
+                        {{ __('Workers') }}
+                    </x-jet-responsive-nav-link> -->
+            
+
         </div>
 
         <!-- Responsive Settings Options -->

@@ -14,7 +14,7 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="container mt-5 mb-5 100 d-flex align-items-center justify-content-center" >
+    <div class="container mt-5 mb-5 100 d-flex align-items-center justify-content-center " >
 
 <form action="{{ url('insert-data') }}" method="POST" class= "w-50">
 
