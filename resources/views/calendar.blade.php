@@ -22,18 +22,28 @@
 <body>
 
   <div class="container mt-5 mb-5" >
-    <div class="row">
-        <div id ="calendar" class=" col col-lg-8 col-12"> 
 
+  
+    <div class="row">
+
+
+    @if(Auth::User()->account_type=='admin')
+    <div id ="calendar" class=" col col-lg-12 col-12 h-50"> 
+    @else
+    <div id ="calendar" class=" col col-lg-8 col-12"> 
+    @endif
+
+       
+        @if(Auth::User()->account_type=='user')
          </div>
                 <div class=" col col-lg-4 col-12 align-items-center justify-content-center" >
-                    <form action="{{ url('insert-data') }}" method="POST" class= "w-100">
+                    <form action="{{ url('insert_data') }}" method="POST" class= "w-100">
 
                         {{ csrf_field() }}
 
                         <div class="mt-3">
-                            <label for="">Services</label>
-                            <select name="service" id="service" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                            <label for="">Service</label>
+                            <select name="appointmentservice" id="appointmentservice" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                                 <option value="vaccine">Vaccine</option>
                                 <option value="inquiries">Inquiry</option>
                             </select>
@@ -41,7 +51,7 @@
 
                         <div class="mt-3">
                             <label for="">Person</label>
-                            <select name="Person" id="Person" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                            <select name="appointmentPerson" id="appointmentPerson" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                                 <option value="kids">Kids</option>
                                 <option value="adult">Adult</option>
                             </select>
@@ -49,7 +59,7 @@
                                 
                         <div class="mt-3">
                             <label for="">Vaccine Type</label>
-                                <select name="vaccinetype" id="vaccinetype" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                                <select name="appointmentvaccinetype" id="appointmentvaccinetype" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                                     <option value="measles">Measles</option>
                                     <option value="tuberculosis">Tuberculosis </option>
                                     <option value="inactivated">Inactivated polio </option>
@@ -67,9 +77,15 @@
                                 </div>
                     </form>
                         
+
+
+
                 </div>
             </div>
+
         </div>
+        
+        @endif   
     </div>
 </div>
 

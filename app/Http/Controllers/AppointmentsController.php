@@ -6,15 +6,17 @@ use Illuminate\Http\Request;
 use App\Models\Calendar;
 use App\Models\appointments;
 
-
+use Illuminate\Support\Facades\Auth;
 
 class AppointmentsController extends Controller
 {
     public function appointment()
     {
-        
-            return view ('appointment');
-
+        if(Auth::User()->account_type=='admin'){
+            return view('services',compact('data','data1'));
+            }else{
+              return redirect()->route('appointment');
+            }
       
     }
     public function add(){
@@ -25,13 +27,18 @@ class AppointmentsController extends Controller
     public function insert(Request $request){
 
        $appointment = new appointments();
-       $appointment ->service = $request ->input ('service');
-       $appointment ->person = $request ->input ('person');
-       $appointment ->vaccinetype = $request ->input ('vaccinetype');
-       $appointment ->appointmentdate = $request ->input ('appointmentdate');
+       $appointment ->appointment_service = $request ->input ('appointmentservice');
+       $appointment ->appointment_person = $request ->input ('appointmentperson');
+       $appointment ->appointment_vaccine_type = $request ->input ('appointmentvaccinetype');
+       $appointment ->appointment_date = $request ->input ('appointmentdate');
 
        $appointment->save();
-       return redirect()->route('calendar');
+       if(Auth::User()->account_type=='admin'){
+        return view('services',compact('data','data1'));
+        }else{
+          return redirect()->route('calendar');
+        }
+    
        
 
 

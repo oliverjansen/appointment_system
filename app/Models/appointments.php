@@ -13,12 +13,11 @@ class appointments extends Model
 
     protected $fillable = [
         'email',
-        'service',
-        'person',
-        'vaccinetype',
+        'appointment_service',
+        'appointment_person',
+        'appointment_vaccine_type',
         'availableslot',
-        'appointmentdate',
-       
+        'appointment_date',
     ];
         
     

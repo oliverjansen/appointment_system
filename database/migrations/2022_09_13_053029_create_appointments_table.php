@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
             $table->string('email')->nullable();
-            $table->string('service')->nullable();
-            $table->string('person')->nullable();
-            $table->string('vaccinetype')->nullable();
+            $table->string('appointment_service')->nullable();
+            $table->string('appointment_person')->nullable();
+            $table->string('appointment_vaccine_type')->nullable();
             $table->integer('availableslot')->nullable();
-            $table->dateTime('appointmentdate')->nullable();
+            $table->dateTime('appointment_date')->nullable();
             $table->timestamps();
         });
     }

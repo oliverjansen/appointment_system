@@ -15,7 +15,7 @@
 </head>
 <body>
     <div class="container mt-5 mb-5 table-responsive" >
-                <table class="  table text-align-center">
+                <table class="  table text-align-center table-hover">
                     <thead>
                         <tr class="text-center">
                         <th scope="col">#</th>

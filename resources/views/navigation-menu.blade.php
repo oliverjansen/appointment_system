@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                    <a href="{{ __('appointment') }}">
+                    <!-- <a href="{{ __('appointment') }}"> -->
                     <a href="{{ route('calendar') }}">
                     <a href="{{ route('services') }}">
                     <a href="{{ route('registration') }}">
@@ -18,12 +18,10 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <!-- <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-jet-nav-link> -->
-                    <x-jet-nav-link href="{{ route('appointment') }}" :active="request()->routeIs('appointment')">
+                @if(Auth::User()->account_type=='admin')
+                <!-- <x-jet-nav-link href="{{ route('appointment') }}" :active="request()->routeIs('appointment')">
                         {{ __('Appointment') }}
-                    </x-jet-nav-link>
+                    </x-jet-nav-link> -->
                     <x-jet-nav-link href="{{ route('calendar') }}" :active="request()->routeIs('calendar')">
                         {{ __('Calendar') }}
                     </x-jet-nav-link>
@@ -33,6 +31,12 @@
                     <x-jet-nav-link href="{{ route('registration') }}" :active="request()->routeIs('registration')">
                         {{ __('Registration') }}
                     </x-jet-nav-link>
+                @else
+                <x-jet-nav-link href="{{ route('calendar') }}" :active="request()->routeIs('calendar')">
+                        {{ __('Calendar') }}
+                    </x-jet-nav-link>
+                @endif
+                   
                     <!-- <x-jet-nav-link href="{{ route('workers') }}" :active="request()->routeIs('workers')">
                         {{ __('Workers') }}
                     </x-jet-nav-link> -->
