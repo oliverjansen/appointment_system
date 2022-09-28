@@ -29,7 +29,7 @@ class ServicesController extends Controller
 
 
    public function add_services(Request $request){
-    
+
     $request->validate([
       'service'=>'required'  
     ]);
@@ -62,7 +62,10 @@ class ServicesController extends Controller
  }  
 
  public function update_services(Request $request){
-   
+      $request->validate([
+        'service'=>'required'  
+    ]);
+
     $id = $request ->input ('id');
     $appointment = services::find($id);
     $appointment ->service = $request ->input ('service');

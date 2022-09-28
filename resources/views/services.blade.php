@@ -38,12 +38,23 @@
                 <input type="text" id="id" name="id" hidden>
             <div class="form-group">
                 <label for="service" class="col-form-label">Service</label>
-                <input type="text" class="form-control" name="service" id="service">
+                <input type="text" class="form-control" name="service" id="service" required>
             </div>
             {{-- <div class="form-group">
                 <label for="message-text" class="col-form-label">Message:</label>
                 <textarea class="form-control" id="message-text"></textarea>
             </div> --}}
+            {{-- @if ($errors->any())    
+            <div class="w-4/8 m-auto text-center">
+                @foreach ($errors->all() as $error)
+                    <li class="text-red-500 list-unstyled">
+                        {{$error}}
+                    </li>
+                    
+                @endforeach
+
+            </div>
+        @endif --}}
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary btn-sm w-25">Save</button>
                 <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">cancel</button>
@@ -155,17 +166,27 @@
 
                         <div class="">
                             <x-jet-label for="service" value="{{ __('Service') }}" />
-                            <x-jet-input id="service" class="block mt-1 w-full" type="text" name="service" :value="old('service')"  autofocus autocomplete="service" />
+                            <x-jet-input id="service" class="block mt-1 w-full" type="text" name="service" :value="old('service')"  required autofocus autocomplete="service" />
                         </div>
                         <!-- <div class="mt-4">
                             <x-jet-label for="person" value="{{ __('Person') }}" />
                             <x-jet-input id="person" class="block mt-1 w-full" type="text" name="person" :value="old('person')"  autofocus autocomplete="person" />
                         </div> -->
-                        <div class="mt-4">
+                        {{-- <div class="mt-4">
                             <x-jet-label for="vaccine_type" value="{{ __('Vaccine Type') }}" />
                             <x-jet-input id="vaccine_type" class="block mt-1 w-full" type="text" name="vaccine_type" :value="old('vaccinetype')" autofocus autocomplete="vaccine_type" />
-                        </div>
+                        </div> --}}
+                        {{-- @if ($errors->any())
+                            <div class="w-4/8 m-auto text-center">
+                                @foreach ($errors->all() as $error)
+                                    <li class="text-red-500 list-unstyled">
+                                        {{$error}}
+                                    </li>
+                                    
+                                @endforeach
 
+                            </div>
+                        @endif --}}
                         <div class="mt-5 d-flex align-items-center justify-content-center">
                         <button type="submit" class="btn btn-primary btn-sm text-align-center w-50">Add</button>
                         <!-- <button type="button" class="ml-2 btn btn-sm btn-warning text-align-center w-50">Edit</button>
