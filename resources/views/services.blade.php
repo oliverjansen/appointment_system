@@ -70,7 +70,7 @@
           <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <input type="text"  id="del_id" name="del_id" >
+          <input type="text"  id="del_id" name="del_id" hidden>
           Are you sure you want to delete this Service?
         </div>
         <div class="modal-footer">

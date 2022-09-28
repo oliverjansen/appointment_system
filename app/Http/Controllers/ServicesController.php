@@ -29,10 +29,10 @@ class ServicesController extends Controller
 
 
    public function add_services(Request $request){
-
     
-
-
+    $request->validate([
+      'service'=>'required'  
+    ]);
       $appointment = new services();
       $appointment ->service = $request ->input ('service');
       $appointment->save();
