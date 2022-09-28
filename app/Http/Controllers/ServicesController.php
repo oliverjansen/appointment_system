@@ -67,7 +67,7 @@ class ServicesController extends Controller
     $appointment = services::find($id);
     $appointment ->service = $request ->input ('service');
     $appointment->update();
-    return redirect()->back()->with('edit_success', 'Successfully Edited');
+    return redirect()->back()->with('success', 'Successfully Edited');
 
     // return redirect()->route('services');
     // if(Auth::User()->account_type=='admin'){
@@ -81,11 +81,16 @@ class ServicesController extends Controller
 
 
 
- public function delete (Request $request){
+ public function delete_services (Request $request){
+  $id = $request ->input ('del_id');
+  $service_del= services::findOrFail($id);
+  $service_del->delete();
+  return redirect()->back()->with('danger', 'Successfully Deleted');
 
-
+  
 
  }
+
 
    
 }

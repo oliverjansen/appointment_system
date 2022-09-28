@@ -56,15 +56,47 @@
     </div>
     </div>
 
+   <!-- delete modal / confimation -->
+
+<div class="modal fade" id="delete_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <form action="{{ url ('delete_services') }} " method="POST">
+            @csrf
+           
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"></h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text"  id="del_id" name="del_id" >
+          Are you sure you want to delete this Service?
+        </div>
+        <div class="modal-footer">
+         
+          <button type="submit" class="btn btn-primary delete_btn btn-sm w-25">Yes</button>
+          <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">No</button>
+        </div>
+         </form>
+
+      </div>
+    </div>
+  </div>
+
     <div class="container mt-5 mb-5 " >
       
         <div>
-            @if (session('edit_success'))
+            @if (session('success'))
                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('edit_success') }}
+                    {{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                </div>
-               
+            @elseif (session('danger'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('danger') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+           </div>
             @endif
         </div>
         <div class="row">
@@ -88,7 +120,7 @@
                                 <td scope="row" class="d-sm-flex justify-content-center">
                                     
                                     <button class="btn btn-sm btn-warning mt-2 mt-lg-0 ml-lg-2 w-50 edit_btn" value="{{$data->id}}">Edit</a>
-                                <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-lg-2 w-50">Delete</button>
+                                <button class="btn btn-sm delete btn-danger mt-2 mt-lg-0 ml-lg-2 w-50" value="{{$data->id}}">Delete</button>
                                  </td>
                                 </tr>
                         </div>
@@ -156,7 +188,8 @@
 <script>
     $(document).ready(function () {
 
-        $(document).on('click', '.edit_btn',function () {
+        $(document).on('click', '.edit_btn',function (e) {
+            e.preventDefault();
             var service = $(this).val();
             // alert(service); 
             $('#edit_modal').modal('show');
@@ -173,6 +206,17 @@
                 }
             });
         });
+
+        $(document).on('click', '.delete',function (e) {
+            e.preventDefault();
+            var delete_service = $(this).val();
+            $('#del_id').val(delete_service);
+           
+            // console.log(delete_service);
+            // alert(service); 
+            $('#delete_modal').modal('show');
+            
+            });
     });
 </script>
 </x-app-layout>

@@ -40,7 +40,9 @@ Route::middleware([
         // Route::get('edit/{id}','App\Http\Controllers\ServicesController@edit_services');
         Route::get('edit_services/{id}','App\Http\Controllers\ServicesController@edit_services');
         Route::put('update_services','App\Http\Controllers\ServicesController@update_services');
-
+        Route::post('delete_services','App\Http\Controllers\ServicesController@delete_services');
+        
+        
 
         Route::get('/registration', 'App\Http\Controllers\RegistrationController@registration')->name('registration');
         Route::get('/workers', 'App\Http\Controllers\WorkersController@workers')->name('workers');
