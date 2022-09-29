@@ -50,6 +50,7 @@ class CreateNewUser implements CreatesNewUsers
             'contactnumber' => $input['contactnumber'],
             'identification' => $input['identification'],
             'identificationtype' => $input['identificationtype'],
+            'account_type' => $input['account_type'],
             'address' => $input['address'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),

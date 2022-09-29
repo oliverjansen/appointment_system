@@ -18,7 +18,7 @@ use App\Models\user;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('dashboard');
 });
 
 Route::middleware([
@@ -40,10 +40,12 @@ Route::middleware([
         // Route::get('edit/{id}','App\Http\Controllers\ServicesController@edit_services');
         Route::get('edit_services/{id}','App\Http\Controllers\ServicesController@edit_services');
         Route::put('update_services','App\Http\Controllers\ServicesController@update_services');
-        Route::post('delete_services','App\Http\Controllers\ServicesController@delete_services');
+        Route::put('delete_services','App\Http\Controllers\ServicesController@delete_services');
         
-        
+        //registration controller 
+        Route::get('approve_registration/{id}','App\Http\Controllers\RegistrationController@   approve_registration');
 
+     
         Route::get('/registration', 'App\Http\Controllers\RegistrationController@registration')->name('registration');
         Route::get('/workers', 'App\Http\Controllers\WorkersController@workers')->name('workers');
         Route::get('/appointment', 'App\Http\Controllers\AppointmentsController@appointment')->name('appointment');

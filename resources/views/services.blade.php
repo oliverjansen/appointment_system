@@ -75,7 +75,7 @@
 
         <form action="{{ url ('delete_services') }} " method="POST">
             @csrf
-           
+            @method('PUT')
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel"></h5>
           <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
@@ -229,7 +229,7 @@
         });
 
         $(document).on('click', '.delete',function (e) {
-            e.preventDefault();
+            e.preventDefault(); 
             var delete_service = $(this).val();
             $('#del_id').val(delete_service);
            

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\services;
 use App\Models\Vaccine;
-use App\Models\user;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class ServicesController extends Controller
@@ -13,7 +13,7 @@ class ServicesController extends Controller
 
  
   function sample(){
-    return view ('sample');
+    return view ('dashboard');
   }
 
    function services(){
