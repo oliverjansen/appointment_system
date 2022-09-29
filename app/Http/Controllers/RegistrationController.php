@@ -17,7 +17,35 @@ class RegistrationController extends Controller
     }
     }
 
-    function approve(){
-        
+    function approve_registration(Request $request){
+
+        $approve_id = $request ->input ('approve_id');
+        $approve = User::find($approve_id);
+        $approve ->status = "approved";
+        $approve->update();
+        return redirect()->back()->with('success', 'Successfully Edited');
+    
     }
+
+    function reject_registration(Request $request){
+
+        $reject_id = $request ->input ('reject_id');
+        $reject = User::find($reject_id);
+        $reject ->status = "rejected";
+        $reject->update();
+        return redirect()->back()->with('success', 'Successfully Edited');
+    
+    }
+
+    function delete_registration(Request $request){
+        $del_reg_id = $request ->input ('del_id');
+        $del_reg = User::find($del_reg_id);
+        $del_reg->delete();
+        return redirect()->back()->with('success', 'Successfully Edited');
+    
+    }
+
+        
+    
+   
 }

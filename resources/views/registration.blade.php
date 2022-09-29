@@ -15,23 +15,20 @@
 </head>
 <body>
 
-
-     <!-- approve modal -->
-
-<div class="modal fade" id="approve_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="delete_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
 
-        <form action="{{ url ('approve_registration') }} " method="POST">
+        <form action="{{ url ('delete_registration') }} " method="POST">
             @csrf
-           
+            @method('PUT')
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel"></h5>
           <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <input type="text"  id="del_id" name="del_id" hidden>
-          Are you sure you want to delete this Service?
+          Are you sure you want to delete this registration?
         </div>
         <div class="modal-footer">
          
@@ -43,6 +40,66 @@
       </div>
     </div>
   </div>
+<!-- reject modal -->
+
+  <div class="modal fade" id="reject_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <form action="{{ url ('reject_registration') }} " method="POST">
+            @csrf
+            @method('PUT')
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"></h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text"  id="reject_id" name="reject_id" hidden>
+        
+          Are you sure you want to reject this registration?
+        </div>
+        <div class="modal-footer">
+         
+          <button type="submit" class="btn btn-primary reject_btn btn-sm w-25">Yes</button>
+          <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">No</button>
+        </div>
+         </form>
+
+      </div>
+    </div>
+  </div>
+
+
+     <!-- approve modal -->
+
+<div class="modal fade" id="approve_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <form action="{{ url ('approve_registration') }} " method="POST">
+            @csrf
+            @method('PUT')
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"></h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text"  id="approve_id" name="approve_id" hidden>
+        
+          Are you sure you want to approve this registration?
+        </div>
+        <div class="modal-footer">
+         
+          <button type="submit" class="btn btn-primary approve_btn btn-sm w-25">Yes</button>
+          <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">No</button>
+        </div>
+         </form>
+
+      </div>
+    </div>
+  </div>
+
+  
 
     <div class="container-fluid mt-5 mb-5 table-responsive w-100" >
                 <table class="  table text-align-center table-hover">
@@ -57,12 +114,11 @@
                         <th scope="col">Address</th>
                         <th scope="col">Contact No</th>
                         <th scope="col">ID</th>
-                        <th scope="col">ID Type</th>
-                        <th scope="col">View</th>
+                     
                         <th scope="col">Status</th>
 
 
-                        <th scope="col" colspan="2" class="text-center">Status</th>
+                        <th scope="col" colspan="2" class="text-center">Action</th>
 
 
 
@@ -79,14 +135,18 @@
                         <td>{{$data->birthdate}}</td>
                         <td>{{$data->address}}</td>
                         <td>{{$data->contactnumber}}</td>
-                        <td>{{$data->identification}}</td>
-                        <td>{{$data->identificationtype}}</td>
                         <td> <button class="btn btn-sm btn-primary">View</button></td>
+                        
                         <td>{{$data->status}}</td>
                         <td scope="row" colspan=2 class="d-sm-flex">
-                            <button class="btn btn-sm btn-primary w-100 ml-lg-2 approve" value="{{$data->id}}" >Approved</button>
-                        <button class="btn btn-sm btn-warning mt-2 mt-lg-0 ml-lg-2 w-100">Reject</button>
-                        <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-lg-2 w-100">Delete</button>
+                            @if ($data->status !="approved" && $data->status !="rejected" )
+                                <button class="btn btn-sm btn-primary w-100 ml-lg-2 approve"    value="{{$data->id}}" >Approved</button>
+                                <button class="btn btn-sm btn-warning mt-2 mt-lg-0 ml-lg-2 w-100 rejected" value="{{$data->id}}">Reject</button>
+                            @endif
+                            
+                               
+                           
+                        <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-lg-2 w-100 delete" value="{{$data->id}}">Delete</button>
                         </td>
                  
                         </tr>
@@ -112,14 +172,58 @@
         $(document).on('click', '.approve',function (e) {
             e.preventDefault(); 
             var approve = $(this).val();
+            var btn_type = "approved";
             
-            // $('#del_id').val(delete_service);
+            
+            $('#btn_type').val(btn_type);
+            $('#approve_id').val(approve);
            
-            console.log(approve);
+            // console.log(approve);
             // alert(service); 
             $('#approve_modal').modal('show');
             
             });
+
+            $(document).on('click', '.rejected',function (e) {
+            e.preventDefault(); 
+            var rejected = $(this).val();
+            var btn_type = "rejected";
+            
+            
+         
+            $('#reject_id').val(rejected);
+
+            // $('#email').val(btn_type);
+
+            
+            // $('#approve_id').val(approve);
+           
+            // console.log(btn_type);
+            // alert(service); 
+            $('#reject_modal').modal('show');
+            
+            });
+
+            $(document).on('click', '.delete',function (e) {
+            e.preventDefault(); 
+            var del = $(this).val();
+            // var btn_type = "rejected";
+            
+            
+    
+            $('#del_id').val(del);
+
+            // $('#email').val(btn_type);
+
+            
+            // $('#approve_id').val(approve);
+           
+            // console.log(btn_type);
+            // alert(service); 
+            $('#delete_modal').modal('show');
+            
+            });
+        
     });
 </script>
 </x-app-layout>

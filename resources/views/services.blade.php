@@ -67,7 +67,7 @@
     </div>
     </div>
 
-   <!-- delete modal / confimation -->
+   <!-- delete modal / confimation -->3
 
 <div class="modal fade" id="delete_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">

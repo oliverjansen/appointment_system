@@ -43,8 +43,10 @@ Route::middleware([
         Route::put('delete_services','App\Http\Controllers\ServicesController@delete_services');
         
         //registration controller 
-        Route::get('approve_registration/{id}','App\Http\Controllers\RegistrationController@   approve_registration');
-
+        Route::put('approve_registration','App\Http\Controllers\RegistrationController@approve_registration');
+        Route::put('reject_registration','App\Http\Controllers\RegistrationController@reject_registration');
+        Route::put('delete_registration','App\Http\Controllers\RegistrationController@delete_registration');
+    
      
         Route::get('/registration', 'App\Http\Controllers\RegistrationController@registration')->name('registration');
         Route::get('/workers', 'App\Http\Controllers\WorkersController@workers')->name('workers');
