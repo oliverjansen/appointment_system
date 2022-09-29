@@ -23,7 +23,7 @@ class RegistrationController extends Controller
         $approve = User::find($approve_id);
         $approve ->status = "approved";
         $approve->update();
-        return redirect()->back()->with('success', 'Successfully Edited');
+        return redirect()->back()->with('success', 'Registration Approved');
     
     }
 
@@ -33,7 +33,7 @@ class RegistrationController extends Controller
         $reject = User::find($reject_id);
         $reject ->status = "rejected";
         $reject->update();
-        return redirect()->back()->with('success', 'Successfully Edited');
+        return redirect()->back()->with('danger', 'Registration Rejected');
     
     }
 
@@ -41,7 +41,7 @@ class RegistrationController extends Controller
         $del_reg_id = $request ->input ('del_id');
         $del_reg = User::find($del_reg_id);
         $del_reg->delete();
-        return redirect()->back()->with('success', 'Successfully Edited');
+        return redirect()->back()->with('danger', 'Successfully Deleted');
     
     }
 

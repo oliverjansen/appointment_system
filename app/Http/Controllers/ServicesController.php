@@ -70,7 +70,13 @@ class ServicesController extends Controller
     $appointment = services::find($id);
     $appointment ->service = $request ->input ('service');
     $appointment->update();
-    return redirect()->back()->with('success', 'Successfully Edited');
+
+    if(Auth::User()->account_type=='admin'){
+      return redirect()->back()->with('success', 'Successfully Edited');
+    }else{
+      return redirect()->route('login');
+    }
+    // return redirect()->back()->with('success', 'Successfully Edited');
 
     // return redirect()->route('services');
     // if(Auth::User()->account_type=='admin'){
@@ -88,7 +94,13 @@ class ServicesController extends Controller
   $id = $request ->input ('del_id');
   $service_del= services::findOrFail($id);
   $service_del->delete();
-  return redirect()->back()->with('danger', 'Successfully Deleted');
+
+  if(Auth::User()->account_type=='admin'){
+    return redirect()->back()->with('danger', 'Successfully Deleted');
+  }else{
+    return redirect()->route('calendar');
+  }
+  // return redirect()->back()->with('danger', 'Successfully Deleted');
 
   
 
