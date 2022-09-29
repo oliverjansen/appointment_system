@@ -21,7 +21,7 @@
 
         <form action="{{ url ('delete_registration') }} " method="POST">
             @csrf
-            @method('PUT')
+           
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel"></h5>
           <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
@@ -48,7 +48,7 @@
 
         <form action="{{ url ('reject_registration') }} " method="POST">
             @csrf
-            @method('PUT')
+          
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel"></h5>
           <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
@@ -78,7 +78,7 @@
 
         <form action="{{ url ('approve_registration') }} " method="POST">
             @csrf
-            @method('PUT')
+           
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel"></h5>
           <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>

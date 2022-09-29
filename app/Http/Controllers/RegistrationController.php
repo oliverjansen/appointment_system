@@ -23,7 +23,12 @@ class RegistrationController extends Controller
         $approve = User::find($approve_id);
         $approve ->status = "approved";
         $approve->update();
-        return redirect()->back()->with('success', 'Registration Approved');
+      
+        if(Auth::User()->account_type=='admin'){
+            return redirect()->back()->with('success', 'Registration Approved');
+          }else{
+            return redirect()->route('login');
+          }
     
     }
 
@@ -33,7 +38,11 @@ class RegistrationController extends Controller
         $reject = User::find($reject_id);
         $reject ->status = "rejected";
         $reject->update();
-        return redirect()->back()->with('danger', 'Registration Rejected');
+        if(Auth::User()->account_type=='admin'){
+            return redirect()->back()->with('danger', 'Registration Rejected');
+          }else{
+            return redirect()->route('login');
+          }
     
     }
 
@@ -41,7 +50,12 @@ class RegistrationController extends Controller
         $del_reg_id = $request ->input ('del_id');
         $del_reg = User::find($del_reg_id);
         $del_reg->delete();
-        return redirect()->back()->with('danger', 'Successfully Deleted');
+        if(Auth::User()->account_type=='admin'){
+            return redirect()->back()->with('danger', 'Successfully Deleted');
+          }else{
+            return redirect()->route('login');
+          }
+     
     
     }
 

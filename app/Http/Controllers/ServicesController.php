@@ -98,7 +98,7 @@ class ServicesController extends Controller
   if(Auth::User()->account_type=='admin'){
     return redirect()->back()->with('danger', 'Successfully Deleted');
   }else{
-    return redirect()->route('calendar');
+   return redirect()->route('calendar');
   }
   // return redirect()->back()->with('danger', 'Successfully Deleted');
 

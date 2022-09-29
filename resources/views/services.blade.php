@@ -33,8 +33,7 @@
 
             <form action=" {{ url ('update_services') }} " method="POST">
                 @csrf
-                @method('PUT')
-
+               
                 <input type="text" id="id" name="id" hidden>
             <div class="form-group">
                 <label for="service" class="col-form-label">Service</label>
@@ -75,7 +74,7 @@
 
         <form action="{{ url ('delete_services') }} " method="POST">
             @csrf
-            @method('PUT')
+         
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel"></h5>
           <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
@@ -123,15 +122,15 @@
                     </thead>
                     <tbody class="text-center">
                         <div >
-                                @foreach($data as $data)
+                                @foreach($data as $datas)
                                 <tr class="text-center">
-                                <td >{{$data->service}}</td>
+                                <td >{{$datas->service}}</td>
                                 {{-- <a href="{{ url ('edit/'.$data->id) }}" >Edit</a>
                                 <a href="{{ url ('edit/'.$data->id) }}" >delete</a> --}}
                                 <td scope="row" class="d-sm-flex justify-content-center">
                                     
-                                    <button class="btn btn-sm btn-warning mt-2 mt-lg-0 ml-lg-2 w-50 edit_btn" value="{{$data->id}}">Edit</a>
-                                <button class="btn btn-sm delete btn-danger mt-2 mt-lg-0 ml-lg-2 w-50" value="{{$data->id}}">Delete</button>
+                                    <button class="btn btn-sm btn-warning mt-2 mt-lg-0 ml-lg-2 w-50 edit_btn" value="{{$datas->id}}">Edit</a>
+                                <button class="btn btn-sm delete btn-danger mt-2 mt-lg-0 ml-lg-2 w-50" value="{{$datas->id}}">Delete</button>
                                  </td>
                                 </tr>
                         </div>

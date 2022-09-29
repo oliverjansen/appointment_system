@@ -39,20 +39,20 @@ Route::middleware([
         //service controller 
         // Route::get('edit/{id}','App\Http\Controllers\ServicesController@edit_services');
         Route::get('edit_services/{id}','App\Http\Controllers\ServicesController@edit_services');
-        Route::put('update_services','App\Http\Controllers\ServicesController@update_services');
-        Route::put('delete_services','App\Http\Controllers\ServicesController@delete_services');
+        Route::match(['get','post'],'update_services','App\Http\Controllers\ServicesController@update_services');
+        Route::match(['get','post'],'delete_services','App\Http\Controllers\ServicesController@delete_services');
         
         //registration controller 
-        Route::put('approve_registration','App\Http\Controllers\RegistrationController@approve_registration');
-        Route::put('reject_registration','App\Http\Controllers\RegistrationController@reject_registration');
-        Route::put('delete_registration','App\Http\Controllers\RegistrationController@delete_registration');
+        Route::match(['get','post'],'approve_registration','App\Http\Controllers\RegistrationController@approve_registration');
+        Route::match(['get','post'],'reject_registration','App\Http\Controllers\RegistrationController@reject_registration');
+        Route::match(['get','post'],'delete_registration','App\Http\Controllers\RegistrationController@delete_registration');
     
      
         Route::get('/registration', 'App\Http\Controllers\RegistrationController@registration')->name('registration');
         Route::get('/workers', 'App\Http\Controllers\WorkersController@workers')->name('workers');
         Route::get('/appointment', 'App\Http\Controllers\AppointmentsController@appointment')->name('appointment');
         Route::get('/sample', 'App\Http\Controllers\ServicesController@sample')->name('sample');
-        Route::post('/insert_data',  'App\Http\Controllers\AppointmentsController@insert')->name('insert_data');
+        Route::match(['get','post'],'/insert_data',  'App\Http\Controllers\AppointmentsController@insert')->name('insert_data');
         Route::post('/add_services',  'App\Http\Controllers\ServicesController@add_services')->name('add_services');
         Route::get('/calendar', 'App\Http\Controllers\CalendarController@calendar')->name('calendar');
 

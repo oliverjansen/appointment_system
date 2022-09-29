@@ -25,10 +25,7 @@
                 <x-jet-label for="age" value="{{ __('Age') }}" />
                 <x-jet-input id="age" class="block mt-1 w-full" type="text" name="age" :value="old('age')" required autofocus autocomplete="age" />
             </div>
-            <div class="mt-4 hidden">
-                <x-jet-label for="age" value="{{ __('account_type') }}" />
-                <x-jet-input id="account_type" class="block mt-1 w-full" type="text"  name="account_type" value="user" required autofocus autocomplete="account_type"  />
-            </div>
+         
             <div class="mt-4">
                 <x-jet-label for="gender" value="{{ __('Gender') }}" />
                 <select name="gender" id="gender" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">

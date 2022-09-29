@@ -13,17 +13,13 @@ class AppointmentsController extends Controller
     public function appointment()
     {
         if(Auth::User()->account_type=='admin'){
-            return view('services',compact('data','data1'));
+            return view('services');
             }else{
               return redirect()->route('appointment');
             }
       
     }
-    public function add(){
-
-        return view ('');
-    }
-
+ 
     public function insert(Request $request){
 
        $appointment = new appointments();
@@ -34,7 +30,7 @@ class AppointmentsController extends Controller
 
        $appointment->save();
        if(Auth::User()->account_type=='admin'){
-        return view('services',compact('data','data1'));
+        return view('services');
         }else{
           return redirect()->route('calendar');
         }
