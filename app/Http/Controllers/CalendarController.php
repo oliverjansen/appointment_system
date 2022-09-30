@@ -5,6 +5,8 @@ use App\Models\user;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\appointments;
+use App\Models\services;
+
 
 
 class CalendarController extends Controller
@@ -26,10 +28,16 @@ class CalendarController extends Controller
         ];  
 
         }
+
+        $appointment_service = services::all();
+
+
         if(Auth::User()->account_type=='admin'){
-        return view ('calendar', ['schedules' =>  $schedules]);
+            return view ('calendar', compact('schedules','appointment_service') );
+        // console.log($appointment_service);
          }else{
-            return view ('calendar', ['schedules' =>  $schedules]);
+            // return view ('calendar', ['schedules' =>  $schedules]);
+            return view ('calendar', compact('schedules','appointment_service') );
          }
     }
 

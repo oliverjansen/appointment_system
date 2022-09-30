@@ -5,6 +5,8 @@ use App\Http\Controllers\AppointmentsController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\WorkerControllers;
+use App\Http\Controllers\Controller;
+
 use App\Models\user;
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +20,7 @@ use App\Models\user;
 */
 
 Route::get('/', function () {
-    return redirect('dashboard');
+    return redirect('login');
 });
 
 Route::middleware([
@@ -57,6 +59,7 @@ Route::middleware([
         Route::get('/calendar', 'App\Http\Controllers\CalendarController@calendar')->name('calendar');
 
 
+        Route::get('/register', 'App\Http\Controllers\Controller@register')->name('register');
 
    
 });
