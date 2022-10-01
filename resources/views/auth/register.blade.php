@@ -6,7 +6,7 @@
 
         <x-jet-validation-errors class="mb-4" />
 
-        <form method="POST" action="{{ route('register') }}">
+        <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
             @csrf
           <div class="mt-4">
                 <x-jet-label for="firstname" value="{{ __('Firstname Name') }}" />
@@ -76,9 +76,9 @@
                 <x-jet-input id="identificationtype" class="block mt-1 w-full" type="text" name="identificationtype" :value="old('identificationtype')" required autofocus autocomplete="identificationtype" />
             </div>
             <div class="mt-4">
-                <x-jet-label for="identification" value="{{ __('Identification') }}" />
-                <!-- <x-jet-input id="identification" class="block mt-1 w-full" type="text" name="identification" :value="old('identification')" required /> -->
-                <input type="file" id="identification" name="identification" :value="old('identification')" required autofocus autocomplete="identification">
+                {{-- <x-jet-label for="identification" value="{{ __('Identification') }}" />
+                <!-- <x-jet-input id="identification" class="block mt-1 w-full" type="text" name="identification" :value="old('identification')" required /> --> --}}
+                <input type="file" id="identification" name="identification">
             </div>
  
 

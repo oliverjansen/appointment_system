@@ -15,6 +15,50 @@
 </head>
 <body>
 
+  <!-- modal view-->
+
+
+<!-- Modal -->
+<div class="modal fade" id="view_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header mb-2 mt-4" >
+        <p class="text-center">
+          <h5>
+           <small class="font-weight-light ">IDENTIFICATION CARD</small>
+          </h5>
+         
+          
+        </p>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+         
+          <div class="row">
+            <input type="text" id="image_id" name="image_id" hidden>
+            {{-- <input type="text" id="image" name="image"> --}}
+            <img id="view_image" src="" alt=".." class="w-100 h-75" >
+            {{-- <img src="storage/images/dsgLLgapwjZkOGRWmspJX9t2vIbnnv2kJaYWvEYq.jpg" alt=".." > --}}
+          </div>
+          <div class="row d-flex justify-content-center mt-4 mb-2">
+            <div class="text-center">
+              <div class="row">
+                ID type:<p id="id_type" class="text-center ml-2 font-weight-bold text-lowercase h5"></p></p>
+              </div>
+    
+
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- modal delete-->
   <div class="modal fade" id="delete_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -148,7 +192,10 @@
                         <td>{{$data->birthdate}}</td>
                         <td>{{$data->address}}</td>
                         <td>{{$data->contactnumber}}</td>
-                        <td> <button class="btn btn-sm btn-primary">View</button></td>
+                        <td> <button class="btn btn-sm btn-primary view" value="{{$data->id}}">View</button>
+                        
+                          
+                        </td>
                         
                         <td>{{$data->status}}</td>
                         <td scope="row" colspan=2 class="d-sm-flex">
@@ -235,6 +282,31 @@
             // alert(service); 
             $('#delete_modal').modal('show');
             
+            });
+
+            $(document).on('click', '.view',function (e) {
+              e.preventDefault();
+              var identification = $(this).val();
+
+              $('#view_modal').modal('show');
+              //  $('#image_id').val(identification);
+
+                $.ajax({
+                
+                type: "GET",
+                url: "/view_identification/"+identification,
+                 success: function (response) {
+                    // console.log(response);
+                    $('#image').val(response.identification.identification)
+                    $('#image_id').val(response.identification.id)
+                    $('#id_type').text(response.identification.identificationtype);
+                    $('#view_image').attr('src', 'storage/'+response.identification.identification);
+                }, error: function(error) {
+                   console.log(error);
+                 
+        }
+            });
+              
             });
         
     });

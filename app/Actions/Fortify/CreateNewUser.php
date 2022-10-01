@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Actions\Fortify;
-
+use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -29,7 +29,7 @@ class CreateNewUser implements CreatesNewUsers
             'age' => ['required', 'string', 'max:255'],
 
             'birthdate' => ['required', 'string', 'max:255'],
-            'identification' => ['required', 'string', 'max:255'],
+            // 'identification' => ['required', 'string', 'max:255'],
             'identificationtype' => ['required', 'string', 'max:255'],
             'contactnumber' => ['required', 'string', 'max:255'],
 
@@ -38,6 +38,23 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
+
+        // $request->file('image')->getClientOriginalName();
+        // $request->identification->store('images','public');
+        // $imageName = time().'.'.$request->image->extension();  
+        // $request->image->move(public_path('images'), $imageName);
+
+        if (request()->hasFile('identification')){
+            $identification = request()->file('identification')->getClientOriginalName();
+            $identificationName = request()->file('identification')->store('images','public');
+            // $file = request->file('identification');
+            // $extention = $file->getClientOriginalExtension();
+            // $filename = time().'.'.$extention;
+            // $file->
+
+        }
+
+        // $request->file('identification')->getClientOriginalName();
 
         return User::create([
             'firstname' => $input['firstname'],
@@ -48,8 +65,8 @@ class CreateNewUser implements CreatesNewUsers
             'age' => $input['age'],
             'birthdate' => $input['birthdate'],
             'contactnumber' => $input['contactnumber'],
-            'identification' => $input['identification'],
-            'identificationtype' => $input['identificationtype'],
+            'identification' => $identificationName,
+         'identificationtype' => $input['identificationtype'],
             'address' => $input['address'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),

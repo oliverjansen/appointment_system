@@ -79,7 +79,7 @@
                                 </select>
                             </div>
                             <div class="mt-3" id="div_vaccine_type_adult">
-                                <label for="">Vaccine Type</label>
+                                <label for="">Vaccine</label>
                                     <select name="appointmentvaccinetypeadult" id="appointmentvaccinetype" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                                         <option value="tuberculosis">booster </option>
                                         <option value="inactivated">first dose </option>
@@ -92,7 +92,7 @@
 
                                 </textarea>
                             </div>
-                            <div class="mt-3" id="div_laboratory">
+                                <div class="mt-3" id="div_laboratory">
                                 <label for="">Already have laboratory?</label>
 
                                     <select name="appointmentvaccinetype" id="appointmentvaccinetype" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">

@@ -11,6 +11,8 @@ class Vaccine extends Model
     protected $table ="vaccine";
 
     protected $fillable = [
-        'vaccine_type',  
+        'vaccine_type',
+        'person',  
+
     ];
 }

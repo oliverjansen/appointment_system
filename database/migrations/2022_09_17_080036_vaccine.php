@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('vaccine', function (Blueprint $table) {
             $table->id();
+            $table->string('person')->nullable();
             $table->string('vaccine_type')->nullable();
             $table->timestamps();
         });

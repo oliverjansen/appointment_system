@@ -20,8 +20,13 @@ use App\Models\user;
 */
 
 Route::get('/', function () {
-    return redirect('login');
-});
+    return view ('dashboard');
+})->middleware('auth');
+
+Route::get('/register', function () {
+    return view('auth/register');
+})->name('register');
+
 
 Route::middleware([
     'auth:sanctum',
@@ -38,12 +43,17 @@ Route::middleware([
        
         // Route::resource('services','App\Http\Controllers\ServicesController@update_services');
 
-        //service controller 
+        //services controller 
         // Route::get('edit/{id}','App\Http\Controllers\ServicesController@edit_services');
         Route::get('edit_services/{id}','App\Http\Controllers\ServicesController@edit_services');
         Route::match(['get','post'],'update_services','App\Http\Controllers\ServicesController@update_services');
         Route::match(['get','post'],'delete_services','App\Http\Controllers\ServicesController@delete_services');
         
+        //services controller  -- vaccine
+        
+        Route::get('edit_vaccine/{id}','App\Http\Controllers\ServicesController@edit_vaccine');
+
+
         //registration controller 
         Route::match(['get','post'],'approve_registration','App\Http\Controllers\RegistrationController@approve_registration');
         Route::match(['get','post'],'reject_registration','App\Http\Controllers\RegistrationController@reject_registration');
@@ -57,10 +67,13 @@ Route::middleware([
         Route::match(['get','post'],'/insert_data',  'App\Http\Controllers\AppointmentsController@insert')->name('insert_data');
         Route::post('/add_services',  'App\Http\Controllers\ServicesController@add_services')->name('add_services');
         Route::get('/calendar', 'App\Http\Controllers\CalendarController@calendar')->name('calendar');
+        
+        //view image
+      
+        Route::get('view_identification/{id}','App\Http\Controllers\RegistrationController@view_identification');
 
-
-        Route::get('/register', 'App\Http\Controllers\Controller@register')->name('register');
-
+        // Route::post('register', 'App\Http\Controllers\Controller@register')->name('register');
+       
    
 });
 

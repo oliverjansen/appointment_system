@@ -6,11 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" /> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script> --}}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    
     <title>Document</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
@@ -66,7 +68,7 @@
     </div>
     </div>
 
-   <!-- delete modal / confimation -->3
+   <!-- delete modal / confimation -->
 
 <div class="modal fade" id="delete_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -137,7 +139,8 @@
                     </tbody>
                         
                  @endforeach
-                 <thead class="mt-5" >
+                    <thead class="mt-5" >
+                    <tbody class="text-center" >
                         <tr >
                     
                         <th scope="col"  class="text-center">Vaccines</th>
@@ -146,17 +149,21 @@
               
                         </tr>
                     </thead>
-                    <t/body>
+                 
                  @foreach($data1 as $data1)
                         <tr class="text-center">
                         <td>{{$data1->vaccine_type}}</td>
                         <td scope="row" class="d-sm-flex justify-content-center">
-             
+                                    
+                            <button class="btn btn-sm btn-warning mt-2 mt-lg-0 ml-lg-2 w-50 edit_vaccine" value="{{$data1->id}}">Edit</a>
+                        <button class="btn btn-sm delete_vaccine btn-danger mt-2 mt-lg-0 ml-lg-2 w-50" value="{{$data1->id}}">Delete</button>
+                         </td>
                            
                         </tr>
                  @endforeach
                     </tbody>
                 </table>
+                
             </div>
             <div class=" col col-lg-4 col-12">
                      <form action="{{ url('add_services') }}" method="POST">
@@ -207,16 +214,18 @@
 
 <script>
     $(document).ready(function () {
-
+      
         $(document).on('click', '.edit_btn',function (e) {
             e.preventDefault();
             var service = $(this).val();
+            console.log(service);
             // alert(service); 
             $('#edit_modal').modal('show');
             
             $.ajax({
                 
                 type: "GET",
+          
                 url: "/edit_services/"+service,
                 success: function (response) {
                     console.log(response);
@@ -226,6 +235,25 @@
                 }
             });
         });
+
+        $(document).on('click', '.edit_vaccine',function (e) {
+            e.preventDefault();
+            var vaccine = $(this).val();
+            console.log(vaccine);
+            // alert(service); 
+            $('#edit_modal').modal('show');
+                $.ajax({
+                    
+                    type: "GET",
+                    url: "/edit_vaccine/"+vaccine,
+                    success: function (response) {
+                        console.log(response);
+                        // $('#id').val(response.vaccine.id)
+
+                    }
+                });
+        });
+
 
         $(document).on('click', '.delete',function (e) {
             e.preventDefault(); 

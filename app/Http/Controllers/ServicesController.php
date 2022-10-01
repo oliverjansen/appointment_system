@@ -56,9 +56,17 @@ class ServicesController extends Controller
         'service'=> $services,
 
   ]);
+ }  
+
+ public function edit_vaccine($id){
+  $vaccine = Vaccine::find($id);
+  return response()->json([
+        'status'=>200,
+        'person'=> $person,
+        'vaccine_type'=> $vaccine_type,
 
 
-
+  ]);
  }  
 
  public function update_services(Request $request){
