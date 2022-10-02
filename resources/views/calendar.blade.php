@@ -48,7 +48,7 @@
                                 {{-- <option value="vaccine">Vaccine</option>
                                 <option value="inquiries">Inquiry</option> --}}
 
-                                @foreach ($appointment_service as $key => $value)
+                                @foreach ($appointment_service as $value)
 
                                 {{-- <option value="{{ $value->service }}" {{ ( $value->service =='vaccine') ? 'selected' : '' }}>  --}}
                                     <option value="{{ $value->service }}"> 
@@ -61,7 +61,7 @@
                         </div>
 
                         <div class="mt-3" id="div_appointmentPerson">
-                            <label for="" >Person</label>
+                            <label for="" >Category</label>
                             <select name="appointmentPerson" id="appointmentPerson" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                                 <option value="kids">Kids</option>
                                 <option value="adult">Adult</option>
@@ -92,7 +92,7 @@
 
                                 </textarea>
                             </div>
-                                <div class="mt-3" id="div_laboratory">
+                            <div class="mt-3" id="div_laboratory">
                                 <label for="">Already have laboratory?</label>
 
                                     <select name="appointmentvaccinetype" id="appointmentvaccinetype" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
@@ -103,7 +103,7 @@
                                     </select>
                                 </div>
                                 <div class="mt-3" id="div_medicine">
-                                    <label for="">Free medecine</label>
+                                    <label for="">Purpose</label>
     
                                         <select name="appointmentvaccinetype" id="appointmentvaccinetype" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                                             <option value="measles">diabetes</option>
@@ -152,6 +152,7 @@ $(document).ready(function () {
         $("#appointmentservice").on('change',function(e){
             e.preventDefault();
             // alert($(this).val());
+            // console.log($(this).val());
             if($(this).val()=="inquiries"){
                 $("#div_appointmentPerson").hide();  
                 $("#div_vaccine_type_kids").hide();  
@@ -183,11 +184,10 @@ $(document).ready(function () {
                     }
                 }).change();
                     
-            }
-   
-            else if($(this).val()=="free medicine"){
+            }else if($(this).val()=="medicine"){
                 $("#div_appointmentPerson").hide();  
-                $("#div_vaccine_type").hide();  
+                $("#div_vaccine_type_kids").hide(); 
+                $("#div_vaccine_type_adult").hide(); 
                 $("#div_appointmentPerson").hide();
                 $("#div_information").hide(); 
                 $("#div_medicine").show(); 
@@ -196,7 +196,12 @@ $(document).ready(function () {
             }else{
                 
                 $("#div_information").show(); 
-
+                $("#div_medicine").hide(); 
+                $("#div_appointmentPerson").hide();  
+                $("#div_vaccine_type_kids").hide(); 
+                $("#div_vaccine_type_adult").hide(); 
+                $("#div_laboratory").hide();
+               
             }
                 // $("").hide();
                 // $("#" + $(this).val()).fadeIn(700);

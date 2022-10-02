@@ -29,7 +29,7 @@ class CalendarController extends Controller
 
         }
 
-        $appointment_service = services::all();
+        $appointment_service = services::all(); 
 
 
         if(Auth::User()->account_type=='admin'){
