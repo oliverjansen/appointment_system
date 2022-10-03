@@ -72,47 +72,68 @@
 
                 {{ csrf_field() }}
                 <div class="">
-                    
-                    <x-jet-label for="service" value="{{ __('Select Column') }}"/>
-
-                    <select name="column_select" id="column_select" class ="">
-                            <option value="category">Category</option>
-                            <option value="vaccine_type">Vaccine Type</option>
-                    
-                    
-                    </select>
-                    <div id="category_field">
-                        <div class="form-group">
-                            <x-jet-label for="service" class="mt-3" value="{{ __('Category') }}" />
-                            <input type="text" class="form-control" name="add_vaccine_category_input_id" id="add_vaccine_category_input_id" hidden >
-                            <input type="text" class="form-control" name="add_vaccine_category_input" id="add_vaccine_category_input" >
+                    <x-jet-label for="service" value="{{ __('Select Service') }}"/>
+                        <input type="text" id="service_select_id" name="service_select_id" hidden>
+                        <select name="service_select" id="service_select" class ="mb-3">
                             
-                        </div>
-                    </div>
-                    <div id="vaccine_field">
-                        <x-jet-label for="service" class="mt-3" value="{{ __('Select Category') }}" />
-
-                        <select name="vaccine_select" id="vaccine_select" class ="" >
-                  
-    
-                            @foreach ($category as $value)
-                                <option value="{{ $value->category }}"> 
-                                {{ $value->category }} 
+                            @foreach ($service as $value)
+                                <option value="{{ $value->id }}"> 
+                                {{ $value->service }} 
                         
                             </option>
                         
                           @endforeach  
-                        </select>
-    
-                        <div class="form-group">
-                            <x-jet-label for="service" class="mt-3" value="{{ __('Vaccine Type') }}" />
-                            <input type="text" class="form-control" name="add_vaccine_input_id" id="add_vaccine_input_id"  hidden>
-    
-                            <input type="text" class="form-control" name="add_vaccine_input" id="add_vaccine_input" >
-                            
-                        </div>
-                    </div>
                     
+                    
+                        </select>
+
+                    <div id="vaccine_field_whole">
+                        <x-jet-label for="service" value="{{ __('Select Column') }}"/>
+
+                        <select name="column_select" id="column_select" class ="">
+                                <option value="category">Category</option>
+                                <option value="vaccine_type">Vaccine Type</option>
+                        
+                        
+                        </select>
+
+            
+                        <div id="category_field">
+                            <div class="form-group">
+                                <x-jet-label for="service" class="mt-3" value="{{ __('Category') }}" />
+                                <input type="text" class="form-control" name="add_vaccine_category_input_id" id="add_vaccine_category_input_id" hidden >
+                                <input type="text" class="form-control" name="add_vaccine_category_input" id="add_vaccine_category_input" >
+                                
+                            </div>
+                        </div>
+                        <div id="vaccine_field">
+                          
+                            <x-jet-label for="service" class="mt-3" value="{{ __('Select Category') }}" />
+                                
+                                <select name="vaccine_select" id="vaccine_select" class ="" >
+                    
+                                
+                                    @foreach ($category as $value)
+                                    <option value="{{ $value->id }}"> 
+                                    {{ $value->category }} 
+                               
+                                   
+                                </option>
+                               
+                                 @endforeach  
+                                
+                                
+                              </select>
+                              
+                            <div class="form-group">
+                                <x-jet-label for="service" class="mt-3" value="{{ __('Vaccine Type') }}" />
+                                <input type="text" class="form-control" name="add_vaccine_input_id" id="add_vaccine_input_id" hidden >
+        
+                                <input type="text" class="form-control" name="add_vaccine_input" id="add_vaccine_input" >
+                                
+                            </div>
+                        </div>
+                    </div>   
                  
 
                 
@@ -365,13 +386,44 @@
                 
     
                     </div>
+                    <div class="d-flex justify-content-end">
+                        <table class="table table-hover table-bordered">
+                        
+                        
+                              <thead class="mt-5" >
+                              <tr >
+                          
+                              <th scope="col"  class="text-center">List of Category</th>
+                      
+      
+                              <th scope="col" class="text-center w-25">Action</th>
+      
+                              </tr>
+                          </thead>
+                          <tbody class="text-center" >
+                          @foreach($category as $category)
+                              <tr class="text-center">
+                              <td>{{$category->category}}</td>
+                              
+                              <td scope="row" class="d-sm-flex justify-content-center">
+                                          
+                                  <button class="btn btn-sm btn-warning mt-2 mt-lg-0 ml-lg-2 w-100 edit_category" value="{{$category->id}}">Edit</a>
+                              <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-lg-2 w-100 delete_category " value="{{$category->id}}">Delete</button>
+                               </td>
+                                 
+                              </tr>
+                       @endforeach
+                          </tbody>
+                      </table> 
+                      
+                  </div>
                  <table class="table table-hover table-bordered">
                   
                   
                         <thead class="mt-5" >
                         <tr >
                     
-                        <th scope="col"  class="text-center">Category</th>
+                        <th scope="col"  class="text-center">Category</th> 
                         <th scope="col"  class="text-center">Vaccine</th>
 
                         <th scope="col" class="text-center w-25">Action</th>
@@ -381,7 +433,7 @@
                     <tbody class="text-center" >
                  @foreach($vaccine as $vaccine)
                         <tr class="text-center">
-                        <td>{{$vaccine->person}}</td>
+                        <td>{{$vaccine->category_id}}</td>
                         <td>{{$vaccine->vaccine_type}}</td>
                         
                         <td scope="row" class="d-sm-flex justify-content-center">
@@ -396,39 +448,7 @@
                 </table>
 
 
-                <div class="d-flex justify-content-end">
-                  <table class="table table-hover table-bordered">
-                  
-                  
-                        <thead class="mt-5" >
-                        <tr >
-                    
-                        <th scope="col"  class="text-center">List of Category</th>
-                
-
-                        <th scope="col" class="text-center w-25">Action</th>
-
-                        </tr>
-                    </thead>
-                    <tbody class="text-center" >
-                    @foreach($category as $category)
-                        <tr class="text-center">
-                        <td>{{$category->category}}</td>
-                        
-                        <td scope="row" class="d-sm-flex justify-content-center">
-                                    
-                            <button class="btn btn-sm btn-warning mt-2 mt-lg-0 ml-lg-2 w-100 edit_category" value="{{$category->id}}">Edit</a>
-                        <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-lg-2 w-100 delete_category " value="{{$category->id}}">Delete</button>
-                         </td>
-                           
-                        </tr>
-                 @endforeach
-                    </tbody>
-                </table> 
-                
-            </div>
-         
-   \
+            
         </div>
     </div>
 
@@ -541,7 +561,45 @@
             console.log(selected_vaccine);
             $('#add_vaccine_input_id').val(selected_vaccine);
 
+        
+        }).change();
 
+       
+        $("#service_select").on('change',function(e){ 
+            e.preventDefault(); 
+            var service_select_id = $(this).val();
+           
+            $('#service_select_id').val(service_select_id);
+            
+            $.ajax({
+
+                type: "GET",
+                url: "/select_service/"+service_select_id,
+                success: function (response) {
+                    // $('#id').val(response.vaccine.id)
+                    $('#vaccine_field_whole').show();
+                    
+                    if (response.service_id.service=="vaccine") {
+                      
+
+                     }else if(response.service_id.service =="medicine"){
+                        
+                        $('#vaccine_field_whole').hide();
+
+
+                     }
+                     else if(response.service_id.service =="inquiries"){
+                         $('#vaccine_field_whole').hide();
+
+                    }       
+                    // console.log(response.service_id.service);
+                    // $('#category_update_id').val(response.category_id.id);
+                    // $('#category_update').val(response.category_id.category);
+
+
+                }
+                });
+     
         }).change();
 
         $("#column_select").on('change',function(e){ 
@@ -561,6 +619,7 @@
 
         }).change();
         
+
         //edit category
         $(document).on('click', '.edit_category',function (e) {
         e.preventDefault(); 

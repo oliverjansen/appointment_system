@@ -53,17 +53,16 @@ class ServicesController extends Controller
 
  public function add_vaccine(Request $request){
 
-
-     
-
       if($request ->input ('add_vaccine_input_id') != null && $request ->input ('add_vaccine_input') != null){
         $vaccine_add = new vaccine();
-        $vaccine_add ->person = $request ->input ('add_vaccine_input_id');
+        $vaccine_add ->service_id = $request ->input ('service_select_id');
+        $vaccine_add ->category_id = $request ->input ('add_vaccine_input_id');
         $vaccine_add ->vaccine_type = $request ->input ('add_vaccine_input');
         $vaccine_add->save();
       }
       if ($request ->input ('add_vaccine_category_input') != null){
           $vaccine_category_add = new Category();
+          $vaccine_category_add ->service_id = $request ->input ('service_select_id');
           $vaccine_category_add ->category = $request ->input ('add_vaccine_category_input');
           $vaccine_category_add->save();
       }
@@ -90,6 +89,15 @@ class ServicesController extends Controller
 
   ]);
  }  
+ public function select_service($id){
+  $service_id = services::find($id);
+  return response()->json([
+        'status'=>200,
+        'service_id'=> $service_id,
+
+  ]);
+ } 
+ 
 
  public function edit_vaccine($id){
   $vaccine_id = Vaccine::find($id);

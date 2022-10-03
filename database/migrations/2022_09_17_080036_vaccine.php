@@ -15,10 +15,12 @@ return new class extends Migration
     {
         Schema::create('vaccine', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('category_id');
+            $table->bigInteger('service_id')->unsigned();
+            $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade')->onUpdate('cascade');
+            $table->bigInteger('category_id')->unsigned();
             $table->string('vaccine_type')->nullable();
             $table->timestamps();
-            $table->foreign('category_id')->references('id')->on('categories');
+             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
