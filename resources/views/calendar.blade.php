@@ -194,9 +194,8 @@
                                 <input type="date" id="appointmentdate" name="appointmentdate" :value="old('appointmentdate')" required autofocus autocomplete="appointmentdate" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                         </div>
                         
-
                                 <div class="mt-5 d-flex align-items-center justify-content-center">
-                                <button type="submit" class="btn btn-secondary text-align-center w-50">Submit</button>
+                                <button type="submit" class="btn btn-primary btn-sm  text-align-center w-50">Submit</button>
                                 </div>
                     </form>
                         

@@ -6,9 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" /> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script> --}}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <title>Document</title>
@@ -165,17 +165,12 @@
                         <tr class="text-center">
                         <th scope="col">Services</th>
                         <th scope="col">Category</th>
+                        <th scope="col">Vaccine for Kids</th>
                         <th scope="col">Vaccine Type</th>
-                        <th scope="col">Gender</th>
-                        <th scope="col">Birthdate</th>
-                        <th scope="col">Address</th>
+                        <th scope="col">Concern</th>
                         <th scope="col">Information</th>
-                       
-                     
-                        <th scope="col">Status</th>
 
-
-                        <th scope="col" colspan="2" class="text-center">Action</th>
+                        <th scope="col" colspan=3 class="text-center">Action</th>
 
 
 
