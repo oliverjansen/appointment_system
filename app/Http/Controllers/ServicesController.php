@@ -7,6 +7,8 @@ use App\Models\services;
 use App\Models\Vaccine;
 use App\Models\User;
 use App\Models\Category;
+use App\Models\Medicine;
+
 
 use Illuminate\Support\Facades\Auth;
 
@@ -23,11 +25,12 @@ class ServicesController extends Controller
     $service = services::all();
     $vaccine = vaccine::all();
     $category = Category::all();
+    $medicine = Medicine::all();
 
 
     
     if(Auth::User()->account_type=='admin'){
-      return view('services',compact('service','vaccine','category'));
+      return view('services',compact('service','vaccine','category','medicine'));
       }else{
         return redirect()->route('calendar');
       }
@@ -67,7 +70,12 @@ class ServicesController extends Controller
           $vaccine_category_add->save();
       }
     
-
+      if ($request ->input ('add_medicine_input_id') != null){
+        $medicine_add = new Medicine();
+        $medicine_add ->service_id = $request ->input ('add_medicine_input_id');
+        $medicine_add ->medicine_type = $request ->input ('add_medicine_input');
+        $medicine_add->save();
+    }
       if(Auth::User()->account_type=='admin'){
         return redirect()->route('services');
       }else{
@@ -108,6 +116,15 @@ class ServicesController extends Controller
   ]);
  }  
 
+ public function edit_medicine($id){
+  $medicine_id = Medicine::find($id);
+  return response()->json([
+        'status'=>200,
+        'medicine_id'=> $medicine_id,
+
+  ]);
+ }  
+
  public function edit_category($id){
   $category_id = Category::find($id);
   return response()->json([
@@ -120,7 +137,20 @@ class ServicesController extends Controller
 
 
  //update
+ public function update_medicine(Request $request){
  
+  $id = $request ->input ('edit_medicine_id');
+  $medicine = Medicine::find($id);
+  $medicine ->medicine_type = $request ->input ('edit_medicine_input');
+  $medicine->update();
+
+  if(Auth::User()->account_type=='admin'){
+    return redirect()->back()->with('success', 'Successfully Edited');
+  }else{
+    return redirect()->route('login');
+  }
+
+}  
 
  public function update_category(Request $request){
  
@@ -213,5 +243,17 @@ public function update_vaccine(Request $request){
 
  }
 
+ public function delete_medicine (Request $request){
+  $id = $request ->input ('delete_medicine_id');
+  $medicine_delete= Medicine::find($id);
+  $medicine_delete->delete();
+
+  if(Auth::User()->account_type=='admin'){
+    return redirect()->back()->with('danger', 'Successfully Deleted');
+  }else{
+   return redirect()->route('calendar');
+  }
+
+ }
    
 }

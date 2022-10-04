@@ -6,6 +6,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\appointments;
 use App\Models\services;
+use App\Models\Vaccine;
+use App\Models\Category;
+use App\Models\Medicine;
+
+use Illuminate\Support\Facades\DB;
+
+
 
 
 
@@ -17,6 +24,27 @@ class CalendarController extends Controller
 
         $schedules = array();
         $appointments1 = appointments::all();
+        $appointments1 = DB::table('categories')
+        ->join('vaccine','categories.id',"=",'vaccine.category_id')
+        ->where('categories.id',1)
+        ->get();
+
+        $category = Category::all();
+        $medicine = Medicine::all();
+        $appointment_service = services::all(); 
+
+        $vaccine_kids= DB::table('categories')
+        ->join('vaccine','categories.id',"=",'vaccine.category_id')
+        ->where('categories.id',1)
+        ->get();
+
+        $vaccine_adult= DB::table('categories')
+        ->join('vaccine','categories.id',"=",'vaccine.category_id')
+        ->where('categories.id',2)
+        ->get();
+
+     
+
         foreach ($appointments1 as $appointment2) {
             $schedules[] = [
                 
@@ -29,15 +57,15 @@ class CalendarController extends Controller
 
         }
 
-        $appointment_service = services::all(); 
+      
 
 
         if(Auth::User()->account_type=='admin'){
-            return view ('calendar', compact('schedules','appointment_service') );
+            return view ('calendar', compact('schedules','appointment_service','medicine') );
         // console.log($appointment_service);
          }else{
             // return view ('calendar', ['schedules' =>  $schedules]);
-            return view ('calendar', compact('schedules','appointment_service') );
+            return view ('calendar', compact('schedules','appointment_service','vaccine_kids','vaccine_adult','category','medicine') );
          }
     }
 

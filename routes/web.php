@@ -59,6 +59,9 @@ Route::middleware([
         Route::match(['get','post'],'edit_category/{id}','App\Http\Controllers\ServicesController@edit_category')->name('edit_category');
         Route::match(['get','post'],'delete_category','App\Http\Controllers\ServicesController@delete_category')->name('delete_category');
         Route::match(['get','post'],'select_service/{id}','App\Http\Controllers\ServicesController@select_service')->name('select_service');
+        Route::match(['get','post'],'edit_medicine/{id}','App\Http\Controllers\ServicesController@edit_medicine')->name('edit_medicine');
+        Route::match(['get','post'],'update_medicine','App\Http\Controllers\ServicesController@update_medicine')->name('update_medicine');
+        Route::match(['get','post'],'delete_medicine','App\Http\Controllers\ServicesController@delete_medicine')->name('delete_medicine');
         
         
         

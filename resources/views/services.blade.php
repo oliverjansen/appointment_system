@@ -61,7 +61,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Add Vaccine</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Add</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -74,7 +74,7 @@
                 <div class="">
                     <x-jet-label for="service" value="{{ __('Select Service') }}"/>
                         <input type="text" id="service_select_id" name="service_select_id" hidden>
-                        <select name="service_select" id="service_select" class ="mb-3">
+                        <select name="service_select" id="service_select" class ="mb-3 block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                             
                             @foreach ($service as $value)
                                 <option value="{{ $value->id }}"> 
@@ -86,11 +86,17 @@
                     
                     
                         </select>
+                        <div id="medicine_field">
+                            <x-jet-label for="service" class="mt-3" value="{{ __('Add medicine') }}" />
+                            <input type="text" class="form-control" name="add_medicine_input_id" id="add_medicine_input_id" hidden >
+                            <input type="text" class="form-control" name="add_medicine_input" id="add_medicine_input"  >
 
+                            
+                        </div>
                     <div id="vaccine_field_whole">
                         <x-jet-label for="service" value="{{ __('Select Column') }}"/>
 
-                        <select name="column_select" id="column_select" class ="">
+                        <select name="column_select" id="column_select" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                                 <option value="category">Category</option>
                                 <option value="vaccine_type">Vaccine Type</option>
                         
@@ -110,7 +116,7 @@
                           
                             <x-jet-label for="service" class="mt-3" value="{{ __('Select Category') }}" />
                                 
-                                <select name="vaccine_select" id="vaccine_select" class ="" >
+                                <select name="vaccine_select" id="vaccine_select" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" >
                     
                                 
                                     @foreach ($category as $value)
@@ -179,7 +185,40 @@
         </div>
        
         </div>
+        </div>
     </div>
+
+    {{-- Edit mmedicine modal--}}
+
+    <div class="modal fade" id="edit_medicine_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Edit medicine</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+
+            <form action=" {{ route('update_medicine') }} " method="POST">
+                @csrf
+                {{ csrf_field() }}
+                <input type="text" id="edit_medicine_id" name="edit_medicine_id" hidden>
+            <div class="form-group">
+                <label for="service" class="col-form-label">Service</label>
+                <input type="text" class="form-control" name="edit_medicine_input" id="edit_medicine_input" required>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary btn-sm w-25">Save</button>
+                <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">cancel</button>
+                
+            </div>
+            </form>
+        </div>
+       
+        </div>
+        </div>
     </div>
 {{-- Edit modal vaccine --}}
 <div class="modal fade" id="edit_vaccine_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -301,6 +340,33 @@
       </div>
     </div>
   </div>
+ <!-- delete medicine / confimation -->
+  <div class="modal fade" id="delete_medicine_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <form action="{{ route('delete_medicine') }} " method="POST">
+            @csrf
+         
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"></h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text" id="delete_medicine_id" name="delete_medicine_id" hidden >
+          Are you sure you want to delete this Medicine?
+        </div>
+        <div class="modal-footer">
+         
+          <button type="submit" class="btn btn-primary delete_btn btn-sm w-25">Yes</button>
+          <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">No</button>
+        </div>
+         </form>
+
+      </div>
+    </div>
+  </div>
+
 
  <!-- delete Vaccine / confimation -->
 
@@ -382,7 +448,7 @@
 
                     <div class="d-flex justify-content-end">
      
-                    <button class="btn btn-sm add_vaccine_btn btn-success mt-5 mb-2  " style="width:120px;">Add Vaccine</button>
+                    <button class="btn btn-sm add_vaccine_btn btn-success mt-5 mb-2  " style="width:120px;">Add </button>
                 
     
                     </div>
@@ -446,7 +512,37 @@
                  @endforeach
                     </tbody>
                 </table>
-
+                <div class="d-flex justify-content-end mt-5 ">
+                    <table class="table table-hover table-bordered mt-5 ">
+                    
+                    
+                            <thead class="mt-5" >
+                            <tr >
+                        
+                            <th scope="col"  class="text-center">Medicine Type</th>
+                    
+    
+                            <th scope="col" class="text-center w-25">Action</th>
+    
+                            </tr>
+                        </thead>
+                        <tbody class="text-center" >
+                        @foreach($medicine as $value)
+                            <tr class="text-center">
+                            <td>{{$value->medicine_type}}</td>
+                            
+                            <td scope="row" class="d-sm-flex justify-content-center">
+                                        
+                                <button class="btn btn-sm btn-warning mt-2 mt-lg-0 ml-lg-2 w-100 edit_medicine" value="{{$value->id}}">Edit</a>
+                            <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-lg-2 w-100 delete_medicine" value="{{$value->id}}">Delete</button>
+                            </td>
+                                
+                            </tr>
+                    @endforeach
+                        </tbody>
+                    </table> 
+                      
+                </div>
 
             
         </div>
@@ -508,6 +604,26 @@
                     }
                 });
         });
+        $(document).on('click', '.edit_medicine',function (e) {
+            e.preventDefault();
+            var medicine = $(this).val();
+            console.log(medicine);
+            // alert(service); 
+            $('#edit_medicine_modal').modal('show');
+            
+            $.ajax({
+                
+                type: "GET",
+                url: "/edit_medicine/"+medicine,
+                success: function (response) {
+                    // console.log(response.service.service);
+                    console.log(response);
+                    $('#edit_medicine_input').val(response.medicine_id.medicine_type);
+                    $('#edit_medicine_id').val(response.medicine_id.id);
+
+                }
+            });
+        });
 
         //delete service
         $(document).on('click', '.delete_service',function (e) {
@@ -530,6 +646,17 @@
          console.log(delete_vaccine);
         // alert(service); 
         $('#delete_vaccine_modal').modal('show');
+        
+        });
+
+        $(document).on('click', '.delete_medicine',function (e) {
+        e.preventDefault(); 
+        var delete_medicine = $(this).val();
+        $('#delete_medicine_id').val(delete_medicine);
+        
+         console.log(delete_medicine);
+        // alert(service); 
+        $('#delete_medicine_modal').modal('show');
         
         });
 
@@ -578,25 +705,34 @@
                 success: function (response) {
                     // $('#id').val(response.vaccine.id)
                     $('#vaccine_field_whole').show();
+                    $('#medicine_field').show();
+
                     
                     if (response.service_id.service=="vaccine") {
                       
+                        $('#vaccine_field_whole').show();
+                        $('#medicine_field').hide();
+
 
                      }else if(response.service_id.service =="medicine"){
-                        
+                        $('#add_medicine_input_id').val(response.service_id.id);
+                        $('#medicine_field').show();
+                         $('#vaccine_field_whole').hide();
                         $('#vaccine_field_whole').hide();
 
 
                      }
-                     else if(response.service_id.service =="inquiries"){
+                     else if(response.service_id.service =="checkup"){
                          $('#vaccine_field_whole').hide();
-
-                    }       
-                    // console.log(response.service_id.service);
-                    // $('#category_update_id').val(response.category_id.id);
-                    // $('#category_update').val(response.category_id.category);
+                        $('#medicine_field').hide();
 
 
+                    }
+                    else{
+                        $('#vaccine_field_whole').hide();
+                        $('#medicine_field').hide();
+
+                    }
                 }
                 });
      
@@ -612,11 +748,10 @@
             }else if (selected_column == "vaccine_type"){
                 $('#vaccine_field').show();
                 $('#category_field').hide();
+            }else{
+                $('#vaccine_field').hide();
+                $('#category_field').hide();
             }
-            console.log(selected_column);
-            // $('#add_vaccine_input_id').val(selected_vaccine);
-
-
         }).change();
         
 

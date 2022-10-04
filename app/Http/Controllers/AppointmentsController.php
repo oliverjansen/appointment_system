@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Calendar;
 use App\Models\appointments;
+use App\Models\User;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -21,8 +22,12 @@ class AppointmentsController extends Controller
     }
  
     public function insert(Request $request){
-
-       $appointment = new appointments();
+      $appointment = new appointments();
+      // $current_id = Auth::User()->id();
+        if(Auth::User()->id){
+          $current_id = Auth::User()->id;
+        }
+       $appointment ->user_id = $current_id;
        $appointment ->appointment_service = $request ->input ('appointmentservice');
        $appointment ->appointment_person = $request ->input ('appointmentperson');
        $appointment ->appointment_vaccine_type = $request ->input ('appointmentvaccinetype');
