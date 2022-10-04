@@ -23,10 +23,15 @@ class CalendarController extends Controller
     {
 
         $schedules = array();
-        $appointments1 = appointments::all();
-        $appointments1 = DB::table('categories')
-        ->join('vaccine','categories.id',"=",'vaccine.category_id')
-        ->where('categories.id',1)
+        // $appointments1 = appointments::all();
+        
+        if(Auth::User()->id){
+            $id = Auth::User()->id;
+        }
+        
+        $appointments1 = DB::table('users')
+        ->join('appointments','users.id',"=",'appointments.user_id')
+        ->where('users.id',$id)
         ->get();
 
         $category = Category::all();
