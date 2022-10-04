@@ -11,6 +11,8 @@
                     <a href="{{ route('calendar') }}">
                     <a href="{{ route('services') }}">
                     <a href="{{ route('registration') }}">
+                    <a href="{{ route('appointments') }}">
+
                         
                     </a>
                         <x-jet-application-mark class="block h-9 w-auto" />
@@ -32,10 +34,14 @@
                     <x-jet-nav-link href="{{ route('registration') }}" :active="request()->routeIs('registration')">
                         {{ __('Registration') }}
                     </x-jet-nav-link>
+                    <x-jet-nav-link href="{{ route('appointments') }}" :active="request()->routeIs('calendar')">
+                        {{ __('Appointments') }}
+                    </x-jet-nav-link>
                 @else
                 <x-jet-nav-link href="{{ route('calendar') }}" :active="request()->routeIs('calendar')">
                         {{ __('Calendar') }}
                     </x-jet-nav-link>
+                 
                 @endif
                    
                     <!-- <x-jet-nav-link href="{{ route('workers') }}" :active="request()->routeIs('workers')">

@@ -82,6 +82,7 @@ Route::middleware([
         Route::get('/sample', 'App\Http\Controllers\ServicesController@sample')->name('sample');
         Route::match(['get','post'],'/insert_data',  'App\Http\Controllers\AppointmentsController@insert')->name('insert_data');
         Route::get('/calendar', 'App\Http\Controllers\CalendarController@calendar')->name('calendar');
+        Route::get('/appointments', 'App\Http\Controllers\AppointmentsController@appointments_admin')->name('appointments');
         
         //view image
       

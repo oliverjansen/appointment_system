@@ -126,6 +126,12 @@
 
                                 </textarea>
                             </div>
+                            <div class="mt-3" id="div_checkup">
+                                <label for="" >Concern</label>
+                                <textarea name="" id="checkup" cols="30" rows="5" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+
+                                </textarea>
+                            </div>
                             <div class="mt-3" id="div_laboratory">
                                 <label for="">Already have laboratory?</label>
                                     <select name="appointmentvaccinetype" id="appointmentvaccinetype" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
@@ -136,7 +142,7 @@
                                     </select>
                                 </div>
                                 <div class="mt-3" id="div_medicine">
-                                    <label for="">Purpose</label>
+                                    <label for="">Medicine</label>
     
                                         <select name="appointmentvaccinetype" id="appointmentvaccinetype" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                                             @foreach ($medicine as $value)       
@@ -189,7 +195,8 @@ $(document).ready(function () {
 
         $("#appointmentservice").on('change',function(e){
             e.preventDefault();
-         
+       
+                
             if($(this).val()=="checkup"){
                 $("#div_appointmentPerson").hide();  
                 $("#div_vaccine_type_kids").hide();  
@@ -199,8 +206,10 @@ $(document).ready(function () {
                 $("#div_laboratory").hide();
                 $("#div_medicine").hide();
                 $("#div_vaccine_type_covid").hide();  
-                $("#div_information").show();
+                $("#div_information").hide();
+                $("#div_checkup").show();
 
+            
             }else if($(this).val()=="vaccine"){
                 $("#div_appointmentPerson").show();
                 $("#div_vaccine_type").show();  
@@ -209,8 +218,10 @@ $(document).ready(function () {
                 $("#div_laboratory").hide();
                 $("#div_medicine").hide();
                 $("#div_vaccine_type_covid").hide();  
+                $("#div_checkup").hide();
 
                 $("#appointmentPerson").on('change',function(e){ 
+                    e.preventDefault();
                     if($(this).val()=="kids"){
                         $("#div_vaccine_type_kids").show();  
                         $("#div_vaccine_type_adult").hide();  
@@ -234,12 +245,12 @@ $(document).ready(function () {
                         $("#div_appointmentPerson").hide();  
                         $("#div_vaccine_type_kids").hide();  
                         $("#div_vaccine_type_adult").hide();  
-
                         $("#div_appointmentPerson").hide();
                         $("#div_laboratory").hide();
                         $("#div_medicine").hide();
                         $("#div_vaccine_type_covid").hide();  
                         $("#div_information").show();
+                    
                     }
                 }).change();
                     
@@ -251,6 +262,7 @@ $(document).ready(function () {
                 $("#div_information").hide(); 
                 $("#div_medicine").show(); 
                 $("#div_vaccine_type_covid").hide();  
+                $("#div_checkup").hide();
 
 
 
@@ -262,6 +274,7 @@ $(document).ready(function () {
                 $("#div_vaccine_type_kids").hide(); 
                 $("#div_vaccine_type_adult").hide(); 
                 $("#div_laboratory").hide();
+                $("#div_checkup").hide();
                
             }
          

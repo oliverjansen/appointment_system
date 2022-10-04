@@ -20,7 +20,18 @@ class AppointmentsController extends Controller
             }
       
     }
- 
+
+    public function appointments_admin()
+    {
+
+        if(Auth::User()->account_type=='admin'){
+            return view('appointment');
+            }else{
+              return redirect()->route('appointment');
+            }
+      
+    }
+
     public function insert(Request $request){
       $appointment = new appointments();
       // $current_id = Auth::User()->id();
