@@ -55,6 +55,7 @@ class CalendarController extends Controller
 
         foreach ($appointments1 as $appointment2) {
             $schedules[] = [
+                'id' =>  $appointment2->id,
                 'title' => $appointment2->appointment_services,
                 'start' => $appointment2->appointment_date,
                 // 'vaccinetype' => $appointment2->vaccinetype,
@@ -65,6 +66,7 @@ class CalendarController extends Controller
 
         foreach ($schedules_all as $appointment2) {
             $schedulesall[] = [
+                'id' =>  $appointment2->id,
                 'title' => $appointment2->appointment_services,
                 'start' => $appointment2->appointment_date,
                 // 'vaccinetype' => $appointment2->vaccinetype,
@@ -83,9 +85,30 @@ class CalendarController extends Controller
     }
 
 
-    public function action(){
-        
+    public function action(Request $request){
+        // if($request->ajax()){
+        //     if(request->){
+
+        //     }
+        // }
+
+    }
+    public function delete_appointment(Request $request){
+
+        $id = $request ->input ('calendar_id');
+        $delete_appointment= appointments::find($id);
+        $delete_appointment->delete();
+      
+        if(Auth::User()->account_type=='admin'){
+          return redirect()->back()->with('danger', 'Successfully Deleted');
+        }else{
+         return redirect()->route('calendar');
+        }
+
     }
 
+
+
+    
    
 }

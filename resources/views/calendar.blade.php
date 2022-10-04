@@ -21,6 +21,37 @@
 </head>
 <body>
 
+    <div class="modal fade" id="edit_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Delete Appointment</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+
+            <form action="{{route('delete_appointment') }}  " method="POST">
+                @csrf
+                {{ csrf_field() }}
+                <input type="text" id="calendar_id" name="calendar_id" hidden>
+                <div class="modal-body">
+                    {{-- <input type="text" id="delete_medicine_id" name="delete_medicine_id" hidden > --}}
+                    Are you sure you want to delete this appointment?
+                  </div>
+            <div class="modal-footer">
+                <button type="submit" id="delete_appointment"class="btn btn-primary btn-sm w-25">Delete</button>
+                <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">cancel</button>
+                
+            </div>
+            </form>
+        </div>
+       
+        </div>
+        </div>
+    </div>
+
   <div class="container mt-5 mb-5" >
 
   
@@ -180,10 +211,19 @@
         @endif   
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
 
 <script>
 
 $(document).ready(function () {
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     var schedules = @json($schedules);
         
         $('#calendar').fullCalendar({
@@ -192,7 +232,31 @@ $(document).ready(function () {
                 center: 'title',
                 right: 'month, agendaweek, agendaDay',
             },
-            events: schedules
+            events: schedules,
+            selectable:true,
+            selectHelper:true,
+            select: function (start, end, allDays){
+                // console.log(start);
+
+                // $('#edit_modal').modal('show');
+
+                // $('#delete_appointment').click(function(e) {
+                //     e.preventDefault();
+                    
+
+                // });
+                
+
+            }, 
+            eventClick: function(event){
+                var id = event.id;
+                console.log(id);
+                $('#edit_modal').modal('show');
+                $('#calendar_id').val(id);
+            }
+          
+
+
         });
 
         var schedulesall = @json($schedulesall);
@@ -202,8 +266,35 @@ $(document).ready(function () {
                 center: 'title',
                 right: 'month, agendaweek, agendaDay',
             },
-            events: schedulesall
+            events: schedulesall,
+            selectable:true,
+            selectHelper:true,
+            select: function (start, end, allDays){
+                // console.log(start);
+
+                // $('#edit_modal').modal('show');
+
+                // $('#delete_appointment').click(function(e) {
+                //     e.preventDefault();
+                    
+
+                // });
+                
+
+            }, 
+            eventClick: function(event){
+                var id = event.id;
+                console.log(id);
+                $('#edit_modal').modal('show');
+                $('#calendar_id').val(id);
+            }
         });
+
+
+
+
+
+
 
         $("#appointmentservice").on('change',function(e){
             e.preventDefault();

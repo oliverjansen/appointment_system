@@ -5,6 +5,8 @@ use App\Http\Controllers\AppointmentsController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\WorkerControllers;
+use App\Http\Controllers\CalendarController;
+
 use App\Http\Controllers\Controller;
 
 use App\Models\user;
@@ -64,8 +66,10 @@ Route::middleware([
         Route::match(['get','post'],'delete_medicine','App\Http\Controllers\ServicesController@delete_medicine')->name('delete_medicine');
         
         
+        //delete appointment calendar
+        Route::match(['get','post'],'delete_appointment','App\Http\Controllers\CalendarController@delete_appointment')->name('delete_appointment');
         
-        
+
         //registration controller 
         Route::match(['get','post'],'approve_registration','App\Http\Controllers\RegistrationController@approve_registration');
         Route::match(['get','post'],'reject_registration','App\Http\Controllers\RegistrationController@reject_registration');
