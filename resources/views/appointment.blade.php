@@ -161,16 +161,16 @@
     </div>
                 <table class="  table text-align-center table-hover">
                     <thead>
+                      
                         <tr class="text-center">
-                        <th scope="col">Email</th>
-
-                        <th scope="col">Fullname</th>
-                        <th scope="col">Age</th>
+                        <th scope="col">Services</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Vaccine Type</th>
                         <th scope="col">Gender</th>
                         <th scope="col">Birthdate</th>
                         <th scope="col">Address</th>
-                        <th scope="col">Contact No</th>
-                        <th scope="col">ID</th>
+                        <th scope="col">Information</th>
+                       
                      
                         <th scope="col">Status</th>
 
@@ -182,19 +182,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- @foreach($data as $data)
-                        @if ($data->account_type!="admin" )
-                        <tr class="text-center">
-                        <td>{{$data->email}}</td>
-                        <td>{{$data->lastname}},{{$data->firstname}} {{$data->middlename}}</td>
-                        <td>{{$data->age}}</td>
-                        <td>{{$data->gender}}</td>
-                        <td>{{$data->birthdate}}</td>
-                        <td>{{$data->address}}</td>
-                        <td>{{$data->contactnumber}}</td>
-                        <td> <button class="btn btn-sm btn-primary view" value="{{$data->id}}">View</button>
+                       @foreach($appointments as $data)
+                        {{-- @if ($data->account_type!="admin" ) --}}
                         
-                          
+                        <tr class="text-center">
+                        
+                          <td>{{$data->appointment_services}}</td>
+                          <td>{{$data->appointment_category}}</td>
+                          <td>{{$data->appointment_vaccine_category}}</td>
+                          <td>{{$data->appointment_vaccine_type}}</td>
+                          <td>{{$data->appointment_covid_dose}}</td>
+                          <td>{{$data->appointment_medicine}}</td>
+                          <td>{{$data->appointment_concern}}</td>
                         </td>
                         
                         <td>{{$data->status}}</td>
@@ -210,9 +209,9 @@
                         </td>
                  
                         </tr>
-                        @endif
+                        {{-- @endif --}}
                         @endforeach
-                    --}}
+                    
                     </tbody>
                 </table>
           

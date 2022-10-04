@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('appointment_services')->nullable();
             $table->string('appointment_category')->nullable();
             $table->string('appointment_vaccine_category')->nullable();
+            $table->string('appointment_vaccine_type')->nullable();
+            $table->string('appointment_covid_dose')->nullable();
             $table->string('appointment_medicine')->nullable();
             $table->string('appointment_concern')->nullable();
             $table->string('appointment_information')->nullable();

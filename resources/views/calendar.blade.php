@@ -28,7 +28,7 @@
 
 
     @if(Auth::User()->account_type=='admin')
-    <div id ="calendar" class=" col col-lg-12 col-12 h-50"> 
+    <div id ="calendar_admin" class=" col col-lg-12 col-12 h-50"> 
     @else
     <div id ="calendar" class=" col col-lg-8 col-12"> 
     @endif
@@ -75,8 +75,8 @@
                             </select>
                         </div>
                                 
-                        <div class="mt-3" id="div_vaccine_type_kids">
-                            <label for="">Vaccine Type</label>
+                            <div class="mt-3" id="div_vaccine_type_kids">
+                                <label for="">Vaccine Type</label>
                                 <select name="vaccine_category" id="vaccine_category" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                                     @foreach ($vaccine_kids as $value)
 
@@ -90,6 +90,7 @@
                                 </select>
                             </div>
                             <div class="mt-3" id="div_vaccine_type_adult">
+
                                 <label for="">Vaccine</label>
                                     <select name="vaccine_type" id="vaccine_type" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                                         {{-- <option value="tuberculosis">booster </option>
@@ -126,9 +127,9 @@
 
                                 </textarea>
                             </div>
-                            <div class="mt-3" id="div_checkup">
+                            <div class="mt-3" id="div_checkup"> 
                                 <label for="" >Concern</label>
-                                <textarea name="" id="concern" cols="30" rows="5" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                                <textarea name="concern" id="concern" cols="30" rows="5" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
 
                                 </textarea>
                             </div>
@@ -192,16 +193,26 @@ $(document).ready(function () {
                 right: 'month, agendaweek, agendaDay',
             },
             events: schedules
-        })
+        });
 
+        var schedulesall = @json($schedulesall);
+        $('#calendar_admin').fullCalendar({
+            header: {
+                left: 'prev, next today',
+                center: 'title',
+                right: 'month, agendaweek, agendaDay',
+            },
+            events: schedulesall
+        });
 
         $("#appointmentservice").on('change',function(e){
             e.preventDefault();
-       
-                
+      
+          
+
             if($(this).val()=="checkup"){
                 $("#div_appointmentCategory").hide();  
-                $("#div_vaccine_type_kids").hide();  
+                $("#div_div_informationvaccine_type_kids").hide();  
                 $("#div_vaccine_type_adult").hide();  
 
                 $("#div_appointmentCategory").hide();
@@ -213,7 +224,8 @@ $(document).ready(function () {
 
             
             }else if($(this).val()=="vaccine"){
-                $("#div_appointmentCategory").show();
+            
+                console.log($(this).val());
                 $("#div_vaccine_type").show();  
                 $("#div_appointmentCategory").show();
                 $("#div_information").hide(); 
@@ -221,16 +233,22 @@ $(document).ready(function () {
                 $("#div_medicine").hide();
                 $("#div_vaccine_type_covid").hide();  
                 $("#div_checkup").hide();
+                
 
                 $("#appointmentCategory").on('change',function(e){ 
                     e.preventDefault();
+                    console.log($(this).val());
                     if($(this).val()=="kids"){
+                        $("#div_vaccine_type").show();  
+                        $("#div_appointmentCategory").show();
                         $("#div_vaccine_type_kids").show();  
                         $("#div_vaccine_type_adult").hide();  
                        $("#div_vaccine_type_covid").hide();  
 
                     }else if ($(this).val()=="adult"){
                         console.log($(this).val());
+                        $("#div_vaccine_type").show();  
+                        $("#div_appointmentCategory").show();
                         $("#div_vaccine_type_kids").hide();  
                         $("#div_vaccine_type_adult").show();
                         $("#div_vaccine_type_covid").hide();
@@ -239,7 +257,8 @@ $(document).ready(function () {
                             e.preventDefault();
                             console.log($(this).val());
                             if ($(this).val()=="covid"){
-
+                                $("#div_vaccine_type").show();  
+                                 $("#div_appointmentCategory").show();
                                  $("#div_vaccine_type_covid").show();  
                             }else {
                                 $("#div_vaccine_type_covid").hide(); 

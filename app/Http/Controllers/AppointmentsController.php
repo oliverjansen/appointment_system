@@ -24,8 +24,9 @@ class AppointmentsController extends Controller
     public function appointments_admin()
     {
 
+      $appointments = appointments::all();
         if(Auth::User()->account_type=='admin'){
-            return view('appointment');
+            return view('appointment',compact('appointments'));
             }else{
               return redirect()->route('appointment');
             }
@@ -38,13 +39,33 @@ class AppointmentsController extends Controller
         if(Auth::User()->id){
           $current_id = Auth::User()->id;
         }
-       $appointment ->user_id = $current_id;
-       $appointment ->appointment_services = $request ->input ('appointmentservice');
-       $appointment ->appointment_category = $request ->input ('appointmentCategory');
-       $appointment ->appointment_vaccine_category = $request ->input ('vaccine_category');
-       $appointment ->appointment_vaccine_type = $request ->input ('vaccine_type');
-       $appointment ->appointment_information = $request ->input ('information');
-       $appointment ->appointment_concern = $request ->input ('concern');
+        $appointment ->user_id = $current_id;
+
+        if($request ->input ('appointmentservice') == "vaccine" ){
+          $appointment ->appointment_services = $request ->input ('appointmentservice');
+          $appointment ->appointment_category = $request ->input ('appointmentCategory');
+    
+          if($request ->input ('appointmentCategory') == "kids"){
+            $appointment ->appointment_vaccine_category = $request ->input ('vaccine_category');
+          }else if ($request ->input ('appointmentCategory') == "adult"){
+            $appointment ->appointment_vaccine_type = $request ->input ('vaccine_type');
+            $appointment ->appointment_covid_dose = $request ->input ('appointment_dose');
+            
+          }  
+        }elseif ($request ->input ('appointmentservice') == "medicine"){
+          $appointment ->appointment_services = $request ->input ('appointmentservice');
+          $appointment ->appointment_vaccine_type = $request ->input ('appointmentvaccinetype');
+        }else if($request ->input ('appointmentservice') == "checkup"){
+          $appointment ->appointment_services = $request ->input ('appointmentservice');
+            $appointment ->appointment_concern = $request ->input ('concern');
+        }else{
+          $appointment ->appointment_services = $request ->input ('appointmentservice');
+          $appointment ->appointment_information = $request ->input ('information');
+        }
+      
+     
+      
+       
        $appointment ->appointment_date = $request ->input ('appointmentdate');
 
        $appointment->save();

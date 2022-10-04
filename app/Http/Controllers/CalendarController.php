@@ -23,6 +23,8 @@ class CalendarController extends Controller
     {
 
         $schedules = array();
+        $schedulesall = array();
+
         // $appointments1 = appointments::all();
         
         if(Auth::User()->id){
@@ -34,8 +36,11 @@ class CalendarController extends Controller
         ->where('users.id',$id)
         ->get();
 
+        $schedules_all = appointments::all();
+
         $category = Category::all();
         $medicine = Medicine::all();
+        
         $appointment_service = services::all(); 
 
         $vaccine_kids= DB::table('categories')
@@ -50,7 +55,7 @@ class CalendarController extends Controller
 
         foreach ($appointments1 as $appointment2) {
             $schedules[] = [
-                'title' => $appointment2->appointment_service,
+                'title' => $appointment2->appointment_services,
                 'start' => $appointment2->appointment_date,
                 // 'vaccinetype' => $appointment2->vaccinetype,
                 // 'person' => $appointment2->person,
@@ -58,14 +63,28 @@ class CalendarController extends Controller
 
         }
 
+        foreach ($schedules_all as $appointment2) {
+            $schedulesall[] = [
+                'title' => $appointment2->appointment_services,
+                'start' => $appointment2->appointment_date,
+                // 'vaccinetype' => $appointment2->vaccinetype,
+                // 'person' => $appointment2->person,
+        ];  
+
+        }
       
         if(Auth::User()->account_type=='admin'){
-            return view ('calendar', compact('schedules','appointment_service','medicine') );
+            return view ('calendar', compact('schedulesall','schedules','appointment_service','medicine') );
         // console.log($appointment_service);
          }else{
             // return view ('calendar', ['schedules' =>  $schedules]);
-            return view ('calendar', compact('schedules','appointment_service','vaccine_kids','vaccine_adult','category','medicine') );
+            return view ('calendar', compact('schedulesall','schedules','appointment_service','vaccine_kids','vaccine_adult','category','medicine') );
          }
+    }
+
+
+    public function action(){
+        
     }
 
    
