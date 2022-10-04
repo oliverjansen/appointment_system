@@ -39,9 +39,12 @@ class AppointmentsController extends Controller
           $current_id = Auth::User()->id;
         }
        $appointment ->user_id = $current_id;
-       $appointment ->appointment_service = $request ->input ('appointmentservice');
-       $appointment ->appointment_person = $request ->input ('appointmentperson');
-       $appointment ->appointment_vaccine_type = $request ->input ('appointmentvaccinetype');
+       $appointment ->appointment_services = $request ->input ('appointmentservice');
+       $appointment ->appointment_category = $request ->input ('appointmentCategory');
+       $appointment ->appointment_vaccine_category = $request ->input ('vaccine_category');
+       $appointment ->appointment_vaccine_type = $request ->input ('vaccine_type');
+       $appointment ->appointment_information = $request ->input ('information');
+       $appointment ->appointment_concern = $request ->input ('concern');
        $appointment ->appointment_date = $request ->input ('appointmentdate');
 
        $appointment->save();

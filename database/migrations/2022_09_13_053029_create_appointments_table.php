@@ -20,9 +20,9 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('appointment_services')->nullable();
             $table->string('appointment_category')->nullable();
-            $table->string('appointment_vaccine_type')->nullable();
+            $table->string('appointment_vaccine_category')->nullable();
             $table->string('appointment_medicine')->nullable();
-            $table->string('appointment_concert')->nullable();
+            $table->string('appointment_concern')->nullable();
             $table->string('appointment_information')->nullable();
             $table->integer('availableslot')->nullable();
             $table->dateTime('appointment_date')->nullable();

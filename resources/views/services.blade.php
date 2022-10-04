@@ -382,7 +382,7 @@
           <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <input type="text"  id="delete_vaccine_id" name="delete_vaccine_id" >
+          <input type="text"  id="delete_vaccine_id" name="delete_vaccine_id" hidden>
           Are you sure you want to delete this Vaccine?
         </div>
         <div class="modal-footer">

@@ -70,7 +70,7 @@ class ServicesController extends Controller
           $vaccine_category_add->save();
       }
     
-      if ($request ->input ('add_medicine_input_id') != null){
+      if ($request ->input ('add_medicine_input') != null){
         $medicine_add = new Medicine();
         $medicine_add ->service_id = $request ->input ('add_medicine_input_id');
         $medicine_add ->medicine_type = $request ->input ('add_medicine_input');

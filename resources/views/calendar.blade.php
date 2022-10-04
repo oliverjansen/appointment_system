@@ -60,9 +60,9 @@
                             </select>
                         </div>
 
-                        <div class="mt-3" id="div_appointmentPerson">
+                        <div class="mt-3" id="div_appointmentCategory">
                             <label for="" >Category</label>
-                            <select name="appointmentPerson" id="appointmentPerson" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                            <select name="appointmentCategory" id="appointmentCategory" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                                 @foreach ($category as $value)
 
                                 {{-- <option value="{{ $value->service }}" {{ ( $value->service =='vaccine') ? 'selected' : '' }}>  --}}
@@ -77,7 +77,7 @@
                                 
                         <div class="mt-3" id="div_vaccine_type_kids">
                             <label for="">Vaccine Type</label>
-                                <select name="appointmentvaccinetypekids" id="appointmentvaccinetype" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                                <select name="vaccine_category" id="vaccine_category" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                                     @foreach ($vaccine_kids as $value)
 
                                     {{-- <option value="{{ $value->service }}" {{ ( $value->service =='vaccine') ? 'selected' : '' }}>  --}}
@@ -91,7 +91,7 @@
                             </div>
                             <div class="mt-3" id="div_vaccine_type_adult">
                                 <label for="">Vaccine</label>
-                                    <select name="vaccine_category" id="vaccine_category" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                                    <select name="vaccine_type" id="vaccine_type" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                                         {{-- <option value="tuberculosis">booster </option>
                                         <option value="inactivated">first dose </option>
                                         <option value="tuberculosis">second dose </option> --}}
@@ -113,7 +113,7 @@
                                 
                                 <div class="mt-3" id="div_vaccine_type_covid">
                                     <label for="">Dose</label>
-                                        <select name="dose_type" id="appointmentvaccinetype" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                                        <select name="appointment_dose" id="appointment_dose" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                                             <option value="measles">First Dose</option>
                                             <option value="tuberculosis">Second Dose </option>
                                             <option value="inactivated">Booster </option>
@@ -128,19 +128,21 @@
                             </div>
                             <div class="mt-3" id="div_checkup">
                                 <label for="" >Concern</label>
-                                <textarea name="" id="checkup" cols="30" rows="5" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                                <textarea name="" id="concern" cols="30" rows="5" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
 
                                 </textarea>
                             </div>
-                            <div class="mt-3" id="div_laboratory">
-                                <label for="">Already have laboratory?</label>
-                                    <select name="appointmentvaccinetype" id="appointmentvaccinetype" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                            
+                                {{-- <div class="mt-3" id="div_laboratory">
+                                    <label for="">Already have laboratory?</label>
+                                        
                                         <option value="measles">Measles</option>
                                         <option value="tuberculosis">Tuberculosis </option>
                                         <option value="inactivated">Inactivated polio </option>
                                         <option value="tuberculosis">Tuberculosis </option>
                                     </select>
-                                </div>
+                                </div> --}}
+
                                 <div class="mt-3" id="div_medicine">
                                     <label for="">Medicine</label>
     
@@ -198,11 +200,11 @@ $(document).ready(function () {
        
                 
             if($(this).val()=="checkup"){
-                $("#div_appointmentPerson").hide();  
+                $("#div_appointmentCategory").hide();  
                 $("#div_vaccine_type_kids").hide();  
                 $("#div_vaccine_type_adult").hide();  
 
-                $("#div_appointmentPerson").hide();
+                $("#div_appointmentCategory").hide();
                 $("#div_laboratory").hide();
                 $("#div_medicine").hide();
                 $("#div_vaccine_type_covid").hide();  
@@ -211,16 +213,16 @@ $(document).ready(function () {
 
             
             }else if($(this).val()=="vaccine"){
-                $("#div_appointmentPerson").show();
+                $("#div_appointmentCategory").show();
                 $("#div_vaccine_type").show();  
-                $("#div_appointmentPerson").show();
+                $("#div_appointmentCategory").show();
                 $("#div_information").hide(); 
                 $("#div_laboratory").hide();
                 $("#div_medicine").hide();
                 $("#div_vaccine_type_covid").hide();  
                 $("#div_checkup").hide();
 
-                $("#appointmentPerson").on('change',function(e){ 
+                $("#appointmentCategory").on('change',function(e){ 
                     e.preventDefault();
                     if($(this).val()=="kids"){
                         $("#div_vaccine_type_kids").show();  
@@ -233,19 +235,21 @@ $(document).ready(function () {
                         $("#div_vaccine_type_adult").show();
                         $("#div_vaccine_type_covid").hide();
 
-                        $("#vaccine_category").on('change',function(e){ 
+                        $("#vaccine_type").on('change',function(e){ 
+                            e.preventDefault();
+                            console.log($(this).val());
                             if ($(this).val()=="covid"){
-                                console.log($(this).val());
+
                                  $("#div_vaccine_type_covid").show();  
                             }else {
                                 $("#div_vaccine_type_covid").hide(); 
                             }
                         }).change();
                     }else{
-                        $("#div_appointmentPerson").hide();  
+                        $("#div_appointmentCategory").hide();  
                         $("#div_vaccine_type_kids").hide();  
                         $("#div_vaccine_type_adult").hide();  
-                        $("#div_appointmentPerson").hide();
+                        $("#div_appointmentCategory").hide();
                         $("#div_laboratory").hide();
                         $("#div_medicine").hide();
                         $("#div_vaccine_type_covid").hide();  
@@ -255,10 +259,10 @@ $(document).ready(function () {
                 }).change();
                     
             }else if($(this).val()=="medicine"){
-                $("#div_appointmentPerson").hide();  
+                $("#div_appointmentCategory").hide();  
                 $("#div_vaccine_type_kids").hide(); 
                 $("#div_vaccine_type_adult").hide(); 
-                $("#div_appointmentPerson").hide();
+                $("#div_appointmentCategory").hide();
                 $("#div_information").hide(); 
                 $("#div_medicine").show(); 
                 $("#div_vaccine_type_covid").hide();  
@@ -270,7 +274,7 @@ $(document).ready(function () {
                 
                 $("#div_information").show(); 
                 $("#div_medicine").hide(); 
-                $("#div_appointmentPerson").hide();  
+                $("#div_appointmentCategory").hide();  
                 $("#div_vaccine_type_kids").hide(); 
                 $("#div_vaccine_type_adult").hide(); 
                 $("#div_laboratory").hide();
