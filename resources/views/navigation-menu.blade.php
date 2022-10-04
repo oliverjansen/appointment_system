@@ -34,7 +34,7 @@
                     <x-jet-nav-link href="{{ route('registration') }}" :active="request()->routeIs('registration')">
                         {{ __('Registration') }}
                     </x-jet-nav-link>
-                    <x-jet-nav-link href="{{ route('appointments') }}" :active="request()->routeIs('calendar')">
+                    <x-jet-nav-link href="{{ route('appointments') }}" :active="request()->routeIs('appointments')">
                         {{ __('Appointments') }}
                     </x-jet-nav-link>
                 @else

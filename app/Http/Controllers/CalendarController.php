@@ -48,23 +48,17 @@ class CalendarController extends Controller
         ->where('categories.id',2)
         ->get();
 
-     
-
         foreach ($appointments1 as $appointment2) {
             $schedules[] = [
-                
                 'title' => $appointment2->appointment_service,
                 'start' => $appointment2->appointment_date,
                 // 'vaccinetype' => $appointment2->vaccinetype,
                 // 'person' => $appointment2->person,
-
         ];  
 
         }
 
       
-
-
         if(Auth::User()->account_type=='admin'){
             return view ('calendar', compact('schedules','appointment_service','medicine') );
         // console.log($appointment_service);

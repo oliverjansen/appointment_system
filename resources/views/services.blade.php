@@ -40,7 +40,7 @@
                 {{ csrf_field() }}
                 {{-- <input type="text" id="vaccine_del_id" name="vaccine_del_id" hidden > --}}
             <div class="form-group">
-                <label for="service" class="col-form-label">Vaccine</label>
+                <label for="service" class="col-form-label">Service</label>
                 <input type="text" class="form-control" name="add_service_input" id="add_service_input" required>
             </div>
             <div class="modal-footer">
