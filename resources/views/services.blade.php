@@ -171,7 +171,7 @@
             <form action=" {{ route('update_services') }} " method="POST">
                 @csrf
                 {{ csrf_field() }}
-                <input type="text" id="id" name="id" >
+                <input type="text" id="id" name="id" hidden>
             <div class="form-group">
                 <label for="service" class="col-form-label">Service</label>
                 <input type="text" class="form-control" name="service" id="service" required>

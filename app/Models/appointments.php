@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\appointments;
+use App\Models\User;
 
 class appointments extends Model
 {
@@ -13,6 +15,7 @@ class appointments extends Model
 
     protected $fillable = [
         'id',
+        'user_id',
         'email',
         'appointment_services',
         'appointment_category',
@@ -25,6 +28,8 @@ class appointments extends Model
         'appointment_date',  
     ];
         
-    
+    public function users (){
+        return $this->belongsTo(User::class);
+    }
 
 }

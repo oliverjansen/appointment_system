@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Calendar;
 use App\Models\appointments;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -24,9 +25,18 @@ class AppointmentsController extends Controller
     public function appointments_admin()
     {
 
-      $appointments = appointments::all();
+      // $appointments = appointments::all();
+      $user = User::with('appointments')->get();
+      $appointments = appointments::with('users')->get();
+
+
+      // $appointments = DB::table('users')
+      // ->join('appointments','users.id',"=",'appointments.user_id')
+      // ->select('appointments.*')
+      // ->get();
+
         if(Auth::User()->account_type=='admin'){
-            return view('appointment',compact('appointments'));
+            return view('appointment',compact('appointments','user'));
             }else{
               return redirect()->route('appointment');
             }

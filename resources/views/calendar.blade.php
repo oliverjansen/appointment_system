@@ -41,7 +41,7 @@
                     Are you sure you want to delete this appointment?
                   </div>
             <div class="modal-footer">
-                <button type="submit" id="delete_appointment"class="btn btn-primary btn-sm w-25">Delete</button>
+                <button type="submit" id="delete_appointment"class="btn btn-danger btn-sm w-25">Delete</button>
                 <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">cancel</button>
                 
             </div>

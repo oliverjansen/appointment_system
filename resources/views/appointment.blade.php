@@ -163,14 +163,17 @@
                     <thead>
                       
                         <tr class="text-center">
+               
                         <th scope="col">Services</th>
                         <th scope="col">Category</th>
                         <th scope="col">Vaccine for Kids</th>
                         <th scope="col">Vaccine Type</th>
                         <th scope="col">Concern</th>
                         <th scope="col">Information</th>
+                        <th scope="col" colspan="2">Appoitnment Date</th>
 
-                        <th scope="col" colspan=3 class="text-center">Action</th>
+
+                        <th scope="col"  colspan=10 class="text-center">Status</th>
 
 
 
@@ -180,8 +183,8 @@
                        @foreach($appointments as $data)
                         {{-- @if ($data->account_type!="admin" ) --}}
                         
-                        <tr class="text-center">
-                        
+                        <tr class="text-center ">
+                 
                           <td>{{$data->appointment_services}}</td>
                           <td>{{$data->appointment_category}}</td>
                           <td>{{$data->appointment_vaccine_category}}</td>
@@ -189,14 +192,21 @@
                           <td>{{$data->appointment_covid_dose}}</td>
                           <td>{{$data->appointment_medicine}}</td>
                           <td>{{$data->appointment_concern}}</td>
+                          
+                          <td>{{
+                          $newDateFormat3 = \Carbon\Carbon::parse($data->appointment_date)->format('d/m/Y');
+                     
+                          
+                          }}</td>
+
                         </td>
                         
-                        <td>{{$data->status}}</td>
+                        {{-- <td>{{$data->status}}</td> --}}
                         <td scope="row" colspan=2 class="d-sm-flex">
-                            @if ($data->status !="approved" && $data->status !="rejected" )
+                            {{-- @if ($data->status !="approved" && $data->status !="rejected" ) --}}
                                 <button class="btn btn-sm btn-primary w-100 ml-lg-2 approve"    value="{{$data->id}}" >Approved</button>
-                                <button class="btn btn-sm btn-warning mt-2 mt-lg-0 ml-lg-2 w-100 rejected" value="{{$data->id}}">Reject</button>
-                            @endif
+                                <button class="btn btn-sm btn-warning mt-2 mt-lg-0 ml-lg-2 w-100 rejected" value="{{$data->id}}">Cancel</button>
+                            {{-- @endif --}}
                             
                                
                            

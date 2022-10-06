@@ -9,6 +9,9 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\appointments;
+use App\Models\User;
+
 
 class User extends Authenticatable
 {
@@ -41,7 +44,6 @@ class User extends Authenticatable
         'account_type',
       
 
-
     ];
 
     /**
@@ -73,4 +75,9 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+
+    public function appointments (){
+        return $this->hasMany(appointments::class, 'user_id','id');
+    }
 }
