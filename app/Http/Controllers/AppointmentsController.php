@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Twilio\Rest\Client;
 use App\Models\Calendar;
@@ -55,7 +55,12 @@ class AppointmentsController extends Controller
         $appointment ->user_id = $current_id;
         $appointment ->user_contactnumber= $contactnumber;
 
-      
+        $today = Carbon::today()->format('d/m/Y');
+        $newDateFormat3 = \Carbon\Carbon::parse($request ->input ('appointmentdate'))->format('d/m/Y');
+
+        if($newDateFormat3 < $today){
+          return redirect()->back()->with('danger', "Invalid Appointment Date!");
+        }else{
 
         if($request ->input ('appointmentservice') == "vaccine" ){
           $appointment ->appointment_services = $request ->input ('appointmentservice');
@@ -79,8 +84,11 @@ class AppointmentsController extends Controller
           $appointment ->appointment_information = $request ->input ('information');
         }
       
-     
+    
+        // echo $mytime->toDateTimeString();
       
+      
+
        
        $appointment ->appointment_date = $request ->input ('appointmentdate');
        
@@ -94,7 +102,7 @@ class AppointmentsController extends Controller
         }
     
        
-
+      }
 
 
     }

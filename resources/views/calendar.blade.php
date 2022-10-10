@@ -53,11 +53,20 @@
     </div>
 
   <div class="container mt-5 mb-5" >
-
+    @if (session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+         {{ session('success') }}
+         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+ @elseif (session('danger'))
+ <div class="alert alert-danger alert-dismissible fade show" role="alert">
+     {{ session('danger') }}
+     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+@endif
   
     <div class="row">
-
-
+   
     @if(Auth::User()->account_type=='admin')
     <div id ="calendar_admin" class=" col col-lg-12 col-12 h-50"> 
     @else
