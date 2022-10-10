@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('age')->nullable();
             $table->string('identification')->nullable();
             $table->string('identificationtype')->nullable();
-            $table->string('contactnumber')->nullable();
+            $table->string('contactnumber')->unique();
             $table->string('address')->nullable();
             $table->string('email')->unique();
             $table->string('account_type')->default("user");

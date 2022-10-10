@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('user_contactnumber')->nullable();
+            $table->foreign('user_contactnumber')->references('contactnumber')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('appointment_services')->nullable();
             $table->string('appointment_category')->nullable();
             $table->string('appointment_vaccine_category')->nullable();
@@ -27,6 +29,7 @@ return new class extends Migration
             $table->string('appointment_concern')->nullable();
             $table->string('appointment_information')->nullable();
             $table->integer('availableslot')->nullable();
+            $table->string('appointment_message')->nullable();
             $table->dateTime('appointment_date')->nullable();
             $table->timestamps();
         });

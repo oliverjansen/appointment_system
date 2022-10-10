@@ -59,26 +59,26 @@
   </div>
 </div>
   <!-- modal delete-->
-  <div class="modal fade" id="delete_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="delete_appointment_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
 
-        <form action="{{ url ('delete_registration') }} " method="POST">
+        <form action="{{ url ('delete_scheduled_appointment') }} " method="POST">
             @csrf
-           
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel"></h5>
-          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <input type="text"  id="del_id" name="del_id" hidden>
-          Are you sure you want to delete this registration?
-        </div>
-        <div class="modal-footer">
-         
-          <button type="submit" class="btn btn-primary delete_btn btn-sm w-25">Yes</button>
-          <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">No</button>
-        </div>
+              
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel"></h5>
+              <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <input type="text"  id="delete_id" name="delete_id" >
+              Are you sure you want to delete this registration?
+            </div>
+            <div class="modal-footer">
+            
+              <button type="submit" class="btn btn-primary btn-sm w-25">Yes</button>
+              <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">No</button>
+            </div>
          </form>
 
       </div>
@@ -86,11 +86,11 @@
   </div>
 <!-- reject modal -->
 
-  <div class="modal fade" id="reject_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="cancel_appointment_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
 
-        <form action="{{ url ('reject_registration') }} " method="POST">
+        <form action="{{ url ('canceled_appointment') }} " method="POST">
             @csrf
           
         <div class="modal-header">
@@ -98,9 +98,25 @@
           <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <input type="text"  id="reject_id" name="reject_id" hidden>
-        
-          Are you sure you want to reject this registration?
+          <input type="text"  id="calcel_id" name="calcel_id">
+          <input type="text"  id="user_id" name="user_id">
+
+          <input type="text"  id="user_phoneNo" name="user_phoneNo">
+          <input type="text"  id="message" name="message">
+          <input type="text"  id="service" name="service">
+
+
+          <div class="form-group">
+            <label for="service" class="col-form-label">Message</label>
+            <select name="message_select" id="message_select" class ="mb-3 block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                  <option value="default_message" selected>Default </option>
+                  <option value="add_message">Add  </option>
+          </select>
+            <textarea name="cancel_message" id="cancel_message" cols="30" rows="5" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+
+            </textarea>
+        </div>
+          
         </div>
         <div class="modal-footer">
          
@@ -158,6 +174,15 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
        </div>
         @endif
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
     </div>
                 <table class="  table text-align-center table-hover">
                     <thead>
@@ -205,12 +230,12 @@
                         <td scope="row" colspan=2 class="d-sm-flex">
                             {{-- @if ($data->status !="approved" && $data->status !="rejected" ) --}}
                                 <button class="btn btn-sm btn-primary w-100 ml-lg-2 approve"    value="{{$data->id}}" >Approved</button>
-                                <button class="btn btn-sm btn-warning mt-2 mt-lg-0 ml-lg-2 w-100 rejected" value="{{$data->id}}">Cancel</button>
+                                <button class="btn btn-sm btn-warning mt-2 mt-lg-0 ml-lg-2 w-100 cancel_btn" value="{{$data->id}}">Cancel</button>
                             {{-- @endif --}}
                             
                                
                            
-                        <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-lg-2 w-100 delete" value="{{$data->id}}">Delete</button>
+                        <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-lg-2 w-100 delete_btn" value="{{$data->id}}">Delete</button>
                         </td>
                  
                         </tr>
@@ -229,4 +254,66 @@
 </body>
 </html>
 
+<script>
+
+  $(document).ready(function () {
+
+    $(document).on('click', '.cancel_btn',function (e) {
+        e.preventDefault();
+        $("#cancel_message").hide();
+          var cancel_id = $(this).val();
+       
+            // alert(service); 
+            $('#calcel_id').val(cancel_id);
+      
+
+            
+            $('#cancel_appointment_modal').modal('show');
+            
+            $.ajax({
+                type: "GET",
+                url: "/cancel_appointment/"+cancel_id,
+                success: function (response) {
+                    // console.log(response);
+                    $('#user_phoneNo').val(response.user_id.user_contactnumber);
+                    $('#service').val(response.user_id.appointment_services);
+                    $('#user_id').val(response.user_id.user_id);
+
+                    
+                    // $('#calcel_id').val(response.service.id)
+
+                }
+            });
+          
+      });
+
+      
+    $(document).on('click', '.delete_btn',function (e) {
+        e.preventDefault();
+          var del_id = $(this).val();
+            // alert(service); 
+            $('#delete_id').val(del_id);
+            $('#delete_appointment_modal').modal('show');
+        
+      });
+
+      $('#message_select').on('change','', function (e) {
+        e.preventDefault();
+        $("#cancel_message").hide();
+        
+        if($(this).val() == "default_message"){
+        //  $('#message').val("the "+ $('#service').val() +" Appointment has been cancled!");
+         
+          console.log("default");
+
+        }else if($(this).val() == "add_message"){
+         $('#message').val("add");
+         $("#cancel_message").show();
+          
+        }
+        
+      });
+  });
+
+</script>
 </x-app-layout>

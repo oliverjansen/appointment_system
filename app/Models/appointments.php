@@ -16,6 +16,7 @@ class appointments extends Model
     protected $fillable = [
         'id',
         'user_id',
+        'user_contactnumber',
         'email',
         'appointment_services',
         'appointment_category',
@@ -24,6 +25,7 @@ class appointments extends Model
         'appointment_covid_dose',
         'appointment_concern',
         'appointment_information',
+        'appointment_message',
         'availableslot',
         'appointment_date',  
     ];

@@ -76,8 +76,16 @@ Route::middleware([
         Route::match(['get','post'],'delete_registration','App\Http\Controllers\RegistrationController@delete_registration');
     
      
-        //services controller  -- add
+        //appointment controller
+        Route::match(['get','post'],'cancel_appointment/{id}','App\Http\Controllers\AppointmentsController@cancel_appointment')->name('cancel_appointment');
+        Route::match(['get','post'],'canceled_appointment','App\Http\Controllers\AppointmentsController@canceled_appointment')->name('canceled_appointment');
+        Route::match(['get','post'],'delete_scheduled_appointment','App\Http\Controllers\AppointmentsController@delete_scheduled_appointment')->name('delete_scheduled_appointment');
+        
+        
 
+        
+
+        //services controller  -- add
 
 
         Route::get('/registration', 'App\Http\Controllers\RegistrationController@registration')->name('registration');
