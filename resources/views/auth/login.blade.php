@@ -7,9 +7,19 @@
       
     <x-jet-authentication-card>
         <x-slot name="logo">
+            <div class="d-flex align-items-center justify-content-center">
             <x-jet-authentication-card-logo />
-        </x-slot>
 
+            </div>  
+            <div class="text-center d-block mt-3">
+            
+                <h5> Dapitan Health Center</h5>
+                
+
+            </div> 
+        </x-slot>
+         
+        
         <x-jet-validation-errors class="mb-4" />
 
         @if (session('status'))
