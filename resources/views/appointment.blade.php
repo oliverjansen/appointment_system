@@ -109,7 +109,7 @@
           <div class="form-group">
             <label for="service" class="col-form-label">Message</label>
             <select name="message_select" id="message_select" class ="mb-3 block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-                  <option value="default_message" selected>Default </option>
+                  <option value="default_message" selected>Cancel </option>
                   <option value="add_message">Add  </option>
           </select>
             <textarea name="cancel_message" id="cancel_message" cols="30" rows="5" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
