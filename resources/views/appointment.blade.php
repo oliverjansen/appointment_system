@@ -98,12 +98,12 @@
           <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <input type="text"  id="calcel_id" name="calcel_id">
-          <input type="text"  id="user_id" name="user_id">
+          <input type="text"  id="calcel_id" name="calcel_id" hidden>
+          <input type="text"  id="user_id" name="user_id" hidden>
 
-          <input type="text"  id="user_phoneNo" name="user_phoneNo">
-          <input type="text"  id="message" name="message">
-          <input type="text"  id="service" name="service">
+          <input type="text"  id="user_phoneNo" name="user_phoneNo" hidden>
+          <input type="text"  id="message" name="message" hidden>
+          <input type="text"  id="service" name="service" hidden>
 
 
           <div class="form-group">
@@ -120,7 +120,7 @@
         </div>
         <div class="modal-footer">
          
-          <button type="submit" class="btn btn-primary reject_btn btn-sm w-25">Yes</button>
+          <button type="submit" class="btn btn-primary reject_btn btn-sm w-25">Send</button>
           <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">No</button>
         </div>
          </form>
