@@ -6,6 +6,8 @@ use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\WorkerControllers;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\VerifyAppointmentController;
+
 
 use App\Http\Controllers\Controller;
 
@@ -21,6 +23,7 @@ use App\Models\user;
 |
 */
 
+//page navigigation
 Route::get('/', function () {
     return view ('dashboard');
 })->middleware('auth');
@@ -28,6 +31,9 @@ Route::get('/', function () {
 Route::get('/register', function () {
     return view('auth/register');
 })->name('register');
+
+
+
 
 
 Route::middleware([
@@ -39,6 +45,8 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 
+    //page 
+        Route::get('/scanner', 'App\Http\Controllers\VerifyAppointmentController@index')->name('scanner');
     // Route::get('/calendar', [CalendarAppointments::class, 'calendar'])->name('calendar');
  
         Route::get('/services', 'App\Http\Controllers\ServicesController@services')->name('services');
@@ -86,8 +94,6 @@ Route::middleware([
         
 
         //services controller  -- add
-
-
         Route::get('/registration', 'App\Http\Controllers\RegistrationController@registration')->name('registration');
         Route::get('/workers', 'App\Http\Controllers\WorkersController@workers')->name('workers');
         Route::get('/appointment', 'App\Http\Controllers\AppointmentsController@appointment')->name('appointment');
@@ -102,7 +108,10 @@ Route::middleware([
 
         // Route::post('register', 'App\Http\Controllers\Controller@register')->name('register');
        
-   
+        
+        //Page
+
+
 });
 
 
