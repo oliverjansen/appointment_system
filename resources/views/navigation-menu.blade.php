@@ -25,8 +25,9 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                 @if(Auth::User()->account_type=='admin')
-                
-                
+                    <x-jet-nav-link href="{{ route('scanner') }}" :active="request()->routeIs('scanner')">
+                        {{ __('Verify Appointment') }}
+                    </x-jet-nav-link>
                     <x-jet-nav-link href="{{ route('calendar') }}" :active="request()->routeIs('calendar')">
                         {{ __('Calendar') }}
                     </x-jet-nav-link>
@@ -39,7 +40,7 @@
                     <x-jet-nav-link href="{{ route('appointments') }}" :active="request()->routeIs('appointments')">
                         {{ __('Appointments') }}
                     </x-jet-nav-link>
-                    <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('scanner')">
+                    <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Add Post') }}
                     </x-jet-nav-link>
                 @else

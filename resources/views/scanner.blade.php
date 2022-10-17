@@ -142,7 +142,10 @@
           </div>
         </div>
       </div>
-    
+      
+
+   
+
       
     
         <div class="container-fluid mt-5 mb-5 table-responsive w-100" >
@@ -159,10 +162,14 @@
            </div>
             @endif
         </div>
-            <h1>scanner</h1>
-
-            
-              
+          <div class="card">
+            <div class="card-header text-center p-5">
+                <h2>Verify Appointment</h2>
+            </div>
+            <div class="card-body">
+                {!! QrCode::size(300)->generate('12312322') !!}
+            </div>
+          </div>
         </div>
     
     

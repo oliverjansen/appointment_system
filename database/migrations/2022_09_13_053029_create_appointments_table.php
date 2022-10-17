@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-            $table->string('email')->nullable();
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->integer('appointment_id')->nullable();
             $table->string('user_contactnumber')->nullable();
             $table->foreign('user_contactnumber')->references('contactnumber')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('appointment_services')->nullable();
