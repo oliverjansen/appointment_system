@@ -17,6 +17,8 @@ class appointments extends Model
         'id',
         'user_id',
         'user_contactnumber',
+        'appointment_id',
+        'appointment_date',
         'email',
         'appointment_services',
         'appointment_category',

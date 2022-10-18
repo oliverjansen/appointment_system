@@ -7,11 +7,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
        <meta name="csrf-token" content="{{ csrf_token() }}">
         {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" /> --}}
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script> --}}
         {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script> --}}
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> --}}
         <title>Document</title>
+        <script type="text/javascript" src="{{ asset('instascan.min.js') }}" ></script>
+
     </head>
     <body>
     
@@ -147,7 +149,7 @@
    
 
       
-    
+{{--     
         <div class="container-fluid mt-5 mb-5 table-responsive w-100" >
           <div>
             @if (session('success'))
@@ -161,12 +163,22 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
            </div>
             @endif
-        </div>
+        </div> --}}
           <div class="card">
             <div class="card-header text-center p-5">
                 <h2>Verify Appointment</h2>
+               
+                <button type="button" onclick="initQrCodeScanner()" class="btn btn-primary scan1" >Scan</button>
+                <button type="button" class="btn btn-primary cancel" id="cancel">Cancel</button>
+
             </div>
+            
+            <script>
+           
+            </script>
             <div class="card-body">
+              <video id="preview"></video>
+
                 {!! QrCode::size(300)->generate('12312322') !!}
             </div>
           </div>
@@ -174,95 +186,152 @@
     
     
     {{-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> --}}
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> --}}
     </body>
     </html>
     
     
     
-    <script>
-        $(document).ready(function () {
-            $(document).on('click', '.approve',function (e) {
-                e.preventDefault(); 
-                var approve = $(this).val();
-                var btn_type = "approved";
+   <script>
+        //  const Instascan = require('instascan');
+
+         
+        // $(document).ready(function () {
+
+       
+
+        //   let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+        //   scanner.addListener('scan', function (content) {
+        //     console.log(content);
+        //   });
+        //   Instascan.Camera.getCameras().then(function (cameras) {
+        //     if (cameras.length > 0) {
+        //       scanner.start(cameras[0]);
+        //     } else {
+        //       console.error('No cameras found.');
+        //     }
+        //   }).catch(function (e) {
+        //     console.error(e);
+        //   }); 
+
+
+
+        //     $(document).on('click', '.approve',function (e) {
+        //         e.preventDefault(); 
+        //         var approve = $(this).val();
+        //         var btn_type = "approved";
                 
                 
-                $('#btn_type').val(btn_type);
-                $('#approve_id').val(approve);
+        //         $('#btn_type').val(btn_type);
+        //         $('#approve_id').val(approve);
                
-                // console.log(approve);
-                // alert(service); 
-                $('#approve_modal').modal('show');
+        //         // console.log(approve);
+        //         // alert(service); 
+        //         $('#approve_modal').modal('show');
                 
-                });
+        //         });
     
-                $(document).on('click', '.rejected',function (e) {
-                e.preventDefault(); 
-                var rejected = $(this).val();
-                var btn_type = "rejected";
+        //         $(document).on('click', '.rejected',function (e) {
+        //         e.preventDefault(); 
+        //         var rejected = $(this).val();
+        //         var btn_type = "rejected";
                 
                 
              
-                $('#reject_id').val(rejected);
+        //         $('#reject_id').val(rejected);
     
-                // $('#email').val(btn_type);
+        //         // $('#email').val(btn_type);
     
                 
-                // $('#approve_id').val(approve);
+        //         // $('#approve_id').val(approve);
                
-                // console.log(btn_type);
-                // alert(service); 
-                $('#reject_modal').modal('show');
+        //         // console.log(btn_type);
+        //         // alert(service); 
+        //         $('#reject_modal').modal('show');
                 
-                });
+        //         });
     
-                $(document).on('click', '.delete',function (e) {
-                e.preventDefault(); 
-                var del = $(this).val();
-                // var btn_type = "rejected";
+        //         $(document).on('click', '.delete',function (e) {
+        //         e.preventDefault(); 
+        //         var del = $(this).val();
+        //         // var btn_type = "rejected";
                 
                 
         
-                $('#del_id').val(del);
+        //         $('#del_id').val(del);
     
-                // $('#email').val(btn_type);
+        //         // $('#email').val(btn_type);
     
                 
-                // $('#approve_id').val(approve);
+        //         // $('#approve_id').val(approve);
                
-                // console.log(btn_type);
-                // alert(service); 
-                $('#delete_modal').modal('show');
+        //         // console.log(btn_type);
+        //         // alert(service); 
+        //         $('#delete_modal').modal('show');
                 
-                });
+        //         });
     
-                $(document).on('click', '.view',function (e) {
-                  e.preventDefault();
-                  var identification = $(this).val();
+        //         $(document).on('click', '.view',function (e) {
+        //           e.preventDefault();
+        //           var identification = $(this).val();
     
-                  $('#view_modal').modal('show');
-                  //  $('#image_id').val(identification);
+        //           $('#view_modal').modal('show');
+        //           //  $('#image_id').val(identification);
     
-                    $.ajax({
+        //             $.ajax({
                     
-                    type: "GET",
-                    url: "/view_identification/"+identification,
-                     success: function (response) {
-                        // console.log(response);
-                        $('#image').val(response.identification.identification)
-                        $('#image_id').val(response.identification.id)
-                        $('#id_type').text(response.identification.identificationtype);
-                        $('#view_image').attr('src', 'storage/'+response.identification.identification);
-                    }, error: function(error) {
-                       console.log(error);
+        //             type: "GET",
+        //             url: "/view_identification/"+identification,
+        //              success: function (response) {
+        //                 // console.log(response);
+        //                 $('#image').val(response.identification.identification)
+        //                 $('#image_id').val(response.identification.id)
+        //                 $('#id_type').text(response.identification.identificationtype);
+        //                 $('#view_image').attr('src', 'storage/'+response.identification.identification);
+        //             }, error: function(error) {
+        //                console.log(error);
                      
-            }
-                });
+        //     }
+        //         });
                   
+        //         });
+            
+        // });
+     
+
+                const initQrCodeScanner = () => {
+                  var cancel = document.getElementById('cancel');
+
+                let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+                
+                Instascan.Camera.getCameras().then(cameras => {
+                  console.log(cameras.length);
+                  if(cameras.length > 0){
+                    scanner.camera = cameras[cameras.length - 2];
+                    scanner.start();
+                  }else {
+                    alert("no camera found!");
+                  }
+                  
+
+                }).catch(e => console.error(e));
+            
+                scanner.addListener('scan', content => {
+                  scanner.stop();
+                  console.log(content);
+                });
+              
+                cancel.addEventListener('click', function () {
+                  scanner.stop();
                 });
             
-        });
+              };  
+        
+
+             
+        
+       
+
     </script>
     </x-app-layout>

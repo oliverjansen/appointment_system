@@ -77,7 +77,10 @@ Route::middleware([
         //delete appointment calendar
         Route::match(['get','post'],'delete_appointment','App\Http\Controllers\CalendarController@delete_appointment')->name('delete_appointment');
         
-
+        //get appointment date
+        Route::match(['get','post'],'get_appointmentDate/{date}','App\Http\Controllers\AppointmentsController@get_appointmentDate')->name('get_appointmentDate');
+    
+        
         //registration controller 
         Route::match(['get','post'],'approve_registration','App\Http\Controllers\RegistrationController@approve_registration');
         Route::match(['get','post'],'reject_registration','App\Http\Controllers\RegistrationController@reject_registration');

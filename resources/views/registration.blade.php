@@ -292,7 +292,7 @@
               //  $('#image_id').val(identification);
 
                 $.ajax({
-                
+        
                 type: "GET",
                 url: "/view_identification/"+identification,
                  success: function (response) {

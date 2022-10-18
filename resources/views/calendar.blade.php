@@ -202,6 +202,15 @@
                                 <label for="">Appointment Date</label>
                                 <input type="date" id="appointmentdate" name="appointmentdate" :value="old('appointmentdate')" required autofocus autocomplete="appointmentdate" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                         </div>
+                        <div class="mt-5"id="div_appointment_date">
+                            <label for="">Availableslot</label>
+                            <input type="text" id="available_slot" name="available_slot" :value="old('available_slot')" required autofocus autocomplete="available_slot" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+
+                            <input type="text" id="availableslot_id" name="availableslot_id" :value="old('availableslot_id')" required autofocus autocomplete="availableslot_id" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+
+                            
+                            <p id="availableslot" name="availableslot" ></p>
+                    </div>
                         
                                 <div class="mt-5 d-flex align-items-center justify-content-center">
                                 <button type="submit" class="btn btn-primary btn-sm  text-align-center w-50">Submit</button>
@@ -403,6 +412,48 @@ $(document).ready(function () {
 
         }).change();
 
+        
+        $("#appointmentdate").on('change',function(e){
+            e.preventDefault();
+
+
+            var date = $(this).val();
+            console.log(date);
+            $.ajax({
+                type: "GET",
+                url: "/get_appointmentDate/"+date,
+                success: function (response) {
+                    console.log(response);
+
+                    var len = 0;
+                    if(response['data'] != null){
+                    len = response['data'].length;
+                    }
+
+                    if(len > 0){
+                        for(var i=0; i<1; i++){
+                      
+                        $('#available_slot').val(response['data'][i].availableslot);
+                        $('#availableslot').text(response['data'][i].availableslot);
+                        $('#availableslot_id').val(response['data'][i].id);
+
+
+                            
+                        }
+                    }else{
+                        $('#available_slot').val(500);
+                        // $('#availableslot_id').val(500);
+
+                        $('#availableslot').text(500);
+
+
+                    }
+           
+
+                }
+            });
+        
+    }).change();
        
 });
   

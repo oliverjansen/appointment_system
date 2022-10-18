@@ -43,6 +43,8 @@ class AppointmentsController extends Controller
             }
       
     }
+    protected $global_appointmentDate;
+    protected $global_today;
 
     public function insert(Request $request){
       $appointment = new appointments();
@@ -55,10 +57,15 @@ class AppointmentsController extends Controller
         $appointment ->user_id = $current_id;
         $appointment ->user_contactnumber= $contactnumber;
 
-        $today = Carbon::today()->format('d/m/Y');
-        $newDateFormat3 = \Carbon\Carbon::parse($request ->input ('appointmentdate'))->format('d/m/Y');
+        $randomAppointmentId=rand(0,999999999999);
 
-        if($newDateFormat3 < $today){
+        $today = Carbon::today()->format('Y/m/d');
+        $appointmentDate = \Carbon\Carbon::parse($request ->input ('appointmentdate'))->format('Y/m/d');
+
+        $global_appointmentDate = $appointmentDate;
+        $global_today = $today;
+
+        if($appointmentDate < $today){
           return redirect()->back()->with('danger', "Invalid Appointment Date!");
         }else{
 
@@ -90,9 +97,48 @@ class AppointmentsController extends Controller
       
 
        
-       $appointment ->appointment_date = $request ->input ('appointmentdate');
-       
+       $appointment ->appointment_date = $appointmentDate;
+       $appointment ->appointment_id = $randomAppointmentId;
 
+        
+       if ($appointmentDate == $today) {
+        $id = $request ->input ('availableslot_id');
+        if($id != null){
+          $date = DB::table('appointments')->where('appointment_date',$appointmentDate)->get();
+
+          $appointment_slot = appointments::find($id);
+          $availableslot = $request ->input ('availableslot');
+          $appointment_slot ->availableslot = (int) $availableslot - 1;
+          $appointment_slot->update();
+        }
+          // $len = 0;
+          // if(response['data'] != null){
+          // $len = response['data'].length;
+          // }
+
+          // if(len > 0){
+          //     for(var i=0; i<1; i++){
+            
+          //     $('#available_slot').val(response['data'][i].availableslot);
+          //     $('#availableslot').text(response['data'][i].availableslot);
+          //     $('#availableslot_id').val(response['data'][i].id);
+
+
+                  
+          //     }
+          // }else{
+          //     $('#available_slot').val(500);
+          //     // $('#availableslot_id').val(500);
+
+          //     $('#availableslot').text(500);
+
+
+          // }
+
+       }
+      //  else{
+      //   $appointment ->appointment_id = $available_slot-1;
+      //  }
 
        $appointment->save();
        if(Auth::User()->account_type=='admin'){
@@ -116,6 +162,32 @@ class AppointmentsController extends Controller
       
         ]);
     }
+
+    public function get_appointmentDate($date){
+
+      // return redirect()->back()->with('danger', $global_today);
+
+      // $service_id = User::find($id);
+      // $date = appointments::search($date);
+       $date1 = DB::table('appointments')->where('appointment_date',$date)->get();
+    
+       $userData['data'] = $date1;
+        return response()-> json($userData);
+ 
+      
+    
+  }
+
+  // public function date_checker($appointment_date,$today_date){
+
+  //   if ($appointment_date < $today_date ){
+  //     return redirect()->back()->with('danger', 'Invalid Appointment Date!');
+
+  //   }else{
+  //     return true;
+  //   }
+  // }
+    
 
     public function canceled_appointment(Request $request){
       $id = $request ->input ('calcel_id');
