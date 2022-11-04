@@ -98,8 +98,7 @@ Route::middleware([
         
         
 
-        
-
+    
         //services controller  -- add
         Route::get('/registration', 'App\Http\Controllers\RegistrationController@registration')->name('registration');
         Route::get('/workers', 'App\Http\Controllers\WorkersController@workers')->name('workers');
@@ -119,6 +118,10 @@ Route::middleware([
         //Page
 
         Route::get('/preview_qrcode/{id}', 'App\Http\Controllers\QrCodeController@index')->name('preview_qrcode');
+
+        //verification
+
+        Route::get('/get_appointment_id/{content}', 'App\Http\Controllers\VerifyAppointmentController@get_appointment_id')->name('get_appointment_id');
 });
 
 

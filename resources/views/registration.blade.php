@@ -292,20 +292,19 @@
               //  $('#image_id').val(identification);
 
                 $.ajax({
-        
-                type: "GET",
-                url: "/view_identification/"+identification,
-                 success: function (response) {
-                    // console.log(response);
-                    $('#image').val(response.identification.identification)
-                    $('#image_id').val(response.identification.id)
-                    $('#id_type').text(response.identification.identificationtype);
-                    $('#view_image').attr('src', 'storage/'+response.identification.identification);
-                }, error: function(error) {
-                   console.log(error);
-                 
-        }
-            });
+                  type: "GET",
+                  url: "/view_identification/"+identification,
+                  success: function (response) {
+                      // console.log(response);
+                      $('#image').val(response.identification.identification)
+                      $('#image_id').val(response.identification.id)
+                      $('#id_type').text(response.identification.identificationtype);
+                      $('#view_image').attr('src', 'storage/'+response.identification.identification);
+                  }, error: function(error) {
+                    console.log(error);
+                  
+                    }
+                  });
               
             });
         

@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\services;
 use App\Models\Vaccine;
 use App\Models\User;
+use App\Models\appointments;
 use App\Models\Category;
 use App\Models\Medicine;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\DB;
 use App\Models\VerifyAppointment;
 use Illuminate\Http\Request;
 
@@ -29,69 +30,11 @@ class VerifyAppointmentController extends Controller
       
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\VerifyAppointment  $verifyAppointment
-     * @return \Illuminate\Http\Response
-     */
-    public function show(VerifyAppointment $verifyAppointment)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\VerifyAppointment  $verifyAppointment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(VerifyAppointment $verifyAppointment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\VerifyAppointment  $verifyAppointment
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, VerifyAppointment $verifyAppointment)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\VerifyAppointment  $verifyAppointment
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(VerifyAppointment $verifyAppointment)
-    {
-        //
+    function get_appointment_id($content){
+        // $service_id = User::find($id);
+        $data1 = DB::table('appointments')->where('appointment_id',$content)->get();
+        return response()->json([
+              'data'=> $data1
+            ]);
     }
 }

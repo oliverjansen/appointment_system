@@ -7,10 +7,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
        <meta name="csrf-token" content="{{ csrf_token() }}">
         {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" /> --}}
-        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script> --}}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
         {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script> --}}
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> --}}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <title>Document</title>
         <script type="text/javascript" src="{{ asset('instascan.min.js') }}" ></script>
 
@@ -164,37 +164,70 @@
            </div>
             @endif
         </div> --}}
-          <div class="card">
+          <div class="card m-5">
             <div class="card-header text-center p-5">
-                <h2>Verify Appointment</h2>
+                {{-- <h4>Verify Appointment</h4> --}}
+                <h5>Scan QR Code</h5>
+
                
-                <button type="button" onclick="initQrCodeScanner()" class="btn btn-primary scan1" >Scan</button>
-                <button type="button" class="btn btn-primary cancel" id="cancel">Cancel</button>
+                <button type="button" onclick="initQrCodeScanner()" class="btn btn-primary btn-sm scan1 " style="width:90px">Scan</button>
+                <button type="button" class="btn btn-danger btn-sm  cancel" style="width:90px" id="cancel">Cancel</button>
 
-            </div>
-            
-            <script>
-           
-            </script>
-            <div class=" row ">
-
-            
+            </div>            
               <div class="card-body ">
-              <div class="d-flex justify-content-center mt-4 mb-2">
-                <video id="preview"></video>
-              </div>
-                
 
-                  {{-- {!! QrCode::size(300)->generate('oliverjansen') !!} --}}
+                <div class="row">
+                  <div class="col d-flex justify-content-center mt-4">
+                    <video id="preview" class="w-25 " style="display:none">
+                    </video>
+                  </div>
+                </div>
+
+                <div class="row " id="display_verification" name="">
+                  <div class="col d-flex justify-content-center mt-5">
+                    {{-- <input type="text" id="appointment_id_hidden" name="appointment_id_hidden" hidden >
+                    <input type="text" id="user_id" name="user_id_hidden"  hidden> --}}
+                    <input type="text" id="user_contactnumber" name="user_contactnumber" hidden > 
+                      <form class="w-25" >
+                        <fieldset disabled>
+                          <div class="form-group">
+                            <label for="appointment_id">User ID</label>
+                            <input type="text" id="user_id" name="user_id" class="form-control">
+                          </div>
+                          <div class="form-group">
+                            <label for="appointment_id">Appointment ID</label>
+                            <input type="text" id="appointment_id" name="appointment_id" class="form-control">
+                          </div>
+                          <div class="form-group">
+                            <label for="disabledTextInput">Service</label>
+                            <input type="text" id="appointment_services" name="appointment_services" class="form-control">
+                          </div>
+                          <div class="form-group">
+                            <label for="disabledTextInput">Appointment Date</label>
+                            <input type="text" id="appointment_date" name="appointment_date" class="form-control">
+                          </div>
+                        </fieldset>
+                            <div class="row d-flex justify-content-center">
+                              <button type="submit" class="btn btn-primary w-50">Verify</button>
+                            </div>
+                            
+                        
+                      </form>
+
+                  </div>
+                
+                 
+                </div>
+
               </div>
-          </div>
+         
           </div>
         </div>
     
     
-    {{-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> --}}
-    {{-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> --}}
+     {{-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>  --}}
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     </body>
     </html>
     
@@ -309,7 +342,12 @@
 
                 const initQrCodeScanner = () => {
                   var cancel = document.getElementById('cancel');
+                  var x = document.getElementById("preview");
+                  var display_verification = document.getElementById("display_verification");
 
+                  if (x.style.display == "none") {
+                    x.style.display = "block";
+                  }
                 let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
                 
                 Instascan.Camera.getCameras().then(cameras => {
@@ -327,14 +365,61 @@
                   
 
                 }).catch(e => console.error(e));
-            
+
+ 
+
                 scanner.addListener('scan', content => {
                   scanner.stop();
                   console.log(content);
+
+                      $.ajax({
+                        type: "GET",
+                        url: "/get_appointment_id/"+content,
+                        success: function (response) {
+                            console.log(response);
+
+                  
+                              var len = 0;
+                              if(response['data'] != null){
+                            
+                                    display_verification.style.display = "block";
+                                  len = response['data'].length;
+                                  
+                                  if(len > 0){
+                                    for(var i=0; i<1; i++){
+                                
+                                    $('#appointment_id').val(response['data'][i].appointment_id);
+                                    $('#appointment_id_hidden').val(response['data'][i].appointment_id);
+                                    $('#appointment_services').val(response['data'][i].appointment_services);
+                                    $('#appointment_date').val(response['data'][i].appointment_date);
+                                    $('#user_id').val(response['data'][i].user_id);
+                                    $('#user_contactnumber').val(response['data'][i].user_contactnumber);
+
+
+                                      
+                                      }
+                                        x.style.display = "none";
+                                      }else{
+                                        alert("no data found!");
+                                      }
+                          
+                              }else {
+                                alert("no data found!");
+                              }
+                            
+                          
+                        }, error: function(error) {
+                          console.log(error);
+                          }
+                      });
+                  
+                 
                 });
               
                 cancel.addEventListener('click', function () {
                   scanner.stop();
+                  x.style.display = "none";
+
                 });
             
               };  
@@ -342,7 +427,6 @@
 
              
         
-       
-
+    
     </script>
     </x-app-layout>
