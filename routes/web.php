@@ -7,6 +7,7 @@ use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\WorkerControllers;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\VerifyAppointmentController;
+use App\Http\Controllers\QrCodeController;
 
 
 use App\Http\Controllers\Controller;
@@ -24,9 +25,9 @@ use App\Models\user;
 */
 
 //page navigigation
-Route::get('/', function () {
-    return view ('dashboard');
-})->middleware('auth');
+// Route::get('/', function () {
+//     return view ('/scanner');
+// })->middleware('auth');
 
 Route::get('/register', function () {
     return view('auth/register');
@@ -46,6 +47,7 @@ Route::middleware([
     })->name('dashboard');
 
     //page 
+        Route::get('/', 'App\Http\Controllers\VerifyAppointmentController@index')->name('/');
         Route::get('/scanner', 'App\Http\Controllers\VerifyAppointmentController@index')->name('scanner');
     // Route::get('/calendar', [CalendarAppointments::class, 'calendar'])->name('calendar');
  
@@ -79,7 +81,9 @@ Route::middleware([
         
         //get appointment date
         Route::match(['get','post'],'get_appointmentDate/{date}','App\Http\Controllers\AppointmentsController@get_appointmentDate')->name('get_appointmentDate');
-    
+
+        //view appointment
+        Route::match(['get','post'],'preview_appointment/{id}','App\Http\Controllers\CalendarController@preview_appointment')->name('preview_appointment');
         
         //registration controller 
         Route::match(['get','post'],'approve_registration','App\Http\Controllers\RegistrationController@approve_registration');
@@ -114,7 +118,7 @@ Route::middleware([
         
         //Page
 
-
+        Route::get('/preview_qrcode/{id}', 'App\Http\Controllers\QrCodeController@index')->name('preview_qrcode');
 });
 
 

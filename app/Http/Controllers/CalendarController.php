@@ -9,7 +9,7 @@ use App\Models\services;
 use App\Models\Vaccine;
 use App\Models\Category;
 use App\Models\Medicine;
-
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\DB;
 
 
@@ -79,8 +79,9 @@ class CalendarController extends Controller
             return view ('calendar', compact('schedulesall','schedules','appointment_service','medicine') );
         // console.log($appointment_service);
          }else{
+            $qrcode = 13;
             // return view ('calendar', ['schedules' =>  $schedules]);
-            return view ('calendar', compact('schedulesall','schedules','appointment_service','vaccine_kids','vaccine_adult','category','medicine') );
+            return view ('calendar', compact('schedulesall','schedules','appointment_service','vaccine_kids','vaccine_adult','category','medicine','qrcode') );
          }
     }
 
@@ -107,8 +108,22 @@ class CalendarController extends Controller
 
     }
 
+    public function preview_appointment($id){
 
+        $id = appointments::find($id);
+        // $service_id = User::find($id);
 
-    
-   
+        $appointment =  response()->json(['appointment'=> $id,]);
+        return $appointment ;
+
+        
+    }
+
+    public function preview_qrcode($id){
+        // $data = appointments::find(13);
+        $qrcode = QrCode::size(120)->generate('123123');
+        // return  ('calendar',['qrcode'=>$qrcode]);
+        return redirect()->back()->with('qrcode',$qrcode);
+    }
+
 }

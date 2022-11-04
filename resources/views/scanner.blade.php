@@ -176,11 +176,18 @@
             <script>
            
             </script>
-            <div class="card-body">
-              <video id="preview"></video>
+            <div class=" row ">
 
-                {!! QrCode::size(300)->generate('12312322') !!}
-            </div>
+            
+              <div class="card-body ">
+              <div class="d-flex justify-content-center mt-4 mb-2">
+                <video id="preview"></video>
+              </div>
+                
+
+                  {{-- {!! QrCode::size(300)->generate('oliverjansen') !!} --}}
+              </div>
+          </div>
           </div>
         </div>
     
@@ -308,8 +315,12 @@
                 Instascan.Camera.getCameras().then(cameras => {
                   console.log(cameras.length);
                   if(cameras.length > 0){
-                    scanner.camera = cameras[cameras.length - 2];
-                    scanner.start();
+                    if(scanner.camera = cameras[cameras.length - 2]){
+                       scanner.start();
+                    }else{
+                      alert("camera 2 not found!");
+                    }
+                   
                   }else {
                     alert("no camera found!");
                   }

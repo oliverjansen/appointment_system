@@ -2,6 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\services;
+use App\Models\Vaccine;
+use App\Models\User;
+use App\Models\Category;
+use App\Models\Medicine;
+use Illuminate\Support\Facades\Auth;
+
 use App\Models\VerifyAppointment;
 use Illuminate\Http\Request;
 
@@ -14,7 +21,12 @@ class VerifyAppointmentController extends Controller
      */
     public function index()
     {
-        return view ('scanner');
+        if(Auth::User()->account_type=='admin'){
+            return view ('scanner');
+            }else{
+              return redirect()->route('calendar');
+        }
+      
     }
 
     /**
