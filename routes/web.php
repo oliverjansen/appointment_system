@@ -120,8 +120,9 @@ Route::middleware([
         Route::get('/preview_qrcode/{id}', 'App\Http\Controllers\QrCodeController@index')->name('preview_qrcode');
 
         //verification
-
         Route::get('/get_appointment_id/{content}', 'App\Http\Controllers\VerifyAppointmentController@get_appointment_id')->name('get_appointment_id');
+
+        Route::match(['get','post'],'/verify_appointment', 'App\Http\Controllers\VerifyAppointmentController@verify_appointment')->name('verify_appointment');
 });
 
 

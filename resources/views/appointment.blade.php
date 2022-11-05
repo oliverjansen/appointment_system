@@ -92,7 +92,7 @@
 
         <form action="{{ url ('canceled_appointment') }} " method="POST">
             @csrf
-          
+            {{ csrf_field() }}
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel"></h5>
           <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>

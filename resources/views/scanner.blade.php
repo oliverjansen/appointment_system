@@ -164,6 +164,19 @@
            </div>
             @endif
         </div> --}}
+          <div class="container mt-5 mb-5" >
+            @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @elseif (session('danger'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('danger') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            
+        </div>
+        @endif
           <div class="card m-5">
             <div class="card-header text-center p-5">
                 {{-- <h4>Verify Appointment</h4> --}}
@@ -187,9 +200,21 @@
                   <div class="col d-flex justify-content-center mt-5">
                     {{-- <input type="text" id="appointment_id_hidden" name="appointment_id_hidden" hidden >
                     <input type="text" id="user_id" name="user_id_hidden"  hidden> --}}
-                    <input type="text" id="user_contactnumber" name="user_contactnumber" hidden > 
-                      <form class="w-25" >
+                  
+
+                      <form action="{{route('verify_appointment') }}" method="POST" class="w-25">
+                        @csrf
+                        {{ csrf_field() }}
+                        <input type="text" id="user_contactnumber" name="user_contactnumber" hidden > 
+                        <input type="text" id="appointment_id_hidden" name="appointment_id_hidden" hidden> 
+                        <input type="text" id="appointment_date_hidden" name="appointment_date_hidden" hidden> 
+                        <input type="text" id="user_contactnumber_hidden" name="user_contactnumber_hidden" hidden> 
+                        <input type="text" id="appointment_services_hidden" name="appointment_services_hidden" hidden> 
+
+                        
+
                         <fieldset disabled>
+                         
                           <div class="form-group">
                             <label for="appointment_id">User ID</label>
                             <input type="text" id="user_id" name="user_id" class="form-control">
@@ -390,13 +415,17 @@
                                 
                                     $('#appointment_id').val(response['data'][i].appointment_id);
                                     $('#appointment_id_hidden').val(response['data'][i].appointment_id);
+                                    $('#appointment_id_hidden').val(response['data'][i].appointment_id);
                                     $('#appointment_services').val(response['data'][i].appointment_services);
+                                    $('#appointment_services_hidden').val(response['data'][i].appointment_services);
+
                                     $('#appointment_date').val(response['data'][i].appointment_date);
+                                    $('#appointment_date_hidden').val(response['data'][i].appointment_date);
+
                                     $('#user_id').val(response['data'][i].user_id);
                                     $('#user_contactnumber').val(response['data'][i].user_contactnumber);
+                                    $('#user_contactnumber_hidden').val(response['data'][i].user_contactnumber);
 
-
-                                      
                                       }
                                         x.style.display = "none";
                                       }else{
@@ -412,6 +441,8 @@
                           console.log(error);
                           }
                       });
+
+
                   
                  
                 });

@@ -28,6 +28,7 @@ class appointments extends Model
         'appointment_concern',
         'appointment_information',
         'appointment_message',
+        'appointment_queue',
         'availableslot',
         'appointment_date',  
     ];

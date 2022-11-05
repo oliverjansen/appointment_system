@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('appointment_concern')->nullable();
             $table->string('appointment_information')->nullable();
             $table->string('appointment_message')->nullable();
+            $table->integer('appointment_queue')->nullable();
             $table->integer('availableslot')->nullable();
             $table->date('appointment_date')->nullable();
             $table->timestamps();
