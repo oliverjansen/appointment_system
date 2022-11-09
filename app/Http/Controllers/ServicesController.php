@@ -7,8 +7,10 @@ use App\Models\services;
 use App\Models\Vaccine;
 use App\Models\User;
 use App\Models\Category;
-use App\Models\Medicine;
+// use App\Models\Medicine;
+use App\Models\Other_Services;
 
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -16,21 +18,39 @@ class ServicesController extends Controller
 {
 
  
-  function sample(){
-    return view ('dashboard');
+  function index(){
+    return view ('services');
   }
 
-   function services(){
+   function services(Request $request){
   
-    $service = services::all();
-    $vaccine = vaccine::all();
-    $category = Category::all();
-    $medicine = Medicine::all();
+    $services = services::paginate(5);
+    // $vaccine = vaccine::all();
+
+    if($request->has('search')){
+      // $other_services = Other_Services::where('id','LIKE','%'.$request->search.'%')->paginate(5);
+      $other_services = DB::table('services')->join('other_services','services.id',"=",'other_services.service_id')->where('services.service','LIKE','%'.$request->search.'%')
+      ->orWhere('other_services','LIKE','%'.$request->search.'%')
+      ->orWhere('other_services','LIKE','%'.$request->search.'%')
+      ->orWhere('other_services','LIKE','%'.$request->search.'%')
+      ->paginate(5);
+    }else{
+      $other_services = DB::table('services')->join('other_services','services.id',"=",'other_services.service_id')->paginate(5);
+    }
+
+    $vaccines = DB::table('categories')
+    ->join('vaccine','categories.id',"=",'vaccine.category_id')
+    ->paginate(5);
+
+    $categories = Category::paginate(5);
+    // $medicine = Medicine::all();
+   
+
 
 
     
     if(Auth::User()->account_type=='admin'){
-      return view('services',compact('service','vaccine','category','medicine'));
+      return view('services',compact('services','vaccines','categories','other_services'));
       }else{
         return redirect()->route('calendar');
       }
@@ -44,6 +64,7 @@ class ServicesController extends Controller
 
       $services_add = new services();
       $services_add ->service = $request ->input ('add_service_input');
+      $services_add ->availableslot = $request ->input ('add_available_slot');
       $services_add->save();
   
       if(Auth::User()->account_type=='admin'){
@@ -70,11 +91,11 @@ class ServicesController extends Controller
           $vaccine_category_add->save();
       }
     
-      if ($request ->input ('add_medicine_input') != null){
-        $medicine_add = new Medicine();
-        $medicine_add ->service_id = $request ->input ('add_medicine_input_id');
-        $medicine_add ->medicine_type = $request ->input ('add_medicine_input');
-        $medicine_add->save();
+      if ($request ->input ('add_other_services_input') != null){
+        $add_other_services = new Other_Services();
+        $add_other_services ->service_id = $request ->input ('add_other_services_input_id');
+        $add_other_services ->other_services = $request ->input ('add_other_services_input');
+        $add_other_services->save();
     }
       if(Auth::User()->account_type=='admin'){
         return redirect()->route('services');
@@ -116,11 +137,11 @@ class ServicesController extends Controller
   ]);
  }  
 
- public function edit_medicine($id){
-  $medicine_id = Medicine::find($id);
+ public function edit_other_services($id){
+  $other_services = Other_Services::find($id);
   return response()->json([
         'status'=>200,
-        'medicine_id'=> $medicine_id,
+        'other_services'=> $other_services,
 
   ]);
  }  
@@ -137,12 +158,12 @@ class ServicesController extends Controller
 
 
  //update
- public function update_medicine(Request $request){
+ public function update_other_services(Request $request){
  
-  $id = $request ->input ('edit_medicine_id');
-  $medicine = Medicine::find($id);
-  $medicine ->medicine_type = $request ->input ('edit_medicine_input');
-  $medicine->update();
+  $id = $request ->input ('edit_other_services_id');
+  $other_services = Other_Services::find($id);
+  $other_services ->other_services = $request ->input ('edit_other_services_input');
+  $other_services->update();
 
   if(Auth::User()->account_type=='admin'){
     return redirect()->back()->with('success', 'Successfully Edited');
@@ -172,6 +193,7 @@ class ServicesController extends Controller
   $id = $request ->input ('id');
   $appointment = services::find($id);
   $appointment ->service = $request ->input ('service');
+  $appointment ->availableslot = $request ->input ('available_slot');
   $appointment->update();
 
   if(Auth::User()->account_type=='admin'){
@@ -243,10 +265,10 @@ public function update_vaccine(Request $request){
 
  }
 
- public function delete_medicine (Request $request){
-  $id = $request ->input ('delete_medicine_id');
-  $medicine_delete= Medicine::find($id);
-  $medicine_delete->delete();
+ public function delete_other_services (Request $request){
+  $id = $request ->input ('delete_other_services_id');
+  $other_services_delete= Other_Services::find($id);
+  $other_services_delete->delete();
 
   if(Auth::User()->account_type=='admin'){
     return redirect()->back()->with('danger', 'Successfully Deleted');

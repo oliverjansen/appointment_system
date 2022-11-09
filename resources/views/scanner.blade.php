@@ -177,26 +177,35 @@
             
         </div>
         @endif
-          <div class="card m-5">
-            <div class="card-header text-center p-5">
+          <div class="card w-70" style="margin-top: 100px 150px;" >
+            
                 {{-- <h4>Verify Appointment</h4> --}}
-                <h5>Scan QR Code</h5>
-
-               
-                <button type="button" onclick="initQrCodeScanner()" class="btn btn-primary btn-sm scan1 " style="width:90px">Scan</button>
-                <button type="button" class="btn btn-danger btn-sm  cancel" style="width:90px" id="cancel">Cancel</button>
-
-            </div>            
-              <div class="card-body ">
-
+            
+                    
+              <div class="card-body rounded">
                 <div class="row">
-                  <div class="col d-flex justify-content-center mt-4">
+                  <div class="col col-12 d-flex d-flex justify-content-center mt-4">
+                    <h5>Scan QR Code</h5>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col d-flex justify-content-center mt-4 ">
                     <video id="preview" class="w-25 " style="display:none">
                     </video>
                   </div>
                 </div>
+                <div class="row">
+                  <div class="col col-12 d-flex d-flex justify-content-center mb-4 mt-2">
+                    <div class="m-1">
+                      <button type="button" onclick="initQrCodeScanner()" class="btn btn-primary btn-sm scan1 " style="width:90px">Scan</button>
+                    </div>
+                    <div class="m-1">
+                      <button type="button" class="btn btn-danger btn-sm  cancel" style="width:90px" id="cancel">Stop</button>  
+                    </div>
+                  </div>
+                </div>
 
-                <div class="row " id="display_verification" name="">
+                <div class="row" id="display_verification" style="display:none" name="">
                   <div class="col d-flex justify-content-center mt-5">
                     {{-- <input type="text" id="appointment_id_hidden" name="appointment_id_hidden" hidden >
                     <input type="text" id="user_id" name="user_id_hidden"  hidden> --}}
@@ -233,19 +242,12 @@
                           </div>
                         </fieldset>
                             <div class="row d-flex justify-content-center">
-                              <button type="submit" class="btn btn-primary w-50">Verify</button>
+                              <button type="submit" class="btn btn-primary btn-sm w-50">Verify</button>
                             </div>
-                            
-                        
                       </form>
-
                   </div>
-                
-                 
                 </div>
-
               </div>
-         
           </div>
         </div>
     
@@ -394,7 +396,7 @@
  
 
                 scanner.addListener('scan', content => {
-                  scanner.stop();
+                  // scanner.stop();
                   console.log(content);
 
                       $.ajax({
@@ -427,7 +429,7 @@
                                     $('#user_contactnumber_hidden').val(response['data'][i].user_contactnumber);
 
                                       }
-                                        x.style.display = "none";
+                                        // x.style.display = "none";
                                       }else{
                                         alert("no data found!");
                                       }
@@ -450,7 +452,6 @@
                 cancel.addEventListener('click', function () {
                   scanner.stop();
                   x.style.display = "none";
-
                 });
             
               };  

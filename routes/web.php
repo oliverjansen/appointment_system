@@ -10,6 +10,7 @@ use App\Http\Controllers\VerifyAppointmentController;
 use App\Http\Controllers\QrCodeController;
 
 
+
 use App\Http\Controllers\Controller;
 
 use App\Models\user;
@@ -71,20 +72,29 @@ Route::middleware([
         Route::match(['get','post'],'edit_category/{id}','App\Http\Controllers\ServicesController@edit_category')->name('edit_category');
         Route::match(['get','post'],'delete_category','App\Http\Controllers\ServicesController@delete_category')->name('delete_category');
         Route::match(['get','post'],'select_service/{id}','App\Http\Controllers\ServicesController@select_service')->name('select_service');
-        Route::match(['get','post'],'edit_medicine/{id}','App\Http\Controllers\ServicesController@edit_medicine')->name('edit_medicine');
-        Route::match(['get','post'],'update_medicine','App\Http\Controllers\ServicesController@update_medicine')->name('update_medicine');
-        Route::match(['get','post'],'delete_medicine','App\Http\Controllers\ServicesController@delete_medicine')->name('delete_medicine');
+        Route::match(['get','post'],'edit_other_services','App\Http\Controllers\ServicesController@index');
+        Route::match(['get','post'],'edit_other_services/{id}','App\Http\Controllers\ServicesController@edit_other_services')->name('edit_other_services');
+        Route::match(['get','post'],'update_other_services','App\Http\Controllers\ServicesController@update_other_services')->name('update_other_services');
+        Route::match(['get','post'],'delete_other_services','App\Http\Controllers\ServicesController@delete_other_services')->name('delete_other_services');
         
         
         //delete appointment calendar
         Route::match(['get','post'],'delete_appointment','App\Http\Controllers\CalendarController@delete_appointment')->name('delete_appointment');
         
         //get appointment date
-        Route::match(['get','post'],'get_appointmentDate/{date}','App\Http\Controllers\AppointmentsController@get_appointmentDate')->name('get_appointmentDate');
+        Route::match(['get','post'],'get_appointmentDate','App\Http\Controllers\AppointmentsController@get_app');
+        
+        Route::match(['get','post'],'get_appointmentDate/{date}/{id}','App\Http\Controllers\AppointmentsController@get_appointmentDate')->name('get_appointmentDate');
 
+        //calendar controller
         //view appointment
         Route::match(['get','post'],'preview_appointment/{id}','App\Http\Controllers\CalendarController@preview_appointment')->name('preview_appointment');
+        Route::match(['get','post'],'get_other_services/{id}','App\Http\Controllers\CalendarController@get_other_services')->name('get_other_services');
+
         
+        //fetch services
+        Route::match(['get','post'],'get_service/{id}','App\Http\Controllers\CalendarController@get_service')->name('get_service');
+
         //registration controller 
         Route::match(['get','post'],'approve_registration','App\Http\Controllers\RegistrationController@approve_registration');
         Route::match(['get','post'],'reject_registration','App\Http\Controllers\RegistrationController@reject_registration');
@@ -109,7 +119,6 @@ Route::middleware([
         Route::get('/appointments', 'App\Http\Controllers\AppointmentsController@appointments_admin')->name('appointments');
         
         //view image
-      
         Route::get('view_identification/{id}','App\Http\Controllers\RegistrationController@view_identification');
 
         // Route::post('register', 'App\Http\Controllers\Controller@register')->name('register');
@@ -123,6 +132,17 @@ Route::middleware([
         Route::get('/get_appointment_id/{content}', 'App\Http\Controllers\VerifyAppointmentController@get_appointment_id')->name('get_appointment_id');
 
         Route::match(['get','post'],'/verify_appointment', 'App\Http\Controllers\VerifyAppointmentController@verify_appointment')->name('verify_appointment');
+
+        // search 
+        //ajax search
+        Route::get('/live_search', 'App\Http\Controllers\LiveSearch@index');
+        Route::get('/live_search/action', 'App\Http\Controllers\LiveSearch@action')->name('live_search.action');
+      
+        //laravel searcn 
+        Route::get('/search', 'App\Http\Controllers\ServicesController@services')->name('search');
+
+        
+
 });
 
 

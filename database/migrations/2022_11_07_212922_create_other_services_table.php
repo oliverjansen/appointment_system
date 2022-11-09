@@ -13,10 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('services', function (Blueprint $table) {
+        Schema::create('other_services', function (Blueprint $table) {
             $table->id();
-            $table->string('service')->nullable();
-            $table->integer('availableslot')->default(0);
+            $table->bigInteger('service_id')->unsigned();
+            $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('other_services')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('services');
+        Schema::dropIfExists('other_services');
     }
 };

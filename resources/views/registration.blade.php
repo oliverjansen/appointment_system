@@ -144,8 +144,7 @@
   </div>
 
   
-
-    <div class="container-fluid mt-5 mb-5 table-responsive w-100" >
+  <div class="container-fluid mt-5 mb-5 table-responsive w-100">
       <div>
         @if (session('success'))
            <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -158,66 +157,59 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
        </div>
         @endif
-    </div>
-                <table class="  table text-align-center table-hover">
-                    <thead>
-                        <tr class="text-center">
-                        <th scope="col">Email</th>
-
-                        <th scope="col">Fullname</th>
-                        <th scope="col">Age</th>
-                        <th scope="col">Gender</th>
-                        <th scope="col">Birthdate</th>
-                        <th scope="col">Address</th>
-                        <th scope="col">Contact No</th>
-                        <th scope="col">ID</th>
-                     
-                        <th scope="col">Status</th>
-
-
-                        <th scope="col" colspan="2" class="text-center">Action</th>
-
-
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($data as $data)
-                        @if ($data->account_type!="admin" )
-                        <tr class="text-center">
-                        <td>{{$data->email}}</td>
-                        <td>{{$data->lastname}},{{$data->firstname}} {{$data->middlename}}</td>
-                        <td>{{$data->age}}</td>
-                        <td>{{$data->gender}}</td>
-                        <td>{{$data->birthdate}}</td>
-                        <td>{{$data->address}}</td>
-                        <td>{{$data->contactnumber}}</td>
-                        <td> <button class="btn btn-sm btn-primary view" value="{{$data->id}}">View</button>
-                        
-                          
-                        </td>
-                        
-                        <td>{{$data->status}}</td>
-                        <td scope="row" colspan=2 class="d-sm-flex">
-                            @if ($data->status !="approved" && $data->status !="rejected" )
-                                <button class="btn btn-sm btn-primary w-100 ml-lg-2 approve"    value="{{$data->id}}" >Approved</button>
-                                <button class="btn btn-sm btn-warning mt-2 mt-lg-0 ml-lg-2 w-100 rejected" value="{{$data->id}}">Reject</button>
-                            @endif
-                            
-                               
-                           
-                        <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-lg-2 w-100 delete" value="{{$data->id}}">Delete</button>
-                        </td>
-                 
-                        </tr>
-                        @endif
-                        @endforeach
-                   
-                    </tbody>
-                </table>
+      </div>
+      <div class="m-5">
+        <table class=" table text-align-center table-hover">
+          <thead>
+              <tr class="text-center">
+                <th scope="col">Email</th>
+                <th scope="col">Fullname</th>
+                <th scope="col">Age</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Birthdate</th>
+                <th scope="col">Address</th>
+                <th scope="col">Contact No</th>
+                <th scope="col">ID</th>
+              
+                <th scope="col">Status</th>
+                <th scope="col" colspan="2" class="text-center">Action</th>
+              </tr>
+          </thead>
+          <tbody>
+              @foreach($data as $data)
+              @if ($data->account_type!="admin" )
+              <tr class="text-center">
+              <td>{{$data->email}}</td>
+              <td>{{$data->lastname}},{{$data->firstname}} {{$data->middlename}}</td>
+              <td>{{$data->age}}</td>
+              <td>{{$data->gender}}</td>
+              <td>{{$data->birthdate}}</td>
+              <td>{{$data->address}}</td>
+              <td>{{$data->contactnumber}}</td>
+              <td> <button class="btn btn-sm btn-primary view" value="{{$data->id}}">View</button>
+              </td>
+              
+              <td>{{$data->status}}</td>
+              <td>
+                  @if ($data->status !="approved" && $data->status !="rejected" )
+                      <button class="btn btn-sm btn-primary w-100 ml-lg-2 approve"    value="{{$data->id}}" >Approved</button>
+                      <button class="btn btn-sm btn-warning mt-2 mt-lg-0 ml-lg-2 w-100 rejected" value="{{$data->id}}">Reject</button>
+                  @endif
+              </td>
+              <td>
+              <button class="btn btn-sm btn-danger delete" value="{{$data->id}}">Delete</button>
+              </td>
+        
+              </tr>
+              @endif
+              @endforeach
           
-    </div>
-
+          </tbody>
+        </table> 
+      </div>
+          
+  
+  </div>
 
 {{-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> --}}
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

@@ -161,90 +161,73 @@
 
   
 
-    <div class="container-fluid mt-5 mb-5 table-responsive w-100" >
-      <div>
-        @if (session('success'))
-           <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-           </div>
-        @elseif (session('danger'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ session('danger') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-       </div>
-        @endif
-        @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+  <div class="container-fluid mt-5 mb-5 table-responsive w-100" >
+    <div>
+      @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+              {{ session('success') }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-        @endif
+      @elseif (session('danger'))
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          {{ session('danger') }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-                <table class="  table text-align-center table-hover">
-                    <thead>
-                      
-                        <tr class="text-center">
-               
-                        <th scope="col">Services</th>
-                        <th scope="col">Category</th>
-                        <th scope="col">Vaccine for Kids</th>
-                        <th scope="col">Vaccine Type</th>
-                        <th scope="col">Concern</th>
-                        <th scope="col">Information</th>
-                        <th scope="col" colspan="2">Appoitnment Date</th>
+      @endif
+      @if ($errors->any())
+      <div class="alert alert-danger">
+          <ul>
+              @foreach ($errors->all() as $error)
+              <li>{{ $error }}</li>
+              @endforeach
+          </ul>
+      </div>
+      @endif
+  </div>
+  <div class="m-5">
 
+    <table class="table text-align-center table-hover">
+        <thead>
 
-                        <th scope="col"  colspan=10 class="text-center">Status</th>
+            <tr class="text-center " >
+            <th scope="col" class="w-25" >Email</th>
+            <th scope="col" class="w-25">Services</th>
+            <th scope="col" class="w-25">Appoitnment Date</th>
+            <th scope="col" class="w-25" colspan="2">Action</th>
 
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($appointments as $data)
+            {{-- @if ($data->account_type!="admin" ) --}}
+            
+            <tr class="text-center ">
+              <td>{{$data->appointment_services}}</td>
+              <td>{{$data->appointment_services}}</td>
+              <td>{{$newDateFormat3 = \Carbon\Carbon::parse($data->appointment_date)->format('d/m/Y');
+              }}</td>
 
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                       @foreach($appointments as $data)
-                        {{-- @if ($data->account_type!="admin" ) --}}
-                        
-                        <tr class="text-center ">
-                 
-                          <td>{{$data->appointment_services}}</td>
-                          <td>{{$data->appointment_category}}</td>
-                          <td>{{$data->appointment_vaccine_category}}</td>
-                          <td>{{$data->appointment_vaccine_type}}</td>
-                          <td>{{$data->appointment_covid_dose}}</td>
-                          <td>{{$data->appointment_medicine}}</td>
-                          <td>{{$data->appointment_concern}}</td>
-                          
-                          <td>{{
-                          $newDateFormat3 = \Carbon\Carbon::parse($data->appointment_date)->format('d/m/Y');
-                     
-                          
-                          }}</td>
-
-                        </td>
-                        
-                        {{-- <td>{{$data->status}}</td> --}}
-                        <td scope="row" colspan=2 class="d-sm-flex">
-                            {{-- @if ($data->status !="approved" && $data->status !="rejected" ) --}}
-                                <button class="btn btn-sm btn-primary w-100 ml-lg-2 approve"    value="{{$data->id}}" >Approved</button>
-                                <button class="btn btn-sm btn-warning mt-2 mt-lg-0 ml-lg-2 w-100 cancel_btn" value="{{$data->id}}">Cancel</button>
-                            {{-- @endif --}}
-                            
-                               
-                           
-                        <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-lg-2 w-100 delete_btn" value="{{$data->id}}">Delete</button>
-                        </td>
-                 
-                        </tr>
-                        {{-- @endif --}}
-                        @endforeach
+            </td>
+            
+            {{-- <td>{{$data->status}}</td> --}}
+            <td scope="row" colspan=2 class="d-sm-flex">
+                {{-- @if ($data->status !="approved" && $data->status !="rejected" ) --}}
+                    <button class="btn btn-sm btn-primary w-100 ml-lg-2 approve"    value="{{$data->id}}" >Reschedule</button>
+                    <button class="btn btn-sm btn-warning mt-2 mt-lg-0 ml-lg-2 w-100 cancel_btn" value="{{$data->id}}">Cancel</button>
+                {{-- @endif --}}
+                
                     
-                    </tbody>
-                </table>
-          
+                
+            <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-lg-2 w-100 delete_btn" value="{{$data->id}}">Delete</button>
+            </td>
+      
+            </tr>
+            {{-- @endif --}}
+            @endforeach
+        
+        </tbody>
+    </table>
+  </div>       
     </div>
 
 

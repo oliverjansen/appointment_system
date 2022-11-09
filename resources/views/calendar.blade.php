@@ -150,13 +150,13 @@
                 <div class="modal-body">
                     <input type="text" name="preview_appointmentservice" id="preview_appointmentservice">
                     
-                    <script type="text/javascript">
+                    {{-- <script type="text/javascript">
                         function service ($service){
                            
                         }  
                         
         
-                    </script>
+                    </script> --}}
                     
                    
                   </div>
@@ -184,6 +184,12 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         
     </div>
+    @elseif(session('warning'))
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ session('warning') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        
+    </div>
     @endif
    
     <div class="row">
@@ -191,30 +197,36 @@
     @if(Auth::User()->account_type=='admin')
     <div id ="calendar_admin" class=" col col-lg-12 col-12 h-50"> 
     @else
-    <div id ="calendar" class=" col col-lg-8 col-12"> 
+    @if($yes != 0)
+        <div id ="calendar" class=" col col-lg-8 col-12"> 
+    @else
+        <div id ="calendar" class=" col col-lg-12 col-12"> 
+            <script>
+                alert("Add Services First!");
+            </script>
+    @endif
+    
     @endif
 
        
         @if(Auth::User()->account_type=='user')
          </div>
-         
+         @if($yes != 0)
                 <div class=" col col-lg-4 col-12 align-items-center justify-content-center" >
                     
                     <form action="{{ url('insert_data') }}" id="insert" method="POST" class= "w-100">
 
                         {{ csrf_field() }}
-                        
+                        <input type="text" name="selected_service_id" id="selected_service_id" hidden>
                         <div class="mt-3">
                             <label for="">Service</label>
                             
-                            <select name="appointmentservice" id="appointmentservice" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                            <select name="appointmentservice" id="appointmentservice" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" >
                                 {{-- <option value="vaccine">Vaccine</option>
                                 <option value="inquiries">Inquiry</option> --}}
-
+                                <option value="" disabled selected hidden>select service...</option>
                                 @foreach ($appointment_service as $value)
-
-                                {{-- <option value="{{ $value->service }}" {{ ( $value->service =='vaccine') ? 'selected' : '' }}>  --}}
-                                    <option value="{{ $value->service }}"> 
+                                    <option value="{{ $value->id }}"> 
                                     {{ $value->service }} 
                             
                                 </option>
@@ -222,29 +234,32 @@
                               @endforeach  
                             </select>
                         </div>
+               
+                       
+                            <div class="mt-3" id="div_appointmentCategory">
+                                <label for="" >Category</label>
+                                <select name="appointmentCategory" id="appointmentCategory" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                                    <option value="" disabled selected hidden>select category...</option>
+                                    @foreach ($category as $value)
+                                        <option value="{{ $value->id }}"> 
+                                            {{ $value->category }} 
+                                        </option>
+                                    
 
-                        <div class="mt-3" id="div_appointmentCategory">
-                            <label for="" >Category</label>
-                            <select name="appointmentCategory" id="appointmentCategory" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-                                @foreach ($category as $value)
-
-                                {{-- <option value="{{ $value->service }}" {{ ( $value->service =='vaccine') ? 'selected' : '' }}>  --}}
-                                    <option value="{{ $value->category }}"> 
-                                    {{ $value->category }} 
-                            
-                                </option>
-                            
-                              @endforeach  
-                            </select>
-                        </div>
+                                    {{-- <option value="{{ $value->service }}" {{ ( $value->service =='vaccine') ? 'selected' : '' }}>  --}}
+                                    
                                 
+                                @endforeach  
+                                </select>
+                            </div>
+                  
                             <div class="mt-3" id="div_vaccine_type_kids">
                                 <label for="">Vaccine Type</label>
-                                <select name="vaccine_category" id="vaccine_category" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                                <select name="vaccine_type_kids" id="vaccine_type_kids" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                                     @foreach ($vaccine_kids as $value)
 
                                     {{-- <option value="{{ $value->service }}" {{ ( $value->service =='vaccine') ? 'selected' : '' }}>  --}}
-                                        <option value="{{ $value->vaccine_type }}"> 
+                                        <option value="{{ $value->id }}"> 
                                         {{ $value->vaccine_type }} 
                                 
                                     </option>
@@ -252,50 +267,42 @@
                                   @endforeach  
                                 </select>
                             </div>
-                            <div class="mt-3" id="div_vaccine_type_adult">
+                            <div class="mt-3" id="div_vaccine_type_covid">
 
-                                <label for="">Vaccine</label>
-                                    <select name="vaccine_type" id="vaccine_type" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-                                        {{-- <option value="tuberculosis">booster </option>
-                                        <option value="inactivated">first dose </option>
-                                        <option value="tuberculosis">second dose </option> --}}
-                                        @foreach ($vaccine_adult as $value)
+                            <label for="">Dose</label>
+                                <select name="vaccine_type_covid" id="vaccine_type_covid" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                                    {{-- <option value="tuberculosis">booster </option>
+                                    <option value="inactivated">first dose </option>
+                                    <option value="tuberculosis">second dose </option> --}}
+                                    <option value="" disabled selected hidden>select dose...</option>
+                                    @foreach ($vaccine_covid as $value)
 
-                                        {{-- <option value="{{ $value->service }}" {{ ( $value->service =='vaccine') ? 'selected' : '' }}>  --}}
-                                            <option value="{{ $value->vaccine_type }}"> 
-                                            {{ $value->vaccine_type }}
-                                            
-                                            
-                    
-                                    
-                                        </option>
-                                    
-                                      @endforeach  
+                                    {{-- <option value="{{ $value->service }}" {{ ( $value->service =='vaccine') ? 'selected' : '' }}>  --}}
+                                        <option value="{{ $value->id }}"> 
+                                        {{ $value->vaccine_type }}
 
-                                    </select>
-                                </div>
+                                    </option>
                                 
-                                <div class="mt-3" id="div_vaccine_type_covid">
-                                    <label for="">Dose</label>
-                                        <select name="appointment_dose" id="appointment_dose" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-                                            <option value="measles">First Dose</option>
-                                            <option value="tuberculosis">Second Dose </option>
-                                            <option value="inactivated">Booster </option>
+                                    @endforeach  
+
+                                </select>
+                            </div>
+                                
+                                <div class="mt-3" id="div_vaccine_type_others">
+                                    <label for="">Others</label>
+                                        <select name="vaccine_type_others" id="vaccine_type_others" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                                            <option value="" disabled selected hidden>select others...</option>
+                                            @foreach ($vaccine_others as $value)
+                                                <option value="{{ $value->id }}"> 
+                                                {{ $value->vaccine_type }}
+                                            </option>
+                                        
+                                          @endforeach 
                                          
                                         </select>
                                     </div>
-                            <div class="mt-3" id="div_information">
-                                <label for="" >Information</label>
-                                <textarea name="" id="information" cols="30" rows="5" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-
-                                </textarea>
-                            </div>
-                            <div class="mt-3" id="div_checkup"> 
-                                <label for="" >Concern</label>
-                                <textarea name="concern" id="concern" cols="30" rows="5" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-
-                                </textarea>
-                            </div>
+                          
+                       
                             
                                 {{-- <div class="mt-3" id="div_laboratory">
                                     <label for="">Already have laboratory?</label>
@@ -307,19 +314,24 @@
                                     </select>
                                 </div> --}}
 
-                                <div class="mt-3" id="div_medicine">
-                                    <label for="">Medicine</label>
-    
-                                        <select name="appointmentvaccinetype" id="appointmentvaccinetype" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                                <div class="mt-3" id="div_other_services">
+                                    <input type="text" id="other_services_name_input" name="other_services_name_input" hidden>
+                                    <label>Category</label>
+
+                                      <select name="appointment_service_others" id="appointment_service_others" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" >
+                                            {{-- <option value="">Select City</option>
                                             @foreach ($medicine as $value)       
                                                 <option value="{{ $value->medicine_type }}"> 
                                                 {{ $value->medicine_type }}
                                                 
                                             </option>
                                         
-                                          @endforeach  
+                                          @endforeach   --}}
                                            
-                                        </select>
+                                        </select> 
+
+                                     
+
                                     </div>
                         <div class="mt-4"id="div_appointment_date">
                                 <label for="">Appointment Date</label>
@@ -333,7 +345,8 @@
 
                             <p id="availableslot" name="availableslot" ></p>
                     </div>
-                        
+
+                            
                                 <div class="mt-5 d-flex align-items-centerz justify-content-center" >
                                 <button type="submit" id="button1" class="btn btn-primary btn-sm  text-align-center w-50" >Submit</button>
                                 </div>
@@ -344,13 +357,10 @@
                             </div> --}}
 
                     </form>
-                        
-
-
-
                 </div>
-            </div>
+        @endif
 
+            </div>
         </div>
         
         @endif   
@@ -456,165 +466,195 @@ $(document).ready(function () {
                 console.log(id);
                 $('#edit_modal').modal('show');
                 $('#calendar_id').val(id);
-
                   
                 }
         });
 
 
 
-        // $('#button1').click(function(){
-        //     let text;
-        //     if (confirm("Are you sure you") == true) {
-        //             $('#insert').submit();
-        //             //   document.getElementById("demo").innerHTML = text;
-        //     } else {
-        //         text = "You canceled!";
-        //     }
-           
-        // });
-
-
-
         $("#appointmentservice").on('change',function(e){
             e.preventDefault();
-      
+           $id_selected_service = $("#appointmentservice").val();
+           
+             
+             $("#selected_service_id").val($id_selected_service);
           
+            $('#available_slot').val("");
+            $('#availableslot').text("");
+            $('#appointmentdate').val("");
 
-            if($(this).val()=="checkup"){
-                $("#div_appointmentCategory").hide();  
-                $("#div_div_informationvaccine_type_kids").hide();  
-                $("#div_vaccine_type_adult").hide();  
 
-                $("#div_appointmentCategory").hide();
-                $("#div_laboratory").hide();
-                $("#div_medicine").hide();
-                $("#div_vaccine_type_covid").hide();  
-                $("#div_information").hide();
-                $("#div_checkup").show();
-
+            if($("#appointmentservice").val() == ""){
+                console.log("100");
+            }
+            var other_services_name = document.getElementById("other_services_name");
             
-            }else if($(this).val()=="vaccine"){
-            
-                console.log($(this).val());
+            if($(this).val()== "1"){
                 $("#div_vaccine_type").show();  
                 $("#div_appointmentCategory").show();
-                $("#div_information").hide(); 
                 $("#div_laboratory").hide();
-                $("#div_medicine").hide();
+                $("#div_other_services").hide();
                 $("#div_vaccine_type_covid").hide();  
-                $("#div_checkup").hide();
-                
-
                 $("#appointmentCategory").on('change',function(e){ 
                     e.preventDefault();
                     console.log($(this).val());
-                    if($(this).val()=="kids"){
-                        $("#div_vaccine_type").show();  
-                        $("#div_appointmentCategory").show();
-                        $("#div_vaccine_type_kids").show();  
-                        $("#div_vaccine_type_adult").hide();  
-                       $("#div_vaccine_type_covid").hide();  
-
-                    }else if ($(this).val()=="adult"){
-                        console.log($(this).val());
-                        $("#div_vaccine_type").show();  
-                        $("#div_appointmentCategory").show();
-                        $("#div_vaccine_type_kids").hide();  
-                        $("#div_vaccine_type_adult").show();
-                        $("#div_vaccine_type_covid").hide();
-
-                        $("#vaccine_type").on('change',function(e){ 
-                            e.preventDefault();
+                        if($(this).val()== "1"){
                             console.log($(this).val());
-                            if ($(this).val()=="covid"){
-                                $("#div_vaccine_type").show();  
-                                 $("#div_appointmentCategory").show();
-                                 $("#div_vaccine_type_covid").show();  
-                            }else {
-                                $("#div_vaccine_type_covid").hide(); 
-                            }
-                        }).change();
-                    }else{
-                        $("#div_appointmentCategory").hide();  
-                        $("#div_vaccine_type_kids").hide();  
-                        $("#div_vaccine_type_adult").hide();  
-                        $("#div_appointmentCategory").hide();
-                        $("#div_laboratory").hide();
-                        $("#div_medicine").hide();
-                        $("#div_vaccine_type_covid").hide();  
-                        $("#div_information").show();
+                            $("#div_vaccine_type").show();  
+                            $("#div_appointmentCategory").show();
+                            $("#div_vaccine_type_kids").show();  
+                            $("#div_vaccine_type_others").hide();  
+                            $("#div_vaccine_type_covid").hide();  
+
+                        }else if ($(this).val()== "2"){
+                            console.log($(this).val());
+                            $("#div_vaccine_type").show();  
+                            $("#div_appointmentCategory").show();
+                            $("#div_vaccine_type_kids").hide();  
+                            $("#div_vaccine_type_others").hide();
+                            $("#div_vaccine_type_covid").show();
+
+                            // $("#vaccine_type").on('change',function(e){ 
+                            //     e.preventDefault();
+                            //     console.log($(this).val());
+                            //     if ($(this).val()=="covid"){
+                            //         $("#div_vaccine_type").show();  
+                            //          $("#div_appointmentCategory").show();
+                            //          $("#div_vaccine_type_covid").show();  
+                            //     }else {
+                            //         $("#div_vaccine_type_covid").hide(); 
+                            //     }
+                            // }).change();
+                        }else if ($(this).val()== "3"){
+                            console.log($(this).val());
+                            $("#div_vaccine_type").show();  
+                            $("#div_appointmentCategory").show();
+                            $("#div_vaccine_type_kids").hide();  
+                            $("#div_vaccine_type_others").show();
+                            $("#div_vaccine_type_covid").hide();
+
+                            // $("#vaccine_type").on('change',function(e){ 
+                            //     e.preventDefault();
+                            //     console.log($(this).val());
+                            //     if ($(this).val()=="covid"){
+                            //         $("#div_vaccine_type").show();  
+                            //          $("#div_appointmentCategory").show();
+                            //          $("#div_vaccine_type_covid").show();  
+                            //     }else {
+                            //         $("#div_vaccine_type_covid").hide(); 
+                            //     }
+                            // }).change();
+                        }else{
+                            console.log($(this).val());
+                            $("#div_vaccine_type_others").show();  
+                            $("#div_vaccine_type").hide();  
+                            $("#div_appointmentCategory").show();
+                            $("#div_vaccine_type_kids").hide();  
+                            $("#div_vaccine_type_covid").hide();
+                        }
                     
-                    }
                 }).change();
                     
-            }else if($(this).val()=="medicine"){
-                $("#div_appointmentCategory").hide();  
-                $("#div_vaccine_type_kids").hide(); 
-                $("#div_vaccine_type_adult").hide(); 
-                $("#div_appointmentCategory").hide();
-                $("#div_information").hide(); 
-                $("#div_medicine").show(); 
-                $("#div_vaccine_type_covid").hide();  
-                $("#div_checkup").hide();
-
-
-
+            
             }else{
-                
-                $("#div_information").show(); 
-                $("#div_medicine").hide(); 
-                $("#div_appointmentCategory").hide();  
-                $("#div_vaccine_type_kids").hide(); 
-                $("#div_vaccine_type_adult").hide(); 
+                $("#div_appointmentCategory").hide();
+                $("#div_other_services").show(); 
+                $("#div_vaccine_type_kids").hide();  
+                $("#div_vaccine_type_others").hide();  
+                $("#div_appointmentCategory").hide();
                 $("#div_laboratory").hide();
-                $("#div_checkup").hide();
+                $("#div_vaccine_type_covid").hide(); 
+                console.log($(this).val());
+                let id = $(this).val();
+                $('#appointment_service_others').empty();
+                $('#appointment_service_others').append(`<option value="0" disabled selected>Processing...</option>`);
+
+                $.ajax({
+                    type: "GET",
+                    url: "/get_other_services/"+id,
+                    success: function (response) {
+                        var response = JSON.parse(response);
+                         console.log(response);   
+                         $('#appointment_service_others').empty();
+                         $('#appointment_service_others').append(`<option value="0" disabled selected>select category...</option>`);
+                         response.forEach(element => {
+                            $('#appointment_service_others').append(`<option value="${element['id']}">${element['other_services']}</option>`);
+                            
+                        });
+                           
+                    }
+                });
+
+              
                
             }
          
 
         }).change();
 
+         
+        $("#appointment_service_others").on('change',function(e){
+            e.preventDefault();
+            console.log($(this).val());
+            var date = $(this).val();
+            // console.log(date);
         
+        
+    }).change();
+
+
         $("#appointmentdate").on('change',function(e){
             e.preventDefault();
-
+            $service_id =  $('#selected_service_id').val();
             var date = $(this).val();
-            console.log(date);
+            // console.log(date);
             $.ajax({
                 type: "GET",
-                url: "/get_appointmentDate/"+date,
+                url: "/get_appointmentDate/"+date+"/"+$service_id,
                 success: function (response) {
-                    console.log(response);
+                    console.log(response);  
 
                     if(response.validDate == "yes"){
-        
                         var len = 0;
-                        if(response['data'] != null){
+                        var leng = 0;
+                      
+                        len = response['appointmentslot'].length;
+                        console.log(len);
+                        if(len > 0){
+                            $service_id =  $('#selected_service_id').val();
+                            console.log("pumasok sa appointment table");
+                                for(var i=0; i<1; i++){
+                                    console.log("pumasok sa appointment table loop");
+                                    console.log(response['appointmentslot'][i].availableslot);
+                                    $('#available_slot').val(response['appointmentslot'][i].appointment_availableslot-1);
+                                    $('#availableslot').text(response['appointmentslot'][i].appointment_availableslot-1);
+                                    $('#availableslot_id').val(response['appointmentslot'][i].id);
+                                 
 
-                            len = response['data'].length;
+                                }
+                        }else{
+                            //no return of available slot
+                            leng = response['individualserviceslot'].length;
+                            console.log("pumasok sa service table");
+                            $service_id =  $('#selected_service_id').val();
+                                for(var i=0; i<leng; i++){
                             
-                            if(len > 0){
-                            for(var i=0; i<1; i++){
-                        
-                            $('#available_slot').val(response['data'][i].availableslot);
-                            $('#availableslot').text(response['data'][i].availableslot);
-                            $('#availableslot_id').val(response['data'][i].id);
-
+                                        if($service_id == response['individualserviceslot'][i].id){
+                                            console.log($service_id);
+                                            $('#available_slot').val(response['individualserviceslot'][i].availableslot);
+                                            $('#availableslot').text(response['individualserviceslot'][i].availableslot);
+                               
+                
+                                        }
                                 
                                 }
-                            }else{
-                                $('#available_slot').val("50");
-                                $('#availableslot').text("50");
-                            }
-                        }else {
-                            $('#available_slot').val("50");
-                            $('#availableslot').text("50");
+                
                         }
+                          
                     }else {
-                        $('#available_slot').val("None!");
-                        $('#availableslot').text("0");
-
+                        // $('#available_slot').val("0");
+                        // $('#availableslot').text("0");
+                        console.log("bobo ko talga1");
                     }
 
                
@@ -627,14 +667,7 @@ $(document).ready(function () {
 
     $('.btn_preview').on('click', function (e) {
         e.preventDefault();
-
-        // $('#preview_modal').modal('show');
-        // $('#preview_appointmentservice').val($('#appointmentservice').val());
-        // console.log();
-
-
-
-        
+ 
 
     }); 
     

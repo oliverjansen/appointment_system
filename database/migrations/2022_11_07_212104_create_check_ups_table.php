@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        // Schema::create('medicines', function (Blueprint $table) {
+        // Schema::create('check_ups', function (Blueprint $table) {
         //     $table->id();
         //     $table->bigInteger('service_id')->unsigned();
         //     $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade')->onUpdate('cascade');
-        //     $table->string('medicine_type')->nullable();
+        //     $table->string('checkup')->nullable();
         //     $table->timestamps();
         // });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('medicines');
+        Schema::dropIfExists('check_ups');
     }
 };

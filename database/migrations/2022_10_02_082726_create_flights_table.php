@@ -13,15 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('flights', function (Blueprint $table) {
-            $table->id()->unique();
-            $table->string('a')->nullable();
-            $table->string('ba')->nullable();
-            $table->string('c')->nullable();
-            $table->string('d')->nullable();
+        // Schema::create('flights', function (Blueprint $table) {
+        //     $table->id()->unique();
+        //     $table->string('a')->nullable();
+        //     $table->string('ba')->nullable();
+        //     $table->string('c')->nullable();
+        //     $table->string('d')->nullable();
 
-            $table->timestamps();
-        });
+        //     $table->timestamps();
+        // });
     }
 
     /**

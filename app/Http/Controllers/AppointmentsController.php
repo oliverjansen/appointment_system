@@ -24,7 +24,10 @@ class AppointmentsController extends Controller
             }
            
     }
+    
+    public function get_app(){
 
+    }
     public function appointments_admin()
     {
 
@@ -49,7 +52,11 @@ class AppointmentsController extends Controller
     protected $global_today=null;
    
     public function insert(Request $request){
-      $appointment = new appointments();
+      $request_service = $request ->input ('appointmentservice');
+      $service_id =  DB::table('services')->where('id',$request_service)->get();
+      if(!$service_id->isEmpty()){
+
+       $appointment = new appointments();
       // $current_id = Auth::User()->id();
         if(Auth::User()->id){
           $current_id = Auth::User()->id;
@@ -72,29 +79,74 @@ class AppointmentsController extends Controller
         if($appointmentDate < $today){
           return redirect()->back()->with('danger', "Invalid Appointment Date!");
         }else{
+         
+          $request_category = $request ->input ('appointmentCategory');
+          $request_category = $request ->input ('appointmentCategory');
 
-        if($request ->input ('appointmentservice') == "vaccine" ){
-          $appointment ->appointment_services = $request ->input ('appointmentservice');
-          $appointment ->appointment_category = $request ->input ('appointmentCategory');
-    
-            if($request ->input ('appointmentCategory') == "kids"){
-              $appointment ->appointment_vaccine_category = $request ->input ('vaccine_category');
-            }else if ($request ->input ('appointmentCategory') == "adult"){
-              $appointment ->appointment_vaccine_type = $request ->input ('vaccine_type');
-              $appointment ->appointment_covid_dose = $request ->input ('appointment_dose');
-              
-            }  
-          }elseif ($request ->input ('appointmentservice') == "medicine"){
-            $appointment ->appointment_services = $request ->input ('appointmentservice');
-            $appointment ->appointment_vaccine_type = $request ->input ('appointmentvaccinetype');
-          }else if($request ->input ('appointmentservice') == "checkup"){
-            $appointment ->appointment_services = $request ->input ('appointmentservice');
-              $appointment ->appointment_concern = $request ->input ('concern');
-          }else{
-            $appointment ->appointment_services = $request ->input ('appointmentservice');
-            $appointment ->appointment_information = $request ->input ('information');
+
+       
+         $categories_id =  DB::table('categories')->where('id',$request_category)->get();
+
+
+        
+         foreach ($service_id as $value) {
+          $service_name = $value->service;
+          $service_id = $value->id;
+         }
+          
+          
+         foreach ($categories_id as $value) {
+          $categories_name = $value->category;
+          $categories_id = $value->id;
           }
+          
       
+          if($service_id == 1){
+            if($request ->input ('appointmentCategory')){
+              $appointment ->appointment_services = $service_name;
+              $appointment ->appointment_vaccine_category = $categories_name;
+
+                if($categories_id == 1){
+                  
+                  $vaccine_id = $request ->input ('vaccine_type_kids');
+                }else if ($categories_id == 2){
+                  $vaccine_id= $request ->input ('vaccine_type_covid');
+                }else if ($categories_id == 3){
+                  $vaccine_id = $request ->input ('vaccine_type_others');
+
+                }else{
+                  $vaccine_id = $request ->input ('vaccine_type_others');
+                }
+
+               $vaccine_id =  DB::table('vaccine')->where('id',$vaccine_id)->get();
+
+               foreach ($vaccine_id as $value) {
+                $vaccine_type = $value->vaccine_type;
+                }
+
+              $appointment ->appointment_vaccine_type = $vaccine_type;
+            
+            }
+          }else{
+            if($request ->get('appointment_service_others')){
+              $request_other_service = $request ->get('appointment_service_others');
+           
+            
+              $categories_other_service_id =  DB::table('services')->join('other_services','services.id',"=",'other_services.service_id')->where('other_services.id',$request_other_service)->get();
+  
+             
+  
+              foreach ($categories_other_service_id as $value) {
+               $other_service_name = $value->service;
+              
+               $other_service_category = $value->other_services;
+              }
+  
+              $appointment ->appointment_services = $other_service_name;
+              $appointment ->appointment_vaccine_category = $other_service_category;
+            }
+       
+          }
     
         // echo $mytime->toDateTimeString();
       
@@ -103,50 +155,66 @@ class AppointmentsController extends Controller
           $appointment ->appointment_date = $appointmentDate;
           $appointment ->appointment_id = $randomAppointmentId;
 
+          $appointment ->service_id = $request_service;
        
-
-
-
-  
               $kk = null;
               if ($appointmentDate == $today) {
-                // $this->$validDate = "yes";
-                // $appointment_slot = appointments::find($today);
-                // $appointment_slot = appointments::find(3);
-                  // $available_slot = $request ->input ('available_slot');
-                  if( DB::table('appointments')->where('availableslot',null)->get()){
-                    $appointment ->availableslot = 49;
+                
+                  if( DB::table('appointments')->where('appointment_availableslot',null)->get()){
+                    $all_serivces_slot = DB::table('services')->where('id',$request_service)->get();
+                    
+                    foreach($all_serivces_slot as $value){
+                      $all_serivces_slot = $value->availableslot;
+                     
+                    }
+                
+                    $appointment ->appointment_availableslot = $all_serivces_slot;
+                    
                   }
+
                     $appointment_slot = $request ->input ('available_slot');
-                    $minus = $appointment_slot -1;
+                    // $minus = $appointment_slot -1;
                     // $appointment_slot ->availableslot = 4;
-                    appointments::where("appointment_date",$appointmentDate)
-                    ->update(['availableslot' => $minus]);
+                    appointments::where("appointment_date",$appointmentDate)->where("service_id",$request_service)->update(['appointment_availableslot' => $appointment_slot]);
   
                     // $appointment_slot->update();
                     // $kk = "may laman";
                   
               } else {
                 // $this->$validDate = "no";
-                  $appointment ->availableslot = "49";
+            
+                $all_serivces_slot = DB::table('services')->where('id',$request_service)->get();
+                foreach($all_serivces_slot as $value){
+                  $all_serivces_slot = $value->availableslot;
+                  
+                }
+                  $appointment ->appointment_availableslot = $all_serivces_slot;
                   $appointment_slot = $request ->input ('available_slot');
-                  $minus = $appointment_slot -1;
+                  // $minus = $appointment_slot -1;
                   appointments::where("appointment_date",$appointmentDate)
-                  ->update(['availableslot' => $minus]);
+                  ->update(['appointment_availableslot' => $appointment_slot]);
                   
               }
           $appointment->save();  
           if(Auth::User()->account_type=='admin'){
             return view('services');
             }else{
-              return redirect()->route('calendar')->with('success', $kk);
+              return redirect()->route('calendar')->with('success', "Appointment Created");
             }
     
        
+        }
+      } else {
+
+        if(Auth::User()->account_type=='admin'){
+          return view('services');
+          }else{
+            return redirect()->route('calendar')->with('warning', "Please insert a service");
+          }
       }
 
 
-    }
+  }
     public function cancel_appointment($id){
         $user_id = appointments::find($id);
         // $service_id = User::find($id);
@@ -158,31 +226,27 @@ class AppointmentsController extends Controller
         ]);
     }
 
-    public function get_appointmentDate($date){
+    public function get_appointmentDate($date,$id){
 
-      // return redirect()->back()->with('danger', $global_today);
-
-      // $service_id = User::find($id);
-      // $date = appointments::search($date);
-       
-
-        
-      //  $userData['data'] = $date1;
-     
-      // $validdate = '1-2-3';
       $today = \Carbon\Carbon::today()->format('Y/m/d');
-     $newdate = \Carbon\Carbon::parse($date)->format('Y/m/d');
-      if($newdate < $today){
+     $appointment_date = \Carbon\Carbon::parse($date)->format('Y/m/d');
+     
+      if($appointment_date < $today){
         $validDate = "no";
       }else{
         $validDate = "yes";
       }
-     
-        $date1 = DB::table('appointments')->where('appointment_date',$date)->get();
-
+    
+        $date1 = DB::table('appointments')->where('appointment_date',$date)->where('service_id',$id)->get();
+        $allservicesslot = DB::table('services')->sum('availableslot');
+        $individualserviceslot= DB::table('services')->get();
+        
         return response()-> json([
           'validDate'=> $validDate,
-          'data'=>$date1,
+          'servicesslot'=>$allservicesslot,
+          'appointmentslot'=>$date1,
+          'individualserviceslot'=> $individualserviceslot,
+         
         ]);
 
       

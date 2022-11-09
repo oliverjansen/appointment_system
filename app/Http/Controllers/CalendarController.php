@@ -8,7 +8,8 @@ use App\Models\appointments;
 use App\Models\services;
 use App\Models\Vaccine;
 use App\Models\Category;
-use App\Models\Medicine;
+// use App\Models\Medicine;
+use App\Models\Other_Services;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\DB;
 
@@ -39,7 +40,20 @@ class CalendarController extends Controller
         $schedules_all = appointments::all();
 
         $category = Category::all();
-        $medicine = Medicine::all();
+        // $medicine = Medicine::all();
+
+        $vaccine = Vaccine::all();
+        $services = services::all();
+
+
+       
+        if($services->isEmpty()){
+            $yes = 0;
+        }else{
+            $yes = 1;
+
+        }
+       
         
         $appointment_service = services::all(); 
 
@@ -48,10 +62,17 @@ class CalendarController extends Controller
         ->where('categories.id',1)
         ->get();
 
-        $vaccine_adult= DB::table('categories')
+        $vaccine_covid= DB::table('categories')
         ->join('vaccine','categories.id',"=",'vaccine.category_id')
         ->where('categories.id',2)
         ->get();
+        
+        $vaccine_others= DB::table('categories')
+        ->join('vaccine','categories.id',"=",'vaccine.category_id')
+        ->where('categories.id',">",2)
+        ->get();
+
+        $data3 = Other_Services::pluck('service_id','other_services');
 
         foreach ($appointments1 as $appointment2) {
             $schedules[] = [
@@ -74,14 +95,14 @@ class CalendarController extends Controller
         ];  
 
         }
-      
+     
         if(Auth::User()->account_type=='admin'){
-            return view ('calendar', compact('schedulesall','schedules','appointment_service','medicine') );
+            return view ('calendar', compact('schedulesall','schedules','appointment_service','category','vaccine','yes') );
         // console.log($appointment_service);
          }else{
             $qrcode = 13;
             // return view ('calendar', ['schedules' =>  $schedules]);
-            return view ('calendar', compact('schedulesall','schedules','appointment_service','vaccine_kids','vaccine_adult','category','medicine','qrcode') );
+            return view ('calendar', compact('schedulesall','schedules','appointment_service','vaccine_kids','vaccine_others','category','qrcode','vaccine','vaccine_covid','yes','data3') );
          }
     }
 
@@ -94,6 +115,45 @@ class CalendarController extends Controller
         // }
 
     }
+
+    public function get_other_services ($id){
+        echo json_encode (DB::table('other_services')->where('service_id',$id)->get());
+        // $other_services = DB::table('other_services')->where('service_id',$id)->get();
+        
+        // return response()->json([
+        //     'other_services'=> $other_services,
+        // ]);
+    }
+
+    public function get_service($id){
+    $id = services::find($id);
+
+    return response()->json([
+        'services'=> $id,
+    ]);
+
+    }
+
+
+    // public function fetch_data(Request $request)
+    // {
+    //     $select = $request->get('select');
+    //     $value = $request->get('value');
+    //     $dependent = $request->get('dependent');
+    
+    //     $data = DB::table('other_services')->where('service_id',$value)->get();
+    
+    //     $output = '<option value="">Select '.ucfirst($dependent).'</option>';
+    //     foreach($data as $row)
+    //     {
+    //     $output .= '<option value="'.$row->$dependent.'">'.$row->$dependent.'</option>';
+    //     }
+    //     echo $output;
+    //     var_dump($output);
+    // }
+
+
+
     public function delete_appointment(Request $request){
 
         $id = $request ->input ('calendar_id');
