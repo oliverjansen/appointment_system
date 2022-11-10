@@ -158,7 +158,24 @@ class CalendarController extends Controller
 
         $id = $request ->input ('calendar_id');
         $delete_appointment= appointments::find($id);
-        $delete_appointment->delete();
+       
+        
+        $update_slot = DB::table('appointments')->where('id',$id)->get();
+       
+        foreach($update_slot as $value){
+            $appointment_date = $value->appointment_date;
+            $service_id = $value->service_id;
+            $appointment_slot = $value->appointment_availableslot;
+           
+        }
+        $update = appointments::where("appointment_date",$appointment_date)->where("service_id",$service_id)->update(['appointment_availableslot' => $appointment_slot+1]);
+        
+       
+
+        // appointments::where("appointment_date",$appointmentDate)
+        // ->update(['appointment_availableslot' => $appointment_slot]);
+
+            $delete_appointment->delete();
       
         if(Auth::User()->account_type=='admin'){
           return redirect()->back()->with('danger', 'Successfully Deleted');

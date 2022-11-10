@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('service')->nullable();
             $table->integer('availableslot')->default(0);
+            $table->string('availability')->nullable();
             $table->timestamps();
         });
     }

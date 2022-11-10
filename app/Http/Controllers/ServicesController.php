@@ -64,6 +64,7 @@ class ServicesController extends Controller
 
       $services_add = new services();
       $services_add ->service = $request ->input ('add_service_input');
+      $services_add ->availability = "Yes";
       $services_add ->availableslot = $request ->input ('add_available_slot');
       $services_add->save();
   
@@ -193,6 +194,7 @@ class ServicesController extends Controller
   $id = $request ->input ('id');
   $appointment = services::find($id);
   $appointment ->service = $request ->input ('service');
+  $appointment ->availability = $request ->input ('choice');
   $appointment ->availableslot = $request ->input ('available_slot');
   $appointment->update();
 

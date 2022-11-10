@@ -32,13 +32,7 @@
             </button>
         </div>
         <div class="modal-body">
-            <div class=" col mt-2 mb-2  float-right">
-                {{-- <div class="row ">
-                    <button type="button" id="qrcode_btn"class="btn btn-primary btn-sm w-25">View QR Code</button>
-                    <button type="button" id="qrcode_btn"class="btn btn-primary btn-sm w-25">Download QR Code</button>
-                </div> --}}
-             
-            </div>
+          
             <div class="col">
                 <form action="{{route('delete_appointment') }}  " method="POST">
                     @csrf
@@ -50,8 +44,8 @@
                     <input type="text" id="delete_medicine_id" name="delete_medicine_id" hidden > 
                     <div class="modal-body">
 
-                    <div class="row">
-                        <div class="col col-12 col-sm-3 mb-5 mb-sm-0">
+                    <div class="row mb-3">
+                        <div class="col  mb-5 mb-sm-0">
                              <div class="row col-12 d-flex justify-content-center" > 
                                     <a href="" id="hide_qrcode"  name="hide_qrcode" style="visibility: hidden;">Hide</a>
                              </div>
@@ -63,55 +57,33 @@
 
                                 </div>
                                 <a href="" id="preview_qrcode" class="" name="preview_qrcode" >View Qr Code</a>
-                            </div>
-                          
-                           
-                            {{-- {!! QrCode::size(120)->generate($qrcode) !!} 
-                            <div class="row col-12 d-flex justify-content-center"> 
-                                <a href="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(400)->generate($qrcode)) !!} " download class="">Downloads</a>
-                            </div>
-                               
-                            @if (session('qrcode'))
-                          
-                                {!! session('qrcode') !!}
-                                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    {{ session('qrcode') }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                               </div>
-
-                                <img src="  {{!! session('qrcode') !!}}" alt="" srcset="">
-                                   
-                            @endif --}}
-
-                            {{-- {!! QrCode::size(110)->generate('oliverjansen') !!} --}}
-                       
+                            </div>        
                         </div>
-                        <div class="col col-12 col-sm-9">
+                       
+                    </div>
+                    <div class="row">
+                        <div class="col">
                             <table class="table table-bordered">
                                 <thead>
-                                  <tr>
+                                  <tr class="text-center">
                                     <th scope="col">Service</th>
-                                    <th scope="col">Details</th>
+                                    <th scope="col">Category</th>
+                                    <th scope="col" style="display:none" id="th_vaccine_type" name="th_vaccine_type">Vaccine Type</th>
                                     <th scope="col">Date</th>
                                
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr>
-                               
+                                  <tr class="text-center">
 
-                                    {{-- <option value="{{ $value->service }}" {{ ( $value->service =='vaccine') ? 'selected' : '' }}>  --}}
                                         <td><p id="service" name="service"></p> </td>
-                                        <td><p id="details" name="details"></p> </td>
+                                        <td><p id="category" name="category"></p> </td>
+                                        <td style="display:none" id="vaccine_type_text_td" name="vaccine_type_text_td"><p style="display:none" id="vaccine_type_text" name="vaccine_type_text"></p> </td>
                                         <td><p id="date" name="date"></p> </td>
                                   </tr>
                                 </tbody>
                               </table>
                         </div>  
-                        
-                                {{-- {{$students}} --}}
-                        
-                       
                     </div>
                 </div>
 
@@ -120,7 +92,7 @@
                 <div class="modal-footer">
                 
                     <button type="submit" id="delete_appointment"class="btn btn-danger btn-sm w-25">Delete</button>
-                    <button type="button" class="btn btn-secondary btn-sm w-25" id="cancel" data-dismiss="modal">cancel</button>
+                    <button type="button" class="btn btn-primary btn-sm w-25" id="cancel" data-dismiss="modal">cancel</button>
                     
                 </div>
                 </form>
@@ -226,11 +198,11 @@
                                 <option value="inquiries">Inquiry</option> --}}
                                 <option value="" disabled selected hidden>select service...</option>
                                 @foreach ($appointment_service as $value)
-                                    <option value="{{ $value->id }}"> 
-                                    {{ $value->service }} 
-                            
-                                </option>
-                            
+                                    @if($value->availability == "Yes")
+                                        <option value="{{ $value->id }}"> 
+                                            {{ $value->service }} 
+                                        </option>
+                                    @endif
                               @endforeach  
                             </select>
                         </div>
@@ -413,6 +385,10 @@ $(document).ready(function () {
                 hide_qrcode.style = "visibility: hidden";
                 preview_qrcode.style = "display:block";
                 qr_code_element.style = "display: none";
+                var vaccine_type_text = document.getElementById("vaccine_type_text");
+                var th_vaccine_type = document.getElementById("th_vaccine_type");
+                var vaccine_type_text_td = document.getElementById("vaccine_type_text_td");
+
 
                 $('#edit_modal').modal('show');
 
@@ -423,9 +399,22 @@ $(document).ready(function () {
                     url: "/preview_appointment/"+ id,
                     success: function (response) {
                         console.log(response);
-
+                       
                        $('#qrcode').val(response.appointment.appointment_id);
                        $('#service').text(response.appointment.appointment_services);
+                       $('#category').text(response.appointment.appointment_vaccine_category);
+                
+                       if(response.appointment.service_id == 1){
+    
+                        vaccine_type_text.style="display:block";
+                        th_vaccine_type.style="display:block";
+                        vaccine_type_text_td.style="display:block";
+                        // $('#th_vaccine_type').text(response.appointment.appointment_vaccine_type);
+                        $('#vaccine_type_text').text(response.appointment.appointment_vaccine_type);
+
+                       }
+                       
+
                        $('#date').text(response.appointment.appointment_date);
                        $('#input_text').val(response.appointment.appointment_id);
                         
@@ -626,9 +615,16 @@ $(document).ready(function () {
                                 for(var i=0; i<1; i++){
                                     console.log("pumasok sa appointment table loop");
                                     console.log(response['appointmentslot'][i].availableslot);
-                                    $('#available_slot').val(response['appointmentslot'][i].appointment_availableslot-1);
-                                    $('#availableslot').text(response['appointmentslot'][i].appointment_availableslot-1);
-                                    $('#availableslot_id').val(response['appointmentslot'][i].id);
+                                    if(response['appointmentslot'][i].appointment_availableslot != 0){
+                                        $('#available_slot').val(response['appointmentslot'][i].appointment_availableslot);
+                                        $('#availableslot').text(response['appointmentslot'][i].appointment_availableslot);
+                                        $('#availableslot_id').val(response['appointmentslot'][i].id);
+                                    }else{
+                                        $('#available_slot').val("0");
+                                        $('#availableslot').text("0");
+                                        $('#availableslot_id').val("0");
+                                    }
+                                   
                                  
 
                                 }
@@ -750,8 +746,8 @@ $(document).ready(function () {
                     
                 var qrcode = new QRCode(qr_code_element, {
                     text: user_input,
-                    width: 200, //128
-                    height: 200,
+                    width: 140, //128
+                    height: 140,
                     colorDark: "#000000",
                     colorLight: "#ffffff",
                     correctLevel: QRCode.CorrectLevel.H

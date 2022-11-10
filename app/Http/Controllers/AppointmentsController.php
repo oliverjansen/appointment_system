@@ -52,6 +52,7 @@ class AppointmentsController extends Controller
     protected $global_today=null;
    
     public function insert(Request $request){
+
       $request_service = $request ->input ('appointmentservice');
       $service_id =  DB::table('services')->where('id',$request_service)->get();
       if(!$service_id->isEmpty()){
@@ -79,6 +80,55 @@ class AppointmentsController extends Controller
         if($appointmentDate < $today){
           return redirect()->back()->with('danger', "Invalid Appointment Date!");
         }else{
+
+          
+          $service_slot=  DB::table('services')->where('id',$request_service)->get();
+          $appointment_slot =  DB::table('appointments')->where('appointment_availableslot','<=',0)->get();
+          
+      
+
+
+          foreach ($appointment_slot as $value) {
+            if ($value->service_id == $request_service) {
+           
+                  if(\Carbon\Carbon::parse($value->appointment_date)->format('Y/m/d') == $appointmentDate ){
+                  
+                    return redirect()->back()->with('danger', "Service is not available");
+                  }
+                
+                   
+           
+        
+            }
+          }
+          
+          // $appointment_max =  DB::table('appointments');
+
+          $appointment_max=  DB::table('users')->join('appointments','users.id',"=",'appointments.user_id')->where('user_id' ,"=", $current_id)->get();
+
+
+          foreach ($appointment_max as $value) {
+            if($value->user_id){
+              return redirect()->back()->with('danger', "You have an ongoing appointment!");
+            }
+
+         
+          
+          }
+       
+
+          // if($appointment_slot){
+           
+          // }
+          
+          // foreach ($appointment_slot as $value){
+          //   if($value->availableslot){
+
+          //   }
+          // }
+          // if($request_service ){
+
+          // }
          
           $request_category = $request ->input ('appointmentCategory');
           $request_category = $request ->input ('appointmentCategory');
@@ -100,7 +150,7 @@ class AppointmentsController extends Controller
           $categories_id = $value->id;
           }
           
-      
+          
           if($service_id == 1){
             if($request ->input ('appointmentCategory')){
               $appointment ->appointment_services = $service_name;
@@ -150,14 +200,17 @@ class AppointmentsController extends Controller
     
         // echo $mytime->toDateTimeString();
       
+
+
       
             $message = $request ->input ('appointmentservice');
           $appointment ->appointment_date = $appointmentDate;
           $appointment ->appointment_id = $randomAppointmentId;
 
           $appointment ->service_id = $request_service;
-       
+        
               $kk = null;
+
               if ($appointmentDate == $today) {
                 
                   if( DB::table('appointments')->where('appointment_availableslot',null)->get()){
@@ -168,15 +221,16 @@ class AppointmentsController extends Controller
                      
                     }
                 
-                    $appointment ->appointment_availableslot = $all_serivces_slot;
+                    $appointment ->appointment_availableslot = $all_serivces_slot-1;
                     
                   }
 
                     $appointment_slot = $request ->input ('available_slot');
-                    // $minus = $appointment_slot -1;
+                    $minus = $appointment_slot -1;
                     // $appointment_slot ->availableslot = 4;
-                    appointments::where("appointment_date",$appointmentDate)->where("service_id",$request_service)->update(['appointment_availableslot' => $appointment_slot]);
-  
+                    $appointment->save();
+                    appointments::where("appointment_date",$appointmentDate)->where("service_id",$request_service)->update(['appointment_availableslot' => $minus]);
+                 
                     // $appointment_slot->update();
                     // $kk = "may laman";
                   
@@ -190,12 +244,15 @@ class AppointmentsController extends Controller
                 }
                   $appointment ->appointment_availableslot = $all_serivces_slot;
                   $appointment_slot = $request ->input ('available_slot');
-                  // $minus = $appointment_slot -1;
+                  $minus = $appointment_slot -1;
+                  $appointment->save();
                   appointments::where("appointment_date",$appointmentDate)
-                  ->update(['appointment_availableslot' => $appointment_slot]);
+                  ->update(['appointment_availableslot' => $minus]);
                   
               }
-          $appointment->save();  
+              // dd($minus);
+          
+        
           if(Auth::User()->account_type=='admin'){
             return view('services');
             }else{

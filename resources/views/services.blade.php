@@ -38,23 +38,26 @@
         </div>
         <div class="modal-body">
 
-             <form action=" {{ route('add_services') }} " method="POST" >
+             <form action=" {{ route('add_services') }} " method="POST"  class="m-2">
                 @csrf
                 {{ csrf_field() }}
                 {{-- <input type="text" id="vaccine_del_id" name="vaccine_del_id" hidden > --}}
-            <div class="form-group">
-                <label for="service" class="col-form-label">Service</label>
-                <input type="text" class="form-control" name="add_service_input" id="add_service_input" required>
-            </div>
-            <div class="form-group">
-                <label for="service" class="col-form-label">Available Slot</label>
-                <input type="text" class="form-control" name="add_available_slot" id="add_available_slot" required>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-primary btn-sm w-25">Save</button>
-                <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">cancel</button>
+                    <div class="form-group">
+                        <label for="service" class="col-form-label">Service</label>
+                        <input type="text" class="form-control" name="add_service_input" id="add_service_input" required>
+                    </div>
                 
-            </div>
+                    <div class="form-group">
+                        <label for="service" class="col-form-label">Available Slot</label>
+                        <input type="number" class="form-control" name="add_available_slot" id="add_available_slot" min="0" required>
+                    </div>
+             
+               
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary btn-sm w-25">Save</button>
+                        <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">cancel</button>
+                        
+                    </div>
             </form>
         </div>
        
@@ -183,7 +186,7 @@
         </div>
         <div class="modal-body">
 
-            <form action=" {{ route('update_services') }} " method="POST">
+            <form action=" {{ route('update_services') }} " method="POST" class="m-2">
                 @csrf
                 {{ csrf_field() }}
                 <input type="text" id="id" name="id" hidden>
@@ -193,7 +196,22 @@
             </div>
             <div class="form-group">
                 <label for="available_slot" class="col-form-label">Available Slot</label>
-                <input type="text" class="form-control" name="available_slot" id="available_slot" required>
+                <input type="number" class="form-control" name="available_slot" id="available_slot" required min="0">
+            </div>
+            <div class="form-group" id="yesandno" name="yesandno">
+                <label for="service" class="col-form-label">Availability</label>
+                    <div class="form-check ">
+                        <input class="form-check-input" type="radio" name="choice"  value="Yes">
+                        <label class="form-check-label" for="Yes" >
+                        Yes
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="choice" value="No">
+                        <label class="form-check-label" for="No" >
+                        No
+                        </label>
+                  </div>    
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-danger btn-sm w-25">Save</button>
@@ -220,7 +238,7 @@
         </div>
         <div class="modal-body">
 
-            <form action=" {{ route('update_other_services') }} " method="POST">
+            <form action=" {{ route('update_other_services') }} " method="POST"  class="m-2">
                 @csrf
                 {{ csrf_field() }}
                 <input type="text" id="edit_other_services_id" name="edit_other_services_id" hidden>
@@ -251,7 +269,7 @@
         </div>
         <div class="modal-body">
 
-            <form action=" {{ route('update_vaccine') }} " method="POST" >
+            <form action=" {{ route('update_vaccine') }} " method="POST"  class="m-2">
                 @csrf
                 {{ csrf_field() }}
                 <input type="text" id="vaccine_del_id" name="vaccine_del_id" hidden >
@@ -283,7 +301,7 @@
         </div>
         <div class="modal-body">
 
-            <form action=" {{ route('update_category') }} " method="POST" >
+            <form action=" {{ route('update_category') }} " method="POST"  class="m-2">
                 @csrf
                 {{ csrf_field() }}
                 <input type="text" id="category_update_id" name="category_update_id" hidden>
@@ -311,7 +329,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
 
-        <form action="{{ url ('delete_category') }} " method="POST">
+        <form action="{{ url ('delete_category') }} " method="POST"  class="m-2">
             @csrf
          
         <div class="modal-header">
@@ -338,7 +356,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
 
-        <form action="{{ url ('delete_services') }} " method="POST">
+        <form action="{{ url ('delete_services') }} " method="POST"  class="m-2">
             @csrf
          
         <div class="modal-header">
@@ -364,7 +382,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
 
-        <form action="{{ route('delete_other_services') }} " method="POST">
+        <form action="{{ route('delete_other_services') }} " method="POST"  class="m-2">
             @csrf
          
         <div class="modal-header">
@@ -393,7 +411,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
 
-        <form action="{{ route('delete_vaccine') }} " method="POST">
+        <form action="{{ route('delete_vaccine') }} " method="POST"  class="m-2">
             @csrf
          
         <div class="modal-header">
@@ -442,14 +460,15 @@
                     <div class=" card-header text-center p-3 font-weight-bold bg-semi-grey">
                         Service Table
                       </div>
-                    <div class="card-body">
+                    <div class="card-body table-responsive">
                         <table class="table table-hover "  >
                             <thead class="">
                                 <tr>
-                                <th scope="col" class="text-center" style="width: 15%">View Fields</th>
-                                <th scope="col" class="text-center w-25" >ID</th>
+                                <th scope="col" class="text-center" >View Fields</th>
+                                <th scope="col" class="text-center" >ID</th>
                                 <th scope="col" class="text-center" >Service</th>
                                 <th scope="col" class="text-center" >Available Slot</th>
+                                <th scope="col" class="text-center" >Availability</th>
                                 <th scope="col"  class="text-center ">Action</th>
                     
                                 </tr>
@@ -480,6 +499,25 @@
                                         <td >{{$service->id}}</td>
                                         <td >{{$service->service}}</td>
                                         <td >{{$service->availableslot}}</td>
+                                        <td class="">
+                                            <div class="">
+                                                @if($service->availability == "Yes")
+                                                    <button class="btn btn-sm mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-circle-fill" viewBox="0 0 16 16">
+                                                        <circle cx="8" cy="8" r="8"/>
+                                                    </svg></button>
+                                                    
+    
+                                                @else
+                                                    <button class="btn btn-sm  mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-circle-fill" viewBox="0 0 16 16">
+                                                        <circle cx="8" cy="8" r="8"/>
+                                                    </svg></button>
+                                                    
+                                                @endif
+                                            </div>
+                                           
+                                        
+                                        </td>
+
 
                                         <td scope="row" class="d-sm-flex justify-content-center">
                                             
@@ -777,6 +815,14 @@
                     $('#service').val(response.service.service)
                     $('#id').val(response.service.id)
                     $('#available_slot').val(response.service.availableslot)
+                    // $('#radio').val(response.service.availability)
+                     if(response.service.availability == "Yes"){
+                   
+                        $('#yesandno').find(':radio[name=choice][value="Yes"]').prop('checked', true);
+                     }else{
+                        $('#yesandno').find(':radio[name=choice][value="No"]').prop('checked', true);
+
+                     }
 
 
                 }
@@ -1051,6 +1097,12 @@
             $('#delete_category_modal').modal('show');
             $('#category_del_id').val(delete_category_id);
         });
+
+        $("#yesandno").on('change',function(e){ 
+            e.preventDefault(); 
+           
+           console.log($('#radio:checked').val());
+        }).change();
 
     });
 </script>
