@@ -174,7 +174,7 @@
     @else
         <div id ="calendar" class=" col col-lg-12 col-12"> 
             <script>
-                alert("Add Services First!");
+                alert("No services available!");
             </script>
     @endif
     
@@ -361,7 +361,7 @@ $(document).ready(function () {
             header: {
                 left: 'prev, next today',
                 center: 'title',
-                right: 'month, agendaweek, agendaDay',
+                right: 'month, agendaweek',
             },
             events: schedules,
             selectable:true,
@@ -430,7 +430,7 @@ $(document).ready(function () {
             header: {
                 left: 'prev, next today',
                 center: 'title',
-                right: 'month, agendaweek, agendaDay',
+                right: 'month, agendaweek ',
             },
             events: schedulesall,
             selectable:true,
@@ -650,7 +650,7 @@ $(document).ready(function () {
                     }else {
                         // $('#available_slot').val("0");
                         // $('#availableslot').text("0");
-                        console.log("bobo ko talga1");
+                        // console.log("bobo ko talga1");
                     }
 
                

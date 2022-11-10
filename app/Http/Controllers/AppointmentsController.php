@@ -62,7 +62,7 @@ class AppointmentsController extends Controller
         if(Auth::User()->id){
           $current_id = Auth::User()->id;
           $contactnumber = Auth::User()->contactnumber;
-
+         
         }
 
 
@@ -148,6 +148,7 @@ class AppointmentsController extends Controller
          foreach ($categories_id as $value) {
           $categories_name = $value->category;
           $categories_id = $value->id;
+         
           }
           
           
@@ -199,8 +200,21 @@ class AppointmentsController extends Controller
           }
     
         // echo $mytime->toDateTimeString();
-      
 
+        $message_schedule = "Service ". $service_name ." has been scheduled!";
+        $expire = Carbon::now()->addHours(48);
+
+        $expiration_date = "\n Expiration Date: \n".\Carbon\Carbon::parse($expire)->format('Y/m/d'." " .'h:m a');
+        $message_appointment = $message_schedule."\n".$expiration_date;
+        
+        //temporary disabled text message
+        // $this->sendMessage($message_appointment, $contactnumber);
+        
+        $appointment_expirationdate = Carbon::now()->addHours(48)->toDateTimeString();
+      
+        $appointment ->appointment_expiration_date = $appointment_expirationdate;
+
+        //==============================================
 
       
             $message = $request ->input ('appointmentservice');
@@ -224,6 +238,10 @@ class AppointmentsController extends Controller
                     $appointment ->appointment_availableslot = $all_serivces_slot-1;
                     
                   }
+
+
+
+
 
                     $appointment_slot = $request ->input ('available_slot');
                     $minus = $appointment_slot -1;
@@ -297,7 +315,8 @@ class AppointmentsController extends Controller
         $date1 = DB::table('appointments')->where('appointment_date',$date)->where('service_id',$id)->get();
         $allservicesslot = DB::table('services')->sum('availableslot');
         $individualserviceslot= DB::table('services')->get();
-        
+
+    
         return response()-> json([
           'validDate'=> $validDate,
           'servicesslot'=>$allservicesslot,
@@ -306,24 +325,40 @@ class AppointmentsController extends Controller
          
         ]);
 
-      
-
- 
-      
+    
     
   }
-  
 
-  // public function date_checker($appointment_date,$today_date){
-
-  //   if ($appointment_date < $today_date ){
-  //     return redirect()->back()->with('danger', 'Invalid Appointment Date!');
-
-  //   }else{
-  //     return true;
-  //   }
-  // }
     
+  public function created_appointment(Request $request){
+    $id = $request ->input ('calcel_id');
+    $canceled_appointment_id = appointments::find($id);
+    $service = $request ->input ('service');
+
+  
+    if($request ->input ('cancel_message') == null){
+      $message ="Your " . $service . " Appointment has been canceled!";
+    }else{
+      $message = $request->input('cancel_message');
+    }
+    $canceled_appointment_id ->appointment_message = $message;
+    $canceled_appointment_id->update();
+  
+// ------------------------------------------------------------------------------------
+    $recipient = $request->input('user_phoneNo');
+
+      $this->sendMessage($message, $recipient);
+
+
+    // ------------------------------------------------------------------------------------
+    if(Auth::User()->account_type=='admin'){
+      return redirect()->back()->with('success', 'Notification Sent!');
+    }else{
+      return redirect()->route('login');
+    }
+  
+  }  
+
 
     public function canceled_appointment(Request $request){
       $id = $request ->input ('calcel_id');

@@ -34,9 +34,23 @@ class VerifyAppointmentController extends Controller
     function get_appointment_id($content){
         // $service_id = User::find($id);
         $data1 = DB::table('appointments')->where('appointment_id',$content)->get();
-        return response()->json([
-              'data'=> $data1
-            ]);
+        if($data1->isEmpty()){
+            return back()->with(['warning' => "No existing appointment!"]);
+        }else{
+
+            foreach ($data1 as $value) {
+                if($value->appointment_status == "success"){
+                    
+                    return back()->with(['success' => "Appointment has already been verified!"]);
+                }
+            }
+
+            return response()->json([
+                'data'=> $data1
+              ]);
+        }
+    
+     
     }
 
     function verify_appointment(Request $request){
@@ -44,17 +58,20 @@ class VerifyAppointmentController extends Controller
       $appointment_date = $request ->input ('appointment_date_hidden');
       
       $service = $request->input('appointment_services_hidden');
-
+        $new_appointment_date = \Carbon\Carbon::parse($request ->input ('appointment_date_hidden'))->format('Y/m/d');
 
     //   $canceled_appointment_id = appointments::find($id);
-    $queue = DB::table('appointments')->where('appointment_date','=',$appointment_date)
+    $queue = DB::table('appointments')->where('appointment_date','=',$new_appointment_date)
     ->get()->max('appointment_queue');
-        if($queue == null){
-            appointments::where("appointment_id",$appointment_id)
-            ->update(['appointment_queue' => 1]);
-        }else{
-            appointments::where("appointment_id",$appointment_id)
-            ->update(['appointment_queue' => $queue+1]);
+    
+ 
+    
+        appointments::where("appointment_id",$appointment_id)
+        ->update(['appointment_queue' => $queue+1]);
+       
+
+        if($queue == 0){
+            $queue = 1;
         }
 
         //sendin message 
@@ -64,8 +81,10 @@ class VerifyAppointmentController extends Controller
         $recipient = $request->input('user_contactnumber_hidden');
 
         $this->sendMessage($messages, $recipient);
-        
-        return back()->with(['success' => $recipient]);
+
+        appointments::where("appointment_date",$new_appointment_date)->where("appointment_id",$appointment_id)->update(['appointment_status' => "success"]);
+
+        return back()->with(['success' => "Residents has been notified about the appointment!"]);
 
     }
   /**

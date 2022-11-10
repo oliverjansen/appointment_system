@@ -30,7 +30,10 @@ class appointments extends Model
         'appointment_message',
         'appointment_queue',
         'availableslot',
-        'appointment_date',  
+        'appointment_status',
+        'appointment_date',
+        'appointment_expiration_date', 
+        // 'appointment_expired',
     ];
         
     public function users (){

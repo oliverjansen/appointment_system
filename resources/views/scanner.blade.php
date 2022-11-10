@@ -7,11 +7,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
        <meta name="csrf-token" content="{{ csrf_token() }}">
         {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" /> --}}
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script> --}}
         {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script> --}}
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <title>Document</title>
+
         <script type="text/javascript" src="{{ asset('instascan.min.js') }}" ></script>
 
     </head>
@@ -191,6 +192,7 @@
                 <div class="row">
                   <div class="col d-flex justify-content-center mt-4 ">
                     <video id="preview" class="w-25 " style="display:none">
+                      
                     </video>
                   </div>
                 </div>
@@ -219,7 +221,9 @@
                         <input type="text" id="appointment_date_hidden" name="appointment_date_hidden" hidden> 
                         <input type="text" id="user_contactnumber_hidden" name="user_contactnumber_hidden" hidden> 
                         <input type="text" id="appointment_services_hidden" name="appointment_services_hidden" hidden> 
-
+                        <input type="text" id="appointment_services_id_hidden" name="appointment_services_id_hidden" hidden> 
+                        
+                        
                         
 
                         <fieldset disabled>
@@ -420,6 +424,8 @@
                                     $('#appointment_id_hidden').val(response['data'][i].appointment_id);
                                     $('#appointment_services').val(response['data'][i].appointment_services);
                                     $('#appointment_services_hidden').val(response['data'][i].appointment_services);
+                                    $('#appointment_services_id_hidden').val(response['data'][i].service_id);
+
 
                                     $('#appointment_date').val(response['data'][i].appointment_date);
                                     $('#appointment_date_hidden').val(response['data'][i].appointment_date);
@@ -431,11 +437,11 @@
                                       }
                                         // x.style.display = "none";
                                       }else{
-                                        alert("no data found!");
+                                        alert("No existing Appointment!");
                                       }
                           
                               }else {
-                                alert("no data found!");
+                                alert("No existing Appointment!");
                               }
                             
                           

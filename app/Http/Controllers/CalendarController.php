@@ -12,8 +12,7 @@ use App\Models\Category;
 use App\Models\Other_Services;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\DB;
-
-
+use Carbon\Carbon;
 
 
 
@@ -56,6 +55,29 @@ class CalendarController extends Controller
        
         
         $appointment_service = services::all(); 
+        $current_date =Carbon::now()->toDateTimeString();
+
+        // appointments::where('post_id',$id)->delete();
+
+        $appointment_expire = appointments::all(); 
+        $pending = "pending";
+        
+      appointments::where('appointment_expiration_date',"<=",$current_date)->where('appointment_status',$pending)->delete();
+        
+    
+        // foreach ($appointment_expire as $value) {
+           
+        //     if($value->appointment_expiration_date){
+        //         if($value->appointment_expiration_date <= $current_date){
+        //             $delete_expired_appointment = appointments::find($value->id);
+        //             // dd($delete_expired_appointment);
+        //             $delete_expired_appointment->delete();
+        //         }
+                
+        //     }else{
+                
+        //     }
+        // }
 
         $vaccine_kids= DB::table('categories')
         ->join('vaccine','categories.id',"=",'vaccine.category_id')
