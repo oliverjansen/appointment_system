@@ -223,6 +223,7 @@ public function update_vaccine(Request $request){
 } 
 
 //delete services
+
  public function delete_services (Request $request){
   $id = $request ->input ('service_del_id');
   $service_del= services::find($id);

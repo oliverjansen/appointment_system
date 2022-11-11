@@ -167,8 +167,9 @@
     <div class="row">
    
     @if(Auth::User()->account_type=='admin')
-    <div id ="calendar_admin" class=" col col-lg-12 col-12 h-50"> 
+         <div id ="calendar_admin" class=" col col-lg-12 col-12 h-50"> 
     @else
+    
     @if($yes != 0)
         <div id ="calendar" class=" col col-lg-8 col-12"> 
     @else
@@ -363,6 +364,7 @@ $(document).ready(function () {
                 center: 'title',
                 right: 'month, agendaweek',
             },
+            
             events: schedules,
             selectable:true,
             selectHelper:true,
@@ -425,14 +427,14 @@ $(document).ready(function () {
             }
         });
 
-        var schedulesall = @json($schedulesall);
+        var schedules = @json($schedules);
         $('#calendar_admin').fullCalendar({
             header: {
                 left: 'prev, next today',
                 center: 'title',
                 right: 'month, agendaweek ',
             },
-            events: schedulesall,
+            events: schedules,
             selectable:true,
             selectHelper:true,
             select: function (start, end, allDays){

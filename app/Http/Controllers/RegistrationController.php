@@ -5,16 +5,41 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Vaccine;
+use Illuminate\Support\Facades\DB;
+
 class RegistrationController extends Controller
 {
-    function registration(){
-         $data = User::all();
+    function registration(Request $request){
+         $datas = User::paginate(10);
+
+         if ($request->has('search_registration')) {
+          $datas = DB::table('users')->where('id','LIKE','%'.$request->search_registration.'%')
+          ->orWhere('firstname','LIKE','%'.$request->search_registration.'%')
+          ->orWhere('middlename','LIKE','%'.$request->search_registration.'%')
+          ->orWhere('lastname','LIKE','%'.$request->search_registration.'%')
+          ->orWhere('gender','LIKE','%'.$request->search_registration.'%')
+          ->orWhere('birthdate','LIKE','%'.$request->search_registration.'%')
+          ->orWhere('age','LIKE','%'.$request->search_registration.'%')
+          ->orWhere('identification','LIKE','%'.$request->search_registration.'%')
+          ->orWhere('identificationtype','LIKE','%'.$request->search_registration.'%')
+          ->orWhere('contactnumber','LIKE','%'.$request->search_registration.'%')
+          ->orWhere('address','LIKE','%'.$request->search_registration.'%')
+          ->orWhere('email','LIKE','%'.$request->search_registration.'%')
+          ->orWhere('account_type','LIKE','%'.$request->search_registration.'%')
+          ->orWhere('status','LIKE','%'.$request->search_registration.'%')
+          ->orWhere('contactnumber','LIKE','%'.$request->search_registration.'%')
+          ->paginate(10);
+          // dd($users_search);
+        }else{
+          $datas = DB::table('users')->paginate(10);
+        }
 
         if(Auth::User()->account_type=='admin'){
-            return view ('registration',compact('data'));
-            }else{
-                return redirect()->route('calendar');
-    }
+          
+            return view ('registration',compact('datas'));
+          }else{
+              return redirect()->route('calendar');
+  }
     }
 
     function approve_registration(Request $request){
@@ -73,6 +98,8 @@ class RegistrationController extends Controller
     
     
      }  
+
+
         
     
    

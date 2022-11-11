@@ -30,13 +30,16 @@ class CalendarController extends Controller
         if(Auth::User()->id){
             $id = Auth::User()->id;
         }
-        
-        $appointments1 = DB::table('users')
-        ->join('appointments','users.id',"=",'appointments.user_id')
-        ->where('users.id',$id)
-        ->get();
+        if(Auth::User()->account_type=='user'){    
+        $schedule_calendar = DB::table('appointments')->where('appointment_expired',"!=","yes")->where('user_id',$id)->get();
 
-        $schedules_all = appointments::all();
+        }else{
+                    
+        $schedule_calendar = DB::table('appointments')->where('appointment_expired',"!=","yes")->get();
+
+        }
+
+    
 
         $category = Category::all();
         // $medicine = Medicine::all();
@@ -57,27 +60,14 @@ class CalendarController extends Controller
         $appointment_service = services::all(); 
         $current_date =Carbon::now()->toDateTimeString();
 
-        // appointments::where('post_id',$id)->delete();
+    
 
         $appointment_expire = appointments::all(); 
         $pending = "pending";
         
-      appointments::where('appointment_expiration_date',"<=",$current_date)->where('appointment_status',$pending)->delete();
+      appointments::where('appointment_expiration_date',"<=",$current_date)->where('appointment_status',$pending)->update(['appointment_expired' => "yes"]);
         
-    
-        // foreach ($appointment_expire as $value) {
-           
-        //     if($value->appointment_expiration_date){
-        //         if($value->appointment_expiration_date <= $current_date){
-        //             $delete_expired_appointment = appointments::find($value->id);
-        //             // dd($delete_expired_appointment);
-        //             $delete_expired_appointment->delete();
-        //         }
-                
-        //     }else{
-                
-        //     }
-        // }
+
 
         $vaccine_kids= DB::table('categories')
         ->join('vaccine','categories.id',"=",'vaccine.category_id')
@@ -95,36 +85,48 @@ class CalendarController extends Controller
         ->get();
 
         $data3 = Other_Services::pluck('service_id','other_services');
+        
+       
+        $color = '#0AA52B';
 
-        foreach ($appointments1 as $appointment2) {
+        foreach ($schedule_calendar as $value) {
+            $color = null;
+            if ($value->service_id == 1){
+                $color = '#0AA52B';
+            }else if ($value->service_id == 2){
+                $color = '#3DD0F7';
+            }else if ($value->service_id == 3){
+                $color = '#E9F73D ';
+            }else if ($value->service_id == 4){
+                $color = '##3D9AF7';
+            }else if ($value->service_id == 5){
+                $color = '#F73DE4 ';
+            }else if ($value->service_id == 6){
+                $color = '#F78F3D';
+            }else{
+                $color = '#6ED8F1';
+            }
+           
             $schedules[] = [
-                'id' =>  $appointment2->id,
-                'title' => $appointment2->appointment_services,
-                'start' => $appointment2->appointment_date,
+                'id' =>  $value->id,
+                'title' => $value->appointment_services,
+                'start' => $value->appointment_date,
+                'color' => $color,
+                'textColor'=> 'white'
                 // 'vaccinetype' => $appointment2->vaccinetype,
                 // 'person' => $appointment2->person,
         ];  
 
         }
 
-        foreach ($schedules_all as $appointment2) {
-            $schedulesall[] = [
-                'id' =>  $appointment2->id,
-                'title' => $appointment2->appointment_services,
-                'start' => $appointment2->appointment_date,
-                // 'vaccinetype' => $appointment2->vaccinetype,
-                // 'person' => $appointment2->person,
-        ];  
-
-        }
      
         if(Auth::User()->account_type=='admin'){
-            return view ('calendar', compact('schedulesall','schedules','appointment_service','category','vaccine','yes') );
+            return view ('calendar', compact('schedules','appointment_service','category','vaccine','yes') );
         // console.log($appointment_service);
          }else{
             $qrcode = 13;
             // return view ('calendar', ['schedules' =>  $schedules]);
-            return view ('calendar', compact('schedulesall','schedules','appointment_service','vaccine_kids','vaccine_others','category','qrcode','vaccine','vaccine_covid','yes','data3') );
+            return view ('calendar', compact('schedules','appointment_service','vaccine_kids','vaccine_others','category','qrcode','vaccine','vaccine_covid','yes','data3') );
          }
     }
 

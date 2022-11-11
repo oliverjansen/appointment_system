@@ -141,6 +141,8 @@ Route::middleware([
         //laravel searcn 
         Route::get('/search', 'App\Http\Controllers\ServicesController@services')->name('search');
 
+        //registation search 
+        Route::get('/search_registration', 'App\Http\Controllers\RegistrationController@registration')->name('search_registration');
         
 
 });

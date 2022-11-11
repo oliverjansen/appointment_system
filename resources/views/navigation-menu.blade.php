@@ -40,9 +40,9 @@
                     <x-jet-nav-link href="{{ route('appointments') }}" :active="request()->routeIs('appointments')">
                         {{ __('Appointments') }}
                     </x-jet-nav-link>
-                    <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                    {{-- <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Add Post') }}
-                    </x-jet-nav-link>
+                    </x-jet-nav-link> --}}
                 @else
                 <x-jet-nav-link href="{{ route('calendar') }}" :active="request()->routeIs('calendar')">
                         {{ __('Calendar') }}
@@ -194,9 +194,9 @@
                     <!-- <x-jet-responsive-nav-link href="{{ route('workers') }}" :active="request()->routeIs('workers')">
                         {{ __('Workers') }}
                     </x-jet-responsive-nav-link> -->
-                    <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                    {{-- <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Add Post') }}
-                    </x-jet-responsive-nav-link>
+                    </x-jet-responsive-nav-link> --}}
             
 
         </div>

@@ -83,7 +83,7 @@ class AppointmentsController extends Controller
 
           
           $service_slot=  DB::table('services')->where('id',$request_service)->get();
-          $appointment_slot =  DB::table('appointments')->where('appointment_availableslot','<=',0)->get();
+          $appointment_slot =  DB::table('appointments')->where('appointment_availableslot','<=',0)->where('appointment_expired',"no")->get();
           
       
 
@@ -104,7 +104,7 @@ class AppointmentsController extends Controller
           
           // $appointment_max =  DB::table('appointments');
 
-          $appointment_max=  DB::table('users')->join('appointments','users.id',"=",'appointments.user_id')->where('user_id' ,"=", $current_id)->get();
+          $appointment_max=  DB::table('users')->join('appointments','users.id',"=",'appointments.user_id')->where('user_id' ,"=", $current_id)->where('appointment_expired',"no")->get();
 
 
           foreach ($appointment_max as $value) {

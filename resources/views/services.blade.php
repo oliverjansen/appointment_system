@@ -469,7 +469,7 @@
                                 <th scope="col" class="text-center" >Service</th>
                                 <th scope="col" class="text-center" >Available Slot</th>
                                 <th scope="col" class="text-center" >Availability</th>
-                                <th scope="col"  class="text-center ">Action</th>
+                                <th scope="col" colspan="3" class="text-center ">Action</th>
                     
                                 </tr>
                             </thead>
@@ -506,6 +506,7 @@
                                                         <circle cx="8" cy="8" r="8"/>
                                                     </svg></button>
                                                     
+                                                
     
                                                 @else
                                                     <button class="btn btn-sm  mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-circle-fill" viewBox="0 0 16 16">
