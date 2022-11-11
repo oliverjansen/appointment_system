@@ -65,7 +65,7 @@ class CalendarController extends Controller
         $appointment_expire = appointments::all(); 
         $pending = "pending";
         
-      appointments::where('appointment_expiration_date',"<=",$current_date)->where('appointment_status',$pending)->update(['appointment_expired' => "yes"]);
+      appointments::where('appointment_expiration_date',"<=",$current_date)->where('appointment_status',$pending)->update(['appointment_expired' => "yes",'appointment_status' => "expired"]);
         
 
 

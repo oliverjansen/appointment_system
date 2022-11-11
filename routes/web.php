@@ -144,6 +144,10 @@ Route::middleware([
         //registation search 
         Route::get('/search_registration', 'App\Http\Controllers\RegistrationController@registration')->name('search_registration');
         
+        //appointments searrch
+        Route::get('/search_appointments', 'App\Http\Controllers\AppointmentsController@appointments_admin')->name('search_appointments');
+       
+        
 
 });
 

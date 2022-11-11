@@ -25,27 +25,37 @@ class AppointmentsController extends Controller
            
     }
     
+
     public function get_app(){
 
     }
-    public function appointments_admin()
+    public function appointments_admin(Request $request)
     {
 
       // $appointments = appointments::all();
       $user = User::with('appointments')->get();
       $appointments = appointments::with('users')->get();
 
+      if ($request->has('search_appointments')) {
+        $appointments = DB::table('users')->join('appointments','users.id',"=",'appointments.user_id')->where('email','LIKE','%'.$request->search_appointments.'%')->orWhere('appointment_services','LIKE','%'.$request->search_appointments.'%')
+        ->orWhere('appointment_vaccine_category','LIKE','%'.$request->search_appointments.'%')
+        ->orWhere('appointment_vaccine_type','LIKE','%'.$request->search_appointments.'%')
+        ->orWhere('appointment_date','LIKE','%'.$request->search_appointments.'%')
+        ->orWhere('appointment_expiration_date','LIKE','%'.$request->search_appointments.'%')
+        ->orWhere('appointment_expired','LIKE','%'.$request->search_appointments.'%')
+        ->orWhere('appointment_status','LIKE','%'.$request->search_appointments.'%')
+        ->paginate(10);
+      }else{
 
-      // $appointments = DB::table('users')
-      // ->join('appointments','users.id',"=",'appointments.user_id')
-      // ->select('appointments.*')
-      // ->get();
+        $appointments = DB::table('users')->join('appointments','users.id',"=",'appointments.user_id')->paginate(10);
+      }
 
+  
         if(Auth::User()->account_type=='admin'){
             return view('appointment',compact('appointments','user'));
-            }else{
-              return redirect()->route('appointment');
-            }
+          }else{
+            return redirect()->route('appointment');
+          }
       
     }
     protected $global_appointmentDate;
