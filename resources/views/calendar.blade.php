@@ -25,78 +25,65 @@
     <div class="modal fade bd-example-modal-lg" id="edit_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Preview Appointment</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Preview Appointment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
         <div class="modal-body">
           
             <div class="col">
                 <form action="{{route('delete_appointment') }}  " method="POST">
-                    @csrf
-                    {{ csrf_field() }}
-                    <input type="text" id="calendar_id" name="calendar_id" hidden >
+                        @csrf
+                        {{ csrf_field() }}
+                        <input type="text" id="calendar_id" name="calendar_id" hidden >
+                        <input type="text" id="appointment_date" name="appointment_date"hidden >
+                        <input type="text" id="qrcode" name="qrcode" hidden>
+                        <input type="text" id="delete_medicine_id" name="delete_medicine_id" hidden > 
+                        <div class="modal-body">
 
-                    <input type="text" id="appointment_date" name="appointment_date"hidden >
-                    <input type="text" id="qrcode" name="qrcode" hidden>
-                    <input type="text" id="delete_medicine_id" name="delete_medicine_id" hidden > 
-                    <div class="modal-body">
-
-                    <div class="row mb-3">
-                        <div class="col  mb-5 mb-sm-0">
-                             <div class="row col-12 d-flex justify-content-center" > 
+                        <div class="row mb-5">
+                            <div class="col  mb-5 mb-sm-0">
+                                <div class="row col-12 d-flex justify-content-center" > 
                                     <a href="" id="hide_qrcode"  name="hide_qrcode" style="visibility: hidden;">Hide</a>
-                             </div>
-                            <div class="row col-12 d-flex justify-content-center" > 
-                            
-                               
-                                <input type="text" id="input_text" name="input_text" autocomplete="off" hidden>
-                                <div class="qr-code text-center" style >
-
                                 </div>
-                                <a href="" id="preview_qrcode" class="" name="preview_qrcode" >View Qr Code</a>
-                            </div>        
+                                <div class="row col-12 d-flex justify-content-center" >
+                                    <input type="text" id="input_text" name="input_text" autocomplete="off" hidden>
+                                    <div class="qr-code text-center" style >
+                                    </div>
+                                    <a href="" id="preview_qrcode" class="" name="preview_qrcode" >View QR code</a>
+                                </div>        
+                            </div>
                         </div>
-                       
+                        <div class="row">
+                            <div class="col">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr class="text-center">
+                                        <th scope="col">Service</th>
+                                        <th scope="col">Category</th>
+                                        <th scope="col" style="display:none" id="th_vaccine_type" name="th_vaccine_type">Vaccine Type</th>
+                                        <th scope="col">Date</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="text-center">
+                                            <td><p id="service" name="service"></p> </td>
+                                            <td><p id="category" name="category"></p> </td>
+                                            <td style="display:none" id="vaccine_type_text_td" name="vaccine_type_text_td"><p style="display:none" id="vaccine_type_text" name="vaccine_type_text"></p> </td>
+                                            <td><p id="date" name="date"></p> </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>  
+                        </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <table class="table table-bordered">
-                                <thead>
-                                  <tr class="text-center">
-                                    <th scope="col">Service</th>
-                                    <th scope="col">Category</th>
-                                    <th scope="col" style="display:none" id="th_vaccine_type" name="th_vaccine_type">Vaccine Type</th>
-                                    <th scope="col">Date</th>
-                               
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr class="text-center">
-
-                                        <td><p id="service" name="service"></p> </td>
-                                        <td><p id="category" name="category"></p> </td>
-                                        <td style="display:none" id="vaccine_type_text_td" name="vaccine_type_text_td"><p style="display:none" id="vaccine_type_text" name="vaccine_type_text"></p> </td>
-                                        <td><p id="date" name="date"></p> </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                        </div>  
+                    <div class="modal-footer">
+                        <button type="submit" id="delete_appointment"class="btn btn-danger btn-sm w-25">Delete</button>
+                        <button type="button" class="btn btn-primary btn-sm w-25" id="cancel" data-dismiss="modal">cancel</button>
                     </div>
-                </div>
-
-
-
-                <div class="modal-footer">
-                
-                    <button type="submit" id="delete_appointment"class="btn btn-danger btn-sm w-25">Delete</button>
-                    <button type="button" class="btn btn-primary btn-sm w-25" id="cancel" data-dismiss="modal">cancel</button>
-                    
-                </div>
-                </form>
-                            
+                </form>              
             </div>
         </div>
        
@@ -121,16 +108,6 @@
                 <input type="text" id="check" name="check">
                 <div class="modal-body">
                     <input type="text" name="preview_appointmentservice" id="preview_appointmentservice">
-                    
-                    {{-- <script type="text/javascript">
-                        function service ($service){
-                           
-                        }  
-                        
-        
-                    </script> --}}
-                    
-                   
                   </div>
             <div class="modal-footer">
                 <button type="button" id="delete_appointment"class="btn btn-primary btn-sm w-50">Download QR Code</button>
@@ -195,8 +172,6 @@
                             <label for="">Service</label>
                             
                             <select name="appointmentservice" id="appointmentservice" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" >
-                                {{-- <option value="vaccine">Vaccine</option>
-                                <option value="inquiries">Inquiry</option> --}}
                                 <option value="" disabled selected hidden>select service...</option>
                                 @foreach ($appointment_service as $value)
                                     @if($value->availability == "Yes")
@@ -210,14 +185,15 @@
                
                        
                             <div class="mt-3" id="div_appointmentCategory">
-                                <label for="" >Category</label>
+                                <label for="" >Vaccine Category</label>
                                 <select name="appointmentCategory" id="appointmentCategory" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                                     <option value="" disabled selected hidden>select category...</option>
                                     @foreach ($category as $value)
-                                        <option value="{{ $value->id }}"> 
-                                            {{ $value->category }} 
-                                        </option>
-                                    
+                                        @if($value->category_availability == "Yes")
+                                            <option value="{{ $value->id }}"> 
+                                                {{ $value->category }} 
+                                            </option>
+                                        @endif
 
                                     {{-- <option value="{{ $value->service }}" {{ ( $value->service =='vaccine') ? 'selected' : '' }}>  --}}
                                     
@@ -230,11 +206,10 @@
                                 <label for="">Vaccine Type</label>
                                 <select name="vaccine_type_kids" id="vaccine_type_kids" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                                     @foreach ($vaccine_kids as $value)
-
-                                    {{-- <option value="{{ $value->service }}" {{ ( $value->service =='vaccine') ? 'selected' : '' }}>  --}}
-                                        <option value="{{ $value->id }}"> 
-                                        {{ $value->vaccine_type }} 
-                                
+                                        @if($value->vaccine_availability == "Yes")
+                                            <option value="{{ $value->id }}"> 
+                                            {{ $value->vaccine_type }} 
+                                         @endif   
                                     </option>
                                 
                                   @endforeach  
@@ -244,15 +219,13 @@
 
                             <label for="">Dose</label>
                                 <select name="vaccine_type_covid" id="vaccine_type_covid" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-                                    {{-- <option value="tuberculosis">booster </option>
-                                    <option value="inactivated">first dose </option>
-                                    <option value="tuberculosis">second dose </option> --}}
                                     <option value="" disabled selected hidden>select dose...</option>
                                     @foreach ($vaccine_covid as $value)
-
+                                        @if($value->vaccine_availability == "Yes")
                                     {{-- <option value="{{ $value->service }}" {{ ( $value->service =='vaccine') ? 'selected' : '' }}>  --}}
                                         <option value="{{ $value->id }}"> 
                                         {{ $value->vaccine_type }}
+                                        @endif
 
                                     </option>
                                 
@@ -266,30 +239,18 @@
                                         <select name="vaccine_type_others" id="vaccine_type_others" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                                             <option value="" disabled selected hidden>select others...</option>
                                             @foreach ($vaccine_others as $value)
-                                                <option value="{{ $value->id }}"> 
-                                                {{ $value->vaccine_type }}
-                                            </option>
-                                        
+                                                {{-- @if($value->vaccine_availability == "yes") --}}
+                                                    <option value="{{ $value->id }}"> 
+                                                        {{ $value->vaccine_type }}
+                                                    </option>
+                                                {{-- @endif --}}
                                           @endforeach 
                                          
                                         </select>
                                     </div>
-                          
-                       
-                            
-                                {{-- <div class="mt-3" id="div_laboratory">
-                                    <label for="">Already have laboratory?</label>
-                                        
-                                        <option value="measles">Measles</option>
-                                        <option value="tuberculosis">Tuberculosis </option>
-                                        <option value="inactivated">Inactivated polio </option>
-                                        <option value="tuberculosis">Tuberculosis </option>
-                                    </select>
-                                </div> --}}
-
                                 <div class="mt-3" id="div_other_services">
                                     <input type="text" id="other_services_name_input" name="other_services_name_input" hidden>
-                                    <label>Category</label>
+                                    <label id="other_services_input" name="other_services_input"></label>
 
                                       <select name="appointment_service_others" id="appointment_service_others" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" >
                                             {{-- <option value="">Select City</option>
@@ -313,15 +274,10 @@
                         <div class="mt-5"id="div_appointment_date">
                             <label for="">Availableslot</label>
                             <input type="text" id="available_slot" name="available_slot" :value="old('available_slot')"  autofocus autocomplete="available_slot" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" hidden>
-
-                            {{-- <input type="text" id="availableslot_id" name="availableslot_id" :value="old('availableslot_id')" required autofocus autocomplete="availableslot_id" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" > --}}
-
                             <p id="availableslot" name="availableslot" ></p>
-                    </div>
-
-                            
+                        </div>
                                 <div class="mt-5 d-flex align-items-centerz justify-content-center" >
-                                <button type="submit" id="button1" class="btn btn-primary btn-sm  text-align-center w-50" >Submit</button>
+                                <button type="submit" id="button1" class="btn btn-primary btn-sm  text-align-center w-50 create_appointment_btn" >Submit</button>
                                 </div>
 
                                 {{-- <div class="mt-5 d-flex align-items-center justify-content-center">
@@ -369,21 +325,11 @@ $(document).ready(function () {
             selectable:true,
             selectHelper:true,
             select: function (start, end, allDays){
-                // console.log(start);
-
-                // $('#edit_modal').modal('show');
-
-                // $('#delete_appointment').click(function(e) {
-                //     e.preventDefault();
-                    
-
-                // });
-                
 
             }, 
             eventClick: function(event){
                 var id = event.id;
-                console.log(id);
+                // console.log(id);
                 hide_qrcode.style = "visibility: hidden";
                 preview_qrcode.style = "display:block";
                 qr_code_element.style = "display: none";
@@ -400,7 +346,7 @@ $(document).ready(function () {
                     type: "GET",
                     url: "/preview_appointment/"+ id,
                     success: function (response) {
-                        console.log(response);
+                        // console.log(response);
                        
                        $('#qrcode').val(response.appointment.appointment_id);
                        $('#service').text(response.appointment.appointment_services);
@@ -411,7 +357,7 @@ $(document).ready(function () {
                         vaccine_type_text.style="display:block";
                         th_vaccine_type.style="display:block";
                         vaccine_type_text_td.style="display:block";
-                        // $('#th_vaccine_type').text(response.appointment.appointment_vaccine_type);
+                  
                         $('#vaccine_type_text').text(response.appointment.appointment_vaccine_type);
 
                        }
@@ -438,23 +384,13 @@ $(document).ready(function () {
             selectable:true,
             selectHelper:true,
             select: function (start, end, allDays){
-                // console.log(start);
-
-                // $('#edit_modal').modal('show');
-
-                // $('#delete_appointment').click(function(e) {
-                //     e.preventDefault();
-                    
-
-                // });
-                
 
             }, 
             eventClick: function(event){
                 event.jsEvent.preventDefault();
                 var id = event.id;
                 
-                console.log(id);
+                // console.log(id);
                 $('#edit_modal').modal('show');
                 $('#calendar_id').val(id);
                   
@@ -476,7 +412,7 @@ $(document).ready(function () {
 
 
             if($("#appointmentservice").val() == ""){
-                console.log("100");
+                // console.log("100");
             }
             var other_services_name = document.getElementById("other_services_name");
             
@@ -488,9 +424,9 @@ $(document).ready(function () {
                 $("#div_vaccine_type_covid").hide();  
                 $("#appointmentCategory").on('change',function(e){ 
                     e.preventDefault();
-                    console.log($(this).val());
+                    // console.log($(this).val());
                         if($(this).val()== "1"){
-                            console.log($(this).val());
+                            // console.log($(this).val());
                             $("#div_vaccine_type").show();  
                             $("#div_appointmentCategory").show();
                             $("#div_vaccine_type_kids").show();  
@@ -498,45 +434,23 @@ $(document).ready(function () {
                             $("#div_vaccine_type_covid").hide();  
 
                         }else if ($(this).val()== "2"){
-                            console.log($(this).val());
+                            // console.log($(this).val());
                             $("#div_vaccine_type").show();  
                             $("#div_appointmentCategory").show();
                             $("#div_vaccine_type_kids").hide();  
                             $("#div_vaccine_type_others").hide();
                             $("#div_vaccine_type_covid").show();
 
-                            // $("#vaccine_type").on('change',function(e){ 
-                            //     e.preventDefault();
-                            //     console.log($(this).val());
-                            //     if ($(this).val()=="covid"){
-                            //         $("#div_vaccine_type").show();  
-                            //          $("#div_appointmentCategory").show();
-                            //          $("#div_vaccine_type_covid").show();  
-                            //     }else {
-                            //         $("#div_vaccine_type_covid").hide(); 
-                            //     }
-                            // }).change();
+                
                         }else if ($(this).val()== "3"){
-                            console.log($(this).val());
+                            // console.log($(this).val());
                             $("#div_vaccine_type").show();  
                             $("#div_appointmentCategory").show();
                             $("#div_vaccine_type_kids").hide();  
                             $("#div_vaccine_type_others").show();
                             $("#div_vaccine_type_covid").hide();
-
-                            // $("#vaccine_type").on('change',function(e){ 
-                            //     e.preventDefault();
-                            //     console.log($(this).val());
-                            //     if ($(this).val()=="covid"){
-                            //         $("#div_vaccine_type").show();  
-                            //          $("#div_appointmentCategory").show();
-                            //          $("#div_vaccine_type_covid").show();  
-                            //     }else {
-                            //         $("#div_vaccine_type_covid").hide(); 
-                            //     }
-                            // }).change();
                         }else{
-                            console.log($(this).val());
+                            // console.log($(this).val());
                             $("#div_vaccine_type_others").show();  
                             $("#div_vaccine_type").hide();  
                             $("#div_appointmentCategory").show();
@@ -555,7 +469,7 @@ $(document).ready(function () {
                 $("#div_appointmentCategory").hide();
                 $("#div_laboratory").hide();
                 $("#div_vaccine_type_covid").hide(); 
-                console.log($(this).val());
+                // console.log($(this).val());
                 let id = $(this).val();
                 $('#appointment_service_others').empty();
                 $('#appointment_service_others').append(`<option value="0" disabled selected>Processing...</option>`);
@@ -569,8 +483,8 @@ $(document).ready(function () {
                          $('#appointment_service_others').empty();
                          $('#appointment_service_others').append(`<option value="0" disabled selected>select category...</option>`);
                          response.forEach(element => {
-                            $('#appointment_service_others').append(`<option value="${element['id']}">${element['other_services']}</option>`);
-                            
+                        $('#appointment_service_others').append(`<option value="${element['id']}">${element['other_services']}</option>`);
+                        $('#other_services_input').text(response[0].service +" categories");
                         });
                            
                     }
@@ -586,7 +500,7 @@ $(document).ready(function () {
          
         $("#appointment_service_others").on('change',function(e){
             e.preventDefault();
-            console.log($(this).val());
+            // console.log($(this).val());
             var date = $(this).val();
             // console.log(date);
         
@@ -599,22 +513,24 @@ $(document).ready(function () {
             $service_id =  $('#selected_service_id').val();
             var date = $(this).val();
             // console.log(date);
+        
             $.ajax({
                 type: "GET",
                 url: "/get_appointmentDate/"+date+"/"+$service_id,
                 success: function (response) {
-                    console.log(response);  
+                    // console.log(response);  
+               
 
                     if(response.validDate == "yes"){
                         var len = 0;
                         var leng = 0;
                       
                         len = response['appointmentslot'].length;
-                        console.log(len);
+                        // console.log(len);
                         if(len > 0){
                             $service_id =  $('#selected_service_id').val();
                             console.log("pumasok sa appointment table");
-                                for(var i=0; i<1; i++){
+                                for(var i=0; i<1; i++){ 
                                     console.log("pumasok sa appointment table loop");
                                     console.log(response['appointmentslot'][i].availableslot);
                                     if(response['appointmentslot'][i].appointment_availableslot != 0){
@@ -650,8 +566,10 @@ $(document).ready(function () {
                         }
                           
                     }else {
-                        // $('#available_slot').val("0");
-                        // $('#availableslot').text("0");
+                        $('#available_slot').val("0");
+                        $('#availableslot').text("0");
+                        
+                       
                         // console.log("bobo ko talga1");
                     }
 
@@ -694,21 +612,6 @@ $(document).ready(function () {
      });   
     $('#preview_qrcode').on('click', function (e) {
         e.preventDefault();
-        // var kk = $(this).val();
-        // console.log(kk);
-        //      $.ajax({
-        //             type: "GET",
-        //             url: "/preview_qrcode/"+kk,
-        //             success: function (response) {
-        //                 console.log(response);
-
-        //                 }
-        //             });
-          
-           
-       
-      
-
             qr_code_element.style = "display: none";
 
             //displaying
@@ -784,8 +687,7 @@ $(document).ready(function () {
          
         
     }); 
-  
-    //Display and download QRCODE
+
 
     
 

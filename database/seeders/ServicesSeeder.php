@@ -17,8 +17,20 @@ class ServicesSeeder extends Seeder
     {
         DB::table('services')->insert([
     
-            'id' => "4",
-            'service'=> "other",
+            // 'id' => "1",
+            // 'service'=> "vaccine",
+            // 'availableslot'=> "10",
+            // 'availability'=> "Yes",
+
+            // 'id' => "2",
+            // 'service'=> "medicine",
+            // 'availableslot'=> "10",
+            // 'availability'=> "Yes",
+
+            'id' => "3",
+            'service'=> "checkup",
+            'availableslot'=> "10",
+            'availability'=> "Yes",
           
         ]);
     }

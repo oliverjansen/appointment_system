@@ -6,13 +6,13 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                    
-                    <a href="{{ route('scanner') }}">
+                    {{-- <a href="{{ route('scanner') }}">
                     <a href="{{ route('calendar') }}">
                     <a href="{{ route('services') }}">
                     <a href="{{ route('registration') }}">
                     <a href="{{ route('appointments') }}">
                     <a href="{{ route('calendar') }}">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('dashboard') }}"> --}}
 
 
 
@@ -34,15 +34,18 @@
                     <x-jet-nav-link href="{{ route('services') }}" :active="request()->routeIs('services')">
                         {{ __('Services') }}
                     </x-jet-nav-link>
-                    <x-jet-nav-link href="{{ route('registration') }}" :active="request()->routeIs('registration')">
-                        {{ __('Registration') }}
-                    </x-jet-nav-link>
+                 
                     <x-jet-nav-link href="{{ route('appointments') }}" :active="request()->routeIs('appointments')">
                         {{ __('Appointments') }}
                     </x-jet-nav-link>
-                    {{-- <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Add Post') }}
-                    </x-jet-nav-link> --}}
+                    <x-jet-nav-link href="{{ route('registration') }}" :active="request()->routeIs('registration')">
+                        {{ __('Registration') }}
+                    </x-jet-nav-link>
+                    <x-jet-nav-link href="{{ route('analytic') }}" :active="request()->routeIs('analytic')">
+                        {{ __('Analytic') }}
+                    </x-jet-nav-link>
+                   
+                    
                 @else
                 <x-jet-nav-link href="{{ route('calendar') }}" :active="request()->routeIs('calendar')">
                         {{ __('Calendar') }}
@@ -179,7 +182,11 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-jet-responsive-nav-link href="{{ route('appointments') }}" :active="request()->routeIs('appointment')">
+                @if(Auth::User()->account_type=='admin')
+                    <x-jet-responsive-nav-link href="{{ route('scanner') }}" :active="request()->routeIs('scanner')">
+                        {{ __('Verify Appointment') }}
+                    </x-jet-responsive-nav-link>
+                    <x-jet-responsive-nav-link href="{{ route('appointments') }}" :active="request()->routeIs('appointment')">
                         {{ __('Appointments') }}
                     </x-jet-responsive-nav-link>
                     <x-jet-responsive-nav-link href="{{ route('calendar') }}" :active="request()->routeIs('calendar')">
@@ -190,14 +197,17 @@
                     </x-jet-responsive-nav-link>
                     <x-jet-responsive-nav-link href="{{ route('registration') }}" :active="request()->routeIs('registration')">
                         {{ __('Registration') }}
-                    </x-jet-responsive-nav-link>
-                    <!-- <x-jet-responsive-nav-link href="{{ route('workers') }}" :active="request()->routeIs('workers')">
-                        {{ __('Workers') }}
-                    </x-jet-responsive-nav-link> -->
-                    {{-- <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Add Post') }}
-                    </x-jet-responsive-nav-link> --}}
-            
+                    </x-jet-responsive-nav-link> 
+                    <x-jet-responsive-nav-link href="{{ route('analytic') }}" :active="request()->routeIs('analytic')">
+                        {{ __('Analytic') }}
+                    </x-jet-responsive-nav-link> 
+                
+                @else
+                    <x-jet-responsive-nav-link href="{{ route('calendar') }}" :active="request()->routeIs('calendar')">
+                        {{ __('Calendar') }}
+                    </x-jet-responsive-nav-link> 
+                @endif
+                    
 
         </div>
 

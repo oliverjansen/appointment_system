@@ -18,6 +18,7 @@ return new class extends Migration
             $table->bigInteger('service_id')->unsigned();
             $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade')->onUpdate('cascade');
             $table->string('other_services')->nullable();
+            $table->string('other_services_availability')->nullable();
             $table->timestamps();
         });
     }

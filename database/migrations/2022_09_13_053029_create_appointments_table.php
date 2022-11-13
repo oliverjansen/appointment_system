@@ -35,7 +35,7 @@ return new class extends Migration
             $table->integer('appointment_availableslot')->nullable();
             $table->date('appointment_date')->nullable();
             $table->dateTime('appointment_expiration_date')->nullable();
-            $table->string('appointment_expired')->default("no");
+            // $table->string('appointment_expired')->default("no");
             $table->string('appointment_status')->default("pending");
             $table->timestamps();
         });

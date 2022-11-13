@@ -42,7 +42,6 @@ class AppointmentsController extends Controller
         ->orWhere('appointment_vaccine_type','LIKE','%'.$request->search_appointments.'%')
         ->orWhere('appointment_date','LIKE','%'.$request->search_appointments.'%')
         ->orWhere('appointment_expiration_date','LIKE','%'.$request->search_appointments.'%')
-        ->orWhere('appointment_expired','LIKE','%'.$request->search_appointments.'%')
         ->orWhere('appointment_status','LIKE','%'.$request->search_appointments.'%')
         ->paginate(10);
       }else{
@@ -93,7 +92,7 @@ class AppointmentsController extends Controller
 
           
           $service_slot=  DB::table('services')->where('id',$request_service)->get();
-          $appointment_slot =  DB::table('appointments')->where('appointment_availableslot','<=',0)->where('appointment_expired',"no")->get();
+          $appointment_slot =  DB::table('appointments')->where('appointment_availableslot','<=',0)->get();
           
       
 
@@ -114,7 +113,7 @@ class AppointmentsController extends Controller
           
           // $appointment_max =  DB::table('appointments');
 
-          $appointment_max=  DB::table('users')->join('appointments','users.id',"=",'appointments.user_id')->where('user_id' ,"=", $current_id)->where('appointment_expired',"no")->get();
+          $appointment_max=  DB::table('users')->join('appointments','users.id',"=",'appointments.user_id')->where('user_id' ,"=", $current_id)->where('appointment_status',"pending")->get();
 
 
           foreach ($appointment_max as $value) {
@@ -145,7 +144,7 @@ class AppointmentsController extends Controller
 
 
        
-         $categories_id =  DB::table('categories')->where('id',$request_category)->get();
+         $categories_id =  DB::table('categories_vaccine')->where('id',$request_category)->get();
 
 
         
@@ -222,6 +221,7 @@ class AppointmentsController extends Controller
         
         $appointment_expirationdate = Carbon::now()->addHours(48)->toDateTimeString();
       
+        
         $appointment ->appointment_expiration_date = $appointment_expirationdate;
 
         //==============================================
@@ -311,7 +311,7 @@ class AppointmentsController extends Controller
         ]);
     }
 
-    public function get_appointmentDate($date,$id){
+  public function get_appointmentDate($date,$id){
 
       $today = \Carbon\Carbon::today()->format('Y/m/d');
      $appointment_date = \Carbon\Carbon::parse($date)->format('Y/m/d');
@@ -322,10 +322,9 @@ class AppointmentsController extends Controller
         $validDate = "yes";
       }
     
-        $date1 = DB::table('appointments')->where('appointment_date',$date)->where('service_id',$id)->get();
+      $date1 = DB::table('appointments')->where('appointment_date',$date)->where('service_id',$id)->get();
         $allservicesslot = DB::table('services')->sum('availableslot');
         $individualserviceslot= DB::table('services')->get();
-
     
         return response()-> json([
           'validDate'=> $validDate,
@@ -334,11 +333,117 @@ class AppointmentsController extends Controller
           'individualserviceslot'=> $individualserviceslot,
          
         ]);
-
-    
-    
   }
 
+  public function get_appointmentDate_reschedule($appointment_id,$new_appointment_date){
+
+    $today = \Carbon\Carbon::today()->format('Y/m/d');
+
+    $service_id = DB::table('appointments')->where('appointment_id',$appointment_id)->where('appointment_status',"pending")->get();
+
+    foreach ($service_id as $value) {
+      $service_id = $value->service_id;
+ 
+   
+    }
+   
+   $appointment_date = \Carbon\Carbon::parse($new_appointment_date)->format('Y/m/d');
+   
+   
+    if($appointment_date < $today){
+      $validDate = "no";
+    }else{
+      $validDate = "yes";
+    }
+  
+    $date1 = DB::table('appointments')->where('appointment_date',$appointment_date)->where('service_id',$service_id)->where('appointment_status',"pending")->get();
+
+      // $allservicesslot = DB::table('services')->sum('availableslot');
+    $individualserviceslot= DB::table('services')->get();
+  
+      return response()-> json([
+        'validDate'=> $validDate,
+        // 'servicesslot'=>$allservicesslot,
+        'today'=>$today,
+        'appointmentslot'=>$date1,
+        'individualserviceslot'=> $individualserviceslot,
+       
+      ]);
+}
+
+  public function get_available_slot($id){
+
+    $today = \Carbon\Carbon::today()->format('Y-m-d');
+
+  
+  $date1 = DB::table('appointments')->where('appointment_id',$id)->get();
+
+  // foreach ($date1 as $value) {
+
+  //     $date = $value->appointment_date;
+  //     dd($date)
+  // }
+
+  
+      // $allservicesslot = DB::table('services')->sum('availableslot');
+      // $individualserviceslot= DB::table('services')->get();
+
+  
+      return response()-> json([
+        // 'validDate'=> $validDate,
+        // 'servicesslot'=>$allservicesslot,
+        'date'=>$date1,
+        'today'=>$today,
+        // 'individualserviceslot'=> $individualserviceslot,
+       
+      ]);
+}
+
+public function reschedule_appointment(Request $request){
+
+  $appointment_id =$request->input('appointment_id');
+  $new_appointment_date =$request->input('new_appointment_date');
+  $new_appointment_slot =$request->input('available_slot_reschedule');
+  $service_id =$request->input('service_id');
+
+
+
+
+  $old_appointment_date =$request->input('old_appointment_date');
+  // $expire = Carbon::now()->addHours(48);
+  $today = \Carbon\Carbon::today()->format('Y-m-d');
+
+
+      if($old_appointment_date < $today){
+        appointments::where('appointment_date',$old_appointment_date)->where('service_id',$service_id )->update(['appointment_date' => 0]);
+
+      }else{
+        if($new_appointment_date != $old_appointment_date){
+  
+          $new = appointments::where('appointment_date',$new_appointment_date)->where('appointment_status',"pending")->where('service_id',$service_id )->get();
+    
+        //walang existing na date
+          if($new->isEmpty()){
+              appointments::where('appointment_id',$appointment_id)->where('appointment_status',"pending")->where('service_id',$service_id )->update(['appointment_date' => $new_appointment_date, 'appointment_availableslot'=> $new_appointment_slot-1]);
+            
+          }else{
+
+            appointments::where('appointment_date',$old_appointment_date)->where('appointment_status',"pending")->where('service_id',$service_id )->where('appointment_id',$appointment_id)->update(['appointment_date' => $new_appointment_date,'appointment_availableslot'=> $new_appointment_slot-1] );
+            
+            appointments::where('appointment_date',$new_appointment_date)->where('appointment_status',"pending")->where('service_id',$service_id )->update(['appointment_availableslot'=> $new_appointment_slot-1]);
+          
+          }
+
+        }else{
+          appointments::where('appointment_date',$new_appointment_date)->where('appointment_status',"pending")->where('service_id',$service_id )->update(['appointment_date' => $old_appointment_date, 'appointment_availableslot'=> $new_appointment_slot-1]);
+        }
+        
+
+      }
+
+  return redirect()->back()->with('success', 'Appointment sucessfully rescheduled');
+
+}
     
   public function created_appointment(Request $request){
     $id = $request ->input ('calcel_id');
@@ -357,7 +462,8 @@ class AppointmentsController extends Controller
 // ------------------------------------------------------------------------------------
     $recipient = $request->input('user_phoneNo');
 
-      $this->sendMessage($message, $recipient);
+    //temporary disabled message function
+      // $this->sendMessage($message, $recipient);
 
 
     // ------------------------------------------------------------------------------------
@@ -382,12 +488,14 @@ class AppointmentsController extends Controller
         $message = $request->input('cancel_message');
       }
       $canceled_appointment_id ->appointment_message = $message;
+      $canceled_appointment_id ->appointment_status = "canceled";
       $canceled_appointment_id->update();
     
 // ------------------------------------------------------------------------------------
       $recipient = $request->input('user_phoneNo');
 
-        $this->sendMessage($message, $recipient);
+      //temporary disabled function
+        // $this->sendMessage($message, $recipient);
 
 
       // ------------------------------------------------------------------------------------

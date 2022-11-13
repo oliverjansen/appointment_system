@@ -169,8 +169,8 @@
                 <form action="{{route('search_registration')}} " method="GET">
                     @csrf
                     {{ csrf_field() }}
-                    <div class="">
-                        <input type="search_registration" name="search_registration" id="search" class="form-control w-25 mb-3 float-right" placeholder="search">
+                    <div class=" container-fluid">
+                        <input type="search_registration" name="search_registration" id="search" class="form-control mb-3 float-right" placeholder="search" style="width: 300px">
                         <button class="btn mt-1 float-right ">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>

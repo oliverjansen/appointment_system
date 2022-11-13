@@ -31,19 +31,17 @@ class CalendarController extends Controller
             $id = Auth::User()->id;
         }
         if(Auth::User()->account_type=='user'){    
-        $schedule_calendar = DB::table('appointments')->where('appointment_expired',"!=","yes")->where('user_id',$id)->get();
+        $schedule_calendar = DB::table('appointments')->where('user_id',$id)->where('appointment_status',"pending")->get();
 
         }else{
                     
-        $schedule_calendar = DB::table('appointments')->where('appointment_expired',"!=","yes")->get();
+        $schedule_calendar = DB::table('appointments')->get();
 
         }
 
     
 
         $category = Category::all();
-        // $medicine = Medicine::all();
-
         $vaccine = Vaccine::all();
         $services = services::all();
 
@@ -65,23 +63,23 @@ class CalendarController extends Controller
         $appointment_expire = appointments::all(); 
         $pending = "pending";
         
-      appointments::where('appointment_expiration_date',"<=",$current_date)->where('appointment_status',$pending)->update(['appointment_expired' => "yes",'appointment_status' => "expired"]);
+      appointments::where('appointment_date',"<=",$current_date)->where('appointment_status',$pending)->update(['appointment_status' => "expired"]);
         
 
 
-        $vaccine_kids= DB::table('categories')
-        ->join('vaccine','categories.id',"=",'vaccine.category_id')
-        ->where('categories.id',1)
+        $vaccine_kids= DB::table('categories_vaccine')
+        ->join('vaccine','categories_vaccine.id',"=",'vaccine.category_id')
+        ->where('categories_vaccine.id',1)
         ->get();
 
-        $vaccine_covid= DB::table('categories')
-        ->join('vaccine','categories.id',"=",'vaccine.category_id')
-        ->where('categories.id',2)
+        $vaccine_covid= DB::table('categories_vaccine')
+        ->join('vaccine','categories_vaccine.id',"=",'vaccine.category_id')
+        ->where('categories_vaccine.id',2)
         ->get();
         
-        $vaccine_others= DB::table('categories')
-        ->join('vaccine','categories.id',"=",'vaccine.category_id')
-        ->where('categories.id',">",2)
+        $vaccine_others= DB::table('categories_vaccine')
+        ->join('vaccine','categories_vaccine.id',"=",'vaccine.category_id')
+        ->where('categories_vaccine.id',">",2)
         ->get();
 
         $data3 = Other_Services::pluck('service_id','other_services');
@@ -92,12 +90,12 @@ class CalendarController extends Controller
         foreach ($schedule_calendar as $value) {
             $color = null;
             if ($value->service_id == 1){
-                $color = '#0AA52B';
+                $color = '#008000';
             }else if ($value->service_id == 2){
-                $color = '#3DD0F7';
+                $color = '#6495ED';
             }else if ($value->service_id == 3){
                 $color = '#E9F73D ';
-            }else if ($value->service_id == 4){
+            }else if ($value->service_id == 4){ 
                 $color = '##3D9AF7';
             }else if ($value->service_id == 5){
                 $color = '#F73DE4 ';
@@ -141,12 +139,8 @@ class CalendarController extends Controller
     }
 
     public function get_other_services ($id){
-        echo json_encode (DB::table('other_services')->where('service_id',$id)->get());
-        // $other_services = DB::table('other_services')->where('service_id',$id)->get();
-        
-        // return response()->json([
-        //     'other_services'=> $other_services,
-        // ]);
+        echo json_encode (DB::table('services')->join('other_services','services.id',"=",'other_services.service_id')->where('other_services.service_id',$id)->get());
+       
     }
 
     public function get_service($id){

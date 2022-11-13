@@ -13,11 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('categories_vaccine', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('service_id')->unsigned();
             $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade')->onUpdate('cascade');
             $table->string('category')->nullable();
+            $table->string('category_availability')->nullable();
             $table->timestamps();
         });
     }

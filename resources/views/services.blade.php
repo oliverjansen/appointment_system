@@ -87,10 +87,11 @@
                         <select name="service_select" id="service_select" class ="mb-3 block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                             
                             @foreach ($services as $value)
-                                <option value="{{ $value->id }}"> 
-                                {{ $value->service }} 
-                        
-                            </option>
+                              
+                                    <option value="{{ $value->id }}"> 
+                                        {{ $value->service }} 
+                                    </option>
+                          
                         
                           @endforeach  
                     
@@ -110,7 +111,7 @@
                         <select name="column_select" id="column_select" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                                 <option value="category">Category</option>
                                 <option value="vaccine_type">Vaccine Type</option>
-                        
+
                         
                         </select>
 
@@ -150,9 +151,9 @@
                             <div class="form-group">
                                 <x-jet-label for="service" class="mt-3" value="{{ __('Vaccine Type') }}" />
                                 <input type="text" class="form-control" name="add_vaccine_input_id" id="add_vaccine_input_id" hidden >
-        
                                 <input type="text" class="form-control" name="add_vaccine_input" id="add_vaccine_input" >
                                 
+
                             </div>
                         </div>
                     </div>   
@@ -190,7 +191,7 @@
                 @csrf
                 {{ csrf_field() }}
                 <input type="text" id="id" name="id" hidden>
-            <div class="form-group">
+            <div class="form-group ">
                 <label for="service" class="col-form-label">Service</label>
                 <input type="text" class="form-control" name="service" id="service" required>
             </div>
@@ -198,16 +199,16 @@
                 <label for="available_slot" class="col-form-label">Available Slot</label>
                 <input type="number" class="form-control" name="available_slot" id="available_slot" required min="0">
             </div>
-            <div class="form-group" id="yesandno" name="yesandno">
+            <div class="form-group" id="yesandno_service" name="yesandno_service">
                 <label for="service" class="col-form-label">Availability</label>
                     <div class="form-check ">
-                        <input class="form-check-input" type="radio" name="choice"  value="Yes">
+                        <input class="form-check-input" type="radio" name="choice_service"  value="Yes">
                         <label class="form-check-label" for="Yes" >
                         Yes
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="choice" value="No">
+                        <input class="form-check-input" type="radio" name="choice_service" value="No">
                         <label class="form-check-label" for="No" >
                         No
                         </label>
@@ -246,6 +247,21 @@
                 <label for="service" class="col-form-label">Service</label>
                 <input type="text" class="form-control" name="edit_other_services_input" id="edit_other_services_input" required>
             </div>
+            <div class="form-group" id="yesandno_other_services" name="yesandno_other_services">
+                <label for="other_services" class="col-form-label">Availability</label>
+                    <div class="form-check ">
+                        <input class="form-check-input" type="radio" name="choice_other_services"  value="Yes">
+                        <label class="form-check-label" for="Yes" >
+                        Yes
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="choice_other_services" value="No">
+                        <label class="form-check-label" for="No" >
+                        No
+                        </label>
+                  </div>    
+            </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary btn-sm w-25">Save</button>
                 <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">cancel</button>
@@ -276,6 +292,21 @@
             <div class="form-group">
                 <label for="service" class="col-form-label">Vaccine</label>
                 <input type="text" class="form-control" name="vaccine" id="vaccine" required>
+            </div>
+            <div class="form-group" id="yesandno_vaccine" name="yesandno_vaccine">
+                <label for="vaccine" class="col-form-label">Availability</label>
+                    <div class="form-check ">
+                        <input class="form-check-input" type="radio" name="choice_vaccine"  value="Yes">
+                        <label class="form-check-label" for="Yes" >
+                        Yes
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="choice_vaccine" value="No">
+                        <label class="form-check-label" for="No" >
+                        No
+                        </label>
+                  </div>    
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-danger btn-sm w-25">Save</button>
@@ -310,6 +341,21 @@
            
 
                 <input type="text" class="form-control" name="category_update" id="category_update" required>
+            </div>
+            <div class="form-group" id="yesandno_category" name="yesandno_category">
+                <label for="category" class="col-form-label">Availability</label>
+                    <div class="form-check ">
+                        <input class="form-check-input" type="radio" name="choice_category"  value="Yes">
+                        <label class="form-check-label" for="Yes" >
+                        Yes
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="choice_category" value="No">
+                        <label class="form-check-label" for="No" >
+                        No
+                        </label>
+                  </div>    
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-danger btn-sm w-25">Save</button>
@@ -476,7 +522,7 @@
                         
                             <tbody class="text-center">
                                 @if($services->isEmpty())      
-                                <td colspan="4">
+                                <td colspan="6">
                                     No Data
                                 </td>
                         
@@ -553,7 +599,7 @@
                         </table>
                           
                         <div class="row">
-                            <div class="col col-9 text-center">
+                            <div class="col col-7 text-center">
                                 <div class="bg-green float-right mb-5 mt-0">Slot Per day: <b> {{$services->pluck('availableslot')->sum()}} </b></div>
                             </div>
 
@@ -584,7 +630,7 @@
                                 
                                     <th scope="col"  class="text-center col-9" >List of Category</th>
                             
-            
+                                    <th scope="col"  class="text-center col-9" >Availability</th>
                                     <th scope="col" class="text-center col-3" >Action</th>
             
                                     </tr>
@@ -600,6 +646,25 @@
                                 @foreach($categories as $category)
                                     <tr class="text-center">
                                     <td>{{$category->category}}</td>
+                                    <td class="">
+                                        <div class="">
+                                            @if($category->category_availability == "Yes")
+                                                <button class="btn btn-sm mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-circle-fill" viewBox="0 0 16 16">
+                                                    <circle cx="8" cy="8" r="8"/>
+                                                </svg></button>
+                                                
+                                            
+
+                                            @else
+                                                <button class="btn btn-sm  mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-circle-fill" viewBox="0 0 16 16">
+                                                    <circle cx="8" cy="8" r="8"/>
+                                                </svg></button>
+                                                
+                                            @endif
+                                        </div>
+                                       
+                                    
+                                    </td>
                                     <td scope="row" class="d-sm-flex justify-content-center">
                                                 
                                         {{-- <button class="btn btn-sm btn-warning mt-2 mt-lg-0 ml-lg-1 w-100 edit_category" value="{{$category->id}}">Edit</button> --}}
@@ -632,7 +697,7 @@
                                     <th scope="col"  class="text-center" style="width: 25%">Category</th> 
                                 <th scope="col"  class="text-center" style="width: 50%">Vaccine</th> 
                                 
-
+                                <th scope="col"  class="text-center" style="width: 50%">Availability</th> 
                                     <th scope="col" class="text-center " style="width: 25%">Action</th>
 
                                     </tr>
@@ -650,7 +715,25 @@
                                     <tr class="text-center">
                                     <td>{{$vaccine->category}}</td>
                                     <td>{{$vaccine->vaccine_type}}</td>
+                                    <td class="">
+                                        <div class="">
+                                            @if($vaccine->vaccine_availability == "Yes")
+                                                <button class="btn btn-sm mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-circle-fill" viewBox="0 0 16 16">
+                                                    <circle cx="8" cy="8" r="8"/>
+                                                </svg></button>
+                                                
+                                            
+
+                                            @else
+                                                <button class="btn btn-sm  mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-circle-fill" viewBox="0 0 16 16">
+                                                    <circle cx="8" cy="8" r="8"/>
+                                                </svg></button>
+                                                
+                                            @endif
+                                        </div>
+                                       
                                     
+                                    </td>
                                     <td scope="row" class="d-sm-flex justify-content-center">
                                                 
                                         <button class="btn btn-sm btn-success mt-2 mt-lg-0 edit_vaccine" value="{{$vaccine->id}}">   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -702,6 +785,7 @@
                                     <th scope="col" class="text-center" style="width: 25%">Service ID</th>
                                     <th scope="col" class="text-center" style="width: 25%">Service They Belong</th>
                                     <th scope="col"  class="text-center" style="width:25%"><label id="other_services_title" name="other_services_title"></label>Other Serives</th>
+                                    <th scope="col"  class="text-center" style="width:25%"><label id="" name="other_services_title"></label>Availability</th>
                                     <th scope="col" class="text-center" style="width: 25%">Action</th>
             
                                     </tr>
@@ -711,7 +795,7 @@
                                     
                                     @if($other_services->isEmpty())
                                     
-                                            <td colspan="4">
+                                            <td colspan="6">
                                                 No Data
                                             </td>
                                     @else
@@ -722,7 +806,25 @@
                                     <td>{{$value->service_id}}</td>
                                     <td>{{$value->service}}</td>
                                     <td>{{$value->other_services}}</td>
+                                    <td class="">
+                                        <div class="">
+                                            @if($value->other_services_availability == "Yes")
+                                                <button class="btn btn-sm mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-circle-fill" viewBox="0 0 16 16">
+                                                    <circle cx="8" cy="8" r="8"/>
+                                                </svg></button>
+                                                
+                                            
+
+                                            @else
+                                                <button class="btn btn-sm  mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-circle-fill" viewBox="0 0 16 16">
+                                                    <circle cx="8" cy="8" r="8"/>
+                                                </svg></button>
+                                                
+                                            @endif
+                                        </div>
+                                       
                                     
+                                    </td>
                                     <td scope="row" class="d-sm-flex justify-content-center">
                                             
                                         <button class="btn btn-sm btn-success mt-2 mt-lg-0 ml-lg-1
@@ -819,9 +921,9 @@
                     // $('#radio').val(response.service.availability)
                      if(response.service.availability == "Yes"){
                    
-                        $('#yesandno').find(':radio[name=choice][value="Yes"]').prop('checked', true);
+                        $('#yesandno_service').find(':radio[name=choice_service][value="Yes"]').prop('checked', true);
                      }else{
-                        $('#yesandno').find(':radio[name=choice][value="No"]').prop('checked', true);
+                        $('#yesandno_service').find(':radio[name=choice_service][value="No"]').prop('checked', true);
 
                      }
 
@@ -903,6 +1005,14 @@
                         $('#vaccine').val(response.vaccine_id.vaccine_type);
 
 
+                        if(response.vaccine_id.vaccine_availability == "Yes"){
+        
+                        $('#yesandno_vaccine').find(':radio[name=choice_vaccine][value="Yes"]').prop('checked', true);
+                        }else{
+                        $('#yesandno_vaccine').find(':radio[name=choice_vaccine][value="No"]').prop('checked', true);
+
+                        }
+
 
                     }
                 });
@@ -923,7 +1033,15 @@
                     console.log(response);
                     $('#edit_other_services_input').val(response.other_services.other_services);
                     $('#edit_other_services_id').val(response.other_services.id);
-                    // $('#other_services_modal_title').text(response.other_services.id);
+                   
+                    if(response.other_services.other_services_availability == "Yes"){
+                        console.log("loggg");
+                        $('#yesandno_other_services').find(':radio[name=choice_other_services][value="Yes"]').prop('checked', true);
+                    }else{
+
+                        $('#yesandno_other_services').find(':radio[name=choice_other_services][value="No"]').prop('checked', true);
+
+                    }
 
                 }
             });
@@ -934,9 +1052,6 @@
         e.preventDefault(); 
         var delete_service = $(this).val();
         $('#service_del_id').val(delete_service);
-        
-        // console.log(delete_service);
-        // alert(service); 
         $('#delete_service_modal').modal('show');
         
         });
@@ -965,10 +1080,6 @@
         //add service
         $(document).on('click', '.add_service_btn',function (e) {
         e.preventDefault(); 
-        // var delete_vaccine = $(this).val();
-        // $('#delete_vaccine_id').val(delete_vaccine);
-        //  console.log(delete_vaccine);
-        // alert(service); 
         $('#add_services_modal').modal('show');
 
         });
@@ -976,10 +1087,6 @@
         //add service
         $(document).on('click', '.add_vaccine_btn',function (e) {
         e.preventDefault(); 
-        // var delete_vaccine = $(this).val();
-        // $('#delete_vaccine_id').val(delete_vaccine);
-        //  console.log(delete_vaccine);
-        // alert(service); 
         $('#add_vaccine_modal').modal('show');
 
         });
@@ -1010,43 +1117,46 @@
                     $('#vaccine_field_whole').show();
                     $('#other_services_field').show();
 
-                    
-                    if (response.service_id.id =="1") {
+                    if(response.service_id != null){
+                        if (response.service_id.id =="1") {
                       
-                        $('#vaccine_field_whole').show();
-                        $('#other_services_field').hide();
-                        btn_add_vaccine_medicine.style.display="block";
+                            $('#vaccine_field_whole').show();
+                            $('#other_services_field').hide();
+                            btn_add_vaccine_medicine.style.display="block";
 
 
-                     }else if(response.service_id.id =="2"){
-                        $('#add_other_services_input_id').val(response.service_id.id);
-                        $('#other_services_field').show();
-                        $('#add_sub_of_service').text("add "+response.service_id.service);
-                         $('#vaccine_field_whole').hide();
-                        $('#vaccine_field_whole').hide();
+                        }else if(response.service_id.id =="2"){
+                            $('#add_other_services_input_id').val(response.service_id.id);
+                            $('#other_services_field').show();
+                            $('#add_sub_of_service').text("add "+response.service_id.service);
+                            $('#vaccine_field_whole').hide();
+                            $('#vaccine_field_whole').hide();
 
-                        btn_add_vaccine_medicine.style.display="block";
+                            btn_add_vaccine_medicine.style.display="block";
 
-                     }
-                     else if(response.service_id.id =="3"){
-                        $('#add_other_services_input_id').val(response.service_id.id);
-                         $('#vaccine_field_whole').hide();
-                        $('#other_services_field').show();
-                        $('#add_sub_of_service').text("add "+response.service_id.service);
+                        }
+                        else if(response.service_id.id =="3"){
+                            $('#add_other_services_input_id').val(response.service_id.id);
+                            $('#vaccine_field_whole').hide();
+                            $('#other_services_field').show();
+                            $('#add_sub_of_service').text("add "+response.service_id.service);
+                        
+                            
+                        }
+                        else{
+                            $('#add_other_services_input_id').val(response.service_id.id);
+                            $('#vaccine_field_whole').hide();
+                            $('#other_services_field').show();
+                            $('#add_sub_of_service').text("add "+response.service_id.service);
+
+
+            
+                            
+
+                        }
+                    }
                     
-                        
-                    }
-                    else{
-                        $('#add_other_services_input_id').val(response.service_id.id);
-                        $('#vaccine_field_whole').hide();
-                        $('#other_services_field').show();
-                        $('#add_sub_of_service').text("add "+response.service_id.service);
-
-
-        
-                        
-
-                    }
+                  
                 }
                 });
      
@@ -1075,7 +1185,7 @@
     
             var edit_category = $(this).val();
           
- 
+            
         $('#edit_category_modal').modal('show')
 
             $.ajax({
@@ -1084,10 +1194,14 @@
                 url: "/edit_category/"+edit_category,
                 success: function (response) {
                     // $('#id').val(response.vaccine.id)
+                    console.log(response);
                     $('#category_update_id').val(response.category_id.id);
                     $('#category_update').val(response.category_id.category);
-
-
+                    if(response.category_id.category_availability == "Yes"){
+                        $('#yesandno_category').find(':radio[name=choice_category][value="Yes"]').prop('checked', true);
+                    }else{
+                        $('#yesandno_category').find(':radio[name=choice_category][value="No"]').prop('checked', true);
+                    }
                 }
             });
         });

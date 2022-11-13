@@ -33,7 +33,7 @@ class VerifyAppointmentController extends Controller
 
     function get_appointment_id($content){
         // $service_id = User::find($id);
-        $data1 = DB::table('appointments')->where('appointment_id',$content)->where('appointment_expired',"no")->get();
+        $data1 = DB::table('appointments')->where('appointment_id',$content)->get();
         //  dd($data1);
         if($data1->isEmpty()){
             return back()->with(['warning' => "No existing appointment!"]);

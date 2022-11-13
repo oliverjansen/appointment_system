@@ -8,6 +8,8 @@ use App\Http\Controllers\WorkerControllers;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\VerifyAppointmentController;
 use App\Http\Controllers\QrCodeController;
+use App\Http\Controllers\AnalyticController;
+
 
 
 
@@ -143,11 +145,25 @@ Route::middleware([
 
         //registation search 
         Route::get('/search_registration', 'App\Http\Controllers\RegistrationController@registration')->name('search_registration');
-        
+    
         //appointments searrch
         Route::get('/search_appointments', 'App\Http\Controllers\AppointmentsController@appointments_admin')->name('search_appointments');
        
+        //reschedule appointment
+
+          //appointments reschedule
+          Route::get('/get_available_slot/{id}', 'App\Http\Controllers\AppointmentsController@get_available_slot')->name('get_available_slot');
+          Route::match(['get','post'],'reschedule_appointment','App\Http\Controllers\AppointmentsController@reschedule_appointment');
+          
+          Route::get('/get_appointmentDate_reschedule', 'App\Http\Controllers\AppointmentsController@get_app');
+          Route::get('/get_appointmentDate_reschedule/{id}/{date}', 'App\Http\Controllers\AppointmentsController@get_appointmentDate_reschedule')->name('get_appointmentDate_reschedule');
+
+          
         
+
+    //analytic
+
+    Route::match(['get','post'],'/analytic', 'App\Http\Controllers\AnalyticController@index')->name('analytic');
 
 });
 
