@@ -79,7 +79,7 @@
         <div class="modal-body">
 
             <form action="{{ url('add_vaccine') }}" method="POST">
-
+                @csrf
                 {{ csrf_field() }}
                 <div class="">
                     <x-jet-label for="service" value="{{ __('Select Service') }}"/>
@@ -98,19 +98,27 @@
                     
                         </select>
                         <div id="other_services_field">
-                            <label for="" id="add_sub_of_service" name="add_sub_of_service"> add </label>
-                            <input type="text" class="form-control" name="add_other_services_input_id" id="add_other_services_input_id" hidden>
-                            <input type="text" class="form-control" name="add_other_services_input" id="add_other_services_input"  >
-
+                            <div class="form-group">
+                                <label for="" id="add_sub_of_service" name="add_sub_of_service"> add </label>
+                                <input type="text" class="form-control" name="add_other_services_input_id" id="add_other_services_input_id" hidden>
+                                <input type="text" class="form-control" name="add_other_services_input" id="add_other_services_input"  >
+                            </div>
                             
+
+                            <div class="form-group">
+                               <label for="">Available Slot</label>
+                                <input type="number" class="form-control" name="add_others_service_slot" id="add_others_service_slot"  min="0" >
+                            </div>
                         </div>
+
+                   
                         
                     <div id="vaccine_field_whole" >
                         <x-jet-label for="service" value="{{ __('Select Column') }}"/>
 
                         <select name="column_select" id="column_select" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-                                <option value="category">Category</option>
-                                <option value="vaccine_type">Vaccine Type</option>
+                                <option value="category">Add Category</option>
+                                <option value="vaccine_type">Add Vaccine </option>  
 
                         
                         </select>
@@ -120,10 +128,16 @@
                             <div class="form-group">
                                 <x-jet-label for="service" class="mt-3" value="{{ __('Category') }}" />
                                 <input type="text" class="form-control" name="add_vaccine_category_input_id" id="add_vaccine_category_input_id" hidden >
-                                <input type="text" class="form-control" name="add_vaccine_category_input" id="add_vaccine_category_input" >
+                          
                                 
                             </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="add_vaccine_category_input" id="add_vaccine_category_input" >
+                            </div>
+                            
+                       
                         </div>
+                       
                         <div id="vaccine_field">
                           
                             <x-jet-label for="service" class="mt-3" value="{{ __('Select Category') }}" />
@@ -148,6 +162,26 @@
                                 
                               </select>
                               
+                              <div id="covid_field" class="covid_field" style="display: none">
+                                <x-jet-label for="service" class="mt-3" value="{{ __('Dose') }}" />
+                                <select name="covid_select" id="covid_select" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" >
+                        
+                                    @if($categories->isEmpty())
+                                            <td colspan="3">
+                                                No Data
+                                            </td>
+                                        @else
+                                    @endif
+                                  
+                                    <option value="1"> 1st Dose</option> 
+                                    <option value="2"> 2nd Dose</option> 
+                                    <option value="3"> Booster</option> 
+             
+                                
+                                
+                              </select>
+    
+                            </div>
                             <div class="form-group">
                                 <x-jet-label for="service" class="mt-3" value="{{ __('Vaccine Type') }}" />
                                 <input type="text" class="form-control" name="add_vaccine_input_id" id="add_vaccine_input_id" hidden >
@@ -155,7 +189,14 @@
                                 
 
                             </div>
+                            <div class="form-group">
+                                <x-jet-label for="service" class="mt-3" value="{{ __('Available Slot') }}" />
+                                <input type="number" class="form-control" name="add_vaccine_slot" id="add_vaccine_slot" min="0" >
+                            </div>
+                        
                         </div>
+
+                   
                     </div>   
                  
 
@@ -197,7 +238,7 @@
             </div>
             <div class="form-group">
                 <label for="available_slot" class="col-form-label">Available Slot</label>
-                <input type="number" class="form-control" name="available_slot" id="available_slot" required min="0">
+                <input type="number" class="form-control" name="available_slot" id="available_slot" required min="0" required>
             </div>
             <div class="form-group" id="yesandno_service" name="yesandno_service">
                 <label for="service" class="col-form-label">Availability</label>
@@ -247,6 +288,10 @@
                 <label for="service" class="col-form-label">Service</label>
                 <input type="text" class="form-control" name="edit_other_services_input" id="edit_other_services_input" required>
             </div>
+            <div class="form-group">
+                <label for="service" class="col-form-label">Available Slot</label>
+                <input type="number" class="form-control" name="update_other_services_slot" id="update_other_services_slot" required min="0">
+            </div>
             <div class="form-group" id="yesandno_other_services" name="yesandno_other_services">
                 <label for="other_services" class="col-form-label">Availability</label>
                     <div class="form-check ">
@@ -292,6 +337,10 @@
             <div class="form-group">
                 <label for="service" class="col-form-label">Vaccine</label>
                 <input type="text" class="form-control" name="vaccine" id="vaccine" required>
+            </div>
+            <div class="form-group">
+                <label for="vaccine" class="col-form-label">Available Slot</label>
+                <input type="number" class="form-control" name="update_vaccine_slot" id="update_vaccine_slot" required min="0">
             </div>
             <div class="form-group" id="yesandno_vaccine" name="yesandno_vaccine">
                 <label for="vaccine" class="col-form-label">Availability</label>
@@ -612,7 +661,7 @@
 
                         </div>
                      
-                        <div> {{ $services->Links() }} </div>
+                     
 
                     </div>
                 </div>
@@ -621,6 +670,7 @@
                         <button class="btn btn-sm add_vaccine_btn mt-5 mb-2  btn-primary" style="width:120px;">Add </button>
                     </div>
                 </div>   
+        
                 <div class="card shadow-sm">
                     <div class=" card-header text-center p-3 font-weight-bold  bg-semi-grey">
                         Vaccine Table
@@ -695,72 +745,249 @@
                             </table> 
                             
                             </div>
-                            <div> {{ $categories->Links() }} </div>
-
-                            <table class="table table-hover  mt-5">
-                                    <thead class=" mt-5 " >
-                                    <tr >
-                                
-                                    <th scope="col"  class="text-center" style="width: 25%">Category</th> 
-                                <th scope="col"  class="text-center" style="width: 50%">Vaccine</th> 
-                                
-                                <th scope="col"  class="text-center" style="width: 50%">Availability</th> 
-                                    <th scope="col" class="text-center " style="width: 25%">Action</th>
-
-                                    </tr>
-                                </thead>
-                                <tbody class="text-center" >
-                                    @if($vaccines->isEmpty())
-                                    
-                                    <td colspan="4">
-                                        No Data
-                                    </td>
-                                    
-                                        
-                                        @endif
-                                @foreach($vaccines as $vaccine)
-                                    <tr class="text-center">
-                                    <td>{{$vaccine->category}}</td>
-                                    <td>{{$vaccine->vaccine_type}}</td>
-                                    <td class="">
-                                        <div class="">
-                                            @if($vaccine->vaccine_availability == "Yes")
-                                                <button class="btn btn-sm mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-circle-fill" viewBox="0 0 16 16">
-                                                    <circle cx="8" cy="8" r="8"/>
-                                                </svg></button>
-                                                
-                                            
-
-                                            @else
-                                                <button class="btn btn-sm  mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-circle-fill" viewBox="0 0 16 16">
-                                                    <circle cx="8" cy="8" r="8"/>
-                                                </svg></button>
-                                                
-                                            @endif
-                                        </div>
-                                       
-                                    
-                                    </td>
-                                    <td scope="row" class="d-sm-flex justify-content-center">
-                                                
-                                        <button class="btn btn-sm btn-success mt-2 mt-lg-0 edit_vaccine" value="{{$vaccine->id}}">   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-                                        </svg></button>
-                                    <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-lg-1 delete_vaccine " value="{{$vaccine->id}}"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-trash3" viewBox="0 0 16 16">
-                                        <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
-                                        </svg></button>
-                                    </td>
-                                    
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
+                    
                         </div>
                     </div>
                 </div>
-                <div> {{$vaccines->links()}}</div>
-                <div class="card mt-5 shadow-sm">
+                <div class="card shadow-sm mt-5">
+                    <div class=" card-header text-center p-3 font-weight-bold  bg-semi-grey">
+                        Kids Category Table
+                        
+                    </div>
+                    <div class="card-body">
+                        <div id="vaccine_table" style="display: " class="">
+                            <div class="d-flex justify-content-end">
+            
+                                <table class="table table-hover  mt-5">
+                                
+                                        <thead class=" mt-5 " >
+                                        <tr >
+                                    
+                                        <th scope="col"  class="text-center" style="width: 25%">Category</th> 
+                                    <th scope="col"  class="text-center" style="width: 25%">Vaccine</th> 
+                                    <th scope="col"  class="text-center" style="width: 25%">Available Slot</th> 
+                                    <th scope="col"  class="text-center" style="width: 50%">Availability</th> 
+                                        <th scope="col" class="text-center " style="width: 25%">Action</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center" >
+                                        @if($vaccines_kids->isEmpty())
+                                        
+                                        <td colspan="4">
+                                            No Data
+                                        </td>
+                                        
+                                            
+                                            @endif
+                                    @foreach($vaccines_kids as $vaccine)
+                                        <tr class="text-center">
+                                        <td>{{$vaccine->category}}</td>
+                                        <td>{{$vaccine->vaccine_type}}</td>
+                                        <td>{{$vaccine->vaccine_slot}}</td>
+
+                                        <td class="">
+                                            <div class="">
+                                                @if($vaccine->vaccine_availability == "Yes")
+                                                    <button class="btn btn-sm mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-circle-fill" viewBox="0 0 16 16">
+                                                        <circle cx="8" cy="8" r="8"/>
+                                                    </svg></button>
+                                                    
+                                                
+
+                                                @else
+                                                    <button class="btn btn-sm  mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-circle-fill" viewBox="0 0 16 16">
+                                                        <circle cx="8" cy="8" r="8"/>
+                                                    </svg></button>
+                                                    
+                                                @endif
+                                            </div>
+                                        
+                                        
+                                        </td>
+                                        <td scope="row" class="d-sm-flex justify-content-center">
+                                                    
+                                            <button class="btn btn-sm btn-success mt-2 mt-lg-0 edit_vaccine" value="{{$vaccine->id}}">   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                            </svg></button>
+                                        <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-lg-1 delete_vaccine " value="{{$vaccine->id}}"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                                            </svg></button>
+                                        </td>
+                                        
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                         
+                        </div>
+                    </div>
+                </div>
+                <div class="card shadow-sm mt-5">
+                    <div class=" card-header text-center p-3 font-weight-bold  bg-semi-grey">
+                        Covid Category Table
+                        
+                    </div>
+                    <div class="card-body">
+                        <div id="vaccine_table" style="display: " class="">
+                            <div class="d-flex justify-content-end">
+            
+                                <table class="table table-hover  mt-5">
+                                
+                                        <thead class=" mt-5 " >
+                                        <tr >
+                                    
+                                        <th scope="col"  class="text-center" style="width: 25%">Category</th> 
+                                        <th scope="col"  class="text-center" style="width: 25%">Dose</th> 
+                                    <th scope="col"  class="text-center" style="width: 25%">Vaccine</th> 
+                                    <th scope="col"  class="text-center" style="width: 25%">Available Slot</th> 
+                                    <th scope="col"  class="text-center" style="width: 50%">Availability</th> 
+                                        <th scope="col" class="text-center " style="width: 25%">Action</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center" >
+                                        @if($vaccines_covid->isEmpty())
+                                        
+                                        <td colspan="4">
+                                            No Data
+                                        </td>
+                                        
+                                            
+                                            @endif
+                                    @foreach($vaccines_covid as $vaccine)
+                                        <tr class="text-center">
+                                        <td>{{$vaccine->category}}</td>
+                                        <td> @if($vaccine->dose == "1")
+                                            <p>1st Dose</p>
+                                            @elseif($vaccine->dose == "2")
+                                            <p>2nd Dose</p>
+                                            @elseif($vaccine->dose == "3")
+                                            <p>Booster</p>
+                                            @endif
+                                               
+                                       </td>
+                                        <td>{{$vaccine->vaccine_type}}</td>
+                                        <td>{{$vaccine->vaccine_slot}}</td>
+
+                                        <td class="">
+                                            <div class="">
+                                                @if($vaccine->vaccine_availability == "Yes")
+                                                    <button class="btn btn-sm mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-circle-fill" viewBox="0 0 16 16">
+                                                        <circle cx="8" cy="8" r="8"/>
+                                                    </svg></button>
+                                                    
+                                                
+
+                                                @else
+                                                    <button class="btn btn-sm  mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-circle-fill" viewBox="0 0 16 16">
+                                                        <circle cx="8" cy="8" r="8"/>
+                                                    </svg></button>
+                                                    
+                                                @endif
+                                            </div>
+                                        
+                                        
+                                        </td>
+                                        <td scope="row" class="d-sm-flex justify-content-center">
+                                                    
+                                            <button class="btn btn-sm btn-success mt-2 mt-lg-0 edit_vaccine" value="{{$vaccine->id}}">   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                            </svg></button>
+                                        <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-lg-1 delete_vaccine " value="{{$vaccine->id}}"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                                            </svg></button>
+                                        </td>
+                                        
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                         
+                        </div>
+                    </div>
+                </div>
+                <div class="card shadow-sm mt-5">
+                    <div class=" card-header text-center p-3 font-weight-bold  bg-semi-grey">
+                        Other Category Table
+                        
+                    </div>
+                    <div class="card-body">
+                        <div id="vaccine_table" style="display: " class="">
+                            <div class="d-flex justify-content-end">
+            
+                                <table class="table table-hover  mt-5">
+                                
+                                        <thead class=" mt-5 " >
+                                        <tr >
+                                    
+                                        <th scope="col"  class="text-center" style="width: 25%">Category</th> 
+                                    <th scope="col"  class="text-center" style="width: 25%">Vaccine</th> 
+                                    <th scope="col"  class="text-center" style="width: 25%">Available Slot</th> 
+                                    <th scope="col"  class="text-center" style="width: 50%">Availability</th> 
+                                        <th scope="col" class="text-center " style="width: 25%">Action</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center" >
+                                        @if($vaccines_covid->isEmpty())
+                                        
+                                        <td colspan="4">
+                                            No Data
+                                        </td>
+                                        
+                                            
+                                            @endif
+                                    @foreach($vaccines_others as $vaccine)
+                                        <tr class="text-center">
+                                        <td>{{$vaccine->category}}</td>
+                                        <td>{{$vaccine->vaccine_type}}</td>
+                                        <td>{{$vaccine->vaccine_slot}}</td>
+
+                                        <td class="">
+                                            <div class="">
+                                                @if($vaccine->vaccine_availability == "Yes")
+                                                    <button class="btn btn-sm mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-circle-fill" viewBox="0 0 16 16">
+                                                        <circle cx="8" cy="8" r="8"/>
+                                                    </svg></button>
+                                                    
+                                                
+
+                                                @else
+                                                    <button class="btn btn-sm  mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-circle-fill" viewBox="0 0 16 16">
+                                                        <circle cx="8" cy="8" r="8"/>
+                                                    </svg></button>
+                                                    
+                                                @endif
+                                            </div>
+                                        
+                                        
+                                        </td>
+                                        <td scope="row" class="d-sm-flex justify-content-center">
+                                                    
+                                            <button class="btn btn-sm btn-success mt-2 mt-lg-0 edit_vaccine" value="{{$vaccine->id}}">   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                            </svg></button>
+                                        <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-lg-1 delete_vaccine " value="{{$vaccine->id}}"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                                            </svg></button>
+                                        </td>
+                                        
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                         
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-5 shadow-sm mt-5">
                     <div class=" card-header text-center p-3 font-weight-bold  bg-semi-grey ">
                         Other Services Table
                     </div>
@@ -789,9 +1016,11 @@
                             <table class="table table-hover">
                                     <thead class="" >
                                     <tr >
-                                    <th scope="col" class="text-center" style="width: 25%">Service ID</th>
+                            
                                     <th scope="col" class="text-center" style="width: 25%">Service They Belong</th>
                                     <th scope="col"  class="text-center" style="width:25%"><label id="other_services_title" name="other_services_title"></label>Other Serives</th>
+                                    <th scope="col"  class="text-center" style="width:25%"><label id="other_services_title" name="other_services_title"></label>Available Slot</th>
+
                                     <th scope="col"  class="text-center" style="width:25%"><label id="" name="other_services_title"></label>Availability</th>
                                     <th scope="col" class="text-center" style="width: 25%">Action</th>
             
@@ -810,9 +1039,11 @@
                                     @endif
                                 @foreach($other_services as $value)
                                     <tr class="text-center">
-                                    <td>{{$value->service_id}}</td>
+                                 
                                     <td>{{$value->service}}</td>
                                     <td>{{$value->other_services}}</td>
+                                    <td>{{$value->other_services_slot}}</td>
+
                                     <td class="">
                                         <div class="">
                                             @if($value->other_services_availability == "Yes")
@@ -856,7 +1087,7 @@
                                 </tbody>
                             
                             </table> 
-                            <div> {{ $other_services->Links() }} </div>
+                          
                             </div>
                         </div>
                     </div>	
@@ -1010,6 +1241,8 @@
                         // $('#id').val(response.vaccine.id)
                         $('#vaccine_del_id').val(response.vaccine_id.id);
                         $('#vaccine').val(response.vaccine_id.vaccine_type);
+                        $('#update_vaccine_slot').val(response.vaccine_id.vaccine_slot);
+
 
 
                         if(response.vaccine_id.vaccine_availability == "Yes"){
@@ -1040,6 +1273,8 @@
                     console.log(response);
                     $('#edit_other_services_input').val(response.other_services.other_services);
                     $('#edit_other_services_id').val(response.other_services.id);
+                    $('#update_other_services_slot').val(response.other_services.other_services_slot);
+
                    
                     if(response.other_services.other_services_availability == "Yes"){
                         console.log("loggg");
@@ -1100,10 +1335,17 @@
        
         $("#vaccine_select").on('change',function(e){ 
             e.preventDefault(); 
+            
+           
             var selected_vaccine = $(this).val();
-            console.log(selected_vaccine);
+      
             $('#add_vaccine_input_id').val(selected_vaccine);
-
+            if( $(this).val() == 2 ){
+                (document).getElementById("covid_field").style.display="block";
+            }else{
+                (document).getElementById("covid_field").style.display="none";
+            }
+            
         
         }).change();
 
@@ -1123,6 +1365,7 @@
                     // $('#id').val(response.vaccine.id)
                     $('#vaccine_field_whole').show();
                     $('#other_services_field').show();
+                    // $("#add_vaccine_category_input").prop('required',true);
 
                     if(response.service_id != null){
                         if (response.service_id.id =="1") {

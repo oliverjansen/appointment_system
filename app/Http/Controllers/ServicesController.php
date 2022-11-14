@@ -38,9 +38,25 @@ class ServicesController extends Controller
       $other_services = DB::table('services')->join('other_services','services.id',"=",'other_services.service_id')->paginate(5);
     }
 
-    $vaccines = DB::table('categories_vaccine')
+    $vaccines_kids = DB::table('categories_vaccine')
     ->join('vaccine','categories_vaccine.id',"=",'vaccine.category_id')
+    ->where('category_id',1)
     ->paginate(5);
+
+    $vaccines_covid = DB::table('categories_vaccine')
+    ->join('vaccine','categories_vaccine.id',"=",'vaccine.category_id')
+    ->where('category_id',2)
+    ->orderBy('dose') 
+    ->paginate(5);
+ 
+    
+
+    
+    $vaccines_others = DB::table('categories_vaccine')
+    ->join('vaccine','categories_vaccine.id',"=",'vaccine.category_id')
+    ->where('category_id',">",2)
+    ->paginate(5);
+
 
     $categories = Category::paginate(5);
     // $medicine = Medicine::all();
@@ -50,7 +66,7 @@ class ServicesController extends Controller
 
     
     if(Auth::User()->account_type=='admin'){
-      return view('services',compact('services','vaccines','categories','other_services'));
+      return view('services',compact('services','vaccines_covid','vaccines_others','vaccines_kids','categories','other_services'));
       }else{
         return redirect()->route('calendar');
       }
@@ -95,20 +111,30 @@ class ServicesController extends Controller
       if($request ->input ('add_vaccine_input_id') != null && $request ->input ('add_vaccine_input') != null){
         $vaccine_add = new vaccine();
 
-        $validate_vaccine = vaccine::where('vaccine_type',"=",$request ->input ('add_vaccine_input'))->get();
+        // $validate_vaccine = vaccine::where('vaccine_type',"=",$request ->input ('covid_select'))->get();
 
-        if($validate_vaccine->isEmpty()){
+        // if($validate_vaccine->isEmpty()){
               $vaccine_add ->service_id = $request ->input ('service_select_id');
               $vaccine_add ->category_id = $request ->input ('add_vaccine_input_id');
               $vaccine_add ->vaccine_type = $request ->input ('add_vaccine_input');
+            
+              $vaccine_add ->vaccine_slot = $request ->input ('add_vaccine_slot');
+        
+              if($request ->input ('vaccine_select') == 2){
+                $vaccine_add ->dose = $request ->input ('covid_select');
+               
+              }
+
               $vaccine_add ->vaccine_availability = "No";
               $vaccine_add->save();
-        }else{
-            return redirect()->back()->with('danger', 'Vaccine already Exist');
+        // }
+      //   else{
+      //       return redirect()->back()->with('danger', 'Vaccine already Exist');
 
-        }
+      //   }
        
       }
+
       if ($request ->input ('add_vaccine_category_input') != null){
           $vaccine_category_add = new Category();
           $vaccine_category_add ->category_availability = "";
@@ -121,9 +147,12 @@ class ServicesController extends Controller
         $add_other_services = new Other_Services();
         $add_other_services ->other_services_availability = "No";
         $add_other_services ->service_id = $request ->input ('add_other_services_input_id');
+        $add_other_services ->other_services_slot = $request ->input ('add_others_service_slot');
         $add_other_services ->other_services = $request ->input ('add_other_services_input');
         $add_other_services->save();
     }
+
+
       if(Auth::User()->account_type=='admin'){
         return redirect()->route('services');
       }else{
@@ -204,7 +233,7 @@ if($check_others_service_availability == "Yes"){
   $other_services->update();
 }else{
   $other_services->update();
-  return redirect()->back()->with('warning', 'Turn on the service availability first');
+  return redirect()->back()->with('warning', 'Turn on the service availability to edit availability');
 }
   if(Auth::User()->account_type=='admin'){
     return redirect()->back()->with('success', 'Successfully Edited');
@@ -242,7 +271,7 @@ if($check_service_availability == "Yes"){
 
 }else{
   $category->update();
-  return redirect()->back()->with('warning', 'Turn on the service availability first');
+  return redirect()->back()->with('warning', 'Turn on the service availability to edit availability');
 }
 
 
@@ -288,10 +317,30 @@ if($check_service_availability == "Yes"){
 public function update_vaccine(Request $request){
 
   $vaccine_id = $request ->input ('vaccine_del_id');
+
+  $check_availability = DB::table('categories_vaccine')->join('vaccine','categories_vaccine.id',"=",'vaccine.category_id')->where('vaccine.id',$vaccine_id)->get();
+
+ 
   $vaccine = Vaccine::find($vaccine_id);
-  $vaccine ->vaccine_availability = $request ->input ('choice_vaccine');
   $vaccine ->vaccine_type = $request ->input ('vaccine');
-  $vaccine->update();
+  $vaccine ->vaccine_slot = $request ->input ('update_vaccine_slot');
+
+
+  foreach ($check_availability as $value) {
+    if ($value->category_availability == "Yes"){
+      $vaccine ->vaccine_availability = $request ->input ('choice_vaccine');
+      $vaccine->update();
+    }else{
+      $vaccine->update();
+      return redirect()->back()->with("warning","Turn the category availability first");
+     
+    }
+ 
+
+  }
+
+  
+  
 
   if(Auth::User()->account_type=='admin'){
     return redirect()->back()->with('success', 'Successfully Edited');
