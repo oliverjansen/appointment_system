@@ -188,37 +188,64 @@ class ServicesController extends Controller
  public function update_other_services(Request $request){
  
   $id = $request ->input ('edit_other_services_id');
+  
   $other_services = Other_Services::find($id);
+ 
+
+  $check_others_service_availability = DB::table('services')->where('id', $id )->get();
+
+foreach ($check_others_service_availability as $value) {
+    $check_others_service_availability = $value->availability;
+}
+
+if($check_others_service_availability == "Yes"){
   $other_services ->other_services = $request ->input ('edit_other_services_input');
   $other_services ->other_services_availability = $request ->input ('choice_other_services');
   $other_services->update();
-
+}else{
+  $other_services->update();
+  return redirect()->back()->with('warning', 'Turn on the service availability first');
+}
   if(Auth::User()->account_type=='admin'){
     return redirect()->back()->with('success', 'Successfully Edited');
   }else{
     return redirect()->route('login');
+
   }
 
 }  
 
  public function update_category(Request $request){
  
-
-
-
   $id = $request ->input ('category_update_id');
+  $service_id = $request ->input ('service_update_id');
   $category = Category::find($id);
-  $category ->category_availability = $request ->input ('choice_category');
+
   $category ->category = $request ->input ('category_update');
 
     //update availability of vaccine table
     
+
+
+  
+$check_service_availability = DB::table('services')->where('id', $service_id)->get();
+
+foreach ($check_service_availability as $value) {
+    $check_service_availability = $value->availability;
+}
+
+if($check_service_availability == "Yes"){
+  $others = DB::table('categories_vaccine')->join('vaccine','categories_vaccine.id',"=",'vaccine.category_id')->where('category_id',$request ->input ('category_update_id') )->update(['vaccine_availability' => $request ->input ('choice_category')]);
+  $category ->category_availability = $request ->input ('choice_category');
   $category->update();
 
 
-  $others = DB::table('categories_vaccine')->join('vaccine','categories_vaccine.id',"=",'vaccine.category_id')->where('category_id',$request ->input ('category_update_id') )->update(['vaccine_availability' => $request ->input ('choice_category')]);
+}else{
+  $category->update();
+  return redirect()->back()->with('warning', 'Turn on the service availability first');
+}
 
-// dd($others);
+
 
   if(Auth::User()->account_type=='admin'){
     return redirect()->back()->with('success', 'Successfully Edited');

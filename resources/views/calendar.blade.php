@@ -144,13 +144,13 @@
     <div class="row">
    
     @if(Auth::User()->account_type=='admin')
-         <div id ="calendar_admin" class=" col col-lg-12 col-12 h-50"> 
+         <div id ="calendar_admin" class=" col col-lg-12 col-12 h-50 "> 
     @else
     
     @if($yes != 0)
-        <div id ="calendar" class=" col col-lg-8 col-12"> 
+        <div id ="calendar" class=" col col-lg-8 col-12 shadow-lg p-5 "> 
     @else
-        <div id ="calendar" class=" col col-lg-12 col-12"> 
+        <div id ="calendar" class=" col col-lg-12 col-12 "> 
             <script>
                 alert("No services available!");
             </script>
@@ -162,7 +162,9 @@
         @if(Auth::User()->account_type=='user')
          </div>
          @if($yes != 0)
-                <div class=" col col-lg-4 col-12 align-items-center justify-content-center" >
+
+            {{-- DIVIDION FOR SIDE FORM--}}
+                <div class=" col col-lg-4 col-12 align-items-center justify-content-center  text-dark " >
                     
                     <form action="{{ url('insert_data') }}" id="insert" method="POST" class= "w-100">
 
@@ -273,7 +275,7 @@
                         </div>
                         <div class="mt-5"id="div_appointment_date">
                             <label for="">Availableslot</label>
-                            <input type="text" id="available_slot" name="available_slot" :value="old('available_slot')"  autofocus autocomplete="available_slot" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" hidden>
+                            <input type="text" id="available_slot" name="available_slot" :value="old('available_slot')"  autofocus autocomplete="available_slot" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" >
                             <p id="availableslot" name="availableslot" ></p>
                         </div>
                                 <div class="mt-5 d-flex align-items-centerz justify-content-center" >

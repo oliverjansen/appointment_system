@@ -336,6 +336,8 @@
                 @csrf
                 {{ csrf_field() }}
                 <input type="text" id="category_update_id" name="category_update_id" hidden>
+                <input type="text" id="service_update_id" name="service_update_id" hidden >
+
             <div class="form-group">
                 <label for="service" class="col-form-label">Vaccine</label>
            
@@ -492,7 +494,12 @@
                 {{ session('danger') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
            </div>
-            @endif
+           @elseif (session('warning'))
+           <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    {{ session('warning') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+       </div>
+           @endif
         </div>
         <div class="d-flex justify-content-end">
      
@@ -961,7 +968,7 @@
                 
             }
             else{
-                $("#other_services_title").text("Others");
+                // $("#other_services_title").text("Others");
                 // add_btn_all.style.display="block";
                 // vaccine_table.style.display = "none";
                 // others_table.style.display ="block";
@@ -1197,6 +1204,8 @@
                     console.log(response);
                     $('#category_update_id').val(response.category_id.id);
                     $('#category_update').val(response.category_id.category);
+                    $('#service_update_id').val(response.category_id.service_id);
+
                     if(response.category_id.category_availability == "Yes"){
                         $('#yesandno_category').find(':radio[name=choice_category][value="Yes"]').prop('checked', true);
                     }else{
