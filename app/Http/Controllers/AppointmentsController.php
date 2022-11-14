@@ -104,10 +104,6 @@ class AppointmentsController extends Controller
                   
                     return redirect()->back()->with('danger', "Service is not available");
                   }
-                
-                   
-           
-        
             }
           }
           
@@ -125,25 +121,18 @@ class AppointmentsController extends Controller
           
           }
        
+          $request_category = $request ->input ('appointmentCategory');
+          $request_category = $request ->input ('appointmentCategory');
 
-          // if($appointment_slot){
-           
-          // }
-          
-          // foreach ($appointment_slot as $value){
-          //   if($value->availableslot){
-
-          //   }
-          // }
-          // if($request_service ){
-
-          // }
+          $request_dose = $request ->input ('vaccine_dose_select');
+          if ($request_dose == "1"){
+            $request_dose = "1st Dose";
+          }elseif ($request_dose == "2"){
+            $request_dose = "2nd Dose";
+          }else if($request_dose == "3") {
+            $request_dose = "2nd Dose";
+          }
          
-          $request_category = $request ->input ('appointmentCategory');
-          $request_category = $request ->input ('appointmentCategory');
-
-
-       
          $categories_id =  DB::table('categories_vaccine')->where('id',$request_category)->get();
 
 
@@ -184,7 +173,7 @@ class AppointmentsController extends Controller
                 $vaccine_type = $value->vaccine_type;
                 }
 
-              $appointment ->appointment_vaccine_type = $vaccine_type;
+              $appointment ->appointment_vaccine_type = $request_dose.", ".$vaccine_type;
             
             }
           }else{

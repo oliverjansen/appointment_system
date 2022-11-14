@@ -23,7 +23,7 @@
 <body>
 
     <div class="modal fade bd-example-modal-lg" id="edit_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog  modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Preview Appointment</h5>
@@ -63,7 +63,7 @@
                                     <tr class="text-center">
                                         <th scope="col">Service</th>
                                         <th scope="col">Category</th>
-                                        <th scope="col" style="display:none" id="th_vaccine_type" name="th_vaccine_type">Vaccine Type</th>
+                                        <th scope="col" style="display:none" id="th_vaccine_type" name="th_vaccine_type">Vaccine</th>
                                         <th scope="col">Date</th>
                                     </tr>
                                     </thead>
@@ -123,179 +123,197 @@
 
   <div class="container mt-5 mb-5" >
         @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @elseif (session('danger'))
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        {{ session('danger') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        
-    </div>
-    @elseif(session('warning'))
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        {{ session('warning') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        
-    </div>
-    @endif
-   
-    <div class="row">
-   
-    @if(Auth::User()->account_type=='admin')
-         <div id ="calendar_admin" class=" col col-lg-12 col-12 h-50 "> 
-    @else
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @elseif (session('danger'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('danger') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                
+            </div>
+        @elseif(session('warning'))
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ session('warning') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                
+            </div>
+        @endif
     
-    @if($yes != 0)
-        <div id ="calendar" class=" col col-lg-8 col-12 shadow-lg p-5 "> 
-    @else
-        <div id ="calendar" class=" col col-lg-12 col-12 "> 
-            <script>
-                alert("No services available!");
-            </script>
-    @endif
-    
-    @endif
+        <div class="row">
+      
+            @if(Auth::User()->account_type=='admin')
+                <div id ="calendar_admin" class=" col col-lg-12 col-12 h-50 "> 
+            @else
+            
+            @if($yes != 0)
+                <div id ="calendar" class=" col col-lg-7  col-12 shadow-lg p-4 "> 
+            @else
+                <div id ="calendar" class=" col col-lg-12 col-12 "> 
+                    <script>
+                        alert("No services available!");
+                    </script>
 
-       
-        @if(Auth::User()->account_type=='user')
-         </div>
-         @if($yes != 0)
+            @endif
+            
+            @endif
 
-            {{-- DIVIDION FOR SIDE FORM--}}
-                <div class=" col col-lg-4 col-12 align-items-center justify-content-center  text-dark " >
-                    
-                    <form action="{{ url('insert_data') }}" id="insert" method="POST" class= "w-100">
+        
+            @if(Auth::User()->account_type=='user')
+            </div>
+            @if($yes != 0)
 
-                        {{ csrf_field() }}
-                        <input type="text" name="selected_service_id" id="selected_service_id" hidden>
-                        <div class="mt-3">
-                            <label for="">Service</label>
-                            
-                            <select name="appointmentservice" id="appointmentservice" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" >
-                                <option value="" disabled selected hidden>select service...</option>
-                                @foreach ($appointment_service as $value)
-                                    @if($value->availability == "Yes")
-                                        <option value="{{ $value->id }}"> 
-                                            {{ $value->service }} 
-                                        </option>
-                                    @endif
-                              @endforeach  
-                            </select>
-                        </div>
-               
-                       
-                            <div class="mt-3" id="div_appointmentCategory">
-                                <label for="" >Vaccine Category</label>
-                                <select name="appointmentCategory" id="appointmentCategory" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-                                    <option value="" disabled selected hidden>select category...</option>
-                                    @foreach ($category as $value)
-                                        @if($value->category_availability == "Yes")
+                {{-- DIVIDION FOR SIDE FORM--}}
+                    <div class=" col col-lg-4 offset-lg-1 col-12 align-items-center justify-content-center  text-dark  shadow p-4" >
+                        
+                        <form action="{{ url('insert_data') }}" id="insert" method="POST" class= "w-100">
+
+                            {{ csrf_field() }}
+                            <input type="text" name="selected_service_id" id="selected_service_id" hidden>
+                            <div class="mt-3">
+                                <label for="">Service</label>
+                                
+                                <select name="appointmentservice" id="appointmentservice" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" >
+                                    <option value="" disabled selected hidden>select service...</option>
+                                    @foreach ($appointment_service as $value)
+                                        @if($value->availability == "Yes")
                                             <option value="{{ $value->id }}"> 
-                                                {{ $value->category }} 
+                                                {{ $value->service }} 
                                             </option>
                                         @endif
-
-                                    {{-- <option value="{{ $value->service }}" {{ ( $value->service =='vaccine') ? 'selected' : '' }}>  --}}
-                                    
-                                
                                 @endforeach  
                                 </select>
                             </div>
-                  
-                            <div class="mt-3" id="div_vaccine_type_kids">
-                                <label for="">Vaccine Type</label>
-                                <select name="vaccine_type_kids" id="vaccine_type_kids" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-                                    @foreach ($vaccine_kids as $value)
-                                        @if($value->vaccine_availability == "Yes")
-                                            <option value="{{ $value->id }}"> 
-                                            {{ $value->vaccine_type }} 
-                                         @endif   
-                                    </option>
-                                
-                                  @endforeach  
-                                </select>
-                            </div>
-                            <div class="mt-3" id="div_vaccine_type_covid">
+                
+                        
+                                <div class="mt-3" id="div_appointmentCategory">
+                                    <label for="" >Vaccine Category</label>
+                                    <select name="appointmentCategory" id="appointmentCategory" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                                    
+                                        @foreach ($category as $value)
+                                            @if($value->category_availability == "Yes")
+                                                <option value="{{ $value->id }}"> 
+                                                    {{ $value->category }} 
+                                                </option>
+                                            @endif
 
-                            <label for="">Dose</label>
-                                <select name="vaccine_type_covid" id="vaccine_type_covid" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-                                    <option value="" disabled selected hidden>select dose...</option>
-                                    @foreach ($vaccine_covid as $value)
-                                        @if($value->vaccine_availability == "Yes")
-                                    {{-- <option value="{{ $value->service }}" {{ ( $value->service =='vaccine') ? 'selected' : '' }}>  --}}
-                                        <option value="{{ $value->id }}"> 
-                                        {{ $value->vaccine_type }}
-                                        @endif
-
-                                    </option>
-                                
+                                        {{-- <option value="{{ $value->service }}" {{ ( $value->service =='vaccine') ? 'selected' : '' }}>  --}}
+                                        
+                                    
                                     @endforeach  
+                                    </select>
+                                </div>
+                    
+                                <div class="mt-3" id="div_vaccine_type_kids">
+                                    <label for="">Vaccine</label>
+                                    <select name="vaccine_type_kids" id="vaccine_type_kids" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                                        @foreach ($vaccine_kids as $value)
+                                            @if($value->vaccine_availability == "Yes")
+                                                <option value="{{ $value->id }}"> 
+                                                {{ $value->vaccine_type }} 
+                                            @endif   
+                                        </option>
+                                    
+                                    @endforeach  
+                                    </select>
+                                </div>
+                                <div class="mt-3" id="div_vaccine_dose">
+                                    <label for="">Dose</label>
+                                    <select name="vaccine_dose_select" id="vaccine_dose_select" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                                        <option value="" disabled selected hidden>select dose...</option>
+                                        @foreach ($vaccine_dose as $value)
+                                            @if($value->dose == "1")
+                                            <option value="{{ $value->dose }}">1st Dose</option>
+                                            @elseif($value->dose == "2")
+                                            <option value="{{ $value->dose }}">2nd Dose</option>
+                                            @elseif($value->dose == "3")
+                                            <option value="{{ $value->dose }}">Booster</option>
+                                            @endif
 
-                                </select>
-                            </div>
-                                
-                                <div class="mt-3" id="div_vaccine_type_others">
-                                    <label for="">Others</label>
-                                        <select name="vaccine_type_others" id="vaccine_type_others" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-                                            <option value="" disabled selected hidden>select others...</option>
-                                            @foreach ($vaccine_others as $value)
-                                                {{-- @if($value->vaccine_availability == "yes") --}}
-                                                    <option value="{{ $value->id }}"> 
-                                                        {{ $value->vaccine_type }}
-                                                    </option>
-                                                {{-- @endif --}}
-                                          @endforeach 
-                                         
-                                        </select>
-                                    </div>
-                                <div class="mt-3" id="div_other_services">
-                                    <input type="text" id="other_services_name_input" name="other_services_name_input" hidden>
-                                    <label id="other_services_input" name="other_services_input"></label>
+                                        @endforeach  
 
-                                      <select name="appointment_service_others" id="appointment_service_others" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" >
-                                            {{-- <option value="">Select City</option>
-                                            @foreach ($medicine as $value)       
-                                                <option value="{{ $value->medicine_type }}"> 
-                                                {{ $value->medicine_type }}
-                                                
+                                    </select>
+                                </div>
+                                <div class="mt-3" id="div_vaccine_type_covid">
+
+                                    <label for="">Brand</label>
+                                        <select name="vaccine_type_covid" id="vaccine_type_covid" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                                            {{-- <option value="" disabled selected hidden>select dose...</option>
+                                            @foreach ($vaccine_covid as $value)
+                                                @if($value->vaccine_availability == "Yes")
+                                            {{-- <option value="{{ $value->service }}" {{ ( $value->service =='vaccine') ? 'selected' : '' }}>  --}}
+                                                {{-- <option value="{{ $value->id }}"> 
+                                                {{ $value->vaccine_type }}
+                                                @endif
+
                                             </option>
                                         
-                                          @endforeach   --}}
-                                           
-                                        </select> 
+                                            @endforeach   --}} --}}
 
-                                     
-
-                                    </div>
-                        <div class="mt-4"id="div_appointment_date">
-                                <label for="">Appointment Date</label>
-                                <input type="date" id="appointmentdate" name="appointmentdate" :value="old('appointmentdate')" required autofocus autocomplete="appointmentdate" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-                        </div>
-                        <div class="mt-5"id="div_appointment_date">
-                            <label for="">Availableslot</label>
-                            <input type="text" id="available_slot" name="available_slot" :value="old('available_slot')"  autofocus autocomplete="available_slot" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" >
-                            <p id="availableslot" name="availableslot" ></p>
-                        </div>
-                                <div class="mt-5 d-flex align-items-centerz justify-content-center" >
-                                <button type="submit" id="button1" class="btn btn-primary btn-sm  text-align-center w-50 create_appointment_btn" >Submit</button>
+                                        </select>
                                 </div>
+                            
+                                    <div class="mt-3" id="div_vaccine_type_others">
+                                        <label for="">Others</label>
+                                            <select name="vaccine_type_others" id="vaccine_type_others" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                                                <option value="" disabled selected hidden>select others...</option>
+                                                @foreach ($vaccine_others as $value)
+                                                    {{-- @if($value->vaccine_availability == "yes") --}}
+                                                        <option value="{{ $value->id }}"> 
+                                                            {{ $value->vaccine_type }}
+                                                        </option>
+                                                    {{-- @endif --}}
+                                            @endforeach 
+                                            
+                                            </select>
+                                        </div>
+                                    <div class="mt-3" id="div_other_services">
+                                        <input type="text" id="other_services_name_input" name="other_services_name_input" hidden>
+                                        <label id="other_services_input" name="other_services_input"></label>
 
-                                {{-- <div class="mt-5 d-flex align-items-center justify-content-center">
-                                    <button type="button" class="btn btn-primary btn-sm  text-align-center w-50 btn_preview" >Preview Appointment</button>
-                               
-                            </div> --}}
+                                        <select name="appointment_service_others" id="appointment_service_others" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" >
+                                                {{-- <option value="">Select City</option>
+                                                @foreach ($medicine as $value)       
+                                                    <option value="{{ $value->medicine_type }}"> 
+                                                    {{ $value->medicine_type }}
+                                                    
+                                                </option>
+                                            
+                                            @endforeach   --}}
+                                            
+                                            </select> 
 
-                    </form>
+                                        
+
+                                        </div>
+                            <div class="mt-4"id="div_appointment_date">
+                                    <label for="">Appointment Date</label>
+                                    <input type="date" id="appointmentdate" name="appointmentdate" :value="old('appointmentdate')" required autofocus autocomplete="appointmentdate" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                            </div>
+                            <div class="mt-5"id="div_appointment_date">
+                                <label for="">Availableslot</label>
+                                <input type="text" id="available_slot" name="available_slot" :value="old('available_slot')"  autofocus autocomplete="available_slot" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" >
+                                <p id="availableslot" name="availableslot" ></p>
+                            </div>
+                                    <div class="mt-5 d-flex align-items-centerz justify-content-center" >
+                                    <button type="submit" id="button1" class="btn btn-primary btn-sm  text-align-center w-50 create_appointment_btn" >Submit</button>
+                                    </div>
+
+                                    {{-- <div class="mt-5 d-flex align-items-center justify-content-center">
+                                        <button type="button" class="btn btn-primary btn-sm  text-align-center w-50 btn_preview" >Preview Appointment</button>
+                                
+                                </div> --}}
+
+                        </form>
+                    </div>
+            @endif
+
                 </div>
-        @endif
-
             </div>
+            
+            @endif   
         </div>
-        
-        @endif   
-    </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
@@ -404,7 +422,10 @@ $(document).ready(function () {
         $("#appointmentservice").on('change',function(e){
             e.preventDefault();
            $id_selected_service = $("#appointmentservice").val();
-           
+            
+           console.log($id_selected_service);
+       
+
              
              $("#selected_service_id").val($id_selected_service);
           
@@ -417,7 +438,19 @@ $(document).ready(function () {
                 // console.log("100");
             }
             var other_services_name = document.getElementById("other_services_name");
-            
+                $("#div_vaccine_type").hide();  
+                $("#div_appointmentCategory").hide();
+                $("#div_laboratory").hide();
+                $("#div_other_services").hide();
+                $("#div_vaccine_type_covid").hide();   
+                $("#div_other_services").hide();
+                $("#div_vaccine_type_kids").hide();  
+                $("#div_vaccine_type_others").hide();  
+                $("#div_vaccine_dose").hide();
+                $("#appointment_service_others").hide();
+
+                
+
             if($(this).val()== "1"){
                 $("#div_vaccine_type").show();  
                 $("#div_appointmentCategory").show();
@@ -434,14 +467,40 @@ $(document).ready(function () {
                             $("#div_vaccine_type_kids").show();  
                             $("#div_vaccine_type_others").hide();  
                             $("#div_vaccine_type_covid").hide();  
+                            $("#div_vaccine_dose").hide();  
 
+
+                        //covid
                         }else if ($(this).val()== "2"){
                             // console.log($(this).val());
                             $("#div_vaccine_type").show();  
                             $("#div_appointmentCategory").show();
                             $("#div_vaccine_type_kids").hide();  
                             $("#div_vaccine_type_others").hide();
-                            $("#div_vaccine_type_covid").show();
+                           
+                            $("#div_vaccine_dose").show();  
+                            //covid dose select
+                            $("#vaccine_dose_select").on('change',function(e){
+                                e.preventDefault();
+                                $("#div_vaccine_type_covid").show();
+                            //    console.log($(this).val());
+                                let dose = $(this).val();
+                               $.ajax({
+                                type: "GET",
+                                url: "/get_dose/"+dose,
+                                success: function (response) {
+                                var response = JSON.parse(response);
+                                console.log(response);   
+                                    $('#vaccine_type_covid').empty();
+                                    $('#vaccine_type_covid').append(`<option value="0" disabled selected>select vaccine brand...</option>`);
+                                    response.forEach(element => {
+                                    $('#vaccine_type_covid').append(`<option value="${element['id']}">${element['vaccine_type']}</option>`);
+                                    $('#other_services_input').text(response[0].service +" categories");
+                                    });
+                                    
+                                }
+                            });
+                            });
 
                 
                         }else if ($(this).val()== "3"){
@@ -451,6 +510,8 @@ $(document).ready(function () {
                             $("#div_vaccine_type_kids").hide();  
                             $("#div_vaccine_type_others").show();
                             $("#div_vaccine_type_covid").hide();
+                            $("#div_vaccine_dose").hide();  
+
                         }else{
                             // console.log($(this).val());
                             $("#div_vaccine_type_others").show();  
@@ -458,6 +519,8 @@ $(document).ready(function () {
                             $("#div_appointmentCategory").show();
                             $("#div_vaccine_type_kids").hide();  
                             $("#div_vaccine_type_covid").hide();
+                            $("#div_vaccine_dose").hide();  
+
                         }
                     
                 }).change();
@@ -471,6 +534,9 @@ $(document).ready(function () {
                 $("#div_appointmentCategory").hide();
                 $("#div_laboratory").hide();
                 $("#div_vaccine_type_covid").hide(); 
+                $("#appointment_service_others").show(); 
+
+                
                 // console.log($(this).val());
                 let id = $(this).val();
                 $('#appointment_service_others').empty();

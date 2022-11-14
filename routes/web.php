@@ -92,6 +92,7 @@ Route::middleware([
         //view appointment
         Route::match(['get','post'],'preview_appointment/{id}','App\Http\Controllers\CalendarController@preview_appointment')->name('preview_appointment');
         Route::match(['get','post'],'get_other_services/{id}','App\Http\Controllers\CalendarController@get_other_services')->name('get_other_services');
+        Route::get('get_dose/{id}','App\Http\Controllers\CalendarController@get_dose')->name('get_dose');
 
         
         //fetch services

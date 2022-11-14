@@ -45,8 +45,13 @@ class CalendarController extends Controller
         $vaccine = Vaccine::all();
         $services = services::all();
 
+        $vaccine_dose = DB::table('categories_vaccine')
+        ->join('vaccine','categories_vaccine.id',"=",'vaccine.category_id')
+        ->where('category_id',2)
+        ->groupBy('dose') 
+        ->get();
 
-       
+
         if($services->isEmpty()){
             $yes = 0;
         }else{
@@ -124,7 +129,7 @@ class CalendarController extends Controller
          }else{
             $qrcode = 13;
             // return view ('calendar', ['schedules' =>  $schedules]);
-            return view ('calendar', compact('schedules','appointment_service','vaccine_kids','vaccine_others','category','qrcode','vaccine','vaccine_covid','yes','data3') );
+            return view ('calendar', compact('schedules','vaccine_dose','appointment_service','vaccine_kids','vaccine_others','category','qrcode','vaccine','vaccine_covid','yes','data3') );
          }
     }
 
@@ -136,6 +141,10 @@ class CalendarController extends Controller
         //     }
         // }
 
+    }
+
+    public function get_dose($id){
+        echo json_encode (DB::table('vaccine')->where('dose',$id)->get());
     }
 
     public function get_other_services ($id){
