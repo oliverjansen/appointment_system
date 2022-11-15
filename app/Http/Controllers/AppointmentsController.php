@@ -90,13 +90,8 @@ class AppointmentsController extends Controller
           return redirect()->back()->with('danger', "Invalid Appointment Date!");
         }else{
 
-          
           $service_slot=  DB::table('services')->where('id',$request_service)->get();
           $appointment_slot =  DB::table('appointments')->where('appointment_availableslot','<=',0)->get();
-          
-      
-
-
           foreach ($appointment_slot as $value) {
             if ($value->service_id == $request_service) {
            
@@ -173,8 +168,8 @@ class AppointmentsController extends Controller
                 $vaccine_type = $value->vaccine_type;
                 }
 
-              $appointment ->appointment_vaccine_type = $request_dose.", ".$vaccine_type;
-            
+              $appointment ->appointment_vaccine_type = $vaccine_type;
+              $appointment ->appointment_dose = $request_dose;
             }
           }else{
             if($request ->get('appointment_service_others')){
@@ -300,29 +295,146 @@ class AppointmentsController extends Controller
         ]);
     }
 
-  public function get_appointmentDate($date,$id){
+  public function get_appointment_slot_vaccine($date,$id){
 
       $today = \Carbon\Carbon::today()->format('Y/m/d');
      $appointment_date = \Carbon\Carbon::parse($date)->format('Y/m/d');
+
+      
+    $vaccine_dose = DB::table('vaccine')->where('id',$id)->get('dose');
+
+    foreach ($vaccine_dose as $value) {
+      $vaccine_dose = $value->dose;
+    }
+    // dd($vaccine_dose);
+
+
+      $date1 = DB::table('appointments')->join('vaccine','appointments.service_id',"=",'vaccine.service_id')->where('appointment_date',$date)->where('vaccine.id',$id)->where('dose',$vaccine_dose)->where('appointment_status',"pending")->groupBy('vaccine.id')->get();
+
      
-      if($appointment_date < $today){
-        $validDate = "no";
+
+    if ($appointment_date < $today) {
+        $slot_vaccine = "0";
+       
+    }else{
+      if($date1->isEmpty()){
+        $empty_date_slot= DB::table('vaccine')->where('id',$id)->get();
+        foreach ($empty_date_slot as $value) {
+          $slot_vaccine = $value->vaccine_slot;
+        }
+   
       }else{
-        $validDate = "yes";
+        foreach ($date1 as $value) {
+          $slot_vaccine = $value->appointment_availableslot;
+        }
       }
-    
-      $date1 = DB::table('appointments')->where('appointment_date',$date)->where('service_id',$id)->get();
+      
+    }
+
+
+
         $allservicesslot = DB::table('services')->sum('availableslot');
         $individualserviceslot= DB::table('services')->get();
     
         return response()-> json([
-          'validDate'=> $validDate,
-          'servicesslot'=>$allservicesslot,
-          'appointmentslot'=>$date1,
-          'individualserviceslot'=> $individualserviceslot,
+          'vaccine'=>$slot_vaccine,
          
         ]);
   }
+
+
+
+
+
+  public function get_slot_other_vaccine($date,$id){
+
+
+    $today = \Carbon\Carbon::today()->format('Y/m/d');
+    $appointment_date = \Carbon\Carbon::parse($date)->format('Y/m/d');
+
+     
+    //  $vaccine_dose = DB::table('vaccine')->where('id',$id)->get('dose');
+    //  foreach ($vaccine_dose as $value) {
+    //    $vaccine_dose = $value->dose;
+    //  }
+  
+
+     $date1 = DB::table('appointments')->join('vaccine','appointments.service_id',"=",'vaccine.service_id')->where('appointment_date',$date)->where('vaccine.id',$id)->where('appointment_status',"pending")->groupBy('vaccine.id')->get();
+
+    
+
+     $slot_other_service = "0";
+    
+   if ($appointment_date < $today) {
+       $slot_other_service = "0";
+      
+   }else{
+     if($date1->isEmpty()){
+       $empty_date_slot_others= DB::table('vaccine')->where('id',$id)->get();
+       foreach ($empty_date_slot_others as $value) {
+         $slot_other_service = $value->vaccine_slot;
+       }
+  
+     }else{
+       foreach ($date1 as $value) {
+         $slot_other_service = $value->appointment_availableslot;
+       }
+     }
+     
+   }
+
+
+
+      return response()-> json([
+        'otherservices'=>$slot_other_service,
+      
+      ]);
+  }
+
+
+  public function get_slot_other_services($date,$id){
+
+
+    $today = \Carbon\Carbon::today()->format('Y/m/d');
+    $appointment_date = \Carbon\Carbon::parse($date)->format('Y/m/d');
+
+     
+    //  $vaccine_dose = DB::table('vaccine')->where('id',$id)->get('dose');
+    //  foreach ($vaccine_dose as $value) {
+    //    $vaccine_dose = $value->dose;
+    //  }
+  
+
+     $date1 = DB::table('appointments')->join('other_services','appointments.service_id',"=",'other_services.service_id')->where('appointment_date',$date)->where('other_services.id',$id)->where('appointment_status',"pending")->groupBy('other_services.id')->get();
+
+     $slot_other_service = "0";
+    
+   if ($appointment_date < $today) {
+       $slot_other_service = "0";
+      
+   }else{
+     if($date1->isEmpty()){
+       $empty_date_slot_others= DB::table('other_services')->where('id',$id)->get();
+       foreach ($empty_date_slot_others as $value) {
+         $slot_other_service = $value->other_services_slot;
+       }
+  
+     }else{
+       foreach ($date1 as $value) {
+         $slot_other_service = $value->appointment_availableslot;
+       }
+     }
+     
+   }
+
+
+
+      return response()-> json([
+        'otherservices'=>$slot_other_service,
+      
+      ]);
+  }
+
 
   public function get_appointmentDate_reschedule($appointment_id,$new_appointment_date){
 

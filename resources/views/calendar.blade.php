@@ -70,8 +70,8 @@
                                     <tbody>
                                         <tr class="text-center">
                                             <td><p id="service" name="service"></p> </td>
-                                            <td><p id="category" name="category"></p> </td>
-                                            <td style="display:none" id="vaccine_type_text_td" name="vaccine_type_text_td"><p style="display:none" id="vaccine_type_text" name="vaccine_type_text"></p> </td>
+                                            <td><p id="category" name="category"></p></td>
+                                            <td style="display:none" id="vaccine_type_text_td" name="vaccine_type_text_td"><p style="display:none" id="vaccine_type_text" name="vaccine_type_text"><p></td>
                                             <td><p id="date" name="date"></p> </td>
                                         </tr>
                                     </tbody>
@@ -144,13 +144,13 @@
         <div class="row">
       
             @if(Auth::User()->account_type=='admin')
-                <div id ="calendar_admin" class=" col col-lg-12 col-12 h-50 "> 
+                <div id ="calendar_admin" class=" col  col-lg-12 col-12 h-50 "> 
             @else
             
             @if($yes != 0)
-                <div id ="calendar" class=" col col-lg-7  col-12 shadow-lg p-4 "> 
+                <div id ="calendar" class=" col col-lg-7  mb-5 col-12 shadow-lg p-4 "> 
             @else
-                <div id ="calendar" class=" col col-lg-12 col-12 "> 
+                <div id ="calendar" class=" col col-lg-12 mb-5 col-12 "> 
                     <script>
                         alert("No services available!");
                     </script>
@@ -165,7 +165,7 @@
             @if($yes != 0)
 
                 {{-- DIVIDION FOR SIDE FORM--}}
-                    <div class=" col col-lg-4 offset-lg-1 col-12 align-items-center justify-content-center  text-dark  shadow p-4" >
+                    <div class=" mb-5 col col-lg-4 offset-lg-1 col-12 align-items-center justify-content-center  text-dark  shadow p-4" >
                         
                         <form action="{{ url('insert_data') }}" id="insert" method="POST" class= "w-100">
 
@@ -190,7 +190,7 @@
                                 <div class="mt-3" id="div_appointmentCategory">
                                     <label for="" >Vaccine Category</label>
                                     <select name="appointmentCategory" id="appointmentCategory" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-                                    
+                                        <option value="" disabled selected hidden>select vaccine category...</option>
                                         @foreach ($category as $value)
                                             @if($value->category_availability == "Yes")
                                                 <option value="{{ $value->id }}"> 
@@ -208,6 +208,7 @@
                                 <div class="mt-3" id="div_vaccine_type_kids">
                                     <label for="">Vaccine</label>
                                     <select name="vaccine_type_kids" id="vaccine_type_kids" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                                        <option value="" disabled selected hidden>select others...</option>
                                         @foreach ($vaccine_kids as $value)
                                             @if($value->vaccine_availability == "Yes")
                                                 <option value="{{ $value->id }}"> 
@@ -377,8 +378,12 @@ $(document).ready(function () {
                         vaccine_type_text.style="display:block";
                         th_vaccine_type.style="display:block";
                         vaccine_type_text_td.style="display:block";
-                  
-                        $('#vaccine_type_text').text(response.appointment.appointment_vaccine_type);
+                        if(response.appointment.appointment_dose){
+                            $('#vaccine_type_text').text(response.appointment.appointment_vaccine_type+", "+response.appointment.appointment_dose);
+                        }else{
+                            $('#vaccine_type_text').text(response.appointment.appointment_vaccine_type);
+                        }
+                       
 
                        }
                        
@@ -434,9 +439,9 @@ $(document).ready(function () {
             $('#appointmentdate').val("");
 
 
-            if($("#appointmentservice").val() == ""){
-                // console.log("100");
-            }
+            // if($("#appointmentservice").val() == ""){
+            //     // console.log("100");
+            // }
             var other_services_name = document.getElementById("other_services_name");
                 $("#div_vaccine_type").hide();  
                 $("#div_appointmentCategory").hide();
@@ -454,6 +459,7 @@ $(document).ready(function () {
             if($(this).val()== "1"){
                 $("#div_vaccine_type").show();  
                 $("#div_appointmentCategory").show();
+    
                 $("#div_laboratory").hide();
                 $("#div_other_services").hide();
                 $("#div_vaccine_type_covid").hide();  
@@ -467,7 +473,12 @@ $(document).ready(function () {
                             $("#div_vaccine_type_kids").show();  
                             $("#div_vaccine_type_others").hide();  
                             $("#div_vaccine_type_covid").hide();  
-                            $("#div_vaccine_dose").hide();  
+                            $("#div_vaccine_dose").hide(); 
+                            $("#vaccine_type_kids").on('change',function(e){ 
+                                e.preventDefault();
+                                // $('#appointmentdate').val("");
+                            });
+                                        
 
 
                         //covid
@@ -483,6 +494,12 @@ $(document).ready(function () {
                             $("#vaccine_dose_select").on('change',function(e){
                                 e.preventDefault();
                                 $("#div_vaccine_type_covid").show();
+                                $("#vaccine_dose_select").on('change',function(e){
+                                    e.preventDefault();
+                                    $('#appointmentdate').val("");
+                                    
+                                });
+                                $('#appointmentdate').val("");
                             //    console.log($(this).val());
                                 let dose = $(this).val();
                                $.ajax({
@@ -505,15 +522,20 @@ $(document).ready(function () {
                 
                         }else if ($(this).val()== "3"){
                             // console.log($(this).val());
+
                             $("#div_vaccine_type").show();  
                             $("#div_appointmentCategory").show();
                             $("#div_vaccine_type_kids").hide();  
                             $("#div_vaccine_type_others").show();
+
+                   
+                            
+
                             $("#div_vaccine_type_covid").hide();
                             $("#div_vaccine_dose").hide();  
 
                         }else{
-                            // console.log($(this).val());
+                            
                             $("#div_vaccine_type_others").show();  
                             $("#div_vaccine_type").hide();  
                             $("#div_appointmentCategory").show();
@@ -527,6 +549,7 @@ $(document).ready(function () {
                     
             
             }else{
+                $('#vaccine_type_covid').empty();
                 $("#div_appointmentCategory").hide();
                 $("#div_other_services").show(); 
                 $("#div_vaccine_type_kids").hide();  
@@ -535,7 +558,11 @@ $(document).ready(function () {
                 $("#div_laboratory").hide();
                 $("#div_vaccine_type_covid").hide(); 
                 $("#appointment_service_others").show(); 
-
+                $("#appointment_service_others").on('change',function(e){
+                                    e.preventDefault();
+                                    $('#appointmentdate').val("");
+                                    
+                        });
                 
                 // console.log($(this).val());
                 let id = $(this).val();
@@ -578,75 +605,108 @@ $(document).ready(function () {
 
         $("#appointmentdate").on('change',function(e){
             e.preventDefault();
-            $service_id =  $('#selected_service_id').val();
+            $vaccine_id = $('#vaccine_type_covid').val();
+            $('#available_slot').val("");
+            $('#availableslot').text("");
+
+            $other_services_id = $('#appointment_service_others').val();
             var date = $(this).val();
-            // console.log(date);
+            $service_id = $('#appointmentservice').val();
         
-            $.ajax({
-                type: "GET",
-                url: "/get_appointmentDate/"+date+"/"+$service_id,
-                success: function (response) {
-                    // console.log(response);  
-               
+          
 
-                    if(response.validDate == "yes"){
-                        var len = 0;
-                        var leng = 0;
-                      
-                        len = response['appointmentslot'].length;
-                        // console.log(len);
-                        if(len > 0){
-                            $service_id =  $('#selected_service_id').val();
-                            console.log("pumasok sa appointment table");
-                                for(var i=0; i<1; i++){ 
-                                    console.log("pumasok sa appointment table loop");
-                                    console.log(response['appointmentslot'][i].availableslot);
-                                    if(response['appointmentslot'][i].appointment_availableslot != 0){
-                                        $('#available_slot').val(response['appointmentslot'][i].appointment_availableslot);
-                                        $('#availableslot').text(response['appointmentslot'][i].appointment_availableslot);
-                                        $('#availableslot_id').val(response['appointmentslot'][i].id);
-                                    }else{
-                                        $('#available_slot').val("0");
-                                        $('#availableslot').text("0");
-                                        $('#availableslot_id').val("0");
-                                    }
-                                   
-                                 
+            if($service_id != "1"){
+                if(date == null || date == ""){
+                   
+                }else{
+                    $other_service = $('#appointment_service_others').val();
+                    
 
-                                }
-                        }else{
-                            //no return of available slot
-                            leng = response['individualserviceslot'].length;
-                            console.log("pumasok sa service table");
-                            $service_id =  $('#selected_service_id').val();
-                                for(var i=0; i<leng; i++){
-                            
-                                        if($service_id == response['individualserviceslot'][i].id){
-                                            console.log($service_id);
-                                            $('#available_slot').val(response['individualserviceslot'][i].availableslot);
-                                            $('#availableslot').text(response['individualserviceslot'][i].availableslot);
-                               
-                
-                                        }
-                                
-                                }
-                
-                        }
-                          
-                    }else {
-                        $('#available_slot').val("0");
-                        $('#availableslot').text("0");
-                        
-                       
-                        // console.log("bobo ko talga1");
-                    }
-
-               
-           
-
+                    $.ajax({
+                            type: "GET",
+                            url: "/get_slot_other_services/"+date+"/"+$other_service,
+                            success: function (response) {
+                                console.log(response);  
+                                console.log(response.vaccine);
+                                $('#available_slot').val(response.otherservices);
+                                $('#availableslot').text(response.otherservices);
+                            }
+                        });
                 }
-            });
+            }else{
+                if(date == null || date == ""){
+                // console.log("ano daw");
+                }else{
+                $vaccine_category = $('#appointmentCategory').val();
+                console.log($vaccine_category);
+                
+                if($vaccine_category == "1"){
+           
+                            $id_kids =$('#vaccine_type_kids').val();
+                            console.log( $id_kids);
+                            $.ajax({
+                            type: "GET",
+                            url: "/get_slot_other_vaccine/"+date+"/"+$id_kids,
+                            success: function (response) {
+                                console.log(response);  
+                                console.log(response.vaccine);
+                                $('#available_slot').val(response.otherservices);
+                                $('#availableslot').text(response.otherservices);
+                            }
+                        });
+                        
+                 
+                }else if ($vaccine_category == "2"){
+                    if($vaccine_id==null || $vaccine_id==""){
+            
+                        // $.ajax({
+                        //     type: "GET",
+                        //     url: "/get_slot_other_services/"+date+"/"+$other_services_id,
+                        //     success: function (response) {
+                        //         console.log(response);  
+                        //         console.log(response.vaccine);
+                        //         $('#available_slot').val(response.otherservices);
+                        //         $('#availableslot').text(response.otherservices);
+                        //     }
+                        // });
+                    }else{
+                                $.ajax({
+                                type: "GET",
+                                url: "/get_appointment_slot_vaccine/"+date+"/"+$vaccine_id,
+                                success: function (response) {
+                                    // console.log(response);  
+                                    // console.log(response.vaccine);
+                                    $('#available_slot').val(response.vaccine);
+                                    $('#availableslot').text(response.vaccine);
+                                    }
+                                });
+                        
+                    }
+                }else if ($vaccine_category == "3"){
+                        $id_kids =$('#vaccine_type_others').val();
+                            console.log( $id_kids);
+                            $.ajax({
+                            type: "GET",
+                            url: "/get_slot_other_vaccine/"+date+"/"+$id_kids,
+                            success: function (response) {
+                                console.log(response);  
+                                console.log(response.vaccine);
+                                $('#available_slot').val(response.otherservices);
+                                $('#availableslot').text(response.otherservices);
+                            }
+                        });
+                }
+
+                //vaccine 
+               
+
+               
         
+                
+             }
+            }
+      
+          
     }).change();
 
     $('.btn_preview').on('click', function (e) {

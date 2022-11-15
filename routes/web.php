@@ -84,9 +84,14 @@ Route::middleware([
         Route::match(['get','post'],'delete_appointment','App\Http\Controllers\CalendarController@delete_appointment')->name('delete_appointment');
         
         //get appointment date
-        Route::match(['get','post'],'get_appointmentDate','App\Http\Controllers\AppointmentsController@get_app');
+        Route::match(['get','post'],'get_appointment_slot_vaccine','App\Http\Controllers\AppointmentsController@get_app'); 
+        Route::match(['get','post'],'get_appointment_slot_vaccine/{date}/{id}','App\Http\Controllers\AppointmentsController@get_appointment_slot_vaccine')->name('get_appointment_slot_vaccine');
         
-        Route::match(['get','post'],'get_appointmentDate/{date}/{id}','App\Http\Controllers\AppointmentsController@get_appointmentDate')->name('get_appointmentDate');
+        Route::match(['get','post'],'get_slot_other_vaccine','App\Http\Controllers\AppointmentsController@get_app'); 
+        Route::match(['get','post'],'get_slot_other_vaccine/{date}/{id}','App\Http\Controllers\AppointmentsController@get_slot_other_vaccine')->name('get_slot_other_vaccine');
+       
+        Route::match(['get','post'],'get_slot_other_services','App\Http\Controllers\AppointmentsController@get_app'); 
+        Route::match(['get','post'],'get_slot_other_services/{date}/{id}','App\Http\Controllers\AppointmentsController@get_slot_other_services')->name('get_slot_other_services');
 
         //calendar controller
         //view appointment

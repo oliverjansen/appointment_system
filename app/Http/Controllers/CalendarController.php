@@ -61,14 +61,14 @@ class CalendarController extends Controller
        
         
         $appointment_service = services::all(); 
-        $current_date =Carbon::now()->toDateTimeString();
+        $current_date =Carbon::now()->format('Y-m-d');
 
     
-
+   
         $appointment_expire = appointments::all(); 
         $pending = "pending";
         
-      appointments::where('appointment_date',"<=",$current_date)->where('appointment_status',$pending)->update(['appointment_status' => "expired"]);
+      appointments::where('appointment_date',"<",$current_date)->where('appointment_status',$pending)->update(['appointment_status' => "expired"]);
         
 
 
@@ -76,6 +76,8 @@ class CalendarController extends Controller
         ->join('vaccine','categories_vaccine.id',"=",'vaccine.category_id')
         ->where('categories_vaccine.id',1)
         ->get();
+
+        // dd($vaccine_kids);
 
         $vaccine_covid= DB::table('categories_vaccine')
         ->join('vaccine','categories_vaccine.id',"=",'vaccine.category_id')
