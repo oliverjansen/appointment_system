@@ -379,7 +379,16 @@ $(document).ready(function () {
                         th_vaccine_type.style="display:block";
                         vaccine_type_text_td.style="display:block";
                         if(response.appointment.appointment_dose){
-                            $('#vaccine_type_text').text(response.appointment.appointment_vaccine_type+", "+response.appointment.appointment_dose);
+
+                            if (response.appointment.appointment_dose == "1"){
+                                $request_dose = "1st Dose";
+                            }else if (response.appointment.appointment_dose == "2"){
+                                $request_dose = "2nd Dose";
+                            }else if(response.appointment.appointment_dose == "3") {
+                                $request_dose = "Booster";
+                            }
+                            
+                            $('#vaccine_type_text').text(response.appointment.appointment_vaccine_type+", "+$request_dose);
                         }else{
                             $('#vaccine_type_text').text(response.appointment.appointment_vaccine_type);
                         }

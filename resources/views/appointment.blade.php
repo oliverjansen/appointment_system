@@ -269,7 +269,7 @@
     </div>
     <div class="card shadow-sm mb-5" >
       <div class=" card-header text-center p-3 font-weight-bold bg-semi-grey">
-        Appointments Table
+        Appointments Table 
       </div>
         <div class="panel panel-default mt-4" >
           <div class="panel-body">
@@ -434,63 +434,28 @@
           url: "/get_appointmentDate_reschedule/"+$appointment_id+"/"+$appointmentdate,
           success: function (response) {
             console.log(response);
-            var len = 0;
-            len = response['appointmentslot'].length;
-            var leng = 0;
-           
+            // var len = 0;
+            // len = response['appointmentslot'].length;
+            // var leng = 0;
 
-            if(response.validDate == "yes"){
+          
+
+              if(response.validDate == "yes"){
               $('.invalid_date_warning').hide("0");
+
+                if($datepicker_date == $old_appointment_date){
+                  $('.warning_date_warning').show("0");
+                    $('.reschedule_btn').hide("0");
+                    $('.invalid_date_warning').hide("0");
+
+                } else{
+                    $('.warning_date_warning').hide("0");
+                    $('#available_slot_reschedule').val(response.slotschedule);
+                    $('#available_slot_reschedule_text').text(response.slotschedule);
+                    $('.reschedule_btn').show();
+                }
              
-
-              $('.reschedule_btn').show();
-                    if (len > 0) {
-                      for(var i=0; i<1; i++){ 
-                          if(response['appointmentslot'][i].appointment_availableslot != 0){
-                              $('#available_slot_reschedule').val(response['appointmentslot'][i].appointment_availableslot);
-                              $('#available_slot_reschedule_text').text(response['appointmentslot'][i].appointment_availableslot);
-                              $('#new_appointment_date').val(response['appointmentslot'][i].appointment_date);
-
-                              if($datepicker_date == $old_appointment_date){
-                                  $('.warning_date_warning').show("0");
-                                  $('.reschedule_btn').hide("0");
-
-                            } 
-                      
-
-                          }else{
-                              $('#available_slot_reschedule').val("0");
-                              $('#available_slot_reschedule_text').text("0");
-                              $('.reschedule_btn').hide("0");
-                              $('.warning_date_warning').show("0");
-                          
-
-                            
-                          }
-                        }
-                    } else {
-                      leng = response['individualserviceslot'].length;
-                            console.log("pumasok sa service table");
-                            $service_id =  $('#service_id').val();
-                            $('#new_appointment_date').val($datepicker_date);
-                        
-
-                          
-                              for(var i=0; i<leng; i++){
-                      
-                                  if($service_id == response['individualserviceslot'][i].id){
-                                      // console.log($service_id);
-                                      $('#available_slot_reschedule').val(response['individualserviceslot'][i].availableslot);
-                                      $('#available_slot_reschedule_text').text(response['individualserviceslot'][i].availableslot);
-                                        
-                                  }
-                                
-                                }
-                                           
-
-                    }
-                  
-            }else{
+              }else{
               $('#available_slot_reschedule').val("0");
               $('#available_slot_reschedule_text').text("0");
               $('.invalid_date_warning').show("0");
@@ -498,6 +463,65 @@
               $('.reschedule_btn').hide();
 
             }
+            // if(response.validDate == "yes"){
+            //   $('.invalid_date_warning').hide("0");
+             
+
+            //   $('.reschedule_btn').show();
+            //         if (len > 0) {
+            //           for(var i=0; i<1; i++){ 
+            //               if(response['appointmentslot'][i].appointment_availableslot != 0){
+            //                   $('#available_slot_reschedule').val(response['appointmentslot'][i].appointment_availableslot);
+            //                   $('#available_slot_reschedule_text').text(response['appointmentslot'][i].appointment_availableslot);
+            //                   $('#new_appointment_date').val(response['appointmentslot'][i].appointment_date);
+
+            //                   if($datepicker_date == $old_appointment_date){
+            //                       $('.warning_date_warning').show("0");
+            //                       $('.reschedule_btn').hide("0");
+
+            //                 } 
+                      
+
+            //               }else{
+            //                   $('#available_slot_reschedule').val("0");
+            //                   $('#available_slot_reschedule_text').text("0");
+            //                   $('.reschedule_btn').hide("0");
+            //                   $('.warning_date_warning').show("0");
+                          
+
+                            
+            //               }
+            //             }
+            //         } else {
+            //           leng = response['individualserviceslot'].length;
+            //                 console.log("pumasok sa service table");
+            //                 $service_id =  $('#service_id').val();
+            //                 $('#new_appointment_date').val($datepicker_date);
+                        
+
+                          
+            //                   for(var i=0; i<leng; i++){
+                      
+            //                       if($service_id == response['individualserviceslot'][i].id){
+            //                           // console.log($service_id);
+            //                           $('#available_slot_reschedule').val(response['individualserviceslot'][i].availableslot);
+            //                           $('#available_slot_reschedule_text').text(response['individualserviceslot'][i].availableslot);
+                                        
+            //                       }
+                                
+            //                     }
+                                           
+
+            //         }
+                  
+            // }else{
+            //   $('#available_slot_reschedule').val("0");
+            //   $('#available_slot_reschedule_text').text("0");
+            //   $('.invalid_date_warning').show("0");
+            //   $('.warning_date_warning').hide("0");
+            //   $('.reschedule_btn').hide();
+
+            // }
           }
         });
 

@@ -101,7 +101,7 @@ class CalendarController extends Controller
             }else if ($value->service_id == 2){
                 $color = '#6495ED';
             }else if ($value->service_id == 3){
-                $color = '#E9F73D ';
+                $color = '#F39C12 ';
             }else if ($value->service_id == 4){ 
                 $color = '##3D9AF7';
             }else if ($value->service_id == 5){
