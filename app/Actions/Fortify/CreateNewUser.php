@@ -66,7 +66,7 @@ class CreateNewUser implements CreatesNewUsers
             'birthdate' => $input['birthdate'],
             'contactnumber' => $input['contactnumber'],
             'identification' => $identificationName,
-         'identificationtype' => $input['identificationtype'],
+            'identificationtype' => $input['identificationtype'],
             'address' => $input['address'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),

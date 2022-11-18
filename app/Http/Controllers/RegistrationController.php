@@ -87,6 +87,7 @@ class RegistrationController extends Controller
     
     public function view_identification($id){
       $identification = User::find($id);
+     
       return response()->json([
             'status'=>200,
             'identification'=> $identification,

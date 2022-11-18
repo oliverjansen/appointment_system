@@ -65,7 +65,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
 
-        <form action="{{ url ('delete_scheduled_appointment') }} " method="POST">
+        <form action="{{ route ('admin.delete_registration') }}  " method="POST">
             @csrf
               
             <div class="modal-header">
@@ -73,7 +73,7 @@
               <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <input type="text"  id="delete_id" name="delete_id" hidden>
+              <input type="text"  id="delete_id" name="delete_id" >
               Are you sure you want to delete this registration?
             </div>
             <div class="modal-footer">
@@ -219,7 +219,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
 
-        <form action="{{ url ('approve_registration') }} " method="POST">
+        <form action="{{ route ('admin.approve_registration') }} " method="POST">
             @csrf
            
         <div class="modal-header">
@@ -307,7 +307,7 @@
               </tr>
           </thead>
           <tbody>
-              @foreach($appointments as $data)
+              @foreach($appointments_admin as $data)
               {{-- @if ($data->account_type!="admin" ) --}}
               
               <tr class="text-center ">
@@ -371,7 +371,7 @@
             
             $.ajax({
                 type: "GET",
-                url: "/cancel_appointment/"+cancel_id,
+                url: "/admin/cancel_appointment/"+cancel_id,
                 success: function (response) {
                     // console.log(response);
                     $('#user_phoneNo').val(response.user_id.user_contactnumber);
@@ -397,7 +397,7 @@
             $('.warning_date_warning').hide("0");
             $.ajax({
                 type: "GET",
-                url: "/get_available_slot/"+id,
+                url: "/admin/get_available_slot/"+id,
                 success: function (response) {
                     console.log(response);
                     $('#appointment_id').val(response.date[0].appointment_id);
@@ -431,7 +431,7 @@
         $('.warning_date_warning').hide("0");
         $.ajax({
           type: "GET",
-          url: "/get_appointmentDate_reschedule/"+$appointment_id+"/"+$appointmentdate,
+          url: "/admin/get_appointmentDate_reschedule/"+$appointment_id+"/"+$appointmentdate,
           success: function (response) {
             console.log(response);
             // var len = 0;

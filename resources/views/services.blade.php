@@ -38,13 +38,12 @@
         </div>
         <div class="modal-body">
 
-             <form action=" {{ route('add_services') }} " method="POST"  class="m-2">
+             <form action=" {{ route ('add_services') }} " method="POST"  class="m-2">
                 @csrf
                 {{ csrf_field() }}
-                {{-- <input type="text" id="vaccine_del_id" name="vaccine_del_id" hidden > --}}
                     <div class="form-group">
                         <label for="service" class="col-form-label">Service</label>
-                        <input type="text" class="form-control" name="add_service_input" id="add_service_input" required>
+                        <input type="text" class="form-control" name="add_service" id="add_service" required>
                     </div>
                 
                     <div class="form-group">
@@ -66,6 +65,7 @@
     </div>
 
     {{-- Add vaccine modal--}}
+@include('sweetalert::alert')
 
 <div class="modal fade" id="add_vaccine_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -77,8 +77,7 @@
             </button>
         </div>
         <div class="modal-body">
-
-            <form action="{{ url('add_vaccine') }}" method="POST">
+            <form action="{{ route ('add_vaccine') }}" method="POST">
                 @csrf
                 {{ csrf_field() }}
                 <div class="">
@@ -232,9 +231,13 @@
                 @csrf
                 {{ csrf_field() }}
                 <input type="text" id="id" name="id" hidden>
+                <div class="form-group ">
+                    <label for="service" class="col-form-label">Service ID</label>
+                    <input type="text" class="form-control " name="service_id" id="service_id" required>
+                </div>
             <div class="form-group ">
                 <label for="service" class="col-form-label">Service</label>
-                <input type="text" class="form-control" name="service" id="service" required>
+                <input type="text" class="form-control " name="service" id="service" required>
             </div>
             <div class="form-group">
                 <label for="available_slot" class="col-form-label">Available Slot</label>
@@ -384,14 +387,25 @@
             <form action=" {{ route('update_category') }} " method="POST"  class="m-2">
                 @csrf
                 {{ csrf_field() }}
-                <input type="text" id="category_update_id" name="category_update_id" hidden>
+                
                 <input type="text" id="service_update_id" name="service_update_id" hidden >
+                
+                <div class="form-group">
+                <label for="service" class="col-form-label">Category ID</label>
+
+                <input type="text" id="category_update_id" class="form-control" name="category_update_id">
+
+                </div>
 
             <div class="form-group">
                 <label for="service" class="col-form-label">Vaccine</label>
            
 
-                <input type="text" class="form-control" name="category_update" id="category_update" required>
+                <input type="text" class="form-control" name="category_update" id="category_update" >
+            </div>
+            <div class="form-group" style="display:none" id="div_available_vaccinecategory_slot" class="div_available_vaccinecategory_slot">
+                <label for="available_slot" class="col-form-label">Available Slot</label>
+                <input type="number" class="form-control" name="available_vaccinecategory_slot" id="available_vaccinecategory_slot"  min="0" >
             </div>
             <div class="form-group" id="yesandno_category" name="yesandno_category">
                 <label for="category" class="col-form-label">Availability</label>
@@ -453,7 +467,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
 
-        <form action="{{ url ('delete_services') }} " method="POST"  class="m-2">
+        <form action="{{ url ('admin/delete_services') }} " method="POST"  class="m-2">
             @csrf
          
         <div class="modal-header">
@@ -660,8 +674,7 @@
                             </div>
 
                         </div>
-                     
-                     
+                        <div>{{$services->Links()}}</div>
 
                     </div>
                 </div>
@@ -743,15 +756,15 @@
                             @endforeach
                                 </tbody>
                             </table> 
-                            
                             </div>
+                            <div>{{$categories->Links()}}</div>
                     
                         </div>
                     </div>
                 </div>
                 <div class="card shadow-sm mt-5">
                     <div class=" card-header text-center p-3 font-weight-bold  bg-semi-grey">
-                        Kids Category Table
+                         Vaccine Table
                         
                     </div>
                     <div class="card-body">
@@ -783,7 +796,18 @@
                                     @foreach($vaccines_kids as $vaccine)
                                         <tr class="text-center">
                                         <td>{{$vaccine->category}}</td>
-                                        <td>{{$vaccine->vaccine_type}}</td>
+                                        <td>
+                                            @if($vaccine->dose !== null)
+
+                                                @if($vaccine->dose == 1)
+                                                    1st dose ,
+                                                @elseif($vaccine->dose == 2 )
+                                                    2nd dose , 
+                                                @elseif ($vaccine->dose == 3)
+                                                    Booster , 
+                                                @endif
+                                            @endif
+                                            {{$vaccine->vaccine_type}}</td>
                                         <td>{{$vaccine->vaccine_slot}}</td>
 
                                         <td class="">
@@ -821,172 +845,12 @@
                                     </tbody>
                                 </table>
                             </div>
-                         
+                         <div>{{$vaccines_kids->Links()}}</div>
                         </div>
                     </div>
                 </div>
-                <div class="card shadow-sm mt-5">
-                    <div class=" card-header text-center p-3 font-weight-bold  bg-semi-grey">
-                        Covid Category Table
-                        
-                    </div>
-                    <div class="card-body">
-                        <div id="vaccine_table" style="display: " class="">
-                            <div class="d-flex justify-content-end">
-            
-                                <table class="table table-hover  mt-5">
-                                
-                                        <thead class=" mt-5 " >
-                                        <tr >
-                                    
-                                        <th scope="col"  class="text-center" style="width: 25%">Category</th> 
-                                        <th scope="col"  class="text-center" style="width: 25%">Dose</th> 
-                                    <th scope="col"  class="text-center" style="width: 25%">Vaccine</th> 
-                                    <th scope="col"  class="text-center" style="width: 25%">Available Slot</th> 
-                                    <th scope="col"  class="text-center" style="width: 50%">Availability</th> 
-                                        <th scope="col" class="text-center " style="width: 25%">Action</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody class="text-center" >
-                                        @if($vaccines_covid->isEmpty())
-                                        
-                                        <td colspan="4">
-                                            No Data
-                                        </td>
-                                        
-                                            
-                                            @endif
-                                    @foreach($vaccines_covid as $vaccine)
-                                        <tr class="text-center">
-                                        <td>{{$vaccine->category}}</td>
-                                        <td> @if($vaccine->dose == "1")
-                                            <p>1st Dose</p>
-                                            @elseif($vaccine->dose == "2")
-                                            <p>2nd Dose</p>
-                                            @elseif($vaccine->dose == "3")
-                                            <p>Booster</p>
-                                            @endif
-                                               
-                                       </td>
-                                        <td>{{$vaccine->vaccine_type}}</td>
-                                        <td>{{$vaccine->vaccine_slot}}</td>
-
-                                        <td class="">
-                                            <div class="">
-                                                @if($vaccine->vaccine_availability == "Yes")
-                                                    <button class="btn btn-sm mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-circle-fill" viewBox="0 0 16 16">
-                                                        <circle cx="8" cy="8" r="8"/>
-                                                    </svg></button>
-                                                    
-                                                
-
-                                                @else
-                                                    <button class="btn btn-sm  mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-circle-fill" viewBox="0 0 16 16">
-                                                        <circle cx="8" cy="8" r="8"/>
-                                                    </svg></button>
-                                                    
-                                                @endif
-                                            </div>
-                                        
-                                        
-                                        </td>
-                                        <td scope="row" class="d-sm-flex justify-content-center">
-                                                    
-                                            <button class="btn btn-sm btn-success mt-2 mt-lg-0 edit_vaccine" value="{{$vaccine->id}}">   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-                                            </svg></button>
-                                        <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-lg-1 delete_vaccine " value="{{$vaccine->id}}"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-trash3" viewBox="0 0 16 16">
-                                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
-                                            </svg></button>
-                                        </td>
-                                        
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                         
-                        </div>
-                    </div>
-                </div>
-                <div class="card shadow-sm mt-5">
-                    <div class=" card-header text-center p-3 font-weight-bold  bg-semi-grey">
-                        Other Category Table
-                        
-                    </div>
-                    <div class="card-body">
-                        <div id="vaccine_table" style="display: " class="">
-                            <div class="d-flex justify-content-end">
-            
-                                <table class="table table-hover  mt-5">
-                                
-                                        <thead class=" mt-5 " >
-                                        <tr >
-                                    
-                                        <th scope="col"  class="text-center" style="width: 25%">Category</th> 
-                                    <th scope="col"  class="text-center" style="width: 25%">Vaccine</th> 
-                                    <th scope="col"  class="text-center" style="width: 25%">Available Slot</th> 
-                                    <th scope="col"  class="text-center" style="width: 50%">Availability</th> 
-                                        <th scope="col" class="text-center " style="width: 25%">Action</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody class="text-center" >
-                                        @if($vaccines_covid->isEmpty())
-                                        
-                                        <td colspan="4">
-                                            No Data
-                                        </td>
-                                        
-                                            
-                                            @endif
-                                    @foreach($vaccines_others as $vaccine)
-                                        <tr class="text-center">
-                                        <td>{{$vaccine->category}}</td>
-                                        <td>{{$vaccine->vaccine_type}}</td>
-                                        <td>{{$vaccine->vaccine_slot}}</td>
-
-                                        <td class="">
-                                            <div class="">
-                                                @if($vaccine->vaccine_availability == "Yes")
-                                                    <button class="btn btn-sm mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-circle-fill" viewBox="0 0 16 16">
-                                                        <circle cx="8" cy="8" r="8"/>
-                                                    </svg></button>
-                                                    
-                                                
-
-                                                @else
-                                                    <button class="btn btn-sm  mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-circle-fill" viewBox="0 0 16 16">
-                                                        <circle cx="8" cy="8" r="8"/>
-                                                    </svg></button>
-                                                    
-                                                @endif
-                                            </div>
-                                        
-                                        
-                                        </td>
-                                        <td scope="row" class="d-sm-flex justify-content-center">
-                                                    
-                                            <button class="btn btn-sm btn-success mt-2 mt-lg-0 edit_vaccine" value="{{$vaccine->id}}">   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-                                            </svg></button>
-                                        <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-lg-1 delete_vaccine " value="{{$vaccine->id}}"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-trash3" viewBox="0 0 16 16">
-                                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
-                                            </svg></button>
-                                        </td>
-                                        
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                         
-                        </div>
-                    </div>
-                </div>
+               
+              
                 <div class="card mt-5 shadow-sm mt-5">
                     <div class=" card-header text-center p-3 font-weight-bold  bg-semi-grey ">
                         Other Services Table
@@ -1086,8 +950,8 @@
                                 @endforeach
                                 </tbody>
                             
-                            </table> 
-                          
+                            </table>                 
+                            <div>{{$other_services->Links()}}</div>
                             </div>
                         </div>
                     </div>	
@@ -1110,34 +974,35 @@
 <script>
     $(document).ready(function () {
 
-        // $.ajaxSetup({
-        // headers: {
-        //     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        // }
-        // });
+    //     $.ajaxSetup({
+    //     headers: {
+    //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //     }
+    //     });
         
-        // fetch_customer_data();
+    //     fetch_customer_data();
 
-        // function fetch_customer_data(query = ''){
-        //     $.ajax({
-        //         url: "{{route('live_search.action') }}",
-        //         method: 'GET',
-        //         data: {query:query},
-        //         dataType: 'json',
-        //         success: function (data) {
-        //             console.log(data);
-        //             $('#table_other_services').html(data.table_data);
-        //             $('#total_records').text(data.tota_data)
-        //         }
-        //     });
-        // }
+    //     function fetch_customer_data(query = ''){
+    //         $.ajax({
+    //             url: "{{route('live_search.action') }}",
+    //             method: 'GET',
+    //             data: {query:query},
+    //             dataType: 'json',
+    //             success: function (data) {
+    //                 console.log(data);
+    //                 $('#table_other_services').html(data.table_data);
+    //                 $('#total_records').text(data.tota_data)
+                    
+    //             }
+    //         });
+    //     }
 
-       $(document).on('keyup', '#search', function(){
-        var query = $(this).val();
-        fetch_customer_data(query);
-        
-   
-        });
+    //    $(document).on('keyup', '#search', function(){
+    //     var query = $(this).val();
+    //     fetch_customer_data(query);
+    
+      
+    //     });
         
         $(document).on('click', '.edit_btn',function (e) {
             e.preventDefault();
@@ -1149,10 +1014,10 @@
             $.ajax({
                 
                 type: "GET",
-          
-                url: "/edit_services/"+service,
+                url: "/admin/edit_services/"+service,
                 success: function (response) {
-                    // console.log(response.service.service);
+                    console.log(response);
+                    $('#service_id').val(response.service.id)
                     $('#service').val(response.service.service)
                     $('#id').val(response.service.id)
                     $('#available_slot').val(response.service.availableslot)
@@ -1235,7 +1100,7 @@
                 $.ajax({
 
                     type: "GET",
-                    url: "/edit_vaccine/"+vaccine,
+                    url: "/admin/edit_vaccine/"+vaccine,
                     success: function (response) {
                        
                         // $('#id').val(response.vaccine.id)
@@ -1267,7 +1132,7 @@
             $.ajax({
                 
                 type: "GET",
-                url: "/edit_other_services/"+other_services,
+                url: "/admin/edit_other_services/"+other_services,
                 success: function (response) {
                     // console.log(response.service.service);
                     console.log(response);
@@ -1360,7 +1225,7 @@
             $.ajax({
 
                 type: "GET",
-                url: "/select_service/"+service_select_id,
+                url: "/admin/select_service/"+service_select_id,
                 success: function (response) {
                     // $('#id').val(response.vaccine.id)
                     $('#vaccine_field_whole').show();
@@ -1441,13 +1306,20 @@
             $.ajax({
 
                 type: "GET",
-                url: "/edit_category/"+edit_category,
+                url: "/admin/edit_category/"+edit_category,
                 success: function (response) {
                     // $('#id').val(response.vaccine.id)
                     console.log(response);
                     $('#category_update_id').val(response.category_id.id);
                     $('#category_update').val(response.category_id.category);
                     $('#service_update_id').val(response.category_id.service_id);
+                    if(response.category_id.id == 1){
+                        $('#available_vaccinecategory_slot').val(response.category_id.category_vaccine_slot);
+                        (document).getElementById("div_available_vaccinecategory_slot").style.display ="block";  
+                    }else{
+                        (document).getElementById("div_available_vaccinecategory_slot").style.display ="none";  
+                        
+                    }
 
                     if(response.category_id.category_availability == "Yes"){
                         $('#yesandno_category').find(':radio[name=choice_category][value="Yes"]').prop('checked', true);

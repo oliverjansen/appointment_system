@@ -40,7 +40,6 @@ class ServicesController extends Controller
 
     $vaccines_kids = DB::table('categories_vaccine')
     ->join('vaccine','categories_vaccine.id',"=",'vaccine.category_id')
-    ->where('category_id',1)
     ->paginate(5);
 
     $vaccines_covid = DB::table('categories_vaccine')
@@ -79,14 +78,13 @@ class ServicesController extends Controller
 
 
       $services_add = new services();
-      $service = $request ->input ('add_service_input');
+      $service = $request->input('add_service');
     
       $validate_service = services::where('service',"=",$service )->get();
       
-   
 
       if($validate_service->isEmpty()){
-        $services_add ->service = $request ->input ('add_service_input');
+        $services_add ->service = $request->input('add_service');
         $services_add ->availability = "No";
         $services_add ->availableslot = $request ->input ('add_available_slot');
         $services_add->save();
@@ -221,14 +219,21 @@ class ServicesController extends Controller
   $other_services = Other_Services::find($id);
  
 
-  $check_others_service_availability = DB::table('services')->where('id', $id )->get();
+
+  $check_others_service_availability = DB::table('services')
+  ->join('other_services', 'services.id',"=",'other_services.service_id')
+  ->where('other_services.id', $id )->get();
 
 foreach ($check_others_service_availability as $value) {
     $check_others_service_availability = $value->availability;
 }
 
+
+
+
 if($check_others_service_availability == "Yes"){
   $other_services ->other_services = $request ->input ('edit_other_services_input');
+  $other_services ->other_services_slot = $request ->input ('update_other_services_slot');
   $other_services ->other_services_availability = $request ->input ('choice_other_services');
   $other_services->update();
 }else{
@@ -251,7 +256,9 @@ if($check_others_service_availability == "Yes"){
   $category = Category::find($id);
 
   $category ->category = $request ->input ('category_update');
-
+  if($request->input('available_vaccinecategory_slot')){
+    $category ->category_vaccine_slot = $request ->input ('available_vaccinecategory_slot');
+  }
     //update availability of vaccine table
     
 
@@ -288,6 +295,7 @@ if($check_service_availability == "Yes"){
  
   $id = $request ->input ('id');
   $appointment = services::find($id);
+  $appointment ->id = $request ->input ('service_id');
   $appointment ->service = $request ->input ('service');
   $appointment ->availability = $request ->input ('choice_service');
   $appointment ->availableslot = $request ->input ('available_slot');

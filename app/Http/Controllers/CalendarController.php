@@ -29,13 +29,32 @@ class CalendarController extends Controller
         
         if(Auth::User()->id){
             $id = Auth::User()->id;
+            
         }
+
         if(Auth::User()->account_type=='user'){    
-        $schedule_calendar = DB::table('appointments')->where('user_id',$id)->where('appointment_status',"pending")->get();
+        $schedule_calendar = DB::table('appointments')
+        ->where('user_id',$id)
+        ->where('appointment_status',"pending")
+        ->get();
+
+       
+        $hide_appointment_form = DB::table('appointments')
+        ->where('user_id',$id)
+        ->where('appointment_status',"pending")
+        ->get();
+
+        if($hide_appointment_form->isEmpty()){
+                $hide = "no";
+        }else{
+                $hide = "yes";
+        }
+
+ 
 
         }else{
                     
-        $schedule_calendar = DB::table('appointments')->get();
+            $schedule_calendar = DB::table('appointments')->get();
 
         }
 
@@ -51,6 +70,13 @@ class CalendarController extends Controller
         ->groupBy('dose') 
         ->get();
 
+        // $vaccine_dose = DB::table('appointments')
+        // ->join('vaccine','appointments.service_category_id',"=",'vaccine.id')
+        // ->where('user_id',$id)
+        // ->whereNotIn('appointment_status',["success"])
+        // ->get();
+
+  
 
         if($services->isEmpty()){
             $yes = 0;
@@ -58,6 +84,8 @@ class CalendarController extends Controller
             $yes = 1;
 
         }
+
+
        
         
         $appointment_service = services::all(); 
@@ -68,7 +96,9 @@ class CalendarController extends Controller
         $appointment_expire = appointments::all(); 
         $pending = "pending";
         
-      appointments::where('appointment_date',"<",$current_date)->where('appointment_status',$pending)->update(['appointment_status' => "expired"]);
+      appointments::where('appointment_date',"<",$current_date)
+      ->where('appointment_status',$pending)
+      ->update(['appointment_status' => "expired"]);
         
 
 
@@ -77,8 +107,12 @@ class CalendarController extends Controller
         ->where('categories_vaccine.id',1)
         ->get();
 
-        // dd($vaccine_kids);
+       
 
+        
+     
+
+       
         $vaccine_covid= DB::table('categories_vaccine')
         ->join('vaccine','categories_vaccine.id',"=",'vaccine.category_id')
         ->where('categories_vaccine.id',2)
@@ -88,6 +122,8 @@ class CalendarController extends Controller
         ->join('vaccine','categories_vaccine.id',"=",'vaccine.category_id')
         ->where('categories_vaccine.id',">",2)
         ->get();
+
+        $others_services= DB::table('categories_vaccine');
 
         $data3 = Other_Services::pluck('service_id','other_services');
         
@@ -124,14 +160,18 @@ class CalendarController extends Controller
 
         }
 
-     
+     //account
         if(Auth::User()->account_type=='admin'){
-            return view ('calendar', compact('schedules','appointment_service','category','vaccine','yes') );
+            return view ('calendar', compact('schedules','others_services','appointment_service','category','vaccine','yes') );
         // console.log($appointment_service);
-         }else{
+        
+         }elseif(Auth::User()->account_type=='user'){
             $qrcode = 13;
             // return view ('calendar', ['schedules' =>  $schedules]);
-            return view ('calendar', compact('schedules','vaccine_dose','appointment_service','vaccine_kids','vaccine_others','category','qrcode','vaccine','vaccine_covid','yes','data3') );
+            return view ('calendar', compact('schedules','hide','current_date','vaccine_dose','appointment_service','vaccine_kids','vaccine_others','category','qrcode','vaccine','vaccine_covid','yes','data3') );
+         }elseif(Auth::User()->account_type=='staff'){
+            return view ('scanner');
+
          }
     }
 
@@ -150,7 +190,10 @@ class CalendarController extends Controller
     }
 
     public function get_other_services ($id){
-        echo json_encode (DB::table('services')->join('other_services','services.id',"=",'other_services.service_id')->where('other_services.service_id',$id)->get());
+        echo json_encode (DB::table('services')
+        ->join('other_services','services.id',"=",'other_services.service_id')
+        ->where('other_services.service_id',$id)
+        ->get());
        
     }
 
@@ -183,26 +226,106 @@ class CalendarController extends Controller
 
 
 
-    public function delete_appointment(Request $request){
+public function delete_appointment(Request $request){
 
         $id = $request ->input ('calendar_id');
         $delete_appointment= appointments::find($id);
        
-        
-        $update_slot = DB::table('appointments')->where('id',$id)->get();
-       
-        foreach($update_slot as $value){
-            $appointment_date = $value->appointment_date;
-            $service_id = $value->service_id;
-            $appointment_slot = $value->appointment_availableslot;
-           
-        }
-        $update = appointments::where("appointment_date",$appointment_date)->where("service_id",$service_id)->update(['appointment_availableslot' => $appointment_slot+1]);
-        
-       
 
-        // appointments::where("appointment_date",$appointmentDate)
-        // ->update(['appointment_availableslot' => $appointment_slot]);
+        $check_id = DB::table('appointments')
+        ->where('id',$id)
+        ->where('appointment_status',"pending")
+        ->get();
+
+       $service_category_id = null;
+       $service_id =null;
+       $appointment_date =null;
+       $appointment_slot = null;
+        $appointment_dose = null;
+
+        foreach($check_id as $value){
+            $service_id = $value->service_id;
+            $service_category_id = $value->service_category_id;
+            $pediatic_id = $value->pediatic_id; 
+
+        }
+
+        
+        
+        if($service_id == 1){
+         
+            //categories_vaccine table
+            if($pediatic_id !== null){
+                $update_slot = DB::table('categories_vaccine')
+                ->where('id',$pediatic_id)
+                ->where('service_id',$service_id)
+                ->get('category_vaccine_slot');
+                
+               foreach ($update_slot as $value) {
+                $slot = $value->category_vaccine_slot;
+               }
+
+               DB::table('categories_vaccine')
+               ->where('id',$pediatic_id)
+               ->where('service_id',$service_id)
+               ->update(['category_vaccine_slot'=> $slot+1]);
+               
+            
+            //vaccine table
+            }else if($service_category_id !== null){
+
+                $update_slot = DB::table('vaccine')
+                ->where('id',$service_category_id)
+                ->where('service_id',$service_id)
+                ->get(['vaccine_slot']);
+
+           
+               foreach ($update_slot as $value) {
+                $slot = $value->vaccine_slot;
+               }
+
+               DB::table('vaccine')
+               ->where('id',$service_category_id)
+               ->where('service_id',$service_id)
+               ->update(['vaccine_slot'=> $slot+1]);
+            }
+        }else{
+
+            $update_slot = DB::table('other_services')
+            ->where('id',$service_category_id)
+            ->where('service_id',$service_id)
+            ->get(['other_services_slot']);
+
+            foreach ($update_slot as $value) {
+                $slot = $value->other_services_slot;
+               }
+        
+             $kk = DB::table('other_services')
+            ->where('id',$service_category_id)
+            ->where('service_id',$service_id)
+            ->update(['other_services_slot'=> $slot+1]);
+
+
+        }
+
+   
+        // else{
+        //     $update_category = DB::table('appointments')
+        //     ->where('service_category_id',$service_category_id)
+        //     ->where('service_id',$service_id)
+        //     ->where('appointment_date',$appointment_date)
+        //     ->get();
+        // }
+           
+        // $update_category = DB::table('appointments')
+        // ->where('service_category_id',$service_category_id)
+        // ->where('service_id',$service_id)
+        // ->where('appointment_date',$appointment_date)
+        // ->where('appointment_status',"pending")
+        // ->get();
+
+
+            
 
             $delete_appointment->delete();
       

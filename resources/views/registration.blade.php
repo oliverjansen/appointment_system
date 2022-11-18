@@ -39,8 +39,8 @@
           <div class="row">
             <input type="text" id="image_id" name="image_id" hidden>
             {{-- <input type="text" id="image" name="image"> --}}
-            <img id="view_image" src="" alt="Image" class="w-100 h-75" >
-            {{-- <img src="storage/images/dsgLLgapwjZkOGRWmspJX9t2vIbnnv2kJaYWvEYq.jpg" alt=".." > --}}
+            <img id="view_image" src="" alt="Image" class="w-100 h-50" >
+            {{-- <img src="{{ asset('/storage/')}}" > --}}
           </div>
           <div class="row d-flex justify-content-center mt-4 mb-2">
             <div class="text-center">
@@ -65,7 +65,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
 
-        <form action="{{ url ('delete_registration') }} " method="POST">
+        <form action="{{ route ('admin.delete_registration') }} " method="POST">
             @csrf
            
         <div class="modal-header">
@@ -73,7 +73,7 @@
           <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <input type="text"  id="del_id" name="del_id" hidden>
+          <input type="text"  id="del_id" name="del_id" >
           Are you sure you want to delete this registration?
         </div>
         <div class="modal-footer">
@@ -92,7 +92,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
 
-        <form action="{{ url ('reject_registration') }} " method="POST">
+        <form action="{{ route ('admin.reject_registration') }} " method="POST">
             @csrf
           
         <div class="modal-header">
@@ -122,7 +122,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
 
-        <form action="{{ url ('approve_registration') }} " method="POST">
+        <form action="{{ route ('admin.approve_registration') }} " method="POST">
             @csrf
            
         <div class="modal-header">
@@ -302,13 +302,14 @@
 
                 $.ajax({
                   type: "GET",
-                  url: "/view_identification/"+identification,
+                  url: "/admin/view_identification/"+identification,
                   success: function (response) {
-                      // console.log(response);
+                      console.log(response);
                       $('#image').val(response.identification.identification)
                       $('#image_id').val(response.identification.id)
                       $('#id_type').text(response.identification.identificationtype);
-                      $('#view_image').attr('src', 'storage/'+response.identification.identification);
+                      $('#view_image').attr('src', '/storage/'+response.identification.identification);
+                      // console.log(response.identification.identification);
                   }, error: function(error) {
                     console.log(error);
                   

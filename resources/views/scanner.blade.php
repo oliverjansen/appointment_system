@@ -66,7 +66,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
     
-            <form action="{{ url ('delete_registration') }} " method="POST">
+            <form action="{{ route ('admin.delete_registration') }} " method="POST">
                 @csrf
                
             <div class="modal-header">
@@ -74,7 +74,7 @@
               <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <input type="text"  id="del_id" name="del_id" hidden>
+              <input type="text"  id="del_id" name="del_id" >
               Are you sure you want to delete this registration?
             </div>
             <div class="modal-footer">
@@ -93,7 +93,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
     
-            <form action="{{ url ('reject_registration') }} " method="POST">
+            <form action="{{ route ('admin.reject_registration') }} " method="POST">
                 @csrf
               
             <div class="modal-header">
@@ -123,7 +123,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
     
-            <form action="{{ url ('approve_registration') }} " method="POST">
+            <form action="{{ route('admin.approve_registration') }} " method="POST">
                 @csrf
                
             <div class="modal-header">
@@ -263,113 +263,212 @@
     </html>
     
     
-    
-   <script>
-        //  const Instascan = require('instascan');
+    @if(Auth::User()->account_type=='admin')
+      <script>
+            //  const Instascan = require('instascan');
 
-         
-        // $(document).ready(function () {
-
-       
-
-        //   let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
-        //   scanner.addListener('scan', function (content) {
-        //     console.log(content);
-        //   });
-        //   Instascan.Camera.getCameras().then(function (cameras) {
-        //     if (cameras.length > 0) {
-        //       scanner.start(cameras[0]);
-        //     } else {
-        //       console.error('No cameras found.');
-        //     }
-        //   }).catch(function (e) {
-        //     console.error(e);
-        //   }); 
-
-
-
-        //     $(document).on('click', '.approve',function (e) {
-        //         e.preventDefault(); 
-        //         var approve = $(this).val();
-        //         var btn_type = "approved";
-                
-                
-        //         $('#btn_type').val(btn_type);
-        //         $('#approve_id').val(approve);
-               
-        //         // console.log(approve);
-        //         // alert(service); 
-        //         $('#approve_modal').modal('show');
-                
-        //         });
-    
-        //         $(document).on('click', '.rejected',function (e) {
-        //         e.preventDefault(); 
-        //         var rejected = $(this).val();
-        //         var btn_type = "rejected";
-                
-                
-             
-        //         $('#reject_id').val(rejected);
-    
-        //         // $('#email').val(btn_type);
-    
-                
-        //         // $('#approve_id').val(approve);
-               
-        //         // console.log(btn_type);
-        //         // alert(service); 
-        //         $('#reject_modal').modal('show');
-                
-        //         });
-    
-        //         $(document).on('click', '.delete',function (e) {
-        //         e.preventDefault(); 
-        //         var del = $(this).val();
-        //         // var btn_type = "rejected";
-                
-                
-        
-        //         $('#del_id').val(del);
-    
-        //         // $('#email').val(btn_type);
-    
-                
-        //         // $('#approve_id').val(approve);
-               
-        //         // console.log(btn_type);
-        //         // alert(service); 
-        //         $('#delete_modal').modal('show');
-                
-        //         });
-    
-        //         $(document).on('click', '.view',function (e) {
-        //           e.preventDefault();
-        //           var identification = $(this).val();
-    
-        //           $('#view_modal').modal('show');
-        //           //  $('#image_id').val(identification);
-    
-        //             $.ajax({
-                    
-        //             type: "GET",
-        //             url: "/view_identification/"+identification,
-        //              success: function (response) {
-        //                 // console.log(response);
-        //                 $('#image').val(response.identification.identification)
-        //                 $('#image_id').val(response.identification.id)
-        //                 $('#id_type').text(response.identification.identificationtype);
-        //                 $('#view_image').attr('src', 'storage/'+response.identification.identification);
-        //             }, error: function(error) {
-        //                console.log(error);
-                     
-        //     }
-        //         });
-                  
-        //         });
             
-        // });
-     
+            // $(document).ready(function () {
+
+          
+
+            //   let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+            //   scanner.addListener('scan', function (content) {
+            //     console.log(content);
+            //   });
+            //   Instascan.Camera.getCameras().then(function (cameras) {
+            //     if (cameras.length > 0) {
+            //       scanner.start(cameras[0]);
+            //     } else {
+            //       console.error('No cameras found.');
+            //     }
+            //   }).catch(function (e) {
+            //     console.error(e);
+            //   }); 
+
+
+
+            //     $(document).on('click', '.approve',function (e) {
+            //         e.preventDefault(); 
+            //         var approve = $(this).val();
+            //         var btn_type = "approved";
+                    
+                    
+            //         $('#btn_type').val(btn_type);
+            //         $('#approve_id').val(approve);
+                  
+            //         // console.log(approve);
+            //         // alert(service); 
+            //         $('#approve_modal').modal('show');
+                    
+            //         });
+        
+            //         $(document).on('click', '.rejected',function (e) {
+            //         e.preventDefault(); 
+            //         var rejected = $(this).val();
+            //         var btn_type = "rejected";
+                    
+                    
+                
+            //         $('#reject_id').val(rejected);
+        
+            //         // $('#email').val(btn_type);
+        
+                    
+            //         // $('#approve_id').val(approve);
+                  
+            //         // console.log(btn_type);
+            //         // alert(service); 
+            //         $('#reject_modal').modal('show');
+                    
+            //         });
+        
+            //         $(document).on('click', '.delete',function (e) {
+            //         e.preventDefault(); 
+            //         var del = $(this).val();
+            //         // var btn_type = "rejected";
+                    
+                    
+            
+            //         $('#del_id').val(del);
+        
+            //         // $('#email').val(btn_type);
+        
+                    
+            //         // $('#approve_id').val(approve);
+                  
+            //         // console.log(btn_type);
+            //         // alert(service); 
+            //         $('#delete_modal').modal('show');
+                    
+            //         });
+        
+            //         $(document).on('click', '.view',function (e) {
+            //           e.preventDefault();
+            //           var identification = $(this).val();
+        
+            //           $('#view_modal').modal('show');
+            //           //  $('#image_id').val(identification);
+        
+            //             $.ajax({
+                        
+            //             type: "GET",
+            //             url: "/view_identification/"+identification,
+            //              success: function (response) {
+            //                 // console.log(response);
+            //                 $('#image').val(response.identification.identification)
+            //                 $('#image_id').val(response.identification.id)
+            //                 $('#id_type').text(response.identification.identificationtype);
+            //                 $('#view_image').attr('src', 'storage/'+response.identification.identification);
+            //             }, error: function(error) {
+            //                console.log(error);
+                        
+            //     }
+            //         });
+                      
+            //         });
+                
+            // });
+        
+
+                    const initQrCodeScanner = () => {
+                      var cancel = document.getElementById('cancel');
+                      var x = document.getElementById("preview");
+                      var display_verification = document.getElementById("display_verification");
+
+                      if (x.style.display == "none") {
+                        x.style.display = "block";
+                      }
+                    let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+                    
+                    Instascan.Camera.getCameras().then(cameras => {
+                      console.log(cameras.length);
+                      if(cameras.length > 0){
+                        if(scanner.camera = cameras[cameras.length - 2]){
+                          scanner.start();
+                        }else{
+                          alert("camera 2 not found!");
+                        }
+                      
+                      }else {
+                        alert("no camera found!");
+                      }
+                      
+
+                    }).catch(e => console.error(e));
+
+    
+
+                    scanner.addListener('scan', content => {
+                      // scanner.stop();
+                      console.log(content);
+
+                          $.ajax({
+                            type: "GET",
+                            url: "/get_appointment_id/"+content,
+                            success: function (response) {
+                                console.log(response);
+
+                      
+                                  var len = 0;
+                                  if(response['data'] != null){
+                                
+                                        display_verification.style.display = "block";
+                                      len = response['data'].length;
+                                      
+                                      if(len > 0){
+                                        for(var i=0; i<1; i++){
+                                    
+                                        $('#appointment_id').val(response['data'][i].appointment_id);
+                                        $('#appointment_id_hidden').val(response['data'][i].appointment_id);
+                                        $('#appointment_id_hidden').val(response['data'][i].appointment_id);
+                                        $('#appointment_services').val(response['data'][i].appointment_services);
+                                        $('#appointment_services_hidden').val(response['data'][i].appointment_services);
+                                        $('#appointment_services_id_hidden').val(response['data'][i].service_id);
+
+
+                                        $('#appointment_date').val(response['data'][i].appointment_date);
+                                        $('#appointment_date_hidden').val(response['data'][i].appointment_date);
+
+                                        $('#user_id').val(response['data'][i].user_id);
+                                        $('#user_contactnumber').val(response['data'][i].user_contactnumber);
+                                        $('#user_contactnumber_hidden').val(response['data'][i].user_contactnumber);
+
+                                          }
+                                            // x.style.display = "none";
+                                          }else{
+                                            alert("No existing Appointment!");
+                                          }
+                              
+                                  }else {
+                                    alert("No existing Appointment!");
+                                  }
+                                
+                              
+                            }, error: function(error) {
+                              console.log(error);
+                              }
+                          });
+
+
+                      
+                    
+                    });
+                  
+                    cancel.addEventListener('click', function () {
+                      scanner.stop();
+                      x.style.display = "none";
+                    });
+                
+                  };  
+            
+
+                
+            
+        
+      </script>
+    @elseif(Auth::User()->account_type=='staff')
+      <script>
 
                 const initQrCodeScanner = () => {
                   var cancel = document.getElementById('cancel');
@@ -385,11 +484,11 @@
                   console.log(cameras.length);
                   if(cameras.length > 0){
                     if(scanner.camera = cameras[cameras.length - 2]){
-                       scanner.start();
+                      scanner.start();
                     }else{
                       alert("camera 2 not found!");
                     }
-                   
+                  
                   }else {
                     alert("no camera found!");
                   }
@@ -397,7 +496,7 @@
 
                 }).catch(e => console.error(e));
 
- 
+
 
                 scanner.addListener('scan', content => {
                   // scanner.stop();
@@ -405,7 +504,7 @@
 
                       $.ajax({
                         type: "GET",
-                        url: "/get_appointment_id/"+content,
+                        url: "/staff/staff_get_appointment_id/"+content,
                         success: function (response) {
                             console.log(response);
 
@@ -452,7 +551,7 @@
 
 
                   
-                 
+                
                 });
               
                 cancel.addEventListener('click', function () {
@@ -463,8 +562,9 @@
               };  
         
 
-             
+            
         
     
-    </script>
-    </x-app-layout>
+      </script>
+    @endif
+</x-app-layout>

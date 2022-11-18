@@ -147,24 +147,24 @@
                 <div id ="calendar_admin" class=" col  col-lg-12 col-12 h-50 "> 
             @else
             
-            @if($yes != 0)
+            @if($hide == "no")
                 <div id ="calendar" class=" col col-lg-7  mb-5 col-12 shadow-lg p-4 "> 
             @else
-                <div id ="calendar" class=" col col-lg-12 mb-5 col-12 "> 
-                    <script>
-                        alert("No services available!");
-                    </script>
+            
+                <div id ="calendar" class=" col col-lg-12 mb-5 col-12 shadow-lg p-5"> 
 
             @endif
             
             @endif
-
+            
         
             @if(Auth::User()->account_type=='user')
             </div>
             @if($yes != 0)
 
                 {{-- DIVIDION FOR SIDE FORM--}}
+
+                @if($hide == "no")
                     <div class=" mb-5 col col-lg-4 offset-lg-1 col-12 align-items-center justify-content-center  text-dark  shadow p-4" >
                         
                         <form action="{{ url('insert_data') }}" id="insert" method="POST" class= "w-100">
@@ -185,8 +185,6 @@
                                 @endforeach  
                                 </select>
                             </div>
-                
-                        
                                 <div class="mt-3" id="div_appointmentCategory">
                                     <label for="" >Vaccine Category</label>
                                     <select name="appointmentCategory" id="appointmentCategory" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
@@ -197,10 +195,6 @@
                                                     {{ $value->category }} 
                                                 </option>
                                             @endif
-
-                                        {{-- <option value="{{ $value->service }}" {{ ( $value->service =='vaccine') ? 'selected' : '' }}>  --}}
-                                        
-                                    
                                     @endforeach  
                                     </select>
                                 </div>
@@ -240,17 +234,6 @@
 
                                     <label for="">Brand</label>
                                         <select name="vaccine_type_covid" id="vaccine_type_covid" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-                                            {{-- <option value="" disabled selected hidden>select dose...</option>
-                                            @foreach ($vaccine_covid as $value)
-                                                @if($value->vaccine_availability == "Yes")
-                                            {{-- <option value="{{ $value->service }}" {{ ( $value->service =='vaccine') ? 'selected' : '' }}>  --}}
-                                                {{-- <option value="{{ $value->id }}"> 
-                                                {{ $value->vaccine_type }}
-                                                @endif
-
-                                            </option>
-                                        
-                                            @endforeach   --}} --}}
 
                                         </select>
                                 </div>
@@ -260,11 +243,11 @@
                                             <select name="vaccine_type_others" id="vaccine_type_others" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                                                 <option value="" disabled selected hidden>select others...</option>
                                                 @foreach ($vaccine_others as $value)
-                                                    {{-- @if($value->vaccine_availability == "yes") --}}
+                                                    @if($value->vaccine_availability == "yes")
                                                         <option value="{{ $value->id }}"> 
                                                             {{ $value->vaccine_type }}
                                                         </option>
-                                                    {{-- @endif --}}
+                                                    @endif
                                             @endforeach 
                                             
                                             </select>
@@ -273,31 +256,26 @@
                                         <input type="text" id="other_services_name_input" name="other_services_name_input" hidden>
                                         <label id="other_services_input" name="other_services_input"></label>
 
-                                        <select name="appointment_service_others" id="appointment_service_others" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" >
-                                                {{-- <option value="">Select City</option>
-                                                @foreach ($medicine as $value)       
-                                                    <option value="{{ $value->medicine_type }}"> 
-                                                    {{ $value->medicine_type }}
-                                                    
-                                                </option>
-                                            
-                                            @endforeach   --}}
-                                            
+                                            <select name="appointment_service_others" id="appointment_service_others" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" >
+                                           
                                             </select> 
 
-                                        
-
+                                    
                                         </div>
                             <div class="mt-4"id="div_appointment_date">
                                     <label for="">Appointment Date</label>
-                                    <input type="date" id="appointmentdate" name="appointmentdate" :value="old('appointmentdate')" required autofocus autocomplete="appointmentdate" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                                    <input type="date" min="{{$current_date}}" id="appointmentdate" name="appointmentdate" :value="old('appointmentdate')" required autofocus autocomplete="appointmentdate" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" >
                             </div>
                             <div class="mt-5"id="div_appointment_date">
-                                <label for="">Availableslot</label>
-                                <input type="text" id="available_slot" name="available_slot" :value="old('available_slot')"  autofocus autocomplete="available_slot" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" >
-                                <p id="availableslot" name="availableslot" ></p>
+                                <label for=""><b>Available Slot</b></label>
+                                <input type="text" id="available_slot" name="available_slot" :value="old('available_slot')"  autofocus autocomplete="available_slot" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" hidden>
+                                <div class="p-2">
+
+                                    <b class=""><p id="availableslot" class="text-center bg-primary text-white mt-2" name="availableslot" ></p></b>
+                                </div>
+
                             </div>
-                                    <div class="mt-5 d-flex align-items-centerz justify-content-center" >
+                                    <div class="mt-2 d-flex align-items-centerz justify-content-center" >
                                     <button type="submit" id="button1" class="btn btn-primary btn-sm  text-align-center w-50 create_appointment_btn" >Submit</button>
                                     </div>
 
@@ -308,6 +286,7 @@
 
                         </form>
                     </div>
+                @endif
             @endif
 
                 </div>
@@ -421,18 +400,18 @@ $(document).ready(function () {
 
             }, 
             eventClick: function(event){
-                event.jsEvent.preventDefault();
-                var id = event.id;
+                // event.jsEvent.preventDefault();
+                // var id = event.id;
                 
-                // console.log(id);
-                $('#edit_modal').modal('show');
-                $('#calendar_id').val(id);
+                // // console.log(id);
+                // $('#edit_modal').modal('show');
+                // $('#calendar_id').val(id);
                   
                 }
         });
 
 
-
+   
         $("#appointmentservice").on('change',function(e){
             e.preventDefault();
            $id_selected_service = $("#appointmentservice").val();
@@ -451,6 +430,7 @@ $(document).ready(function () {
             // if($("#appointmentservice").val() == ""){
             //     // console.log("100");
             // }
+             
             var other_services_name = document.getElementById("other_services_name");
                 $("#div_vaccine_type").hide();  
                 $("#div_appointmentCategory").hide();
@@ -466,6 +446,7 @@ $(document).ready(function () {
                 
 
             if($(this).val()== "1"){
+                
                 $("#div_vaccine_type").show();  
                 $("#div_appointmentCategory").show();
     
@@ -517,6 +498,7 @@ $(document).ready(function () {
                                 success: function (response) {
                                 var response = JSON.parse(response);
                                 console.log(response);   
+                                console.log(response[0].service);
                                     $('#vaccine_type_covid').empty();
                                     $('#vaccine_type_covid').append(`<option value="0" disabled selected>select vaccine brand...</option>`);
                                     response.forEach(element => {
@@ -560,13 +542,18 @@ $(document).ready(function () {
             }else{
                 $('#vaccine_type_covid').empty();
                 $("#div_appointmentCategory").hide();
-                $("#div_other_services").show(); 
+
+                if($(this).val() !== null){
+                    $("#div_other_services").show();
+                    $("#appointment_service_others").show(); 
+
+                }
+
                 $("#div_vaccine_type_kids").hide();  
                 $("#div_vaccine_type_others").hide();  
                 $("#div_appointmentCategory").hide();
                 $("#div_laboratory").hide();
                 $("#div_vaccine_type_covid").hide(); 
-                $("#appointment_service_others").show(); 
                 $("#appointment_service_others").on('change',function(e){
                                     e.preventDefault();
                                     $('#appointmentdate').val("");
@@ -586,8 +573,13 @@ $(document).ready(function () {
                          console.log(response);   
                          $('#appointment_service_others').empty();
                          $('#appointment_service_others').append(`<option value="0" disabled selected>select category...</option>`);
+
                          response.forEach(element => {
-                        $('#appointment_service_others').append(`<option value="${element['id']}">${element['other_services']}</option>`);
+                        if(response[0].other_services_availability == "Yes"){
+                            $('#appointment_service_others').append(`<option value="${element['id']}">${element['other_services']}</option>`);
+                
+                        }
+                        
                         $('#other_services_input').text(response[0].service +" categories");
                         });
                            
@@ -615,6 +607,8 @@ $(document).ready(function () {
         $("#appointmentdate").on('change',function(e){
             e.preventDefault();
             $vaccine_id = $('#vaccine_type_covid').val();
+        
+
             $('#available_slot').val("");
             $('#availableslot').text("");
 
@@ -646,42 +640,43 @@ $(document).ready(function () {
                 if(date == null || date == ""){
                 // console.log("ano daw");
                 }else{
+                    var current_type_covid = JSON.parse($('#vaccine_type_covid').val());
+
                 $vaccine_category = $('#appointmentCategory').val();
-                console.log($vaccine_category);
-                
+               
                 if($vaccine_category == "1"){
-           
+                    //vaccine category 
+                    //this code is for the functionality for pediatric
                             $id_kids =$('#vaccine_type_kids').val();
                             console.log( $id_kids);
                             $.ajax({
                             type: "GET",
-                            url: "/get_slot_other_vaccine/"+date+"/"+$id_kids,
+                            url: "/get_slot_pediattic_slot/"+date+"/"+$id_kids,
                             success: function (response) {
                                 console.log(response);  
                                 console.log(response.vaccine);
-                                $('#available_slot').val(response.otherservices);
-                                $('#availableslot').text(response.otherservices);
+                                $('#available_slot').val(response.pediatic);
+                                $('#availableslot').text(response.pediatic);
                             }
                         });
                         
                  
                 }else if ($vaccine_category == "2"){
+
+                    //vaccine category 
+                    //this code is for the functionality of the covid category
+                    $request_dose = $('#vaccine_dose_select').val();
+                    $vaccine_type_covid = $('#vaccine_type_covid').val();
+                    var current_type_covid = JSON.parse($('#vaccine_type_covid').val());
+                  
+
+                    
                     if($vaccine_id==null || $vaccine_id==""){
             
-                        // $.ajax({
-                        //     type: "GET",
-                        //     url: "/get_slot_other_services/"+date+"/"+$other_services_id,
-                        //     success: function (response) {
-                        //         console.log(response);  
-                        //         console.log(response.vaccine);
-                        //         $('#available_slot').val(response.otherservices);
-                        //         $('#availableslot').text(response.otherservices);
-                        //     }
-                        // });
                     }else{
                                 $.ajax({
                                 type: "GET",
-                                url: "/get_appointment_slot_vaccine/"+date+"/"+$vaccine_id,
+                                url: "/get_appointment_slot_vaccine/"+date+"/"+current_type_covid,
                                 success: function (response) {
                                     // console.log(response);  
                                     // console.log(response.vaccine);
@@ -706,7 +701,6 @@ $(document).ready(function () {
                         });
                 }
 
-                //vaccine 
                
 
                
@@ -747,6 +741,8 @@ $(document).ready(function () {
 
 
      });   
+
+
     $('#preview_qrcode').on('click', function (e) {
         e.preventDefault();
             qr_code_element.style = "display: none";

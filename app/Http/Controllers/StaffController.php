@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Twilio\Rest\Client;
@@ -14,13 +13,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\VerifyAppointment;
 use Illuminate\Http\Request;
 
-class VerifyAppointmentController extends Controller
+class StaffController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         if(Auth::User()->account_type=='admin'){

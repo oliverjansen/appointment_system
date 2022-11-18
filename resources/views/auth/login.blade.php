@@ -13,7 +13,7 @@
             </div>  
             <div class="text-center d-block mt-3">
             
-                <h5> Dapitan Health Center</h5>
+               <b><h5> Dapitan Health Center</h5></b> 
                 
 
             </div> 
