@@ -47,7 +47,7 @@
                     <div class="row p-5">
                         <div class="col col-6 col-md-4 col-sm-6 h-50">
                             <div class="card text-white bg-primary mb-3" style="">
-                                <div class="card-header text-center">Total number of available slot for vaccine</div>
+                                <div class="card-header text-center">Total number of available slot for vaccine (Consumable)</div>
                                 <div class="card-body">
                                 <h5 class="card-title text-center">{{ $total_vaccine_slot }}</h5>
                                
@@ -58,7 +58,18 @@
                         <div class="col col-6 col-md-4 col-sm-6">
 
                             <div class="card text-white bg-secondary mb-3" style="">
-                                <div class="card-header text-center">Total number of available slot for medicine</div>
+                                <div class="card-header text-center">Total number of available slot Covid Vaccine (Consumable)</div>
+                                <div class="card-body">
+                                <h5 class="card-title text-center">{{$total_available_slot_codiv_vaccine}}</h5>
+                               
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col col-6 col-md-4 col-sm-6">
+
+                            <div class="card text-white bg-secondary mb-3" style="">
+                                <div class="card-header text-center">Total number of available slot for medicine (Consumable)</div>
                                 <div class="card-body">
                                 <h5 class="card-title text-center">{{$total_available_slot_medicine}}</h5>
                                
@@ -74,7 +85,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col col-6 col-md-6 col-sm-6">
+                        <div class="col col-6 col-md-4 col-sm-6">
 
                             <div class="card text-white bg-secondary mb-3" style="">
                                 <div class="card-header text-center">Total number of distributed medicines</div>
@@ -84,7 +95,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col col-6 col-md-6 col-sm-6">
+                        <div class="col col-6 col-md-4 col-sm-6">
                             <div class="card text-white bg-primary mb-3" style="">
                                 <div class="card-header text-center">Total number of covid vaccinated residents</div>
                                 <div class="card-body">
@@ -110,13 +121,13 @@
                     <div class="row justify-content-center"> 
                         <div class="card shadow-sm mb-5 col-12 col-lg-5" style="" >
                             <div class=" card-header text-center p-3 font-weight-bold">
-                              {{-- Analytic --}}
+                              Number of Slot per Service
                             </div>
                             <div class="card-body">
                                 <div class="panel panel-default">
                                     <div class="panel-heading"></div>
                                     <div class="panel-body">
-                                        <canvas id="canvas" height="400" width="600"></canvas>
+                                        <canvas id="Number_slot_perservice" height="400" width="600"></canvas>
                                     </div>
                                 </div>
                                
@@ -124,13 +135,27 @@
                         </div>
                         <div class="card shadow-sm mb-5 ml-3 col-12 col-lg-5 offset" style="width: 100%" >
                             <div class=" card-header text-center p-3 font-weight-bold">
-                              {{-- Analytic --}}
+                              Number of Slot Covid Dose
                             </div>
                             <div class="card-body">
                                 <div class="panel panel-default">
                                     <div class="panel-heading"></div>
                                     <div class="panel-body">
-                                        <canvas id="myChart" height="400" width="700"></canvas>
+                                        <canvas id="vaccine_slot_dose" height="400" width="700"></canvas>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                        </div>
+                        <div class="card shadow-sm mb-5 ml-3 col-12 col-lg-5 offset" style="width: 100%" >
+                            <div class=" card-header text-center p-3 font-weight-bold">
+                              Covid Vaccinated and Unvaccinated
+                            </div>
+                            <div class="card-body">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"></div>
+                                    <div class="panel-body">
+                                        <canvas id="vaccinated_unvaccinated_covid" height="400" width="700"></canvas>
                                     </div>
                                 </div>
                                
@@ -143,26 +168,6 @@
                     Appointment Analytic
                     </div>
                     <div class="row p-5">
-                        {{-- <div class="col col-6 col-md-3 col-sm-6">
-
-                            <div class="card text-white bg-primary mb-3" style="">
-                                <div class="card-header text-center">Total Appointments per months</div>
-                                <div class="card-body">
-                                <h5 class="card-title">Primary card title</h5>
-                               
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col col-6 col-md-3 col-sm-6">
-
-                            <div class="card text-white bg-secondary mb-3" style="">
-                                <div class="card-header text-center">Most frequent service appointed</div>
-                                <div class="card-body">
-                                <h5 class="card-title">Secondary card title</h5>
-                            
-                                </div>
-                            </div>
-                        </div> --}}
                         <div class="col col-6 col-md-4 col-sm-6">
                             <div class="card text-white bg-success mb-3" style="">
                                 <div class="card-header text-center">Total number of successfull appointments</div>
@@ -195,6 +200,120 @@
                 
                     </div>
                 </div>
+                <div class="container-fluid overflow-hidden " style="text-align:center">
+                    <div class="row justify-content-center"> 
+                        <div class="card shadow-sm mb-5 col-12 col-lg-5" style="" >
+                            <div class=" card-header text-center p-3 font-weight-bold">
+                              Appointments Per Months
+                            </div>
+                            <div class="card-body" style="text-align:center">
+                                <div class="panel panel-default " style="text-align:center">
+                                    <div class="panel-heading" ></div>
+                                    <div class="panel-body" style="text-align:center">
+                                        <canvas id="appointments_permonths" height="900" width="900"></canvas>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                        </div>
+                        <div class="card shadow-sm mb-5 ml-3 col-12 col-lg-5 offset" style="width: 100%" >
+                            <div class=" card-header text-center p-3 font-weight-bold">
+                             Most Frequent Service Appointmented
+                            </div>
+                            <div class="card-body">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"></div>
+                                    <div class="panel-body" style="text-align:center">
+                                        <canvas id="mostfrequent" height="900" width="900"></canvas>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                        </div>
+                        <div class="card shadow-sm mb-5 ml-3 col-12 col-lg-5 offset" style="width: 100%" >
+                            <div class=" card-header text-center p-3 font-weight-bold">
+                             Number of Appointments Base on Status
+                            </div>
+                            <div class="card-body">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"></div>
+                                    <div class="panel-body">
+                                        <canvas id="appointment_status" height="900" width="900"></canvas>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card shadow-sm mb-5" style="width: 100%" >
+                    <div class=" card-header text-center p-3 font-weight-bold ">
+                    Residents Analytic
+                    </div>
+                    <div class="row p-5">
+                        <div class="col col-6 col-md-4 col-sm-6">
+
+                            <div class="card text-white bg-primary mb-3" style="">
+                                <div class="card-header text-center">Number Registered Residents</div>
+                                <div class="card-body">
+                                <h5 class="card-title text-center">{{$pie_user_approved1}} </h5>
+                               
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-6 col-md-4 col-sm-6">
+
+                            <div class="card text-white bg-secondary mb-3" style="">
+                                <div class="card-header text-center">Number of Pending Registration of Residents</div>
+                                <div class="card-body">
+                                <h5 class="card-title text-center">{{$pie_user_pending1}}</h5>
+                            
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-6 col-md-4 col-sm-6">
+                            <div class="card text-white bg-success mb-3" style="">
+                                <div class="card-header text-center">Number of Rejected Registration of Residents</div>
+                                <div class="card-body">
+                                <h5 class="card-title text-center">{{$pie_user_rejected1}}</h5>
+                               
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid overflow-hidden">
+                    <div class="row justify-content-center"> 
+                        <div class="card shadow-sm mb-5 col-12 col-lg-5" style="" >
+                            <div class=" card-header text-center p-3 font-weight-bold">
+                              Number of Registration Base on Status (%)
+                            </div>
+                            <div class="card-body">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"></div>
+                                    <div class="panel-body" style="text-align:center">
+                                        <canvas id="pieUser" height="400" width="600"></canvas>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                        </div>
+                        <div class="card shadow-sm mb-5 ml-3 col-12 col-lg-5 offset" style="width: 100%" >
+                            <div class=" card-header text-center p-3 font-weight-bold">
+                             Number of Resident Registration
+                            </div>
+                            <div class="card-body">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"></div>
+                                    <div class="panel-body " style="text-align:center">
+                                        <canvas id="registered_user_line_chart" height="900" width="900"></canvas>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
              
 
             </div>  
@@ -211,72 +330,308 @@
     
     </body>
     </html>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-    
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
-            var year = <?php echo $year; ?>;
-            var user = <?php echo $user; ?>;
-            var barChartData = {
-                labels: year,
-                datasets: [{
-                    label: 'User',
-                    backgroundColor: "blue",
-                    data: user
-                }]
-            };
+    //         var year = <?php echo $year; ?>;
+    //         var user = <?php echo $user; ?>;
+    //         var barChartData = {
+    //             labels: year,
+    //             datasets: [{
+    //                 label: 'User',
+    //                 backgroundColor: "blue",
+    //                 data: user
+    //             }]
+    //         };
         
-    window.onload = function() {
-        var ctx = document.getElementById("canvas").getContext("2d");
+    // window.onload = function() {
+    //     var ctx = document.getElementById("canvas").getContext("2d");
 
-        window.myBar = new Chart(ctx, {
-            type: 'bar',
-            data: barChartData,
-            options: {
-                elements: {
-                    rectangle: {
-                        borderWidth: 2,
-                        borderColor: '#c1c1c1',
-                        borderSkipped: 'bottom'
-                    }
-                },
-                responsive: true,
-                title: {
-                    display: true,
-                    text: 'Yearly User Joined'
-                }
-            }
-        });
+    //     window.myBar = new Chart(ctx, {
+    //         type: 'bar',
+    //         data: barChartData,
+    //         options: {
+    //             elements: {
+    //                 rectangle: {
+    //                     borderWidth: 2,
+    //                     borderColor: '#c1c1c1',
+    //                     borderSkipped: 'bottom'
+    //                 }
+    //             },
+    //             responsive: true,
+    //             title: {
+    //                 display: true,
+    //                 text: 'Yearly User Joined'
+    //             }
+    //         }
+    //     });
 
         
-    };
+    // };
 
-      var year = <?php echo $year; ?>;
-      var user = <?php echo $user; ?>;
+    //   var year = <?php echo $year; ?>;
+    //   var user = <?php echo $user; ?>;
   
-      const data = {
-        labels: year,
+    //   const data = {
+    //     labels: year,
+    //     datasets: [{
+    //       label: 'User',
+    //       backgroundColor: 'rgb(255, 99, 132)',
+    //       borderColor: 'rgb(255, 99, 132)',
+    //       data: user,
+    //     }]
+    //   };
+  
+    //   const config = {
+    //     type: 'line',
+    //     data: data,
+    //     options: {}
+    //   };
+  
+    //   const myChart = new Chart(
+    //     document.getElementById('myChart'),
+    //     config
+    //   );
+
+
+// Registered user per month line Monthly =================================================
+
+      var user_line_labels =  {{ Js::from($user_line_labels) }};
+    var user_line_data =  {{ Js::from($user_line_data) }};
+  
+    const data_user = {
+        labels: user_line_labels,
         datasets: [{
-          label: 'User',
-          backgroundColor: 'rgb(255, 99, 132)',
-          borderColor: 'rgb(255, 99, 132)',
-          data: user,
+            label: 'Residents',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: user_line_data,
         }]
-      };
+    };
   
-      const config = {
+    const config_user = {
         type: 'line',
-        data: data,
+        data: data_user,
         options: {}
-      };
+    };
   
-      const myChart = new Chart(
-        document.getElementById('myChart'),
-        config
-      );
+    const myChart = new Chart(
+        document.getElementById('registered_user_line_chart'),
+        config_user
+    );
+// pei chart user ================================================= 
 
 
 
+const user_pie = {
+  labels: [
+    'Pending Registration (%)',
+    'Approved Registration (%)',
+    'Rejected Registration (%)'
+  ],
+  datasets: [{
+    label: [],
+    data: [{{$pie_user_pending }}, {{$pie_user_approved}}, {{$pie_user_rejected}}],
+    backgroundColor: [
+      'rgb(255, 99, 132)',
+      'rgb(54, 162, 235)',
+      'rgb(255, 205, 86)'
+    ],
+    hoverOffset: 4
+  }]
+};
 
-      
+const config_user_pie= {
+  type: 'doughnut',
+  data: user_pie,
+};
+
+const pie_user = new Chart(
+    document.getElementById('pieUser'),
+    config_user_pie
+);
+
+// pei chart slot per service ================================================= 
+
+const number_perservice_pie = {
+  labels: [
+    'Slot Vaccine',
+    'Slot Medicine ',
+    'Slot Checkup'
+  ],
+  datasets: [{
+    label: ["Service"],
+    data: [{{$pie_slot_service}}, {{$pie_slot_medicine}}, {{$pie_slot_checkup}}],
+    backgroundColor: [
+      'rgb(255, 99, 132)',
+      'rgb(54, 162, 235)',
+      'rgb(255, 205, 86)'
+    ],
+    hoverOffset: 4
+  }]
+};
+
+const config_slot_pie= {
+  type: 'bar',
+  data: number_perservice_pie,
+};
+
+const pie_slot = new Chart(
+    document.getElementById('Number_slot_perservice'),
+    config_slot_pie
+);
+
+// vaccine_slot_dose ========================================================
+
+const number_slot_covid_pie = {
+  labels: [
+    'Slot 1st dose',
+    'Slot 2nd Dose ',
+    'Slot Booster'
+  ],
+  datasets: [{
+    label: ["Covid Vaccnine"],
+    data: [{{$vaccine_slot_dose1}}, {{$vaccine_slot_dose2}}, {{$vaccine_slot_dose3}}],
+    backgroundColor: [
+      'rgb(255, 99, 132)',
+      'rgb(54, 162, 235)',
+      'rgb(255, 205, 86)'
+    ],
+    hoverOffset: 4
+  }]
+};
+
+const config_coid_slot_pie= {
+  type: 'bar',
+  data: number_slot_covid_pie,
+};
+
+const pie_covid_slot = new Chart(
+    document.getElementById('vaccine_slot_dose'),
+    config_coid_slot_pie
+);
+
+// Vaccinated and not vaccinated ========================================================
+const number_vaccinated_covid_pie = {
+  labels: [
+    'Vaccinated',
+    'Unvaccinated',
+  ],
+  datasets: [{
+    label: ["Covid Vaccnine"],
+    data: [{{$vaccincate_covid_user}}, {{$unVaccinated_covid_user}}],
+    backgroundColor: [
+      'rgb(255, 99, 132)',
+      'rgb(54, 162, 235)',
+      'rgb(255, 205, 86)'
+    ],
+    hoverOffset: 4
+  }]
+};
+
+const config_covid_vaccinated_pie= {
+  type: 'pie',
+  data: number_vaccinated_covid_pie,
+};
+
+const pie_covid_vaccinated_unvaccinated = new Chart(
+    document.getElementById('vaccinated_unvaccinated_covid'),
+    config_covid_vaccinated_pie
+);
+
+// appointments permonths ===========================================
+
+var appointment_permonth_line_labels =  {{ Js::from($appointment_permonth_line_labels) }};
+    var appointment_permonth_line_data =  {{ Js::from($appointment_permonth_line_data) }};
+  
+    const data_appointments_permonths = {
+        labels: appointment_permonth_line_labels,
+        datasets: [{
+            label: 'Appointments',
+            backgroundColor: [     
+                'rgb(255, 99, 132)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)'],
+            borderColor: 'rgb(255, 99, 132)',
+            data: appointment_permonth_line_data,
+        }]
+    };
+  
+    const config_most_frequent_service = {
+        type: 'line',
+        data: data_appointments_permonths,
+        options: {}
+    };
+  
+    const most_frequent_serive = new Chart(
+        document.getElementById('appointments_permonths'),
+        config_most_frequent_service
+    );
+
+// mostfrequent ===========================================
+
+var appointment_most_frequent_labels =  {{ Js::from($appointment_most_frequent_labels) }};
+    var appointment_most_frequent_data =  {{ Js::from($appointment_most_frequent_data) }};
+  
+    const data_most_frequent_serive = {
+        labels: appointment_most_frequent_labels,
+        datasets: [{
+            label: 'Frequent Sevice',
+            backgroundColor: [     
+                'rgb(255, 99, 132)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)'],
+            borderColor: [     
+                'rgb(255, 99, 132)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)'],
+            data: appointment_most_frequent_data,
+        }]
+    };
+  
+    const config_appontment_permonth = {
+        type: 'pie',
+        data: data_most_frequent_serive,
+        options: {}
+    };
+  
+    const appointment_permonth = new Chart(
+        document.getElementById('mostfrequent'),
+        config_appontment_permonth
+    );
+
+    //appointment_status ==============================
+
+    
+    var appointment_status_labels =  {{ Js::from($appointment_status_labels) }};
+    var appointment_status_data =  {{ Js::from($appointment_status_data) }};
+  
+    const data_appontment_status= {
+        labels: appointment_status_labels,
+        datasets: [{
+            label: 'Frequent Sevice',
+            backgroundColor: [     
+                'rgb(255, 99, 132)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)'],
+            borderColor: [     
+                'rgb(255, 99, 132)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)'],
+            data: appointment_status_data,
+        }]
+    };
+  
+    const config_appointment_status = {
+        type: 'pie',
+        data: data_appontment_status,
+        options: {}
+    };
+  
+    const appointment_status = new Chart(
+        document.getElementById('appointment_status'),
+        config_appointment_status
+    );
+
         </script>
     </x-app-layout>

@@ -36,6 +36,7 @@ class UserFactory extends Factory
             'contactnumber' => $this->faker->phoneNumber(),
             'email_verified_at' => now(),
             'password' => bcrypt('qweqweqwe'),
+            'status' => $this->faker->randomElement(['pending','approved']),
             'remember_token' => Str::random(10),
             'created_at' => $this->faker->dateTimeThisYear(),
         ];
