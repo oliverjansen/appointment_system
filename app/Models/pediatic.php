@@ -5,20 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CheckUp extends Model
+class pediatic extends Model
 {
     use HasFactory;
 
     protected $table ="checkup";
 
     protected $fillable = [
-        'service_id',
         'id',
-        'general_checkup',
+        'pediatic_status',
         'checkup_status',
-        
-
-
-
     ];
 }

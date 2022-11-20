@@ -24,11 +24,12 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+            @if(Auth::user() !== null)        
                 @if(Auth::User()->account_type=='admin')
                     <x-jet-nav-link href="{{ route('scanner') }}" :active="request()->routeIs('scanner')">
                         {{ __('Verify Appointment') }}
                     </x-jet-nav-link>
-                    <x-jet-nav-link href="{{ route('calendar') }}" :active="request()->routeIs('calendar')">
+                    <x-jet-nav-link href="{{ route('admin_calendar') }}" :active="request()->routeIs('admin_calendar')">
                         {{ __('Calendar') }}
                     </x-jet-nav-link>
                     <x-jet-nav-link href="{{ route('services') }}" :active="request()->routeIs('services')">
@@ -44,15 +45,28 @@
                     <x-jet-nav-link href="{{ route('analytic') }}" :active="request()->routeIs('analytic')">
                         {{ __('Analytic') }}
                     </x-jet-nav-link>
+                    {{-- <x-jet-nav-link href="{{ route('announcement') }}" :active="request()->routeIs('announcement')">
+                        {{ __('Announcement') }}
+                    </x-jet-nav-link> --}}
                    
                     
-                @else
+                @elseif(Auth::User()->account_type=='user')
                 <x-jet-nav-link href="{{ route('calendar') }}" :active="request()->routeIs('calendar')">
                         {{ __('Calendar') }}
                     </x-jet-nav-link>
+                <x-jet-nav-link href="{{ route('history') }}" :active="request()->routeIs('history')">
+                    {{ __('History') }}
+                </x-jet-nav-link>
                  
+                @elseif(Auth::User()->account_type=='staff')
+                <x-jet-nav-link href="{{ route('staff_scanner') }}" :active="request()->routeIs('staff_scanner')">
+                    {{ __('Verify Appointment') }}
+                </x-jet-nav-link>
+                <x-jet-nav-link href="{{ route('appointments') }}" :active="request()->routeIs('appointments')">
+                    {{ __('Appointments') }}
+                </x-jet-nav-link>
                 @endif
-                   
+            @endif      
                     <!-- <x-jet-nav-link href="{{ route('workers') }}" :active="request()->routeIs('workers')">
                         {{ __('Workers') }}
                     </x-jet-nav-link> -->
@@ -62,8 +76,9 @@
             <div class="hidden sm:flex sm:items-center sm:ml-6">
                 <!-- Teams Dropdown -->
                 <div>
-                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                    
+                    <div class="font-medium text-sm text-gray-800">{{ Auth::user()->lastname }},{{ Auth::user()->firstname }}</div>
+                    <div class="font-medium text-center text-sm text-gray-500">{{ Auth::user()->email }}</div>
                 </div>
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                     <div class="ml-3 relative">
@@ -182,6 +197,8 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
+
+            @if(Auth::User()!== null )
                 @if(Auth::User()->account_type=='admin')
                     <x-jet-responsive-nav-link href="{{ route('scanner') }}" :active="request()->routeIs('scanner')">
                         {{ __('Verify Appointment') }}
@@ -207,7 +224,7 @@
                         {{ __('Calendar') }}
                     </x-jet-responsive-nav-link> 
                 @endif
-                    
+             @endif      
 
         </div>
 

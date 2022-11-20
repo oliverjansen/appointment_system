@@ -5,20 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CheckUp extends Model
+class Announcement extends Model
 {
     use HasFactory;
-
-    protected $table ="checkup";
+    protected $table ="announcement";
 
     protected $fillable = [
-        'service_id',
         'id',
-        'general_checkup',
-        'checkup_status',
-        
-
-
-
+        'announcement ',
+        'expiration_date',
     ];
 }

@@ -8,6 +8,7 @@ use App\Models\Calendar;
 use App\Models\appointments;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use App\Models\CheckUp;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -66,8 +67,6 @@ class AppointmentsController extends Controller
    
     public function insert(Request $request){
 
-     
-
       $request_service = $request ->input ('appointmentservice');
       $service_id =  DB::table('services')->where('id',$request_service)->get();
       if(!$service_id->isEmpty()){
@@ -79,10 +78,6 @@ class AppointmentsController extends Controller
           $contactnumber = Auth::User()->contactnumber;
          
         }
-
-      
-        
-
 
         $appointment ->user_id = $current_id;
         $appointment ->user_contactnumber= $contactnumber;
@@ -188,7 +183,8 @@ class AppointmentsController extends Controller
 
                 }else if ($categories_id == 2){
                   //check if the apointment if the user has success dose 
-                  //for first vaccination and 2nd 
+                  //for first vaccination and 2nd
+          
                   $vaccine_id= $request ->input ('vaccine_type_covid');
                 
                   $appointment ->service_category_id= $vaccine_id;
@@ -211,7 +207,7 @@ class AppointmentsController extends Controller
                   if($check_covid_dose->isEmpty()){
                     if($request_dose == "2"){
                    
-                      return back()->with(['danger' => "You have to get 1st dose to be able to make an appointment on the 2nd dose!"]);
+                      return back()->with(['danger' => "You have to get your 1st dose to be able to make an appointment on the 2nd dose!"]);
                     }elseif($request_dose == "3"){
                    
                       return back()->with(['danger' => "You have to get 1st dose and 2nd dose to be able to make an appointment on Booster!"]);
@@ -282,67 +278,7 @@ class AppointmentsController extends Controller
               
                   
                 }
-                // else if ($categories_id == 3){
-                //   //just dispaly the records on the account history
 
-                //   $vaccine_id = $request ->input ('vaccine_type_others');
-                //   $appointment ->service_category_id= $vaccine_id;
-
-                //   $vaccine_service = $request ->input ('appointmentservice');
-
-                //   $vaccine_dose = DB::table('appointments')
-                //   ->join('vaccine','appointments.service_id',"=",'vaccine.service_id')
-                //   ->where('appointments.service_id',$vaccine_service)
-                //   ->where('appointment_dose',$request_dose)
-                //   ->where('vaccine.id',$vaccine_type_covid)
-                //   ->where('appointment_status',"pending")
-                //   ->where('appointment_date',$appointmentDate)
-                //   ->get();
-
-
-                // }else{
-                //   $vaccine_id = $request ->input ('vaccine_type_others');
-                //   $appointment ->service_category_id= $vaccine_id;
-                //   $request_dose = $request ->input ('vaccine_dose_select');
-                //   $vaccine_type_covid = $request ->input ('vaccine_type_covid');
-                 
-                //   $vaccine_service = $request ->input ('appointmentservice');
-                //   $appointmentDate = \Carbon\Carbon::parse($appointmentDate)->format('Y-m-d');
-
-                //   //available slot on the vaccine covid category
-                //   $vaccine_dose = DB::table('appointments')
-                //   ->join('vaccine','appointments.service_id',"=",'vaccine.service_id')
-                //   ->where('appointments.service_id',$vaccine_service)
-                //   ->where('appointment_dose',$request_dose)
-                //   ->where('vaccine.id',$vaccine_type_covid)
-                //   ->where('appointment_status',"pending")
-                //   ->where('appointment_date',$appointmentDate)
-                //   ->get();
-
-    
-                //     $slot = $request ->input ('available_slot');
-                //     if($vaccine_dose->isEmpty()){
-                //       $appointment ->appointment_availableslot = $slot-1;
-                    
-                //     }else{
-                //       $kk = DB::table('appointments')
-                //       ->join('vaccine','appointments.service_id',"=",'vaccine.service_id')
-                //       ->where('appointments.service_id',$vaccine_service)
-                //       ->where('appointment_dose',$request_dose)
-                //       ->where('vaccine.id',$vaccine_type_covid)
-                //       ->where('appointment_status',"pending")
-                //       ->where('appointment_date',$appointmentDate)
-                //       ->update(['appointment_availableslot'=> $slot-1]);
-
-                //       $appointment ->appointment_availableslot = $slot-1;
-
-                  
-                //     }
-                // }
-
-            
-
-         
             }
           }else{
 
@@ -350,6 +286,29 @@ class AppointmentsController extends Controller
               $id = $request ->get('appointment_service_others');
               $slot = $request ->input ('available_slot');
 
+              if($service_id == "2" ){
+
+
+                  $checkup = DB::table('checkup')
+                  ->where('user_id',$current_id)
+                  ->where('checkup_status',"yes")
+                  ->get();
+            
+                  if($checkup->isEmpty()){
+                  return redirect()->back()->with('warning', "Make sure you had general check up before making an appointment for free medicine");
+                    }
+              }else if ($service_id == "3" && $id == "1"){
+
+                $checkup = new CheckUp();
+                $checkup->user_id = $current_id;
+                $checkup->general_checkup = 1;
+                $checkup->save();
+
+        
+              }
+
+         
+             
               $appointment ->service_category_id= $id;
 
                 DB::table('other_services')

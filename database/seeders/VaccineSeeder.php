@@ -15,10 +15,10 @@ class VaccineSeeder extends Seeder
     public function run()
     {
         DB::table('vaccine')->insert([
-            'id' => "1",
-            'service_id'=> "1",
-            'category'=> "kids",
-            'category_availability'=> "Yes",
+            // 'id' => "1",
+            // 'service_id'=> "1",
+            // 'category'=> "kids",
+            // 'category_availability'=> "Yes",
 
             // 'id' => "1",
             // 'service_id'=> "2",
@@ -29,9 +29,7 @@ class VaccineSeeder extends Seeder
             // 'service_id'=> "3",
             // 'category'=> "others",
             // 'category_availability'=> "Yes",
-
-
-          
+            User::factory()->times(50)->create();
         ]);
     }
 }

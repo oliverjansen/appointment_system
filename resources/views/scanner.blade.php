@@ -405,7 +405,7 @@
 
                           $.ajax({
                             type: "GET",
-                            url: "/get_appointment_id/"+content,
+                            url: "admin/admin_get_appointment_id/"+content,
                             success: function (response) {
                                 console.log(response);
 

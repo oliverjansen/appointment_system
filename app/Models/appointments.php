@@ -33,6 +33,8 @@ class appointments extends Model
         'appointment_status',
         'appointment_date',
         'appointment_expiration_date', 
+        'created_at', 
+
         // 'appointment_expired',
     ];
         

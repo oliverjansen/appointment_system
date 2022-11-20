@@ -67,10 +67,9 @@ class VerifyAppointmentController extends Controller
     //   $canceled_appointment_id = appointments::find($id);
     $queue = DB::table('appointments')->
     where('appointment_date','=',$new_appointment_date)
-    ->get()
-    ->max('appointment_queue');
+    ->get()->max('appointment_queue');
     
- 
+         
 
         appointments::where("appointment_id",$appointment_id)
         ->update(['appointment_queue' => $queue+1]);
@@ -92,8 +91,8 @@ class VerifyAppointmentController extends Controller
         ->where("appointment_id",$appointment_id)
         ->update(['appointment_status' => "success"]);
 
-    
 
+      
         return back()->with(['success' => "Residents has been notified about the appointment!"]);
 
     }

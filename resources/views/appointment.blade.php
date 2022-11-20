@@ -92,7 +92,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
 
-        <form action="{{ url ('canceled_appointment') }} " method="POST">
+        <form action="{{ route ('canceled_appointment') }} " method="POST">
             @csrf
             {{ csrf_field() }}
         <div class="modal-header">
@@ -323,7 +323,7 @@
               {{-- <td>{{$data->status}}</td> --}}
               <td scope="row" colspan=2 class="d-flex justify-content-center ">
                   @if ($data->appointment_status == "pending") 
-                      <button class="btn btn-sm btn-primary w-100 ml-lg-2 reschedule"    value="{{$data->appointment_id}}" >Reschedule</button>
+                      {{-- <button class="btn btn-sm btn-primary w-100 ml-lg-2 reschedule"    value="{{$data->appointment_id}}" >Reschedule</button> --}}
                       <button class="btn btn-sm btn-warning mt-2 mt-lg-0 ml-2 w-100 cancel_btn" value="{{$data->id}}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-x-lg" viewBox="0 0 16 16">
                         <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
                       </svg></button>

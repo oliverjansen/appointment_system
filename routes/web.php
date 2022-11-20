@@ -5,6 +5,7 @@ use App\Http\Controllers\AppointmentsController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\WorkerControllers;
+use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\VerifyAppointmentController;
 use App\Http\Controllers\QrCodeController;
@@ -41,9 +42,9 @@ Route::get('/register', function () {
     return view('auth/register');
 })->name('register');
 
-// Route::get('/welcome', function () {
-//   return view('welcome');
-// })->name('welcom');
+Route::get('/welcome', function () {
+  return view('welcome');
+})->name('welcom');
 
 Route::get('/login', function () {
     return view('auth/login');
@@ -56,7 +57,9 @@ Route::get('/dashboard','App\Http\Controllers\VerifyAppointmentController@index'
 
 //ADMIN
 Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function() {
+  Route::get('/announcement', 'App\Http\Controllers\AnnouncementController@announcement')->name('announcement');
 
+  Route::match(['get','post'],'/canceled_appointment','App\Http\Controllers\AppointmentsController@canceled_appointment')->name('canceled_appointment');
 
     Route::get('/edit_services/{id}',[ServicesController::class, 'edit_services']);
 
@@ -105,7 +108,6 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function() {
     
     //delete appointment calendar
 
-    Route::match(['get','post'],'/delete_appointment','App\Http\Controllers\CalendarController@delete_appointment')->name('delete_appointment');
     
   
     
@@ -146,7 +148,7 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function() {
 
 
     //verification
-    Route::get('/get_appointment_id/{content}', 'App\Http\Controllers\VerifyAppointmentController@get_appointment_id')->name('get_appointment_id');
+    Route::get('/admin_get_appointment_id/{content}', 'App\Http\Controllers\VerifyAppointmentController@get_appointment_id')->name('admin_get_appointment_id');
 
     Route::match(['get','post'],'/verify_appointment', 'App\Http\Controllers\VerifyAppointmentController@verify_appointment')->name('verify_appointment');
 
@@ -178,7 +180,7 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function() {
 //analytic
 
         Route::match(['get','post'],'/analytic', 'App\Http\Controllers\AnalyticController@index')->name('analytic');
-Route::match(['get','post'],'/cancel_appointment/{id}','App\Http\Controllers\AppointmentsController@cancel_appointment')->name('cancel_appointment');
+        Route::match(['get','post'],'/cancel_appointment/{id}','App\Http\Controllers\AppointmentsController@cancel_appointment')->name('cancel_appointment');
 
 });
 
@@ -203,6 +205,7 @@ Route::prefix('staff')->middleware(['auth','isStaff'])->group(function() {
 //USER
 Route::middleware(['auth','isUser'])->group(function() {
   //get appointment date
+  Route::match(['get','post'],'/delete_appointment','App\Http\Controllers\CalendarController@delete_appointment')->name('delete_appointment');
 
   Route::match(['get','post'],'/get_appointment_slot_vaccine','App\Http\Controllers\AppointmentsController@get_app'); 
 
@@ -229,7 +232,6 @@ Route::middleware(['auth','isUser'])->group(function() {
 
 Route::get('/preview_qrcode/{id}', 'App\Http\Controllers\QrCodeController@index')->name('preview_qrcode');
 //appointment controller
-Route::match(['get','post'],'/canceled_appointment','App\Http\Controllers\AppointmentsController@canceled_appointment')->name('canceled_appointment');
 Route::match(['get','post'],'/delete_scheduled_appointment','App\Http\Controllers\AppointmentsController@delete_scheduled_appointment')->name('delete_scheduled_appointment');
 
 Route::match(['get','post'],'/preview_appointment/{id}','App\Http\Controllers\CalendarController@preview_appointment')->name('preview_appointment');

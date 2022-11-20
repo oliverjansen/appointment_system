@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('user_contactnumber')->nullable();
             $table->foreign('user_contactnumber')->references('contactnumber')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->integer('appointment_id')->nullable();
+            $table->integer('appointment_id')->unique();
             $table->bigInteger('service_id')->unsigned();
             $table->integer('service_category_id')->nullable();
             $table->integer('pediatic_id')->nullable();
