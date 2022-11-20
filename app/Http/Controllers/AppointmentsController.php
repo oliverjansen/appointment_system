@@ -194,7 +194,7 @@ class AppointmentsController extends Controller
                   ->where('user_id',$current_id)
                   ->where('appointment_status',"success")
                   ->groupBy('appointment_dose')
-                  ->get();
+                  ->get('appointment_dose');
                
 
                  
@@ -223,12 +223,26 @@ class AppointmentsController extends Controller
                      
                       }else{
 
-                       
+                        if($request_dose == "2"){
 
-                      
+                          $check_covid_12 = DB::table('appointments')
+                          ->where('user_id',$current_id)
+                          ->where('appointment_status',"success")
+                          ->where('appointment_dose',1)
+                          ->groupBy('appointment_dose')
+                          ->get();
 
-                      
-                        if($request_dose == "3"){
+                          if($check_covid_12->isEmpty()){
+                          return back()->with(['danger' => "You have to get 1st dose before making appointment on 2nd dose!"]);
+
+                          }else{
+
+                          
+                          }
+                     
+
+                          // return back()->with(['danger' => "You have to get 1st dose and 2nd dose to be able to make an appointment on Booster!"]);
+                        }else if ($request_dose == "3"){
 
                           $check_covid_12 = DB::table('appointments')
                           ->where('user_id',$current_id)
@@ -241,8 +255,6 @@ class AppointmentsController extends Controller
                           return back()->with(['danger' => "You have to get 2st dose before making appointment on booster!"]);
 
                           }
-
-                          // return back()->with(['danger' => "You have to get 1st dose and 2nd dose to be able to make an appointment on Booster!"]);
                         }
                       
                       }
@@ -289,24 +301,31 @@ class AppointmentsController extends Controller
               if($service_id == "2" ){
 
 
-                  $checkup = DB::table('checkup')
+                  $checkup = DB::table('appointments')
                   ->where('user_id',$current_id)
-                  ->where('checkup_status',"yes")
+                  ->where('service_id',3)
+                  ->where('appointment_vaccine_category', 'LIKE','%'."general".'%')
+                  ->where('appointment_status',"success")
                   ->get();
             
                   if($checkup->isEmpty()){
                   return redirect()->back()->with('warning', "Make sure you had general check up before making an appointment for free medicine");
                     }
-              }else if ($service_id == "3" && $id == "1"){
 
-                $checkup = new CheckUp();
-                $checkup->user_id = $current_id;
-                $checkup->general_checkup = 1;
-                $checkup->save();
-
-        
+                   
               }
+              
+              // else if ($service_id == "3" && $id == "1"){
 
+              //   $checkup = new CheckUp();
+              //   $checkup->user_id = $current_id;
+              //   $checkup->general_checkup = 1;
+              //   $checkup->save();
+              //   dd("Yes");
+      
+              // }
+
+              // dd($id);
          
              
               $appointment ->service_category_id= $id;
@@ -428,16 +447,14 @@ class AppointmentsController extends Controller
   public function get_slot_other_vaccine($date,$id){
 
 
-
-
-$empty_date_slot_others= DB::table('categories_vaccine')->where('id',$id)->get();
+// dd($id);
+$empty_date_slot_others= DB::table('vaccine')->where('id',$id)->get();
 foreach ($empty_date_slot_others as $value) {
-  $slot_other_service = $value->category_vaccine_slot;
+  $slot_other_service = $value->vaccine_slot;
 }
   
      
-   
-
+  
       return response()-> json([
         'otherservices'=>$slot_other_service,
       

@@ -134,11 +134,22 @@ class ServicesController extends Controller
       }
 
       if ($request ->input ('add_vaccine_category_input') != null){
-          $vaccine_category_add = new Category();
-          $vaccine_category_add ->category_availability = "";
-          $vaccine_category_add ->service_id = $request ->input ('service_select_id');
-          $vaccine_category_add ->category = $request ->input ('add_vaccine_category_input');
-          $vaccine_category_add->save();
+
+        $count_categories_vaccine = DB::table('categories_vaccine')
+        ->count();
+
+      
+          if ($count_categories_vaccine <3){
+            $vaccine_category_add = new Category();
+          
+            $vaccine_category_add ->category_availability = "";
+            $vaccine_category_add ->service_id = $request ->input ('service_select_id');
+            $vaccine_category_add ->category = $request ->input ('add_vaccine_category_input');
+            $vaccine_category_add->save();
+          }else{
+            return back()->with('warning',"You are can add vaccine to OTHERS Category");
+          }
+       
       }
     
       if ($request ->input ('add_other_services_input') != null){
@@ -250,10 +261,12 @@ if($check_others_service_availability == "Yes"){
 }  
 
  public function update_category(Request $request){
- 
+
+
   $id = $request ->input ('category_update_id');
   $service_id = $request ->input ('service_update_id');
   $category = Category::find($id);
+
 
   $category ->category = $request ->input ('category_update');
   if($request->input('available_vaccinecategory_slot')){
@@ -264,7 +277,7 @@ if($check_others_service_availability == "Yes"){
 
 
   
-$check_service_availability = DB::table('services')->where('id', $service_id)->get();
+  $check_service_availability = DB::table('services')->where('id', $service_id)->get();
 
 foreach ($check_service_availability as $value) {
     $check_service_availability = $value->availability;

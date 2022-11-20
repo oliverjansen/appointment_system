@@ -243,7 +243,7 @@
                                             <select name="vaccine_type_others" id="vaccine_type_others" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                                                 <option value="" disabled selected hidden>select others...</option>
                                                 @foreach ($vaccine_others as $value)
-                                                    @if($value->vaccine_availability == "yes")
+                                                    @if($value->vaccine_availability == "Yes")
                                                         <option value="{{ $value->id }}"> 
                                                             {{ $value->vaccine_type }}
                                                         </option>
@@ -518,10 +518,6 @@ $(document).ready(function () {
                             $("#div_appointmentCategory").show();
                             $("#div_vaccine_type_kids").hide();  
                             $("#div_vaccine_type_others").show();
-
-                   
-                            
-
                             $("#div_vaccine_type_covid").hide();
                             $("#div_vaccine_dose").hide();  
 

@@ -123,6 +123,9 @@ class CalendarController extends Controller
         ->where('categories_vaccine.id',">",2)
         ->get();
 
+        // dd($vaccine_others);
+
+
         $others_services= DB::table('categories_vaccine');
 
         $data3 = Other_Services::pluck('service_id','other_services');

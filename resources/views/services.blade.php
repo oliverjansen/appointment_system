@@ -440,7 +440,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
 
-        <form action="{{ url ('delete_category') }} " method="POST"  class="m-2">
+        <form action="{{ route ('delete_category') }} " method="POST"  class="m-2">
             @csrf
          
         <div class="modal-header">

@@ -65,9 +65,9 @@ class VerifyAppointmentController extends Controller
         $new_appointment_date = \Carbon\Carbon::parse($request ->input ('appointment_date_hidden'))->format('Y/m/d');
 
     //   $canceled_appointment_id = appointments::find($id);
-    $queue = DB::table('appointments')->
-    where('appointment_date','=',$new_appointment_date)
-    ->get()->max('appointment_queue');
+        $queue = DB::table('appointments')->
+        where('appointment_date','=',$new_appointment_date)
+        ->get()->max('appointment_queue');
     
          
 
