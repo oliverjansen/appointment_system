@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Other_Services;
 use Illuminate\Http\Request;
 use DB;
+use RealRashid\SweetAlert\Facades\Alert;
 class LiveSearch extends Controller
 {
     function index()

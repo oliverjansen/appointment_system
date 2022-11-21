@@ -9,6 +9,7 @@ use App\Models\appointments;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Models\CheckUp;
+use RealRashid\SweetAlert\Facades\Alert;
 
 use Illuminate\Support\Facades\Auth;
 

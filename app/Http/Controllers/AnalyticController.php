@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Other_Services;
 use App\Models\Vaccine;
 use App\Models\appointments;
+use RealRashid\SweetAlert\Facades\Alert;
 
 
 use Illuminate\Support\Facades\DB;

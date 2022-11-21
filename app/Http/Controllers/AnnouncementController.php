@@ -17,6 +17,7 @@ class AnnouncementController extends Controller
         $current_date = Carbon::today()->format('Y-m-d');
         $announcement = DB::table('announcement')->groupBy('id')->get();
         $id =null;
+        
         foreach ($announcement as $value) {
             if($value->unpublish_date < $current_date){
                 $id = Announcement::find($value->id);
@@ -113,7 +114,6 @@ class AnnouncementController extends Controller
      
         $announcement->delete();
         alert()->success('Deleted','Announcement has been deleted successfully.');
-
         return redirect()->back();
      
         

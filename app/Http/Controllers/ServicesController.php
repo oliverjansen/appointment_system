@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Category;
 // use App\Models\Medicine;
 use App\Models\Other_Services;
+use RealRashid\SweetAlert\Facades\Alert;
 
 use Illuminate\Support\Facades\DB;
 
