@@ -374,10 +374,9 @@ public function update_vaccine(Request $request){
 //delete services
 
  public function delete_services (Request $request){
-  $id = $request ->input ('service_del_id');
+  $id = $request ->input ('delete_id');
   $service_del= services::find($id);
   $service_del->delete();
-
   if(Auth::User()->account_type=='admin'){
     return redirect()->back()->with('danger', 'Successfully Deleted');
   }else{

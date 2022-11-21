@@ -45,9 +45,9 @@
                     <x-jet-nav-link href="{{ route('analytic') }}" :active="request()->routeIs('analytic')">
                         {{ __('Analytic') }}
                     </x-jet-nav-link>
-                    {{-- <x-jet-nav-link href="{{ route('announcement') }}" :active="request()->routeIs('announcement')">
+                    <x-jet-nav-link href="{{ route('announcement') }}" :active="request()->routeIs('announcement')">
                         {{ __('Announcement') }}
-                    </x-jet-nav-link> --}}
+                    </x-jet-nav-link>
                    
                     
                 @elseif(Auth::User()->account_type=='user')

@@ -65,7 +65,7 @@
     </div>
 
     {{-- Add vaccine modal--}}
-@include('sweetalert::alert')
+
 
 <div class="modal fade" id="add_vaccine_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

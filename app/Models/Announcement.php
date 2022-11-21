@@ -12,7 +12,9 @@ class Announcement extends Model
 
     protected $fillable = [
         'id',
-        'announcement ',
-        'expiration_date',
+        'title',
+        'body ',
+        'publish_date ',
+        'unpublish_date',
     ];
 }

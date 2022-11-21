@@ -15,8 +15,10 @@ return new class extends Migration
     {
         Schema::create('announcement', function (Blueprint $table) {
             $table->id();
-            $table->string('announcement')->nullable();
-            $table->string('expiration_date')->nullable();
+            $table->string('title')->nullable();
+            $table->string('body')->nullable();
+            $table->string('publish_date')->nullable();
+            $table->string('unpublish_date')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+       
     }
 };

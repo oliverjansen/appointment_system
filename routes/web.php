@@ -57,9 +57,17 @@ Route::get('/dashboard','App\Http\Controllers\VerifyAppointmentController@index'
 
 //ADMIN
 Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function() {
-  Route::get('/announcement', 'App\Http\Controllers\AnnouncementController@announcement')->name('announcement');
 
-  Route::match(['get','post'],'/canceled_appointment','App\Http\Controllers\AppointmentsController@canceled_appointment')->name('canceled_appointment');
+  //announcement
+    Route::get('/announcement', 'App\Http\Controllers\AnnouncementController@announcement')->name('announcement');
+    Route::post('/post_announcement', 'App\Http\Controllers\AnnouncementController@post_announcement')->name('post_announcement');
+    Route::get('/get_announcement/{id}', 'App\Http\Controllers\AnnouncementController@get_announcement')->name('get_announcement');
+    Route::post('/update_announcement', 'App\Http\Controllers\AnnouncementController@update_announcement')->name('update_announcement');
+    Route::post('/delete_announcement', 'App\Http\Controllers\AnnouncementController@delete_announcement')->name('delete_announcement');
+    
+    
+    
+    Route::match(['get','post'],'/canceled_appointment','App\Http\Controllers\AppointmentsController@canceled_appointment')->name('canceled_appointment');
 
     Route::get('/edit_services/{id}',[ServicesController::class, 'edit_services']);
 
@@ -96,8 +104,6 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function() {
 
 
     //page 
-
-    
     Route::get('/scanner', [VerifyAppointmentController::class, 'index'])->name('scanner');
 
 
@@ -105,7 +111,6 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function() {
 
     Route::get('/services', 'App\Http\Controllers\ServicesController@services')->name('services');
    
-    
     //delete appointment calendar
 
     
