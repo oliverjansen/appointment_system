@@ -25,8 +25,10 @@ class VerifyAppointmentController extends Controller
     public function index()
     {
         if(Auth::User()->account_type=='admin'){
+           
             return view ('scanner');
         }else if(Auth::User()->account_type=='user'){
+          
               return redirect()->route('calendar');
         }else if(Auth::User()->account_type=='staff'){
             return view ('scanner');

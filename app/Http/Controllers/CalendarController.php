@@ -163,7 +163,6 @@ class CalendarController extends Controller
         ];  
 
         }
-
      //account
         if(Auth::User()->account_type=='admin'){
             return view ('calendar', compact('schedules','others_services','appointment_service','category','vaccine','yes') );

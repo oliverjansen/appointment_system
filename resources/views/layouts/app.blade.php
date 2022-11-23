@@ -35,11 +35,14 @@
             <main>
                 {{ $slot }}
             </main>
+            
         </div>
-
+      
         @stack('modals')
 
         @livewireScripts
+        <script src="https://unpkg.com/sweetalert2@7.18.0/dist/sweetalert2.all.js"></script>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         @include('sweetalert::alert')
     </body>
 </html>

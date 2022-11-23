@@ -113,7 +113,9 @@ class AnnouncementController extends Controller
         $announcement = Announcement::find($id);
      
         $announcement->delete();
-        alert()->success('Deleted','Announcement has been deleted successfully.');
+        // persistent($showConfirmBtn = true, $showCloseBtn = false);
+    
+        alert()->success('Announcement Delete','announcement has been deleted successfully.')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
         return redirect()->back();
      
         

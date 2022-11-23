@@ -3,6 +3,7 @@
 namespace App\Actions\Fortify;
 
 use Laravel\Fortify\Rules\Password;
+use RealRashid\SweetAlert\Facades\Alert;
 
 trait PasswordValidationRules
 {

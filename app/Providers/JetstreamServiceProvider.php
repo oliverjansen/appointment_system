@@ -8,6 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Jetstream\Jetstream;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Fortify\Fortify;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class JetstreamServiceProvider extends ServiceProvider
 {
@@ -34,6 +35,8 @@ class JetstreamServiceProvider extends ServiceProvider
             $user = User::where(['email' => $request->email, 'status' => 'approved'])->first();
         
             if ($user && Hash::check($request->password, $user->password)) {
+                alert()->success('Login Successfully!','Welcome '.$request->email)->showConfirmButton(false)->buttonsStyling(false)->autoClose(2000);
+                
                     return $user;
             }
         });

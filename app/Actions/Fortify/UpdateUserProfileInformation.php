@@ -6,7 +6,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
-
+use RealRashid\SweetAlert\Facades\Alert;
+    
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 {
     /**

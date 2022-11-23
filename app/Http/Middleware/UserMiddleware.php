@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 
 use Closure;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class UserMiddleware
 {
@@ -24,12 +25,17 @@ class UserMiddleware
 
                 return $next($request);
             }else{
-                return redirect('/')->with("message",'Access Denied as you are not admin');
+                alert()->error('User Access!')->showConfirmButton()->buttonsStyling(true)->autoClose(1500);
+
+                return redirect()->back();
 
             }
         }else{
+        Alert::success('Success Title', 'Success Message');
+           
 
-            return redirect('/login')->with("message",'Login to access the website');
+            return view('auth/login');
+
 
         }
         return $next($request);

@@ -28,7 +28,8 @@ class StaffMiddleware
             }
         }else{
 
-            return redirect('/login')->with("message",'Login to access the website');
+            return view('auth/login');
+
 
         }
         return $next($request);

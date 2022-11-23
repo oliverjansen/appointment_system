@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -55,7 +56,9 @@ class CreateNewUser implements CreatesNewUsers
         }
 
         // $request->file('identification')->getClientOriginalName();
-
+        
+        Alert::success('Success Title', 'Success Message');
+        
         return User::create([
             'firstname' => $input['firstname'],
             'middlename' => $input['middlename'],
@@ -71,5 +74,9 @@ class CreateNewUser implements CreatesNewUsers
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
         ]);
+
+       
+        
+   
     }
 }

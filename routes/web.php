@@ -38,8 +38,14 @@ use App\Models\user;
 //     return view ('/scanner');
 // })->middleware('auth');
 
+Route::get('/successfull', [Controller::class, 'index']);
+
 Route::get('/register', function () {
+  if (Auth::check()) {
+      return redirect()->route('dashboard');
+  }else{
     return view('auth/register');
+    } 
 })->name('register');
 
 Route::get('/welcome', function () {
@@ -47,13 +53,18 @@ Route::get('/welcome', function () {
 })->name('welcom');
 
 Route::get('/login', function () {
+  if (Auth::check()) {
+    return redirect()->route('dashboard');
+  }else{
+    
     return view('auth/login');
+}
 })->name('login');
 
 // Route::get('/dashboard', 'App\Http\Controllers\VerifyAppointmentController@index')
 // ->name('/dashboard');
 
-Route::get('/dashboard','App\Http\Controllers\VerifyAppointmentController@index')->name('/dashboard')->middleware('auth');
+Route::get('/dashboard','App\Http\Controllers\VerifyAppointmentController@index')->name('dashboard')->middleware('auth');
 
 //ADMIN
 Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function() {

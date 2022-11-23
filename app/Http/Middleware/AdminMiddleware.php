@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 use Closure;
 use Illuminate\Http\Request;
@@ -24,13 +25,15 @@ class AdminMiddleware
 
                 return $next($request);
             }else{
-                return redirect('/')->with("message",'Access Denied as you are not admin');
+                alert()->success('No Admin Access!')->showConfirmButton()->buttonsStyling(true)->autoClose(1500);
+                
+                return redirect()->back();
 
             }
         }else{
-
-            return redirect('/login')->with("message",'Login to access the website');
-
+            alert()->error('No Admin Access!')->showConfirmButton()->buttonsStyling(true)->autoClose(1500);
+            return route('login');
+            // dd("kkkk");
         }
         return $next($request);
     }

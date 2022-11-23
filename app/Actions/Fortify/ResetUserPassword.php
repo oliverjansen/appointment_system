@@ -5,6 +5,7 @@ namespace App\Actions\Fortify;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\ResetsUserPasswords;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ResetUserPassword implements ResetsUserPasswords
 {
