@@ -90,7 +90,8 @@ class AppointmentsController extends Controller
         $appointmentDate = \Carbon\Carbon::parse($request ->input ('appointmentdate'))->format('Y/m/d');
 
         if($appointmentDate < $today){
-          return redirect()->back()->with('danger', "Invalid Appointment Date!");
+          alert()->error('Error!','Invalid Appointment Date.')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+          return redirect()->back();
         }else{
 
           $service_slot=  DB::table('services')
@@ -103,7 +104,9 @@ class AppointmentsController extends Controller
            
                   if(\Carbon\Carbon::parse($value->appointment_date)->format('Y/m/d') == $appointmentDate ){
                   
-                    return redirect()->back()->with('danger', "Service is not available");
+                    alert()->error('Error!','Service is not Available.')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+            
+                    return redirect()->back();
                   }
             }
           }
@@ -119,7 +122,8 @@ class AppointmentsController extends Controller
 
           foreach ($appointment_max as $value) {
             if($value->user_id){
-              return redirect()->back()->with('danger', "You have an ongoing appointment!");
+              alert()->error('Error!','You have an ongoing appointment.')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+              return redirect()->back();
             }
 
          
@@ -206,57 +210,63 @@ class AppointmentsController extends Controller
           
                 
                   if($check_covid_dose->isEmpty()){
-                    if($request_dose == "2"){
-                   
-                      return back()->with(['danger' => "You have to get your 1st dose to be able to make an appointment on the 2nd dose!"]);
-                    }elseif($request_dose == "3"){
-                   
-                      return back()->with(['danger' => "You have to get 1st dose and 2nd dose to be able to make an appointment on Booster!"]);
-                    }
+                    // if($request_dose == "2"){
+                    //   alert()->error('Appointment Failed!','You have to get your 1st dose to be able to make an appointment on the 2nd dose.')->showConfirmButton()->buttonsStyling(true);
+                    //   return redirect()->back();
+                    // }elseif($request_dose == "3"){
+                    //   alert()->error('Appointment Failed!','You have to get 1st dose and 2nd dose to be able to make an appointment on Booster.')->showConfirmButton()->buttonsStyling(true);
+                    //   return redirect->back();
+                    // }
                   }else{
                     foreach ($check_covid_dose as $value) {
                       if($value->appointment_dose == $request_dose){
                         if($value->appointment_dose <3){
                        
                           $covid_dose = $value->appointment_dose ;
-                          return back()->with(['danger' => "You already had this dose!"]);
+                          alert()->info('You already had this dose.')->showConfirmButton()->buttonsStyling(true);
+
+                          return redirect()->back();
                         }
                      
                       }else{
 
-                        if($request_dose == "2"){
+                        // if($request_dose == "2"){
 
-                          $check_covid_12 = DB::table('appointments')
-                          ->where('user_id',$current_id)
-                          ->where('appointment_status',"success")
-                          ->where('appointment_dose',1)
-                          ->groupBy('appointment_dose')
-                          ->get();
+                        //   $check_covid_12 = DB::table('appointments')
+                        //   ->where('user_id',$current_id)
+                        //   ->where('appointment_status',"success")
+                        //   ->where('appointment_dose',1)
+                        //   ->groupBy('appointment_dose')
+                        //   ->get();
 
-                          if($check_covid_12->isEmpty()){
-                          return back()->with(['danger' => "You have to get 1st dose before making appointment on 2nd dose!"]);
+                        //   if($check_covid_12->isEmpty()){
+                        //     alert()->error('Appointment Failed!','You have to get 1st dose before making appointment on 2nd dose.')->showConfirmButton()->buttonsStyling(true);
 
-                          }else{
+                        //   return redirect()->back();
+
+                        //   }else{
 
                           
-                          }
+                        //   }
                      
 
-                          // return back()->with(['danger' => "You have to get 1st dose and 2nd dose to be able to make an appointment on Booster!"]);
-                        }else if ($request_dose == "3"){
+                        //   // return back()->with(['danger' => "You have to get 1st dose and 2nd dose to be able to make an appointment on Booster!"]);
+                        // }else if ($request_dose == "3"){
 
-                          $check_covid_12 = DB::table('appointments')
-                          ->where('user_id',$current_id)
-                          ->where('appointment_status',"success")
-                          ->where('appointment_dose',2)
-                          ->groupBy('appointment_dose')
-                          ->get();
+                        //   $check_covid_12 = DB::table('appointments')
+                        //   ->where('user_id',$current_id)
+                        //   ->where('appointment_status',"success")
+                        //   ->where('appointment_dose',2)
+                        //   ->groupBy('appointment_dose')
+                        //   ->get();
 
-                          if($check_covid_12->isEmpty()){
-                          return back()->with(['danger' => "You have to get 2st dose before making appointment on booster!"]);
+                        //   if($check_covid_12->isEmpty()){
+                        //     alert()->error('Appointment Failed!','You have to get 2st dose before making appointment on booster.')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
 
-                          }
-                        }
+                        //   return redirect()->back();
+
+                        //   }
+                        // }
                       
                       }
                   
@@ -310,7 +320,9 @@ class AppointmentsController extends Controller
                   ->get();
             
                   if($checkup->isEmpty()){
-                  return redirect()->back()->with('warning', "Make sure you had general check up before making an appointment for free medicine");
+                    alert()->info('Appointment Failed!','Make sure you had General Check up before making an appointment on Medicine.')->showConfirmButton()->buttonsStyling(true);
+
+                  return redirect()->back();
                     }
 
                    
@@ -396,7 +408,8 @@ class AppointmentsController extends Controller
           if(Auth::User()->account_type=='admin'){
             return view('services');
             }else{
-              return redirect()->route('calendar')->with('success', "Appointment Created");
+              alert()->success('Appointment Created')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+              return redirect()->route('calendar');
             }
     
        
@@ -813,11 +826,13 @@ public function reschedule_appointment(Request $request){
     $appointment_delete= appointments::find($id);
     
     $appointment_delete->delete();
+    alert()->success('Successfully Canceled','Your appointment has been canceled.')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
 
     if(Auth::User()->account_type=='admin'){
       return redirect()->back()->with('danger', 'Successfully Deleted');
     }else{
-    return redirect()->route('calendar');
+      alert()->success('Successfully Canceled','Your appointment has been canceled.')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+    return redirect()->back();
     }
 
   }

@@ -389,6 +389,8 @@
                 {{ csrf_field() }}
                 
                 <input type="text" id="service_update_id" name="service_update_id" hidden >
+                <input type="text" id="old_id" name="old_id" hidden>
+
                 
                 <div class="form-group">
                 <label for="service" class="col-form-label">Category ID</label>
@@ -543,8 +545,11 @@
       </div>
     </div>
   </div>
-
-    <div class="container mt-5 mb-5 bg-semi-white" >
+  <div class="container-fluid text-center p-5 mt-4 mb-4 ">
+    <h3 class="fw-bolder bg-dark text-light p-4">SERVICES</h3>
+    <div class=""></div>
+</div>
+    <div class="container mb-5 bg-semi-white" >
       
         <div>
             @if (session('success'))
@@ -1234,7 +1239,6 @@
 
                     if(response.service_id != null){
                         if (response.service_id.id =="1") {
-                      
                             $('#vaccine_field_whole').show();
                             $('#other_services_field').hide();
                             btn_add_vaccine_medicine.style.display="block";
@@ -1269,6 +1273,9 @@
                             
 
                         }
+                    }else{
+                        $('#vaccine_field_whole').hide();
+                    $('#other_services_field').hide();
                     }
                     
                   
@@ -1311,6 +1318,7 @@
                     // $('#id').val(response.vaccine.id)
                     console.log(response);
                     $('#category_update_id').val(response.category_id.id);
+                    $('#old_id').val(response.category_id.id);
                     $('#category_update').val(response.category_id.category);
                     $('#service_update_id').val(response.category_id.service_id);
                     if(response.category_id.id == 1){

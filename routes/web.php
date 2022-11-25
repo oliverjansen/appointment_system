@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\AccountController;
+
+
 
 
 
@@ -42,7 +45,7 @@ Route::get('/successfull', [Controller::class, 'index']);
 
 Route::get('/register', function () {
   if (Auth::check()) {
-      return redirect()->route('dashboard');
+      return redirect()->route('afterlogin');
   }else{
     return view('auth/register');
     } 
@@ -54,7 +57,7 @@ Route::get('/welcome', function () {
 
 Route::get('/login', function () {
   if (Auth::check()) {
-    return redirect()->route('dashboard');
+    return redirect()->route('afterlogin');
   }else{
     
     return view('auth/login');
@@ -64,7 +67,11 @@ Route::get('/login', function () {
 // Route::get('/dashboard', 'App\Http\Controllers\VerifyAppointmentController@index')
 // ->name('/dashboard');
 
-Route::get('/dashboard','App\Http\Controllers\VerifyAppointmentController@index')->name('dashboard')->middleware('auth');
+Route::get('/dashboard','App\Http\Controllers\LoginController@login')->name('dashboard')->middleware('auth');
+
+//after login 
+Route::get('/afterlogin','App\Http\Controllers\LoginController@afterlogin')->name('afterlogin')->middleware('auth');
+
 
 //ADMIN
 Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function() {
@@ -75,6 +82,10 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function() {
     Route::get('/get_announcement/{id}', 'App\Http\Controllers\AnnouncementController@get_announcement')->name('get_announcement');
     Route::post('/update_announcement', 'App\Http\Controllers\AnnouncementController@update_announcement')->name('update_announcement');
     Route::post('/delete_announcement', 'App\Http\Controllers\AnnouncementController@delete_announcement')->name('delete_announcement');
+    
+    //accounts
+    Route::get('/accounts', 'App\Http\Controllers\AccountController@index')->name('accounts');
+    Route::post('/add_admin_account', [AccountController::class,'newaccount_admin'])->name('add_admin_account');
     
     
     

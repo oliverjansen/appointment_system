@@ -24,6 +24,7 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
+                alert()->success('Login Successfully!')->showConfirmButton(false)->buttonsStyling(false)->autoClose(2000);
                 
                 return redirect(RouteServiceProvider::HOME);
             } 

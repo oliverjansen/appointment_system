@@ -22,8 +22,9 @@ class AppointmentHistoryController extends Controller
         if(Auth::User()->account_type=='user'){   
 
         $appointmentss = DB::table('appointments')
-        ->where('user_id',$id)->
-        where('appointment_status',"success")->get();
+        ->where('user_id',$id)
+        ->orwhere('appointment_status',"!=","success")
+        ->get();
 
         }else{
                     

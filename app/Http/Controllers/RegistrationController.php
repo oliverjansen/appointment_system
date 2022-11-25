@@ -12,6 +12,7 @@ class RegistrationController extends Controller
 {
     function registration(Request $request){
          $datas = User::paginate(10);
+         $workers_table = DB::table('users')->orwhere('account_type',"admin")->orwhere('account_type',"staff")->get();
 
          if ($request->has('search_registration')) {
           $datas = DB::table('users')->where('id','LIKE','%'.$request->search_registration.'%')
@@ -33,11 +34,13 @@ class RegistrationController extends Controller
           // dd($users_search);
         }else{
           $datas = DB::table('users')->paginate(10);
+          $workers_table = DB::table('users')->orwhere('account_type',"admin")->orwhere('account_type',"staff")->paginate(10);
+
         }
 
         if(Auth::User()->account_type=='admin'){
           
-            return view ('registration',compact('datas'));
+            return view ('registration',compact('datas','workers_table'));
           }else{
               return redirect()->route('calendar');
   }

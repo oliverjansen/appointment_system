@@ -242,9 +242,12 @@
     </div>
   </div>
 
-  
+  <div class="container-fluid text-center p-5 mt-4 mb-4">
+      <h3 class="fw-bolder bg-dark bg-opacity-10 text-light p-4
+      ">APPOINTMENTS</h3>
+  </div>
 
-  <div class="container mt-5   mb-5 table-responsive" style="width: 90%; height:100%;">
+  <div class="container    mb-5 table-responsive" style="width: 90%; height:100%;">
     <div>
       @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -257,6 +260,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
       @endif
+    
       @if ($errors->any())
       <div class="alert alert-danger">
           <ul>
@@ -268,9 +272,9 @@
         @endif
     </div>
     <div class="card shadow-sm mb-5" >
-      <div class=" card-header text-center p-3 font-weight-bold bg-semi-grey">
+      {{-- <div class=" card-header text-center p-3 font-weight-bold bg-semi-grey">
         Appointments Table 
-      </div>
+      </div> --}}
         <div class="panel panel-default mt-4" >
           <div class="panel-body">
             <div class="container-fluid">

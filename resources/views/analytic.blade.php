@@ -20,9 +20,11 @@
     </style>
     </head>
     <body>
-        
+        <div class="container-fluid text-center p-5 mt-4 mb-4">
+            <h3 class="fw-bolder bg-dark text-light p-4 bg-opacity-10" >ANALYTICS</h3>
+        </div>
     
-        <div class="container-fluid mt-5 mb-5 bg-semi-white" >
+        <div class="container-fluid mb-5 bg-semi-white" >
             <div>
                 @if (session('success'))
                    <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -40,87 +42,90 @@
          
                     <button class="btn btn-sm add_service_btn btn-primary mt-2 mb-2  " style="width:120px;">Download</button>
             </div> --}}
-                <div class="card shadow-sm mb-5" style="width: 100%" >
-                    <div class=" card-header text-center p-3 font-weight-bold ">
-                    Services Analytic
-                    </div>
-                    <div class="row p-5">
-                        <div class="col col-6 col-md-4 col-sm-6 h-50">
-                            <div class="card text-white bg-primary mb-3" style="">
-                                <div class="card-header text-center">Total number of available slot for vaccine (Consumable)</div>
-                                <div class="card-body">
-                                <h5 class="card-title text-center">{{ $total_vaccine_slot }}</h5>
-                               
-                                </div>
-                            </div>
+                <div class="container-fluid">
+                    <div class="card shadow-sm mb-5" style="width: 100%" >
+                        <div class=" card-header text-center p-3 font-weight-bold 
+                        bg-semi-grey ">
+                        Services Analytic
                         </div>
-
-                        <div class="col col-6 col-md-4 col-sm-6">
-
-                            <div class="card text-white bg-secondary mb-3" style="">
-                                <div class="card-header text-center">Total number of available slot Covid Vaccine (Consumable)</div>
-                                <div class="card-body">
-                                <h5 class="card-title text-center">{{$total_available_slot_codiv_vaccine}}</h5>
-                               
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col col-6 col-md-4 col-sm-6">
-
-                            <div class="card text-white bg-secondary mb-3" style="">
-                                <div class="card-header text-center">Total number of available slot for medicine (Consumable)</div>
-                                <div class="card-body">
-                                <h5 class="card-title text-center">{{$total_available_slot_medicine}}</h5>
-                               
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col col-6 col-md-4 col-sm-6">
-                            <div class="card text-white bg-success mb-3" style="">
-                                <div class="card-header text-center">Total number of slot for checkup</div>
-                                <div class="card-body">
-                                <h5 class="card-title text-center">{{$total_slot_checkup}}</h5>
+                        <div class="row p-5">
+                            <div class="col col-6 col-md-4 col-sm-6 h-50">
+                                <div class="card text-white bg-primary mb-3" style="">
+                                    <div class="card-header text-center">Total number of available slot for vaccine (Consumable)</div>
+                                    <div class="card-body">
+                                    <h5 class="card-title text-center">{{ $total_vaccine_slot }}</h5>
                                 
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col col-6 col-md-4 col-sm-6">
 
-                            <div class="card text-white bg-secondary mb-3" style="">
-                                <div class="card-header text-center">Total number of distributed medicines</div>
-                                <div class="card-body">
-                                <h5 class="card-title text-center">{{$total_distributed_medicine}}</h5>
-                               
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col col-6 col-md-4 col-sm-6">
-                            <div class="card text-white bg-primary mb-3" style="">
-                                <div class="card-header text-center">Total number of covid vaccinated residents</div>
-                                <div class="card-body">
-                                <h5 class="card-title text-center">{{$total_covid_vaccinated_residents}}</h5>
-                                
-                                </div>
-                            </div>
-                        </div>
-                        {{-- <div class="col col-6 col-md-6 col-sm-6">
-                            <div class="card text-white bg-success mb-3" style="">
-                                <div class="card-header text-center">Total number of consulted resident</div>
-                                <div class="card-body">
-                                <h5 class="card-title">Success card title</h5>
-                                
-                                </div>
-                            </div>
-                        </div> --}}
+                            <div class="col col-6 col-md-4 col-sm-6">
 
+                                <div class="card text-white bg-secondary mb-3" style="">
+                                    <div class="card-header text-center">Total number of available slot Covid Vaccine (Consumable)</div>
+                                    <div class="card-body">
+                                    <h5 class="card-title text-center">{{$total_available_slot_codiv_vaccine}}</h5>
+                                
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col col-6 col-md-4 col-sm-6">
+
+                                <div class="card text-white bg-secondary mb-3" style="">
+                                    <div class="card-header text-center">Total number of available slot for medicine (Consumable)</div>
+                                    <div class="card-body">
+                                    <h5 class="card-title text-center">{{$total_available_slot_medicine}}</h5>
+                                
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col col-6 col-md-4 col-sm-6">
+                                <div class="card text-white bg-success mb-3" style="">
+                                    <div class="card-header text-center">Total number of slot for checkup</div>
+                                    <div class="card-body">
+                                    <h5 class="card-title text-center">{{$total_slot_checkup}}</h5>
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col col-6 col-md-4 col-sm-6">
+
+                                <div class="card text-white bg-secondary mb-3" style="">
+                                    <div class="card-header text-center">Total number of distributed medicines</div>
+                                    <div class="card-body">
+                                    <h5 class="card-title text-center">{{$total_distributed_medicine}}</h5>
+                                
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col col-6 col-md-4 col-sm-6">
+                                <div class="card text-white bg-primary mb-3" style="">
+                                    <div class="card-header text-center">Total number of covid vaccinated residents</div>
+                                    <div class="card-body">
+                                    <h5 class="card-title text-center">{{$total_covid_vaccinated_residents}}</h5>
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- <div class="col col-6 col-md-6 col-sm-6">
+                                <div class="card text-white bg-success mb-3" style="">
+                                    <div class="card-header text-center">Total number of consulted resident</div>
+                                    <div class="card-body">
+                                    <h5 class="card-title">Success card title</h5>
+                                    
+                                    </div>
+                                </div>
+                            </div> --}}
+
+                        </div> 
                     </div> 
-                </div> 
-                        
+                 </div>
                 <div class="container-fluid overflow-hidden">
                     <div class="row justify-content-center"> 
                         <div class="card shadow-sm mb-5 col-12 col-lg-5" style="" >
-                            <div class=" card-header text-center p-3 font-weight-bold">
+                            <div class=" card-header text-center p-3 font-weight-bold 
+                            bg-semi-grey">
                               Number of Slot per Service
                             </div>
                             <div class="card-body">
@@ -134,7 +139,8 @@
                             </div>
                         </div>
                         <div class="card shadow-sm mb-5 ml-3 col-12 col-lg-5 offset" style="width: 100%" >
-                            <div class=" card-header text-center p-3 font-weight-bold">
+                            <div class=" card-header text-center p-3 font-weight-bold 
+                            bg-semi-grey">
                               Number of Slot Covid Dose
                             </div>
                             <div class="card-body">
@@ -148,7 +154,8 @@
                             </div>
                         </div>
                         <div class="card shadow-sm mb-5 ml-3 col-12 col-lg-5 offset" style="width: 100%" >
-                            <div class=" card-header text-center p-3 font-weight-bold">
+                            <div class=" card-header text-center p-3 font-weight-bold 
+                            bg-semi-grey">
                               Covid Vaccinated and Unvaccinated
                             </div>
                             <div class="card-body">
@@ -164,7 +171,8 @@
                     </div>
                 </div>
                 <div class="card shadow-sm mb-5" style="width: 100%" >
-                    <div class=" card-header text-center p-3 font-weight-bold ">
+                    <div class=" card-header text-center p-3 font-weight-bold 
+                    bg-semi-grey">
                     Appointment Analytic
                     </div>
                     <div class="row p-5">
@@ -203,7 +211,8 @@
                 <div class="container-fluid overflow-hidden " style="text-align:center">
                     <div class="row justify-content-center"> 
                         <div class="card shadow-sm mb-5 col-12 col-lg-5" style="" >
-                            <div class=" card-header text-center p-3 font-weight-bold">
+                            <div class=" card-header text-center p-3 font-weight-bold 
+                            bg-semi-grey">
                               Appointments Per Months
                             </div>
                             <div class="card-body" style="text-align:center">
@@ -217,7 +226,8 @@
                             </div>
                         </div>
                         <div class="card shadow-sm mb-5 ml-3 col-12 col-lg-5 offset" style="width: 100%" >
-                            <div class=" card-header text-center p-3 font-weight-bold">
+                            <div class=" card-header text-center p-3 font-weight-bold 
+                            bg-semi-grey">
                              Most Frequent Service Appointmented
                             </div>
                             <div class="card-body">
@@ -231,7 +241,8 @@
                             </div>
                         </div>
                         <div class="card shadow-sm mb-5 ml-3 col-12 col-lg-5 offset" style="width: 100%" >
-                            <div class=" card-header text-center p-3 font-weight-bold">
+                            <div class=" card-header text-center p-3 font-weight-bold 
+                            bg-semi-grey">
                              Number of Appointments Base on Status
                             </div>
                             <div class="card-body">
@@ -247,14 +258,15 @@
                     </div>
                 </div>
                 <div class="card shadow-sm mb-5" style="width: 100%" >
-                    <div class=" card-header text-center p-3 font-weight-bold ">
+                    <div class=" card-header text-center p-3 font-weight-bold 
+                    bg-semi-grey">
                     Residents Analytic
                     </div>
                     <div class="row p-5">
                         <div class="col col-6 col-md-4 col-sm-6">
 
                             <div class="card text-white bg-primary mb-3" style="">
-                                <div class="card-header text-center">Number Registered Residents</div>
+                                <div class="card-header text-center ">Number Registered Residents</div>
                                 <div class="card-body">
                                 <h5 class="card-title text-center">{{$pie_user_approved1}} </h5>
                                
@@ -285,7 +297,8 @@
                 <div class="container-fluid overflow-hidden">
                     <div class="row justify-content-center"> 
                         <div class="card shadow-sm mb-5 col-12 col-lg-5" style="" >
-                            <div class=" card-header text-center p-3 font-weight-bold">
+                            <div class=" card-header text-center p-3 font-weight-bold 
+                            bg-semi-grey">
                               Number of Registration Base on Status (%)
                             </div>
                             <div class="card-body">
@@ -299,7 +312,8 @@
                             </div>
                         </div>
                         <div class="card shadow-sm mb-5 ml-3 col-12 col-lg-5 offset" style="width: 100%" >
-                            <div class=" card-header text-center p-3 font-weight-bold">
+                            <div class=" card-header text-center p-3 font-weight-bold 
+                            bg-semi-grey">
                              Number of Resident Registration
                             </div>
                             <div class="card-body">

@@ -22,7 +22,7 @@ class RegisterResponse extends FortifyRegisterResponse
 
         $this->guard->logout();
 
-        alert()->success('Information Save!','Your account is currently under review. We will notify you about the status of your registration through SMS. Thankyou!')->showConfirmButton()->buttonsStyling(true);
+        alert()->success('Information Save!','Your account is being reviewed at the moment. We will send you an SMS with the status of your registration as soon as possible. Thankyou!')->showConfirmButton()->buttonsStyling(true);
        
         return $request->wantsJson()
             ? new Response('', 204)

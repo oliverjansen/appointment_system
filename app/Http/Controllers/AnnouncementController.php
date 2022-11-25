@@ -33,7 +33,6 @@ class AnnouncementController extends Controller
 
     public function post_announcement (Request $request){
 
-      
 
         $validator = Validator::make($request->all(), [
             'title' => 'required',

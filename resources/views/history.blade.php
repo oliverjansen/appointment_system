@@ -19,9 +19,11 @@
     <body>
     
       
-    
+      <div class="container-fluid text-center p-5 mt-4 mb-4">
+        <h3 class="fw-bolderbg-opacity-10">APPOINTMENT HISTORY</h3>
+    </div>
       
-      <div class="container-fluid mt-5" style="width: 70%; height:100%;">
+      <div class="container-fluid" style="width: 70%; height:100%;">
           <div>
             @if (session('success'))
                <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -35,15 +37,16 @@
            </div>
             @endif
           </div>
-          <div class="card shadow-sm mb-5 " style="">
-            <div class=" card-header text-center p-3 font-weight-bold bg-semi-grey">
+          
+          <div class="" style="">
+            {{-- <div class=" card-header text-center p-3 font-weight-bold bg-semi-grey">
               Appointment History Table
-            </div>
-              <div class="panel panel-default mt-4" >
+            </div> --}}
+              {{-- <div class="panel panel-default mt-4" >
                 <div class="panel-body">
                     <form action="{{route('search_registration')}} " method="GET">
                         @csrf
-                        {{ csrf_field() }}
+                        {{ csrf_field() }} --}}
                         {{-- <div class=" container-fluid">
                             <input type="search_registration" name="search_registration" id="search" class="form-control mb-3 float-right" placeholder="search" style="width: 300px">
                             <button class="btn mt-1 float-right ">
@@ -54,9 +57,9 @@
                             </button>
                         </div> --}}
                     
-                    </form>
+                    {{-- </form>
                 </div>
-              </div> 
+              </div>  --}}
                  <div class="card-body table-responsive">
                     <table class="table table-hover "  >
                     

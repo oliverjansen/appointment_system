@@ -91,8 +91,10 @@ class CalendarController extends Controller
         
         $appointment_service = services::all(); 
         $current_date =Carbon::now()->format('Y-m-d');
+        $currentday_plus_30days =Carbon::now()->addDays(30)->format('Y-m-d');
 
-    
+
+
    
         $appointment_expire = appointments::all(); 
         $pending = "pending";
@@ -148,6 +150,14 @@ class CalendarController extends Controller
                 $color = '#F73DE4 ';
             }else if ($value->service_id == 6){
                 $color = '#F78F3D';
+            }else if ($value->service_id == 7){
+                $color = '#FE2AF1';
+            }else if ($value->service_id == 8){
+                $color = '#070095';
+            }else if ($value->service_id == 9){
+                $color = '#DC5700';
+            }else if ($value->service_id == 10){
+                $color = '#AB102C ';
             }else{
                 $color = '#6ED8F1';
             }
@@ -171,7 +181,7 @@ class CalendarController extends Controller
          }elseif(Auth::User()->account_type=='user'){
             $qrcode = 13;
             // return view ('calendar', ['schedules' =>  $schedules]);
-            return view ('calendar', compact('schedules','hide','current_date','vaccine_dose','appointment_service','vaccine_kids','vaccine_others','category','qrcode','vaccine','vaccine_covid','yes','data3') );
+            return view ('calendar', compact('schedules','hide','currentday_plus_30days','current_date','vaccine_dose','appointment_service','vaccine_kids','vaccine_others','category','qrcode','vaccine','vaccine_covid','yes','data3') );
          }elseif(Auth::User()->account_type=='staff'){
             return view ('scanner');
 
@@ -231,7 +241,7 @@ class CalendarController extends Controller
 
 public function delete_appointment(Request $request){
 
-        $id = $request ->input ('calendar_id');
+        $id = $request ->input ('appointment_id_delete');
         $delete_appointment= appointments::find($id);
        
 
@@ -331,7 +341,9 @@ public function delete_appointment(Request $request){
             
 
             $delete_appointment->delete();
-      
+            
+            alert()->success('Appointment Canceled!')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+
         if(Auth::User()->account_type=='admin'){
           return redirect()->back()->with('danger', 'Successfully Deleted');
         }else{

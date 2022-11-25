@@ -47,7 +47,7 @@
           </div>
         </div>
       </div>
-    <!-- ADD announcement Modal -->
+    <!-- ADD announcement Modal --> 
     
       <div class="modal fade" id="add_announcement_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -151,10 +151,13 @@
     
          <!-- approve modal -->
     
-
+         <div class="container-fluid text-center p-5 mt-4 mb-4">
+          <h3 class="fw-bolder bg-dark bg-opacity-25 text-light p-4">ANNOUNCEMENT</h3>
+          
+      </div>
     
     
-      <div class="container mt-5   mb-5 table-responsive" style="width: 90%; height:100%;">
+      <div class="container   mb-5 table-responsive" style="width: 90%; height:100%;">
         <div>
           @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -178,16 +181,17 @@
             @endif
         </div>
           <div class="d-flex justify-content-end mb-3">
-            <button class="btn btn-sm btn-primary add_announcement">Add Announcement</button>
+            <button class="btn btn-sm btn-primary add_announcement ">Add Announcement</button>
 
           </div>
     
         
           <div class="card shadow-sm mb-5" >
             
-            <div class=" card-header text-center p-3 font-weight-bold">
+            {{-- <div class=" card-header text-center p-3 font-weight-bold 
+            bg-semi-grey">
               Announcement
-            </div>
+            </div> --}}
               <div class="panel panel-default mt-4" >
                 <div class="panel-body">
                   <div class="container-fluid">

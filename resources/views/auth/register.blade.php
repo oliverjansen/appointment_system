@@ -42,7 +42,7 @@
         </x-slot> 
     <x-jet-validation-errors class="mb-4" />
         <div class="alert alert-warning alert-dismissible fade show m-4" role="alert">
-            <strong>Reminder: </strong> After you register, Admin will varify your account before granting you access to the system.
+            <strong>Reminder: </strong> After you register, We will verify first your account before you can access the system.
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>

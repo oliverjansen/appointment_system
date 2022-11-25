@@ -89,15 +89,18 @@ class ServicesController extends Controller
         $services_add ->availability = "No";
         $services_add ->availableslot = $request ->input ('add_available_slot');
         $services_add->save();
+
       }else{
-        return redirect()->back()->with('danger', 'Service already Exist');
+        alert()->error('Service already Exist')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+        return redirect()->back();
 
       }
 
      
   
       if(Auth::User()->account_type=='admin'){
-        return redirect()->back()->with('success', 'Service Successfully Added');
+        alert()->success('Successfully Added')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+        return redirect()->back();
       }else{
         return redirect()->route('calendar');
       }
@@ -126,6 +129,7 @@ class ServicesController extends Controller
 
               $vaccine_add ->vaccine_availability = "No";
               $vaccine_add->save();
+              alert()->success('Successfully Added')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
         // }
       //   else{
       //       return redirect()->back()->with('danger', 'Vaccine already Exist');
@@ -147,8 +151,10 @@ class ServicesController extends Controller
             $vaccine_category_add ->service_id = $request ->input ('service_select_id');
             $vaccine_category_add ->category = $request ->input ('add_vaccine_category_input');
             $vaccine_category_add->save();
+            alert()->success('Successfully Added')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
           }else{
-            return back()->with('warning',"You are can add vaccine to OTHERS Category");
+            alert()->error('Error!','You can add vaccine to "OTHERS Category"')->showConfirmButton()->buttonsStyling(true);
+            return redirect()->back();
           }
        
       }
@@ -160,6 +166,7 @@ class ServicesController extends Controller
         $add_other_services ->other_services_slot = $request ->input ('add_others_service_slot');
         $add_other_services ->other_services = $request ->input ('add_other_services_input');
         $add_other_services->save();
+        alert()->success('Successfule Added')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
     }
 
 
@@ -250,10 +257,12 @@ if($check_others_service_availability == "Yes"){
   $other_services->update();
 }else{
   $other_services->update();
-  return redirect()->back()->with('warning', 'Turn on the service availability to edit availability');
+  alert()->warning('Successfully Updated','Turn on the service availability to edit this availability.')->showConfirmButton()->buttonsStyling(True);
+  return redirect()->back();
 }
   if(Auth::User()->account_type=='admin'){
-    return redirect()->back()->with('success', 'Successfully Edited');
+    alert()->success('Successfully Updated')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+    return redirect()->back();
   }else{
     return redirect()->route('login');
 
@@ -263,10 +272,32 @@ if($check_others_service_availability == "Yes"){
 
  public function update_category(Request $request){
 
-
+  $old_id = $request->input('old_id');
   $id = $request ->input ('category_update_id');
   $service_id = $request ->input ('service_update_id');
   $category = Category::find($id);
+
+  if(Category::where('id', $id)->exists()){
+
+    if($id == $id){
+      
+    }else{
+      alert()->Error('Error','Category ID Exist!')->showConfirmButton()->buttonsStyling(true);
+      return redirect()->back();
+    }
+  
+  }
+
+  if($category == null){
+     DB::table('categories_vaccine')->where('id',$old_id)->update(['id'=>$id]);
+     $category = Category::find($id);
+
+    //  Category::where('id', $id)->exists();
+
+    
+    // dd($category);
+  
+  }
 
 
   $category ->category = $request ->input ('category_update');
@@ -292,13 +323,16 @@ if($check_service_availability == "Yes"){
 
 }else{
   $category->update();
-  return redirect()->back()->with('warning', 'Turn on the service availability to edit availability');
+  alert()->warning('Successfully Updated','Turn on the service availability to edit this availability.')->showConfirmButton()->buttonsStyling(true);
+  return redirect()->back();
 }
 
 
 
   if(Auth::User()->account_type=='admin'){
-    return redirect()->back()->with('success', 'Successfully Edited');
+    alert()->success('Successfully Updated')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+
+    return redirect()->back();
   }else{
     return redirect()->route('login');
   }
@@ -316,9 +350,21 @@ if($check_service_availability == "Yes"){
 
   if($id == 1){
     
-  $update_vaccine_availability = DB::table('services')->join('vaccine','services.id',"=",'vaccine.service_id')->join('categories_vaccine','services.id',"=",'categories_vaccine.service_id')->where('services.id', $id)->update(['vaccine_availability'=> $request ->input ('choice_service'),'category_availability'=>$request ->input ('choice_service')]);
+  $update_vaccine_availability = DB::table('services')->join('vaccine','services.id',"=",'vaccine.service_id')->join('categories_vaccine','services.id',"=",'categories_vaccine.service_id')->where('services.id', $id)->get();
+  
 
+    if($update_vaccine_availability->isEmpty()){
+     $check =  DB::table('services')->join('categories_vaccine','services.id',"=",'categories_vaccine.service_id')->where('services.id', $id)->get();
+      if($check->isEmpty()){
 
+      }else{
+        DB::table('services')->join('categories_vaccine','services.id',"=",'categories_vaccine.service_id')->where('services.id', $id)->update(['category_availability'=>$request ->input ('choice_service')]);
+        alert()->success('Successfully Updated')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+      }
+    }else{
+      $update_vaccine_availability = DB::table('services')->join('vaccine','services.id',"=",'vaccine.service_id')->join('categories_vaccine','services.id',"=",'categories_vaccine.service_id')->where('services.id', $id)->update(['vaccine_availability'=> $request ->input ('choice_service'),'category_availability'=>$request ->input ('choice_service')]);
+      alert()->success('Successfully Updated')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+    }
 
   }else{
     $update_other_services_availability = DB::table('services')->Join('other_services','services.id',"=",'other_services.service_id')->where('service_id',  $id)->update(['other_services_availability'=> $request ->input ('choice_service')]);
@@ -329,7 +375,8 @@ if($check_service_availability == "Yes"){
   $appointment->update();
 
   if(Auth::User()->account_type=='admin'){
-    return redirect()->back()->with('success', 'Successfully Edited');
+    alert()->success('Successfully Upated')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+    return redirect()->back();
   }else{
     return redirect()->route('login');
   }
@@ -354,7 +401,8 @@ public function update_vaccine(Request $request){
       $vaccine->update();
     }else{
       $vaccine->update();
-      return redirect()->back()->with("warning","Turn the category availability first");
+      alert()->warning('Updated Successfully','Turn the category availability to edit this availability.')->showConfirmButton()->buttonsStyling(true);
+      return redirect()->back();
      
     }
  
@@ -365,7 +413,8 @@ public function update_vaccine(Request $request){
   
 
   if(Auth::User()->account_type=='admin'){
-    return redirect()->back()->with('success', 'Successfully Edited');
+    alert()->success('Successfully Updated')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+    return redirect()->back();
   }else{
     return redirect()->route('login');
   }
@@ -375,11 +424,13 @@ public function update_vaccine(Request $request){
 //delete services
 
  public function delete_services (Request $request){
-  $id = $request ->input ('delete_id');
+  $id = $request ->input ('service_del_id');
   $service_del= services::find($id);
   $service_del->delete();
+
   if(Auth::User()->account_type=='admin'){
-    return redirect()->back()->with('danger', 'Successfully Deleted');
+    alert()->success('Successfully Deleted')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+    return redirect()->back();
   }else{
    return redirect()->route('calendar');
   }
@@ -394,7 +445,8 @@ public function update_vaccine(Request $request){
   $service_del->delete();
 
   if(Auth::User()->account_type=='admin'){
-    return redirect()->back()->with('danger', 'Successfully Deleted');
+    alert()->success('Successfully Deleted')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+    return redirect()->back();
   }else{
    return redirect()->route('calendar');
   }
@@ -410,7 +462,8 @@ public function update_vaccine(Request $request){
   $category_del->delete();
 
   if(Auth::User()->account_type=='admin'){
-    return redirect()->back()->with('danger', 'Successfully Deleted');
+    alert()->success('Successfully Deleted')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+    return redirect()->back();
   }else{
    return redirect()->route('calendar');
   }
@@ -423,7 +476,8 @@ public function update_vaccine(Request $request){
   $other_services_delete->delete();
 
   if(Auth::User()->account_type=='admin'){
-    return redirect()->back()->with('danger', 'Successfully Deleted');
+    alert()->success('Successfully Deleted')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+    return redirect()->back();
   }else{
    return redirect()->route('calendar');
   }

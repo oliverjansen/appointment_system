@@ -35,7 +35,7 @@
                     @if (Route::has('login'))
                 
                         @auth
-                            <button class="submit tow"  onclick="window.location='{{ url("/dashboard") }}'" type="button">Dashboard</button>
+                            <button class="submit tow"  onclick="window.location='{{ route('afterlogin') }}'" type="button">Dashboard</button>
 
                             
                         @else
@@ -49,16 +49,16 @@
             </section>
         </header>
         <section class="article">
-            <article id="article-three" class="shadow">
+            <article id="article-three" class="shadow container-fluid w-100">
                     <div class="text">
                         <h3>Announcement</h3>
                         @if($announcement->isEmpty())
-                    <div>
-                        <label class="btn-sm btn-danger">No Announcement Yet!</label> 
+                            <div>
+                                <label class="btn-sm btn-danger">No Announcement Yet!</label> 
 
-                    </div>
-                  
-                    @endif
+                            </div>
+                    
+                        @endif
                         <div class="contaner-fluid mt-3">
                             @foreach($announcement as $value)
                                 <div class="row ">
