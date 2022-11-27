@@ -35,7 +35,7 @@ class JetstreamServiceProvider extends ServiceProvider
             $user = User::where(['email' => $request->email, 'status' => 'approved'])->first();
         
             if ($user && Hash::check($request->password, $user->password)) {
-                alert()->success('Login Successfully!','Welcome '.$request->email)->showConfirmButton(false)->buttonsStyling(false)->autoClose(2000);
+                alert()->success('Login Successfully!')->showConfirmButton(false)->buttonsStyling(false)->autoClose(2000);
                 
                     return $user;
             }

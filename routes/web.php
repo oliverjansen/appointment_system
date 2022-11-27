@@ -83,6 +83,7 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function() {
     Route::post('/update_announcement', 'App\Http\Controllers\AnnouncementController@update_announcement')->name('update_announcement');
     Route::post('/delete_announcement', 'App\Http\Controllers\AnnouncementController@delete_announcement')->name('delete_announcement');
     
+    
     //accounts
     Route::get('/accounts', 'App\Http\Controllers\AccountController@index')->name('accounts');
     Route::post('/add_admin_account', [AccountController::class,'newaccount_admin'])->name('add_admin_account');

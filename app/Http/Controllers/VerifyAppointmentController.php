@@ -38,29 +38,23 @@ class VerifyAppointmentController extends Controller
 
     function get_appointment_id($content){
         // $service_id = User::find($id);
-        $data1 = DB::table('appointments')->where('appointment_id',$content)->get();
-        //  dd($data1);
-        if($data1->isEmpty()){
-            return back()->with(['warning' => "No existing appointment!"]);
-        }else{
-            
+        $data1 = DB::table('appointments')
+        ->join('users','appointments.user_id',"=",'users.id')
+        ->where('appointment_id',$content)
+        ->where('appointment_status',"pending")
+        ->get();
 
-            foreach ($data1 as $value) {
-                if($value->appointment_status == "success"){
-                    
-                    return back()->with(['success' => "Appointment has already been verified!"]);
-                }
-            }
 
             return response()->json([
                 'data'=> $data1
               ]);
-        }
+
     
      
     }
 
     function verify_appointment(Request $request){
+
       $appointment_id = $request ->input ('appointment_id_hidden');
       $appointment_date = $request ->input ('appointment_date_hidden');
       
@@ -95,8 +89,9 @@ class VerifyAppointmentController extends Controller
         ->update(['appointment_status' => "success"]);
 
 
+        alert()->success('Appointment Verified!','appointment queue has been sent to the resident.')->showConfirmButton()->buttonsStyling(true);
       
-        return back()->with(['success' => "Residents has been notified about the appointment!"]);
+        return redirect()->back();
 
     }
   /**

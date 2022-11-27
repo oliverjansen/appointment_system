@@ -25,13 +25,13 @@ class UserMiddleware
 
                 return $next($request);
             }else{
-                alert()->error('User Access!')->showConfirmButton()->buttonsStyling(true)->autoClose(1500);
+                alert()->error('No Access!')->showConfirmButton()->buttonsStyling(true)->autoClose(1500);
 
                 return redirect()->back();
 
             }
         }else{
-        Alert::success('Success Title', 'Success Message');
+   
            
 
             return view('auth/login');

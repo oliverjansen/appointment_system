@@ -20,7 +20,7 @@
     
       
       <div class="container-fluid text-center p-5 mt-4 mb-4">
-        <h3 class="fw-bolderbg-opacity-10">APPOINTMENT HISTORY</h3>
+        <h3 class="fw-bolder bg-dark bg-opacity-10 text-light p-4">APPOINTMENT HISTORY</h3>
     </div>
       
       <div class="container-fluid" style="width: 70%; height:100%;">
@@ -60,16 +60,18 @@
                     {{-- </form>
                 </div>
               </div>  --}}
+        
                  <div class="card-body table-responsive">
                     <table class="table table-hover "  >
                     
                       <thead>
                           <tr class="text-center">
-                            <th scope="col" style="width: ">Service</th>
-                            <th scope="col" style="width: ">Category</th>
-                            <th scope="col" style="width: ">Vaccine</th>
-                            <th scope="col" style="width:">Apointment Date</th>
-                            <th scope="col" style="width: ">Status</th>
+                            <th>@sortablelink('appointment_services','Service')
+                            </th>
+                            <th scope="col" style="width: ">@sortablelink('appointment_vaccine_category','Category')</th>
+                            <th scope="col" style="width: ">@sortablelink('appointment_dose','Vaccine')</th>
+                            <th scope="col" style="width:">@sortablelink('appointment_vaccine_type','Apointment Date')</th>
+                            <th scope="col" style="width: ">@sortablelink('appointment_status','Status')</th>
                       
                           </tr>
                       </thead>
@@ -105,14 +107,26 @@
 
                                       {{$value->appointment_vaccine_type}}</td>
                                     <td >{{$value->appointment_date}}</td>
-                                    <td >{{$value->appointment_status}}</td>
+                                    <td >
+                                      @if($value->appointment_status == "success")
+                                      <small class="bg-success p-1 rounded text-white">   {{$value->appointment_status}}</small>
+                                      @elseif($value->appointment_status == "expired")
+                                      <small class="bg-danger p-1 rounded text-white">   {{$value->appointment_status}}</small>
+                                      @elseif($value->appointment_status == "pending")
+                                      <small class="bg-warning p-1 rounded text-white">   {{$value->appointment_status}}</small>
+                                      @elseif($value->appointment_status == "canceled")
+                                      <small class="bg-warning p-1 rounded text-white">   {{$value->appointment_status}}</small>
+
+                                      @endif
+                                    
+                                    </td>
                                     </tr>
                                  @endforeach
                        
                       </tbody>
               </table> 
             </div>
-            {{-- <div class="m-4"> {{ $datas->Links() }} </div> --}}
+            <div class="m-4"> {!! $appointmentss->appends(\Request::except('page'))->render() !!} </div>
          
           </div>
       </div>
@@ -127,7 +141,24 @@
     
     <script>
         $(document).ready(function () {
-       
-        });
+          // var id = null;
+          //   $(document).on('change','#sortby_history',function(e){
+          //     e.preventDefault();
+             
+          //     id = $(this).val();
+          //    console.log(id);
+          //    var_dump():
+          //     $.ajax({
+          //         type: "GET",
+          //         url: "/history/"+id,
+          //         success: function (response) {
+          //             // console.log(response);  
+          //             // console.log(response.vaccine);
+          //             // $('#available_slot').val(response.pediatic);
+          //             // $('#availableslot').text(response.pediatic);
+          //         }
+          //     });
+          //   });
+  });
     </script>
     </x-app-layout>

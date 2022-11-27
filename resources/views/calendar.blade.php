@@ -18,6 +18,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
     <script  type="text/javascript" src="{{ URL::asset('js/qrcode.min.js') }}"></script>
+
+<style>
+     .red-color {
+        color:red;
+    }
+</style>
+
 </head>
 <body>
 
@@ -132,10 +139,11 @@
                 @csrf
                 {{ csrf_field() }}
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                  <h5 class="modal-title" id="exampleModalLabel"></h5>
+                  
+                  <h5 class="modal-title bi bi-exclamation-triangle red-color" id="exampleModalLabel"> Cancel Appointment</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
                
                 </div>
                 <div class="modal-body text-center">

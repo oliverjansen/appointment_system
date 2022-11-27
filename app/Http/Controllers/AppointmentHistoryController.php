@@ -20,11 +20,15 @@ class AppointmentHistoryController extends Controller
             $id = Auth::User()->id;
         }
         if(Auth::User()->account_type=='user'){   
-
-        $appointmentss = DB::table('appointments')
-        ->where('user_id',$id)
-        ->orwhere('appointment_status',"!=","success")
-        ->get();
+        
+     
+            $appointmentss = appointments::sortable()
+            ->where('user_id',$id)
+            ->orwhere('appointment_status',"!=","success")
+            ->paginate(10);
+        
+        
+    
 
         }else{
                     
@@ -34,4 +38,38 @@ class AppointmentHistoryController extends Controller
         return view('history',compact('appointmentss'));
     
     }
+
+    //  function sort_history ($id){
+
+    //     if($id !== null){
+           
+    //         if($id == "1"){
+    //             $appointmentss = DB::table('appointments')
+    //             ->where('user_id',$id)
+    //             ->orwhere('appointment_status',"!=","success")
+    //             ->orderBy('service_id')
+    //             ->paginate(10);
+              
+    //         }else if ($id == "2"){
+    //             $appointmentss = DB::table('appointments')
+    //             ->where('user_id',$id)
+    //             ->orwhere('appointment_status',"!=","success")
+    //             ->orderBy('service_id')
+    //             ->paginate(10);
+    //         }else if($id == "3"){
+    //             $appointmentss = DB::table('appointments')
+    //             ->where('user_id',$id)
+    //             ->orwhere('appointment_status',"!=","success")
+    //             ->orderBy('service_id')
+    //             ->paginate(10);
+    //         }
+    //     }else{
+    //         $appointmentss = DB::table('appointments')
+    //         ->where('user_id',$id)
+    //         ->orwhere('appointment_status',"!=","success")
+    //         ->paginate(10);
+    //     }
+
+    //     return view('history',compact('appointmentss'));
+    // }
 }

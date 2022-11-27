@@ -13,7 +13,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <title>Document</title>
 
-        <script type="text/javascript" src="{{ asset('instascan.min.js') }}" ></script>
+        {{-- <script type="text/javascript" src="{{ asset('instascan.min.js') }}" ></script> --}}
 
     </head>
     <body>
@@ -167,19 +167,19 @@
         </div> --}}
 
     
-          <div class="container mt-5 mb-5" >
+          <div class="container mt-5" >
             @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @elseif (session('danger'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ session('danger') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            
-        </div>
-        @endif
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+                  {{ session('success') }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            @elseif (session('danger'))
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  {{ session('danger') }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  
+              </div>
+              @endif
           <div class="card w-70" style="margin-top: 100px 150px;" >
             
                 {{-- <h4>Verify Appointment</h4> --}}
@@ -187,35 +187,54 @@
                     
               <div class="card-body rounded">
                 <div class="row">
-                  <div class="col col-12 d-flex d-flex justify-content-center mt-4">
+                  <div class="col col-12 d-flex justify-content-center mt-4">
                     <h5>Scan QR Code</h5>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col d-flex justify-content-center mt-4 ">
-                    <video id="preview" class="w-25 " style="display:none">
-                      
+                  <div class="col col-12 mb-1 mt-2">
+                    <div class="row justify-content-center">
+                      <div class="mr-1">
+                        <button type="button" onclick="initQrCodeScanner()" class="btn btn-primary btn-sm scan1 bi bi-camera-video" style="width:50px"></button>
+                      </div>
+                      <div class="">
+                        <button type="button" class="btn btn-danger btn-sm  cancel bi bi-camera-video-off " style="width:50px" id="cancel"></button>  
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row justify-content-center">
+                  <div class="col col-12 col-lg-4 mt-4">
+                    <video id="preview" class="w-100 border " style="height: 250px;">
                     </video>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col col-12 d-flex d-flex justify-content-center mb-4 mt-2">
-                    <div class="m-1">
-                      <button type="button" onclick="initQrCodeScanner()" class="btn btn-primary btn-sm scan1 " style="width:90px">Scan</button>
-                    </div>
-                    <div class="m-1">
-                      <button type="button" class="btn btn-danger btn-sm  cancel" style="width:90px" id="cancel">Stop</button>  
-                    </div>
-                  </div>
+              </div>
+              <div class="row justify-content-center">
+                <div class="btn-group btn-group-toggle mb-5" data-toggle="buttons">
+                  <label class="btn btn-primary btn-sm active">
+                    <input type="radio" name="options"  value="1" autocomplete="off" checked> Front Camera
+                  </label>
+                  <label class="btn btn-secondary btn-sm">
+                    <input type="radio" name="options" value="2" autocomplete="off"> Back Camera
+                  </label>
                 </div>
+              </div>
+              
+
+
+  <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+<script type="text/javascript">
+ 
+    </script>
+
 
                 <div class="row" id="display_verification" style="display:none" name="">
-                  <div class="col d-flex justify-content-center mt-5">
+                  <div class="col col-12 col-lg-5 mx-auto  d-flex justify-content-center mt-5">
                     {{-- <input type="text" id="appointment_id_hidden" name="appointment_id_hidden" hidden >
                     <input type="text" id="user_id" name="user_id_hidden"  hidden> --}}
                   
-
-                      <form action="{{route('verify_appointment') }}" method="POST" class="w-25">
+                      <form action="{{route('verify_appointment') }}" method="POST" class="w-100  mb-5 border  rounded mx-3 ">
                         @csrf
                         {{ csrf_field() }}
                         <input type="text" id="user_contactnumber" name="user_contactnumber" hidden > 
@@ -224,38 +243,48 @@
                         <input type="text" id="user_contactnumber_hidden" name="user_contactnumber_hidden" hidden> 
                         <input type="text" id="appointment_services_hidden" name="appointment_services_hidden" hidden> 
                         <input type="text" id="appointment_services_id_hidden" name="appointment_services_id_hidden" hidden> 
-                        
-                        
-                        
+                        <input type="text" id="user_email_hidden" name="user_email_hidden" hidden> 
 
-                        <fieldset disabled>
+                        <div class="row justify-content-center">
+                      
+                        </div>
+                        <fieldset disabled class=" p-5 ">
                          
-                          <div class="form-group">
+                          {{-- <div class="form-group">
                             <label for="appointment_id">User ID</label>
                             <input type="text" id="user_id" name="user_id" class="form-control">
-                          </div>
+                          </div> --}}
                           <div class="form-group">
+                            <label for="appointment_id" class="font-weight-bold">Email: </label>
+                            {{-- <p id="user_email" name="user_email">oliver@gmail.vom</p> --}}
+                            <input type="text" id="user_email" name="user_email" class="form-control">
+                          </div>
+                          {{-- <div class="form-group">
                             <label for="appointment_id">Appointment ID</label>
                             <input type="text" id="appointment_id" name="appointment_id" class="form-control">
-                          </div>
+                          </div> --}}
                           <div class="form-group">
-                            <label for="disabledTextInput">Service</label>
+                            <label for="disabledTextInput" class="font-weight-bold">Service: </label>
+                            {{-- <p id="appointment_services" name="appointment_services">oliver@gmail.vom</p> --}}
+
                             <input type="text" id="appointment_services" name="appointment_services" class="form-control">
                           </div>
                           <div class="form-group">
-                            <label for="disabledTextInput">Appointment Date</label>
+                            <label for="disabledTextInput" class="font-weight-bold">Appointment Date: </label>
+                            {{-- <p id="appointment_date" name="appointment_date">oliver@gmail.vom</p> --}}
+                            
                             <input type="text" id="appointment_date" name="appointment_date" class="form-control">
                           </div>
                         </fieldset>
                             <div class="row d-flex justify-content-center">
-                              <button type="submit" class="btn btn-primary btn-sm w-50">Verify</button>
+                              <button type="submit" class="btn btn-primary btn-sm w-25 mb-4 bi bi-check2-circle"> Verify</button>
                             </div>
                       </form>
                   </div>
                 </div>
               </div>
           </div>
-        </div>
+     
     
     
      {{-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>  --}}
@@ -359,7 +388,7 @@
             //              success: function (response) {
             //                 // console.log(response);
             //                 $('#image').val(response.identification.identification)
-            //                 $('#image_id').val(response.identification.id)
+            //           cyan      $('#image_id').val(response.identification.id)
             //                 $('#id_type').text(response.identification.identificationtype);
             //                 $('#view_image').attr('src', 'storage/'+response.identification.identification);
             //             }, error: function(error) {
@@ -373,98 +402,137 @@
             // });
         
 
-                    const initQrCodeScanner = () => {
-                      var cancel = document.getElementById('cancel');
-                      var x = document.getElementById("preview");
-                      var display_verification = document.getElementById("display_verification");
+                    function initQrCodeScanner(){
+                      
+                          var cancel = document.getElementById('cancel');
+                          var x = document.getElementById("preview");
+                          var display_verification = document.getElementById("display_verification");
 
-                      if (x.style.display == "none") {
-                        x.style.display = "block";
-                      }
-                    let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
-                    
-                    Instascan.Camera.getCameras().then(cameras => {
-                      console.log(cameras.length);
-                      if(cameras.length > 0){
-                        if(scanner.camera = cameras[cameras.length - 2]){
-                          scanner.start();
+                          if (x.style.display == "none") {
+                            x.style.display = "block";
+                          }
+                          
+                          let scanner = new Instascan.Scanner({ video: document.getElementById('preview'), continuous: true, mirror: false, captureImage: false, backgroundScan: true, refractoryPeriod: 1000, scanPeriod: 1 });
+                          
+                          Instascan.Camera.getCameras().then(function (cameras){
+                        if(cameras.length>0){
+                            scanner.start(cameras[0]);
+                            $('[name="options"]').on('change',function(){
+                                if($(this).val()==1){
+                                    if(cameras[0]!=""){
+                                        scanner.start(cameras[0]);
+                                    }else{
+                                        alert('No Front camera found!');
+                                    }
+                                }else if($(this).val()==2){
+                                    if(cameras[1]!=""){
+                                        scanner.start(cameras[1]);
+                                    }else{
+                                        alert('No Back camera found!');
+                                    }
+                                }
+                            });
                         }else{
-                          alert("camera 2 not found!");
+                            console.error('No cameras found.');
+                            alert('No cameras found.');
                         }
-                      
-                      }else {
-                        alert("no camera found!");
-                      }
-                      
+                    }).catch(function(e){
+                        console.error(e);
+                        alert(e);
+                    });
 
-                    }).catch(e => console.error(e));
+          
 
-    
+                          scanner.addListener('scan', content => {
+                            // scanner.stop();
+                            console.log(content);
 
-                    scanner.addListener('scan', content => {
-                      // scanner.stop();
-                      console.log(content);
+                                $.ajax({
+                                  type: "GET",
+                                  url: "/admin/admin_get_appointment_id/"+content,
+                                  success: function (response) {
+                                      console.log(response);
 
-                          $.ajax({
-                            type: "GET",
-                            url: "admin/admin_get_appointment_id/"+content,
-                            success: function (response) {
-                                console.log(response);
-
-                      
-                                  var len = 0;
-                                  if(response['data'] != null){
-                                
-                                        display_verification.style.display = "block";
-                                      len = response['data'].length;
+                            
+                                        var len = 0;
+                                        if(response['data'] != null){
                                       
-                                      if(len > 0){
-                                        for(var i=0; i<1; i++){
+                                             
+                                            len = response['data'].length;
+                                            
+                                            if(len > 0){
+                                              for(var i=0; i<1; i++){
+                                                display_verification.style.display = "block";
+                                                $('#appointment_id').val(response['data'][i].appointment_id);
+                                                $('#appointment_id_hidden').val(response['data'][i].appointment_id);
+                                                $('#appointment_id_hidden').val(response['data'][i].appointment_id);
+                                                $('#appointment_services').val(response['data'][i].appointment_services);
+                                                $('#appointment_services_hidden').val(response['data'][i].appointment_services);
+                                                $('#appointment_services_id_hidden').val(response['data'][i].service_id);
+
+
+                                                $('#appointment_date').val(response['data'][i].appointment_date);
+                                                $('#appointment_date_hidden').val(response['data'][i].appointment_date);
+
+                                                $('#user_id').val(response['data'][i].user_id);
+                                                // $('#user_contactnumber').val(response['data'][i].user_contactnumber);
+                                                // $('#user_contactnumber_hidden').val(response['data'][i].user_contactnumber);
+                                                $('#user_email').val(response['data'][i].email);
+                                                $('#user_email_hidden').val(response['data'][i].email);
+
+                                                  console.log(response['data'][i].email);
+                                                    Swal.fire({
+                                                    icon: 'success',
+                                                    title: 'Appointment Found!',
+                                                    showConfirmButton: false,
+                                                    timer: 1500
+                                                  })
+                                                  scanner.stop();
+                                                  
+                                                }
+                                                  // x.style.display = "none";
+                                                }else{
+                                                  Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Appointment Not Found',
+                                                    text: 'no existing record.',
+                                                    showConfirmButton: false,
+                                                    timer: 1500
+                                              
+                                                  })
+
+                                                  scanner.stop();
+                                                }
+                                            
+                                        }else {
+                                          Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Appointment Not Found',
+                                                    text: 'no existing record.',
+                                              
+                                                  })
+
+                                                  scanner.stop();
+                                        }
+                                      
                                     
-                                        $('#appointment_id').val(response['data'][i].appointment_id);
-                                        $('#appointment_id_hidden').val(response['data'][i].appointment_id);
-                                        $('#appointment_id_hidden').val(response['data'][i].appointment_id);
-                                        $('#appointment_services').val(response['data'][i].appointment_services);
-                                        $('#appointment_services_hidden').val(response['data'][i].appointment_services);
-                                        $('#appointment_services_id_hidden').val(response['data'][i].service_id);
+                                  }, error: function(error) {
+                                    console.log(error);
+                                    }
+                                });
 
 
-                                        $('#appointment_date').val(response['data'][i].appointment_date);
-                                        $('#appointment_date_hidden').val(response['data'][i].appointment_date);
-
-                                        $('#user_id').val(response['data'][i].user_id);
-                                        $('#user_contactnumber').val(response['data'][i].user_contactnumber);
-                                        $('#user_contactnumber_hidden').val(response['data'][i].user_contactnumber);
-
-                                          }
-                                            // x.style.display = "none";
-                                          }else{
-                                            alert("No existing Appointment!");
-                                          }
-                              
-                                  }else {
-                                    alert("No existing Appointment!");
-                                  }
-                                
-                              
-                            }, error: function(error) {
-                              console.log(error);
-                              }
-                          });
-
-
+                          
+                        
+                        });
                       
-                    
-                    });
-                  
-                    cancel.addEventListener('click', function () {
-                      scanner.stop();
-                      x.style.display = "none";
-                    });
+                          cancel.addEventListener('click', function () {
+                            scanner.stop();
+                            // x.style.display = "none";
+                          });
                 
                   };  
             
-
                 
             
         
@@ -480,85 +548,91 @@
                   if (x.style.display == "none") {
                     x.style.display = "block";
                   }
-                let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
-                
-                Instascan.Camera.getCameras().then(cameras => {
-                  console.log(cameras.length);
-                  if(cameras.length > 0){
-                    if(scanner.camera = cameras[cameras.length - 2]){
-                      scanner.start();
-                    }else{
-                      alert("camera 2 not found!");
+
+                  let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+                  
+                  Instascan.Camera.getCameras().then(cameras => {
+                    console.log(cameras.length);
+                    if(cameras.length > 0){
+                      if(scanner.camera = cameras[cameras.length - 2]){
+                        scanner.start();
+                      }else{
+                        alert("camera 2 not found!");
+                      }
+                    
+                    }else {
+                      alert("no camera found!");
                     }
-                  
-                  }else {
-                    alert("no camera found!");
-                  }
-                  
+                    
 
-                }).catch(e => console.error(e));
+                  }).catch(e => console.error(e));
 
 
 
-                scanner.addListener('scan', content => {
-                  // scanner.stop();
-                  console.log(content);
+                  scanner.addListener('scan', content => {
+                    // scanner.stop();
+                    console.log(content);
 
-                      $.ajax({
-                        type: "GET",
-                        url: "/staff/staff_get_appointment_id/"+content,
-                        success: function (response) {
-                            console.log(response);
+                        $.ajax({
+                          type: "GET",
+                          url: "/staff/staff_get_appointment_id/"+content,
+                          success: function (response) {
+                              console.log(response);
 
-                  
-                              var len = 0;
-                              if(response['data'] != null){
-                            
-                                    display_verification.style.display = "block";
-                                  len = response['data'].length;
+                    
+                                var len = 0;
+                                if(response['data'] != null){
+                              
+                                      display_verification.style.display = "block";
+                                    len = response['data'].length;
+                                    
+                                    if(len > 0){
+                                      for(var i=0; i<1; i++){
                                   
-                                  if(len > 0){
-                                    for(var i=0; i<1; i++){
-                                
-                                    $('#appointment_id').val(response['data'][i].appointment_id);
-                                    $('#appointment_id_hidden').val(response['data'][i].appointment_id);
-                                    $('#appointment_id_hidden').val(response['data'][i].appointment_id);
-                                    $('#appointment_services').val(response['data'][i].appointment_services);
-                                    $('#appointment_services_hidden').val(response['data'][i].appointment_services);
-                                    $('#appointment_services_id_hidden').val(response['data'][i].service_id);
+                                      $('#appointment_id').val(response['data'][i].appointment_id);
+                                      $('#appointment_id_hidden').val(response['data'][i].appointment_id);
+                                      $('#appointment_id_hidden').val(response['data'][i].appointment_id);
+                                      $('#appointment_services').val(response['data'][i].appointment_services);
+                                      $('#appointment_services_hidden').val(response['data'][i].appointment_services);
+                                      $('#appointment_services_id_hidden').val(response['data'][i].service_id);
+                                      $('#user_email').val(response['data'][i].email);
+                                      $('#user_email_hidden').val(response['data'][i].email);
+                                        console.log(response['data'][i].email);
+                                   
 
+                                      $('#appointment_date').val(response['data'][i].appointment_date);
+                                      $('#appointment_date_hidden').val(response['data'][i].appointment_date);
 
-                                    $('#appointment_date').val(response['data'][i].appointment_date);
-                                    $('#appointment_date_hidden').val(response['data'][i].appointment_date);
+                                      $('#user_id').val(response['data'][i].user_id);
+                                      $('#user_contactnumber').val(response['data'][i].user_contactnumber);
+                                      $('#user_contactnumber_hidden').val(response['data'][i].user_contactnumber);
 
-                                    $('#user_id').val(response['data'][i].user_id);
-                                    $('#user_contactnumber').val(response['data'][i].user_contactnumber);
-                                    $('#user_contactnumber_hidden').val(response['data'][i].user_contactnumber);
-
-                                      }
-                                        // x.style.display = "none";
-                                      }else{
-                                        alert("No existing Appointment!");
-                                      }
-                          
-                              }else {
-                                alert("No existing Appointment!");
-                              }
+                                        }
+                                          // x.style.display = "none";
+                                        }else{
+                                          alert("No existing Appointment!");
+                                        }
                             
-                          
-                        }, error: function(error) {
-                          console.log(error);
-                          }
-                      });
+                                }else {
+                                  alert("No existing Appointment!");
+                                }
+                              
+                            
+                          }, error: function(error) {
+                            console.log(error);
+                            }
+                        });
 
 
+                    
                   
-                
-                });
+                  });
               
                 cancel.addEventListener('click', function () {
                   scanner.stop();
-                  x.style.display = "none";
+                  // x.style.display = "none";
+                  x.style.height = "50px";
+
                 });
             
               };  
