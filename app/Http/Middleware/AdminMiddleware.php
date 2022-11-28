@@ -25,13 +25,13 @@ class AdminMiddleware
 
                 return $next($request);
             }else{
-                alert()->success('No Access!')->showConfirmButton()->buttonsStyling(true)->autoClose(1500);
+                alert()->error('No Access!')->showConfirmButton()->buttonsStyling(true);
                 
                 return redirect()->back();
 
             }
         }else{
-            alert()->error('No Access!')->showConfirmButton()->buttonsStyling(true)->autoClose(1500);
+            alert()->error('No Access!')->showConfirmButton()->buttonsStyling(true);
             return route('login');
             // dd("kkkk");
         }

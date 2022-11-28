@@ -14,9 +14,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     
     <link rel="stylesheet" type="text/css" href="{{ asset('css/customize.css') }}" >
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
+
+    
     <title>Document</title>
 <style>
-
+  .red-color {
+        color:red;
+    }
+    .green-color {
+        color:green;
+    }
 </style>
 </head>
 <body>
@@ -28,7 +37,7 @@
 {{-- Add  Services modal--}}
 
 <div class="modal fade" id="add_services_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Add Service</h5>
@@ -46,15 +55,15 @@
                         <input type="text" class="form-control" name="add_service" id="add_service" required>
                     </div>
                 
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="service" class="col-form-label">Available Slot</label>
                         <input type="number" class="form-control" name="add_available_slot" id="add_available_slot" min="0" required>
-                    </div>
+                    </div> --}}
              
                
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary btn-sm w-25">Save</button>
-                        <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">cancel</button>
+                        <button type="button" class="btn btn-danger btn-sm w-25" data-dismiss="modal">cancel</button>
                         
                     </div>
             </form>
@@ -68,10 +77,10 @@
 
 
 <div class="modal fade" id="add_vaccine_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Add</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Add Service Categories</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -98,7 +107,7 @@
                         </select>
                         <div id="other_services_field">
                             <div class="form-group">
-                                <label for="" id="add_sub_of_service" name="add_sub_of_service"> add </label>
+                                <label for="" id="add_sub_of_service" name="add_sub_of_service"> Add </label>
                                 <input type="text" class="form-control" name="add_other_services_input_id" id="add_other_services_input_id" hidden>
                                 <input type="text" class="form-control" name="add_other_services_input" id="add_other_services_input"  >
                             </div>
@@ -106,7 +115,7 @@
 
                             <div class="form-group">
                                <label for="">Available Slot</label>
-                                <input type="number" class="form-control" name="add_others_service_slot" id="add_others_service_slot"  min="0" >
+                                <input type="number" class="form-control" name="add_others_service_slot" id="add_others_service_slot"  min="1" >
                             </div>
                         </div>
 
@@ -131,7 +140,7 @@
                                 
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" name="add_vaccine_category_input" id="add_vaccine_category_input" >
+                                <input type="text" class="form-control" name="add_vaccine_category_input" id="add_vaccine_category_input"  >
                             </div>
                             
                        
@@ -190,7 +199,7 @@
                             </div>
                             <div class="form-group">
                                 <x-jet-label for="service" class="mt-3" value="{{ __('Available Slot') }}" />
-                                <input type="number" class="form-control" name="add_vaccine_slot" id="add_vaccine_slot" min="0" >
+                                <input type="number" class="form-control" name="add_vaccine_slot" id="add_vaccine_slot" min="1" >
                             </div>
                         
                         </div>
@@ -205,7 +214,7 @@
                     
                         <button type="submit" id="btn_add_vaccine_medicine" class="btn btn-sm w-25 btn-primary btn-sm text-align-center">Add</button>
                     
-                    <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">cancel</button>
+                    <button type="button" class="btn btn-danger btn-sm w-25" data-dismiss="modal">cancel</button>
                     
                 </div>
                 </form>
@@ -239,10 +248,7 @@
                 <label for="service" class="col-form-label">Service</label>
                 <input type="text" class="form-control " name="service" id="service" required>
             </div>
-            <div class="form-group">
-                <label for="available_slot" class="col-form-label">Available Slot</label>
-                <input type="number" class="form-control" name="available_slot" id="available_slot" required min="0" required>
-            </div>
+
             <div class="form-group" id="yesandno_service" name="yesandno_service">
                 <label for="service" class="col-form-label">Availability</label>
                     <div class="form-check ">
@@ -273,7 +279,7 @@
     {{-- Edit mmedicine modal--}}
 
     <div class="modal fade" id="edit_other_services_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="other_services_modal_title" name="other_services_modal_title">Edit Other Services</h5>
@@ -293,7 +299,7 @@
             </div>
             <div class="form-group">
                 <label for="service" class="col-form-label">Available Slot</label>
-                <input type="number" class="form-control" name="update_other_services_slot" id="update_other_services_slot" required min="0">
+                <input type="number" class="form-control" name="update_other_services_slot" id="update_other_services_slot" min="1" required>
             </div>
             <div class="form-group" id="yesandno_other_services" name="yesandno_other_services">
                 <label for="other_services" class="col-form-label">Availability</label>
@@ -323,7 +329,7 @@
     </div>
 {{-- Edit modal vaccine --}}
 <div class="modal fade" id="edit_vaccine_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Edit Vaccine</h5>
@@ -343,7 +349,7 @@
             </div>
             <div class="form-group">
                 <label for="vaccine" class="col-form-label">Available Slot</label>
-                <input type="number" class="form-control" name="update_vaccine_slot" id="update_vaccine_slot" required min="0">
+                <input type="number" class="form-control" name="update_vaccine_slot" id="update_vaccine_slot" required min="1">
             </div>
             <div class="form-group" id="yesandno_vaccine" name="yesandno_vaccine">
                 <label for="vaccine" class="col-form-label">Availability</label>
@@ -374,7 +380,7 @@
 
 {{-- Edit category modal --}}
 <div class="modal fade" id="edit_category_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Edit Category</h5>
@@ -395,7 +401,7 @@
                 <div class="form-group">
                 <label for="service" class="col-form-label">Category ID</label>
 
-                <input type="text" id="category_update_id" class="form-control" name="category_update_id">
+                <input type="text" id="category_update_id" class="form-control" required name="category_update_id">
 
                 </div>
 
@@ -403,12 +409,12 @@
                 <label for="service" class="col-form-label">Vaccine</label>
            
 
-                <input type="text" class="form-control" name="category_update" id="category_update" >
+                <input type="text" class="form-control" name="category_update" id="category_update" required >
             </div>
-            <div class="form-group" style="display:none" id="div_available_vaccinecategory_slot" class="div_available_vaccinecategory_slot">
+            {{-- <div class="form-group" style="display:none" id="div_available_vaccinecategory_slot" class="div_available_vaccinecategory_slot">
                 <label for="available_slot" class="col-form-label">Available Slot</label>
-                <input type="number" class="form-control" name="available_vaccinecategory_slot" id="available_vaccinecategory_slot"  min="0" >
-            </div>
+                <input type="number" class="form-control" name="available_vaccinecategory_slot" id="available_vaccinecategory_slot"  min="0" required>
+            </div> --}}
             <div class="form-group" id="yesandno_category" name="yesandno_category">
                 <label for="category" class="col-form-label">Availability</label>
                     <div class="form-check ">
@@ -451,12 +457,12 @@
         </div>
         <div class="modal-body">
           <input type="text"  id="category_del_id" name="category_del_id" hidden>
-          Are you sure you want to delete this category?
+          Are you sure you want to delete this Category?
         </div>
         <div class="modal-footer">
          
-          <button type="submit" class="btn btn-primary delete_btn btn-sm w-25">Yes</button>
-          <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">No</button>
+          <button type="submit" class="btn btn-danger delete_btn btn-sm w-25">Yes</button>
+          <button type="button" class="btn btn-primary btn-sm w-25" data-dismiss="modal">No</button>
         </div>
          </form>
 
@@ -482,8 +488,8 @@
         </div>
         <div class="modal-footer">
          
-          <button type="submit" class="btn btn-primary delete_btn btn-sm w-25">Yes</button>
-          <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">No</button>
+          <button type="submit" class="btn btn-danger delete_btn btn-sm w-25">Yes</button>
+          <button type="button" class="btn btn-primary btn-sm w-25" data-dismiss="modal">No</button>
         </div>
          </form>
 
@@ -499,17 +505,18 @@
             @csrf
          
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel"></h5>
+    
           <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <input type="text" id="delete_other_services_id" name="delete_other_services_id" hidden>
-          Are you sure you want to delete this Service?
+          Are you sure you want to delete this?
         </div>
+        
         <div class="modal-footer">
          
-          <button type="submit" class="btn btn-primary delete_other_service btn-sm w-25">Yes</button>
-          <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">No</button>
+          <button type="submit" class="btn btn-danger delete_other_service btn-sm w-25">Yes</button>
+          <button type="button" class="btn btn-primary btn-sm w-25" data-dismiss="modal">No</button>
         </div>
          </form>
 
@@ -537,8 +544,8 @@
         </div>
         <div class="modal-footer">
          
-          <button type="submit" class="btn btn-primary delete_btn btn-sm w-25">Yes</button>
-          <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">No</button>
+          <button type="submit" class="btn btn-danger delete_btn btn-sm w-25">Yes</button>
+          <button type="button" class="btn btn-primary btn-sm w-25" data-dismiss="modal">No</button>
         </div>
          </form>
 
@@ -569,29 +576,27 @@
        </div>
            @endif
         </div>
-        <div class="d-flex justify-content-end">
-     
-                <button class="btn btn-sm add_service_btn btn-primary mt-2 mb-2  " style="width:120px;">Add Service</button>
-            
-
+        <div class="container">
+            <div class="row justify-content-end">
+                <button class="col col-12 col-lg-2 btn btn-sm add_service_btn btn-primary mt-2 mb-2  bi bi-plus-circle" style="width:120px;"> Add Service</button>
         </div>
+        </div>
+     
         <div class="row">
             <div class=" col col-lg-12 col-12">
                 <div class="card shadow-sm">
-                    <div class=" card-header text-center p-3 font-weight-bold bg-semi-grey">
+                    <div class=" card-header text-center p-3 font-weight-bold bg-semi-grey ">
                         Service Table
                       </div>
-                    <div class="card-body table-responsive">
-                        <table class="table table-hover "  >
+                    <div class="card-body table-responsive mb-4 ">
+                        <table class="table table-hover table-striped" id="service_table"  >
                             <thead class="">
                                 <tr>
-                                <th scope="col" class="text-center" >View Fields</th>
-                                <th scope="col" class="text-center" >ID</th>
-                                <th scope="col" class="text-center" >Service</th>
-                                <th scope="col" class="text-center" >Available Slot</th>
-                                <th scope="col" class="text-center" >Availability</th>
-                                <th scope="col" colspan="3" class="text-center ">Action</th>
-                    
+                                    <th scope="col" class="text-center" >View Fields</th>
+                                    <th scope="col" class="text-center" >ID</th>
+                                    <th scope="col" class="text-center" >Service</th>
+                                    <th scope="col" class="text-center" >Availability</th>
+                                    <th scope="col" class="text-center ">Action</th>
                                 </tr>
                             </thead>
                         
@@ -609,35 +614,23 @@
                                         
                                         <td class="" > 
                                             {{-- <button class="btn btn-sm btn-warning mt-2 mt-lg-0  w-100 edit_service_field" value="{{$service->id}}">Edit</button> --}}
-                                            <button class="btn btn-info btn-sm max-width:200px mt-2  edit_service_field" value="{{$service->id}}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-eye" viewBox="0 0 16 16">
-                                                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
-                                                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-                                                </svg>
+                                            <button class="btn btn-info btn-sm max-width:200px mt-2  edit_service_field bi bi-eye" value="{{$service->id}}">
+                                            
                                             </button>
                                             
                                         </td>
                                         <td >{{$service->id}}</td>
                                         <td >{{$service->service}}</td>
-                                        <td >{{$service->availableslot}}</td>
                                         <td class="">
                                             <div class="">
                                                 @if($service->availability == "Yes")
-                                                    <button class="btn btn-sm mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-circle-fill" viewBox="0 0 16 16">
-                                                        <circle cx="8" cy="8" r="8"/>
-                                                    </svg></button>
-                                                    
-                                                
-    
+                                                    <button class="btn btn-sm mt-3 mt-lg-0 bi bi-circle-fill green-color" style="pointer-events: none;"></button>
                                                 @else
-                                                    <button class="btn btn-sm  mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-circle-fill" viewBox="0 0 16 16">
-                                                        <circle cx="8" cy="8" r="8"/>
-                                                    </svg></button>
+                                                    <button class="btn btn-sm  mt-3 mt-lg-0 bi bi-circle-fill red-color" style="pointer-events: none;"></button>
                                                     
                                                 @endif
                                             </div>
-                                           
-                                        
+
                                         </td>
 
 
@@ -672,20 +665,11 @@
                             </div>
                          
                         </table>
-                          
-                        <div class="row">
-                            <div class="col col-7 text-center">
-                                <div class="bg-green float-right mb-5 mt-0">Slot Per day: <b> {{$services->pluck('availableslot')->sum()}} </b></div>
-                            </div>
-
-                        </div>
-                        <div>{{$services->Links()}}</div>
-
                     </div>
                 </div>
-                <div id="add_btn_all" style="display:">
-                    <div class="d-flex justify-content-end">
-                        <button class="btn btn-sm add_vaccine_btn mt-5 mb-2  btn-primary" style="width:120px;">Add </button>
+                <div id="add_btn_all" style="display:" class="container">
+                    <div class="row justify-content-end">
+                        <button class="col col-12 col-lg-2 btn btn-sm add_vaccine_btn mt-5 mb-2  btn-primary bi bi-plus-circle" style="width:170px;"> Add Service Categories</button>
                     </div>
                 </div>   
         
@@ -694,18 +678,17 @@
                         Vaccine Table
                         
                     </div>
-                    <div class="card-body">
+                    <div class="card-body ">
                         <div id="vaccine_table" style="display: " class="">
-                            <div class="d-flex justify-content-end">
-                                <table class="table table-hover">
+                            <div class="table-responsive mb-4">
                                 
-                                
+                                <table class="table table-hover table-striped" id="vaccine_table_data">
                                     <thead class="" >
                                     <tr >
-                                
-                                    <th scope="col"  class="text-center col-9" >List of Category</th>
+                                    <th scope="col"  class="text-center col-3" >Vaccine ID</th>
+                                    <th scope="col"  class="text-center col-3" >List of Category</th>
                             
-                                    <th scope="col"  class="text-center col-9" >Availability</th>
+                                    <th scope="col"  class="text-center col-3" >Availability</th>
                                     <th scope="col" class="text-center col-3" >Action</th>
             
                                     </tr>
@@ -720,20 +703,17 @@
                                     @endif
                                 @foreach($categories as $category)
                                     <tr class="text-center">
+                                    <td>{{$category->id}}</td>
                                     <td>{{$category->category}}</td>
                                     <td class="">
                                         <div class="">
                                             @if($category->category_availability == "Yes")
-                                                <button class="btn btn-sm mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-circle-fill" viewBox="0 0 16 16">
-                                                    <circle cx="8" cy="8" r="8"/>
-                                                </svg></button>
+                                                <button class="btn btn-sm mt-3 mt-lg-0 bi bi-circle-fill green-color" style="pointer-events: none;"></button>
                                                 
                                             
 
                                             @else
-                                                <button class="btn btn-sm  mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-circle-fill" viewBox="0 0 16 16">
-                                                    <circle cx="8" cy="8" r="8"/>
-                                                </svg></button>
+                                                <button class="btn btn-sm  mt-3 mt-lg-0 bi bi-circle-fill red-color" style="pointer-events: none;"></button>
                                                 
                                             @endif
                                         </div>
@@ -743,17 +723,12 @@
                                     <td scope="row" class="d-sm-flex justify-content-center">
                                                 
                                         {{-- <button class="btn btn-sm btn-warning mt-2 mt-lg-0 ml-lg-1 w-100 edit_category" value="{{$category->id}}">Edit</button> --}}
-                                            <button class="btn btn-sm btn-success mt-2 mt-lg-0 ml-lg-1 edit_category" value="{{$category->id}}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-                                                </svg>
+                                            <button class="btn btn-sm btn-success mt-2 mt-lg-0 ml-lg-1 edit_category bi bi-pencil-square" value="{{$category->id}}">
+                                               
                                             </button>
                                         
                                     {{-- <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-lg-1 w-100 delete_category " value="{{$category->id}}">Delete</button> --}}
-                                    <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-lg-1 delete_category " value="{{$category->id}}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-trash3" viewBox="0 0 16 16">
-                                        <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
-                                        </svg></button>
+                                    <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-lg-1 delete_category bi bi-trash3" value="{{$category->id}}"></button>
 
                                     </td>
                                         
@@ -762,95 +737,80 @@
                                 </tbody>
                             </table> 
                             </div>
-                            <div>{{$categories->Links()}}</div>
-                    
                         </div>
                     </div>
                 </div>
                 <div class="card shadow-sm mt-5">
                     <div class=" card-header text-center p-3 font-weight-bold  bg-semi-grey">
                          Vaccine Table
-                        
+
                     </div>
-                    <div class="card-body">
-                        <div id="vaccine_table" style="display: " class="">
-                            <div class="d-flex justify-content-end">
+                    <div class="card-body table-responsive">
+                        <div id="vaccine_table" style="display: " class="table-responsive">
+                            <div class="table-responsive mb-4">
             
-                                <table class="table table-hover  mt-5">
+                                <table class="table table-hover table-striped  mt-5" id="vaccine_table_sub_categories">
                                 
-                                        <thead class=" mt-5 " >
+                                    <thead class=" mt-5 " >
                                         <tr >
-                                    
-                                        <th scope="col"  class="text-center" style="width: 25%">Category</th> 
-                                    <th scope="col"  class="text-center" style="width: 25%">Vaccine</th> 
-                                    <th scope="col"  class="text-center" style="width: 25%">Available Slot</th> 
-                                    <th scope="col"  class="text-center" style="width: 50%">Availability</th> 
-                                        <th scope="col" class="text-center " style="width: 25%">Action</th>
+                                        
+                                            <th scope="col"  class="text-center">Category</th> 
+                                            <th scope="col"  class="text-center" style="">Vaccine</th> 
+                                            <th scope="col"  class="text-center" style="">Available Slot</th> 
+                                            <th scope="col"  class="text-center" style="">Availability</th> 
+                                            <th scope="col" class="text-center " style="">Action</th>
 
                                         </tr>
                                     </thead>
                                     <tbody class="text-center" >
                                         @if($vaccines_kids->isEmpty())
-                                        
-                                        <td colspan="4">
-                                            No Data
-                                        </td>
-                                        
+                                            <td colspan="4">
+                                                No Data
+                                            </td>
+                                        @endif
+                                        @foreach($vaccines_kids as $vaccine)
+                                            <tr class="text-center">
+                                            <td>{{$vaccine->category}}</td>
+                                            <td>
+                                                @if($vaccine->dose !== null)
+
+                                                    @if($vaccine->dose == 1)
+                                                        1st dose ,
+                                                    @elseif($vaccine->dose == 2 )
+                                                        2nd dose , 
+                                                    @elseif ($vaccine->dose == 3)
+                                                        Booster , 
+                                                    @endif
+                                                @endif
+                                                {{$vaccine->vaccine_type}}</td>
+                                            <td>{{$vaccine->vaccine_slot}}</td>
+
+                                            <td class="">
+                                                <div class="">
+                                                    @if($vaccine->vaccine_availability == "Yes")
+                                                        <button class="btn btn-sm mt-3 mt-lg-0 bi bi-circle-fill green-color" style="pointer-events: none;"></button>
+                                                        
+                                                    
+
+                                                    @else
+                                                        <button class="btn btn-sm  mt-3 mt-lg-0 bi bi-circle-fill red-color" style="pointer-events: none;"></button>
+                                                        
+                                                    @endif
+                                                </div>
                                             
-                                            @endif
-                                    @foreach($vaccines_kids as $vaccine)
-                                        <tr class="text-center">
-                                        <td>{{$vaccine->category}}</td>
-                                        <td>
-                                            @if($vaccine->dose !== null)
-
-                                                @if($vaccine->dose == 1)
-                                                    1st dose ,
-                                                @elseif($vaccine->dose == 2 )
-                                                    2nd dose , 
-                                                @elseif ($vaccine->dose == 3)
-                                                    Booster , 
-                                                @endif
-                                            @endif
-                                            {{$vaccine->vaccine_type}}</td>
-                                        <td>{{$vaccine->vaccine_slot}}</td>
-
-                                        <td class="">
-                                            <div class="">
-                                                @if($vaccine->vaccine_availability == "Yes")
-                                                    <button class="btn btn-sm mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-circle-fill" viewBox="0 0 16 16">
-                                                        <circle cx="8" cy="8" r="8"/>
-                                                    </svg></button>
-                                                    
-                                                
-
-                                                @else
-                                                    <button class="btn btn-sm  mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-circle-fill" viewBox="0 0 16 16">
-                                                        <circle cx="8" cy="8" r="8"/>
-                                                    </svg></button>
-                                                    
-                                                @endif
-                                            </div>
-                                        
-                                        
-                                        </td>
-                                        <td scope="row" class="d-sm-flex justify-content-center">
-                                                    
-                                            <button class="btn btn-sm btn-success mt-2 mt-lg-0 edit_vaccine" value="{{$vaccine->id}}">   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-                                            </svg></button>
-                                        <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-lg-1 delete_vaccine " value="{{$vaccine->id}}"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-trash3" viewBox="0 0 16 16">
-                                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
-                                            </svg></button>
-                                        </td>
-                                        
-                                        </tr>
-                                    @endforeach
+                                            
+                                            </td>
+                                            <td scope="row" class="d-sm-flex justify-content-center">
+                                                        
+                                                <button class="btn btn-sm btn-success mt-2 mt-lg-0 edit_vaccine bi bi-pencil-square" value="{{$vaccine->id}}"></button>
+                                            <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-lg-1 delete_vaccine bi bi-trash3" value="{{$vaccine->id}}"> </button>
+                                            </td>
+                                            
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
-                         <div>{{$vaccines_kids->Links()}}</div>
                         </div>
                     </div>
                 </div>
@@ -860,38 +820,24 @@
                     <div class=" card-header text-center p-3 font-weight-bold  bg-semi-grey ">
                         Other Services Table
                     </div>
-                    <div class="card-body">
+                    <div class="card-body table-responsive mb-4">
                         <div id="others_table" class=" " style="">
                             <div class="" >
                             <div class="panel panel-default" >
                                 <div class="panel-body">
-                                    <form action="{{route('search')}} " method="GET">
-                                        @csrf
-                                        {{ csrf_field() }}
-                                        <div class="">
-                                            <input type="search" name="search" id="search" class="form-control w-25 mb-3 float-right" placeholder="search">
-                                            <button class="btn mt-1 float-right ">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                                                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-                                                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    
-                                    </form>
                                 </div>
                             </div> 
                             
-                            <table class="table table-hover">
+                            <table class="table table-hover table-striped" id="others_table_data">
                                     <thead class="" >
                                     <tr >
                             
-                                    <th scope="col" class="text-center" style="width: 25%">Service They Belong</th>
-                                    <th scope="col"  class="text-center" style="width:25%"><label id="other_services_title" name="other_services_title"></label>Other Serives</th>
-                                    <th scope="col"  class="text-center" style="width:25%"><label id="other_services_title" name="other_services_title"></label>Available Slot</th>
+                                    <th scope="col" class="text-center" style="">Service They Belong</th>
+                                    <th scope="col"  class="text-center" style=""><label id="other_services_title" name="other_services_title"></label>Other Serives</th>
+                                    <th scope="col"  class="text-center" style=""><label id="other_services_title" name="other_services_title"></label>Available Slot</th>
 
-                                    <th scope="col"  class="text-center" style="width:25%"><label id="" name="other_services_title"></label>Availability</th>
-                                    <th scope="col" class="text-center" style="width: 25%">Action</th>
+                                    <th scope="col"  class="text-center" style=""><label id="" name="other_services_title"></label>Availability</th>
+                                    <th scope="col" class="text-center" style="">Action</th>
             
                                     </tr>
                                 </thead>
@@ -916,16 +862,9 @@
                                     <td class="">
                                         <div class="">
                                             @if($value->other_services_availability == "Yes")
-                                                <button class="btn btn-sm mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-circle-fill" viewBox="0 0 16 16">
-                                                    <circle cx="8" cy="8" r="8"/>
-                                                </svg></button>
-                                                
-                                            
-
+                                                <button class="btn btn-sm mt-3 mt-lg-0 bi bi-circle-fill green-color" style="pointer-events: none;"></button>   
                                             @else
-                                                <button class="btn btn-sm  mt-3 mt-lg-0" style="pointer-events: none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-circle-fill" viewBox="0 0 16 16">
-                                                    <circle cx="8" cy="8" r="8"/>
-                                                </svg></button>
+                                                <button class="btn btn-sm  mt-3 mt-lg-0 bi bi-circle-fill red-color" style="pointer-events: none;"></button>
                                                 
                                             @endif
                                         </div>
@@ -935,18 +874,13 @@
                                     <td scope="row" class="d-sm-flex justify-content-center">
                                             
                                         <button class="btn btn-sm btn-success mt-2 mt-lg-0 ml-lg-1
-                                        edit_other_services" value="{{$value->id}}">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-                                            </svg>
+                                        edit_other_services bi bi-pencil-square" value="{{$value->id}}">
+                                           
                                         </button>
                         
-                                    <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-lg-1 delete_other_services" value="{{$value->id}}">
+                                    <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-lg-1 delete_other_services bi bi-trash3" value="{{$value->id}}">
                                     
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-trash3" viewBox="0 0 16 16">
-                                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
-                                                </svg>
+                                          
                                         </button>
                                     </td>
                                         
@@ -956,7 +890,7 @@
                                 </tbody>
                             
                             </table>                 
-                            <div>{{$other_services->Links()}}</div>
+                 
                             </div>
                         </div>
                     </div>	
@@ -967,9 +901,21 @@
 
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> 
+
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap4.min.js"></script>
+
+
+
+
 
 </body>
 </html>
@@ -978,6 +924,23 @@
 
 <script>
     $(document).ready(function () {
+
+
+        $(document).ready( function () {
+            $('#service_table').DataTable();
+        });
+
+    $(document).ready( function () {
+            $('#vaccine_table_data').DataTable();
+        });
+
+    $(document).ready( function () {
+        $('#vaccine_table_sub_categories').DataTable();
+    });
+
+    $(document).ready( function () {
+        $('#others_table_data').DataTable();
+    });
 
     //     $.ajaxSetup({
     //     headers: {
@@ -1025,7 +988,7 @@
                     $('#service_id').val(response.service.id)
                     $('#service').val(response.service.service)
                     $('#id').val(response.service.id)
-                    $('#available_slot').val(response.service.availableslot)
+            
                     // $('#radio').val(response.service.availability)
                      if(response.service.availability == "Yes"){
                    
@@ -1241,41 +1204,78 @@
                         if (response.service_id.id =="1") {
                             $('#vaccine_field_whole').show();
                             $('#other_services_field').hide();
+
                             btn_add_vaccine_medicine.style.display="block";
 
+                            $("#add_vaccine_category_input").prop('required',true);
+                            $("#add_vaccine_input").prop('required',false);
+                            $("#add_vaccine_slot").prop('required',false);
+                            $("#add_other_services_input").prop('required',false);
+                            $("#add_others_service_slot").prop('required',false);
 
                         }else if(response.service_id.id =="2"){
+
+                                     //required
+                            $("#add_vaccine_category_input").prop('required',false);
+                            $("#add_vaccine_input").prop('required',false);
+                            $("#add_vaccine_slot").prop('required',false);
+                            $("#add_other_services_input").prop('required',true);
+                            $("#add_others_service_slot").prop('required',true);
+
+
                             $('#add_other_services_input_id').val(response.service_id.id);
                             $('#other_services_field').show();
-                            $('#add_sub_of_service').text("add "+response.service_id.service);
+                            $('#add_sub_of_service').text("Add "+response.service_id.service);
                             $('#vaccine_field_whole').hide();
                             $('#vaccine_field_whole').hide();
-
+                            
                             btn_add_vaccine_medicine.style.display="block";
 
-                        }
-                        else if(response.service_id.id =="3"){
-                            $('#add_other_services_input_id').val(response.service_id.id);
-                            $('#vaccine_field_whole').hide();
-                            $('#other_services_field').show();
-                            $('#add_sub_of_service').text("add "+response.service_id.service);
-                        
+                            console.log("kk");
+                   
                             
                         }
-                        else{
+                        else if(response.service_id.id =="3"){
+
+                                                        //required
+
+                              $('#add_sub_of_service').text("Add "+response.service_id.service);
+                            $("#add_vaccine_category_input").prop('required',false);
+                            $("#add_vaccine_input").prop('required',false);
+                            $("#add_vaccine_slot").prop('required',false);
+                            $("#add_other_services_input").prop('required',true);
+                            $("#add_others_service_slot").prop('required',true);
+
+
                             $('#add_other_services_input_id').val(response.service_id.id);
                             $('#vaccine_field_whole').hide();
                             $('#other_services_field').show();
-                            $('#add_sub_of_service').text("add "+response.service_id.service);
+
+                            
+                            
+                        }else{
+                             //required
+                             $("#add_vaccine_category_input").prop('required',false);
+                            $("#add_vaccine_input").prop('required',false);
+                            $("#add_vaccine_slot").prop('required',false);
+                            $("#add_other_services_input").prop('required',true);
+                            $("#add_others_service_slot").prop('required',true);
 
 
-            
+                            $('#add_other_services_input_id').val(response.service_id.id);
+                            $('#vaccine_field_whole').hide();
+
+                            $('#other_services_field').show();
+                            $('#add_sub_of_service').text("Add "+response.service_id.service);
+
+                           
                             
 
                         }
                     }else{
                         $('#vaccine_field_whole').hide();
-                    $('#other_services_field').hide();
+                        $('#other_services_field').hide();
+
                     }
                     
                   
@@ -1290,10 +1290,21 @@
             if (selected_column == "category"){
                 $('#vaccine_field').hide();
                 $('#category_field').show();
+                 $("#add_vaccine_category_input").prop('required',true);
+                 $("#add_vaccine_input").prop('required',false);
+                 $("#add_vaccine_slot").prop('required',false);
+                 $("#add_other_services_input").prop('required',false);
+                 $("#add_others_service_slot").prop('required',false);
+            
 
             }else if (selected_column == "vaccine_type"){
                 $('#vaccine_field').show();
                 $('#category_field').hide();
+                $("#add_vaccine_category_input").prop('required',false);
+                 $("#add_vaccine_input").prop('required',true);
+                 $("#add_vaccine_slot").prop('required',true);
+                 $("#add_other_services_input").prop('required',false);
+                 $("#add_others_service_slot").prop('required',false);
             }else{
                 $('#vaccine_field').hide();
                 $('#category_field').hide();
@@ -1321,13 +1332,7 @@
                     $('#old_id').val(response.category_id.id);
                     $('#category_update').val(response.category_id.category);
                     $('#service_update_id').val(response.category_id.service_id);
-                    if(response.category_id.id == 1){
-                        $('#available_vaccinecategory_slot').val(response.category_id.category_vaccine_slot);
-                        (document).getElementById("div_available_vaccinecategory_slot").style.display ="block";  
-                    }else{
-                        (document).getElementById("div_available_vaccinecategory_slot").style.display ="none";  
-                        
-                    }
+           
 
                     if(response.category_id.category_availability == "Yes"){
                         $('#yesandno_category').find(':radio[name=choice_category][value="Yes"]').prop('checked', true);

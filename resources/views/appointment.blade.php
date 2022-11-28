@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
    <meta name="csrf-token" content="{{ csrf_token() }}">
     {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" /> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
@@ -12,8 +13,17 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
     <title>Document</title>
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/customize.css') }}" >
+
+
+    <style>
+
+
+
+
+    </style>
 </head>
 <body>
   
@@ -74,7 +84,7 @@
             </div>
             <div class="modal-body">
               <input type="text"  id="delete_id" name="delete_id" >
-              Are you sure you want to delete this registration?
+              Are you sure you want to delete this Appointment?
             </div>
             <div class="modal-footer">
             
@@ -247,7 +257,7 @@
       ">APPOINTMENTS</h3>
   </div>
 
-  <div class="container    mb-5 table-responsive" style="width: 90%; height:100%;">
+  <div class="container    mb-5 table-responsive mb-4" style="width: 90%; height:100%;">
     <div>
       @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -271,95 +281,111 @@
         </div>
         @endif
     </div>
-    <div class="card shadow-sm mb-5" >
-      {{-- <div class=" card-header text-center p-3 font-weight-bold bg-semi-grey">
-        Appointments Table 
-      </div> --}}
-        <div class="panel panel-default mt-4" >
-          <div class="panel-body">
-            <div class="container-fluid">
-              <form action="{{route('search_appointments')}} " method="GET">
-                @csrf
-                {{ csrf_field() }}
-                <div class="">
-                    <input type="search_appointments" name="search_appointments" id="search" class="form-control w-25 mb-3 float-right" placeholder="search">
-                    <button class="btn mt-1 float-right ">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-                            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-                        </svg>
-                    </button>
-                </div>
-            </form>
-            </div>
-              
+    <div class="container-fluid mb-2">
+        <div class="row justify-content-end ">
+          <form action="{{route('appointment_pdf')}}" method="POST" class="" target="__blank">
+            @csrf
+              {{ csrf_field() }}
+            <button type="submit" class="btn btn-sm btn-primary  bi bi-filetype-pdf" > Generate PDF</button>
+
+          </form>
+
+          <form action="{{route('appointment_excel')}}" method="POST" class=" ml-2 " target="__blank">
+            @csrf
+            {{ csrf_field() }}
+            <button class="btn btn-sm btn-primary  bi bi-file-earmark-spreadsheet" style=""> Generate Excel</button> 
+          </form>
+       
+        </div>
+
+     
+    </div>
+
+    <div class="row">
+      <div class=" col col-12 col-lg-12">
+        <div class="card shadow-sm mb-5" style="">
+          <div class=" card-header text-center p-3 font-weight-bold bg-semi-grey">
+            Records
           </div>
+          <div class="card-body table-responsive w-100" >
+                <table class="table table-hover table-striped " id="appointment_table" >
+                  <thead class="">
+                      <tr class="">
+                        <th scope="col" class="text-center">Email</th>
+                        <th scope="col" class="text-center">Services</th>
+                        <th scope="col" class="text-center">Category</th>
+                        <th scope="col" class="text-center">Appoitnment Date</th>
+                        <th scope="col" class="text-center">Status</th>
+                        <th scope="col" class="text-center">Action</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      @foreach($appointments_admin as $data)
+                        <tr class="text-center ">
+                          <td>{{$data->email}}</td>
+                          <td>{{$data->appointment_services}}</td>
+                          <td>{{$data->appointment_vaccine_category}}
+                              @if($data->appointment_dose != null)
+                                @if($data->appointment_dose == "1")
+                                     , 1st Dose
+                                @elseif($data->appointment_dose == "2")
+                                     , 2nd Dose
+                                @elseif($data->appointment_dose == "3")
+                                    , Booster
+                                @else
+                                , {{$data->appointment_vaccine_type}} 
+                                @endif
+                                 
+                              @elseif($data->appointment_dose == null && $data->appointment_vaccine_type != null )
+                                , {{$data->appointment_vaccine_type}}
+                              @endif
+                          </td>
+                          <td>{{$newDateFormat3 = \Carbon\Carbon::parse($data->appointment_date)->format('d/m/Y');}}</td>
+                          <td>
+                            @if($data->appointment_status == "success")
+                            <small class="bg-success px-1 rounded text-white">   {{$data->appointment_status}}</small>
+                            @elseif($data->appointment_status == "expired")
+                            <small class="color-orange px-1 rounded text-white">   {{$data->appointment_status}}</small>
+                            @elseif($data->appointment_status == "pending")
+                            <small class="bg-warning px-1 rounded text-white">   {{$data->appointment_status}}</small>
+                            @elseif($data->appointment_status == "canceled")
+                            <small class="bg-danger  px-1 rounded text-white">   {{$data->appointment_status}}</small>
+
+                            @endif
+                          </td>
+                          <td scope="row" colspan=2 class="d-flex justify-content-center ">
+                            @if ($data->appointment_status == "pending") 
+                                <button class="btn btn-sm p-0 btn-warning mt-2 mt-lg-0 ml-2 p-1 cancel_btn bi bi-x-circle text-white" value="{{$data->id}}" style="width: 80px"> Cancel</button>
+                            @else
+                            <button class="btn btn-sm  btn-danger mt-2 mt-lg-0 ml-2 delete_btn bi bi-trash3 " value="{{$data->id}}" style=""></button>
+                            @endif
+                                
+                          </td>
+                        </tr>
+                      @endforeach
+                  </tbody>
+                </table>
+          </div> 
         </div> 
-      <div class="card-body table-responsive">
-      <table class="table text-align-center table-hover">
-          <thead>
-
-              <tr class="text-center " >
-              <th scope="col" class="" style="width: %;">Email</th>
-              <th scope="col" class="" style="width: %;">Services</th>
-              <th scope="col" class="" style="width: %;">Category</th>
-              <th scope="col" class="" style="width: %;">Appoitnment Date</th>
-              {{-- <th scope="col" class="" style="width: %;">Expiration Date</th> --}}
-              <th scope="col" class="" style="width: %;">Status</th>
-              <th scope="col" class="" style="width: 15%;" colspan="2">Action</th>
-
-              </tr>
-          </thead>
-          <tbody>
-              @foreach($appointments_admin as $data)
-              {{-- @if ($data->account_type!="admin" ) --}}
-              
-              <tr class="text-center ">
-                <td>{{$data->email}}</td>
-                <td>{{$data->appointment_services}}</td>
-                <td>{{$data->appointment_vaccine_category}}</td>
-                <td>{{$newDateFormat3 = \Carbon\Carbon::parse($data->appointment_date)->format('d/m/Y');
-                }}</td>
-                {{-- <td>{{ $data->appointment_expiration_date}}</td> --}}
-                <td>{{ $data->appointment_status}}</td>
-              </td>
-              
-              {{-- <td>{{$data->status}}</td> --}}
-              <td scope="row" colspan=2 class="d-flex justify-content-center ">
-                  @if ($data->appointment_status == "pending") 
-                      {{-- <button class="btn btn-sm btn-primary w-100 ml-lg-2 reschedule"    value="{{$data->appointment_id}}" >Reschedule</button> --}}
-                      <button class="btn btn-sm btn-warning mt-2 mt-lg-0 ml-2 w-100 cancel_btn" value="{{$data->id}}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-x-lg" viewBox="0 0 16 16">
-                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
-                      </svg></button>
-                   @endif
-               
-                      
-                  
-              <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-2 delete_btn" value="{{$data->id}}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-trash3" viewBox="0 0 16 16">
-                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
-              </svg></button>
-              </td>
-        
-              </tr>
-              {{-- @endif --}}
-              @endforeach
-          
-          </tbody>
-      </table>
-    </div> 
-  </div>       
+     </div>    
+    </div>    
 </div>
 
 
 {{-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> --}}
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap4.min.js"></script>
+
 </body>
 </html>
 
 <script>
 
   $(document).ready(function () {
+
 
     $(document).on('click', '.cancel_btn',function (e) {
         e.preventDefault();
@@ -557,6 +583,11 @@
         }
         
       });
+
+
+      $(document).ready( function () {
+            $('#appointment_table').DataTable();
+        });
   });
 
 </script>

@@ -204,23 +204,27 @@
             @if(Auth::User()!== null )
                 @if(Auth::User()->account_type=='admin')
                     <x-jet-responsive-nav-link href="{{ route('scanner') }}" :active="request()->routeIs('scanner')">
-                        {{ __('Verify Appointment') }}
+                        {{ __('Verify') }}
                     </x-jet-responsive-nav-link>
-                    <x-jet-responsive-nav-link href="{{ route('appointments') }}" :active="request()->routeIs('appointment')">
-                        {{ __('Appointments') }}
-                    </x-jet-responsive-nav-link>
-                    <x-jet-responsive-nav-link href="{{ route('calendar') }}" :active="request()->routeIs('calendar')">
+                    <x-jet-responsive-nav-link href="{{ route('admin_calendar') }}" :active="request()->routeIs('admin_calendar')">
                         {{ __('Calendar') }}
                     </x-jet-responsive-nav-link>
                     <x-jet-responsive-nav-link href="{{ route('services') }}" :active="request()->routeIs('services')">
                         {{ __('Services') }}
                     </x-jet-responsive-nav-link>
+                    <x-jet-responsive-nav-link href="{{ route('appointments') }}" :active="request()->routeIs('appointments')">
+                        {{ __('Appointments') }}
+                    </x-jet-responsive-nav-link>
                     <x-jet-responsive-nav-link href="{{ route('registration') }}" :active="request()->routeIs('registration')">
-                        {{ __('Registration') }}
-                    </x-jet-responsive-nav-link> 
+                        {{ __('Accounts') }}
+                    </x-jet-responsive-nav-link>
                     <x-jet-responsive-nav-link href="{{ route('analytic') }}" :active="request()->routeIs('analytic')">
                         {{ __('Analytic') }}
-                    </x-jet-responsive-nav-link> 
+                    </x-jet-responsive-nav-link>
+                    <x-jet-responsive-nav-link href="{{ route('announcement') }}" :active="request()->routeIs('announcement')">
+                        {{ __('Announcement') }}
+                    </x-jet-responsive-nav-link>
+                   
                 
                 @else
                     <x-jet-responsive-nav-link href="{{ route('calendar') }}" :active="request()->routeIs('calendar')">

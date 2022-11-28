@@ -22,10 +22,10 @@ class AppointmentHistoryController extends Controller
         if(Auth::User()->account_type=='user'){   
         
      
-            $appointmentss = appointments::sortable()
+            $appointmentss = DB::table('appointments')
             ->where('user_id',$id)
             ->orwhere('appointment_status',"!=","success")
-            ->paginate(10);
+            ->get();
         
         
     

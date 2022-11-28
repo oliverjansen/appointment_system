@@ -16,6 +16,13 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\PDFController;
+use App\Http\Controllers\appointment_PDF;
+use App\Http\Controllers\AppointmentExcelController;
+
+
+
+
 
 
 
@@ -210,6 +217,19 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function() {
         Route::match(['get','post'],'/analytic', 'App\Http\Controllers\AnalyticController@index')->name('analytic');
         Route::match(['get','post'],'/cancel_appointment/{id}','App\Http\Controllers\AppointmentsController@cancel_appointment')->name('cancel_appointment');
 
+
+  //pdf
+
+  Route::post('/appointment_pdf', [AppointmentsController::class,'appointment_pdf'])->name('appointment_pdf');
+  
+  Route::get('/appointmentview', [appointment_PDF::class,'index'])->name('appointmentview');
+
+  //excel
+  Route::post('/appointment_excel', [AppointmentsController::class,'appointment_excel'])->name('appointment_excel');
+  Route::get('/appointment_excel_view', [AppointmentExcelController::class,'index'])->name('appointment_excel_view');
+
+
+  
 });
 
 

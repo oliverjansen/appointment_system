@@ -7,11 +7,12 @@ use App\Models\User;
 use App\Models\Vaccine;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
+use PDF;
 
 class RegistrationController extends Controller
 {
     function registration(Request $request){
-         $datas = User::paginate(10);
+         $datas = User::all();
          $workers_table = DB::table('users')->orwhere('account_type',"admin")->orwhere('account_type',"staff")->get();
 
          if ($request->has('search_registration')) {
@@ -33,8 +34,8 @@ class RegistrationController extends Controller
           ->paginate(10);
           // dd($users_search);
         }else{
-          $datas = DB::table('users')->paginate(10);
-          $workers_table = DB::table('users')->orwhere('account_type',"admin")->orwhere('account_type',"staff")->paginate(10);
+          $datas = DB::table('users')->get();
+          $workers_table = DB::table('users')->orwhere('account_type',"admin")->orwhere('account_type',"staff")->get();
 
         }
 
@@ -45,6 +46,8 @@ class RegistrationController extends Controller
               return redirect()->route('calendar');
   }
     }
+
+    
 
     function approve_registration(Request $request){
 

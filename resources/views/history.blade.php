@@ -14,7 +14,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <title>Document</title>
         <link rel="stylesheet" type="text/css" href="{{ asset('css/customize.css') }}" >
-    
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
       </head>
     <body>
     
@@ -38,40 +38,17 @@
             @endif
           </div>
           
-          <div class="" style="">
-            {{-- <div class=" card-header text-center p-3 font-weight-bold bg-semi-grey">
-              Appointment History Table
-            </div> --}}
-              {{-- <div class="panel panel-default mt-4" >
-                <div class="panel-body">
-                    <form action="{{route('search_registration')}} " method="GET">
-                        @csrf
-                        {{ csrf_field() }} --}}
-                        {{-- <div class=" container-fluid">
-                            <input type="search_registration" name="search_registration" id="search" class="form-control mb-3 float-right" placeholder="search" style="width: 300px">
-                            <button class="btn mt-1 float-right ">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-                                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-                                </svg>
-                            </button>
-                        </div> --}}
-                    
-                    {{-- </form>
-                </div>
-              </div>  --}}
-        
-                 <div class="card-body table-responsive">
-                    <table class="table table-hover "  >
+            <div class="container-fluid" style="">
+                 <div class="card-body container-fluid table-responsive">
+                    <table class="table table-hover  w-100" id="history_table_data" >
                     
                       <thead>
                           <tr class="text-center">
-                            <th>@sortablelink('appointment_services','Service')
-                            </th>
-                            <th scope="col" style="width: ">@sortablelink('appointment_vaccine_category','Category')</th>
-                            <th scope="col" style="width: ">@sortablelink('appointment_dose','Vaccine')</th>
-                            <th scope="col" style="width:">@sortablelink('appointment_vaccine_type','Apointment Date')</th>
-                            <th scope="col" style="width: ">@sortablelink('appointment_status','Status')</th>
+                            <th>Service</th>
+                            <th scope="col"> Category</th>
+                            <th scope="col">Vaccine</th>
+                            <th scope="col">Apointment Date</th>
+                            <th scope="col">Status</th>
                       
                           </tr>
                       </thead>
@@ -83,8 +60,6 @@
                               </td>
                       
                               @endif
-                              
-                              
                                   @foreach($appointmentss as $value)
                                     <tr class="text-center ">
                                     <td >{{$value->appointment_services}}</td>
@@ -111,11 +86,11 @@
                                       @if($value->appointment_status == "success")
                                       <small class="bg-success p-1 rounded text-white">   {{$value->appointment_status}}</small>
                                       @elseif($value->appointment_status == "expired")
-                                      <small class="bg-danger p-1 rounded text-white">   {{$value->appointment_status}}</small>
+                                      <small class="color-orange p-1 rounded text-white">   {{$value->appointment_status}}</small>
                                       @elseif($value->appointment_status == "pending")
                                       <small class="bg-warning p-1 rounded text-white">   {{$value->appointment_status}}</small>
                                       @elseif($value->appointment_status == "canceled")
-                                      <small class="bg-warning p-1 rounded text-white">   {{$value->appointment_status}}</small>
+                                      <small class="bg-danger p-1 rounded text-white">   {{$value->appointment_status}}</small>
 
                                       @endif
                                     
@@ -126,7 +101,7 @@
                       </tbody>
               </table> 
             </div>
-            <div class="m-4"> {!! $appointmentss->appends(\Request::except('page'))->render() !!} </div>
+            
          
           </div>
       </div>
@@ -134,7 +109,11 @@
     {{-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    </body>
+    
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap4.min.js"></script>
+  </body>
     </html>
     
     
@@ -159,6 +138,11 @@
           //         }
           //     });
           //   });
+
+          
+        $(document).ready( function () {
+            $('#history_table_data').DataTable();
+        });
   });
     </script>
     </x-app-layout>

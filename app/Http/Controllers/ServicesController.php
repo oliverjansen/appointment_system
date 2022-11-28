@@ -25,7 +25,7 @@ class ServicesController extends Controller
 
    function services(Request $request){
   
-    $services = services::paginate(5);
+    $services = services::all();
     // $vaccine = vaccine::all();
 
     if($request->has('search')){
@@ -36,12 +36,12 @@ class ServicesController extends Controller
       ->orWhere('other_services','LIKE','%'.$request->search.'%')
       ->paginate(5);
     }else{
-      $other_services = DB::table('services')->join('other_services','services.id',"=",'other_services.service_id')->paginate(5);
+      $other_services = DB::table('services')->join('other_services','services.id',"=",'other_services.service_id')->get();
     }
 
     $vaccines_kids = DB::table('categories_vaccine')
     ->join('vaccine','categories_vaccine.id',"=",'vaccine.category_id')
-    ->paginate(5);
+    ->get();
 
     $vaccines_covid = DB::table('categories_vaccine')
     ->join('vaccine','categories_vaccine.id',"=",'vaccine.category_id')
@@ -61,7 +61,15 @@ class ServicesController extends Controller
     $categories = Category::paginate(5);
     // $medicine = Medicine::all();
    
+    //update availability
+   $check_availability_vaccine =DB::table('vaccine')
+   ->where('vaccine_slot',"0")
+   ->update(['vaccine_availability'=>"No"]);
 
+
+   $check_availability_other_services =DB::table('other_services')
+   ->where('other_services_slot',"0")
+   ->update(['other_services_availability'=>"No"]);
 
 
     
@@ -87,7 +95,7 @@ class ServicesController extends Controller
       if($validate_service->isEmpty()){
         $services_add ->service = $request->input('add_service');
         $services_add ->availability = "No";
-        $services_add ->availableslot = $request ->input ('add_available_slot');
+        // $services_add ->availableslot = $request ->input ('add_available_slot');
         $services_add->save();
 
       }else{
@@ -301,9 +309,9 @@ if($check_others_service_availability == "Yes"){
 
 
   $category ->category = $request ->input ('category_update');
-  if($request->input('available_vaccinecategory_slot')){
-    $category ->category_vaccine_slot = $request ->input ('available_vaccinecategory_slot');
-  }
+  // if($request->input('available_vaccinecategory_slot')){
+  //   // $category ->category_vaccine_slot = $request ->input ('available_vaccinecategory_slot');
+  // }
     //update availability of vaccine table
     
 

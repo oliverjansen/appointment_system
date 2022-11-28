@@ -25,7 +25,7 @@ class UserMiddleware
 
                 return $next($request);
             }else{
-                alert()->error('No Access!')->showConfirmButton()->buttonsStyling(true)->autoClose(1500);
+                alert()->error('No Access!')->showConfirmButton()->buttonsStyling(true);
 
                 return redirect()->back();
 

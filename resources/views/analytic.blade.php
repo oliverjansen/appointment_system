@@ -16,7 +16,45 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('css/customize.css') }}" >
         <title>Document</title>
     <style>
-    
+    /* CUSTOM WIDTHS */
+.h-10, .h-xs-10 { height: 10%!important; }
+.h-15, .h-xs-15 { height: 15%!important; }
+.h-20, .h-xs-20 { height: 20%!important; }
+
+/* BREAKPOINTS */
+
+@media (min-height: 376px) {
+    /* CUSTOM WIDTHS */
+    .h-sms-100 { height: 100%!important; }
+    .h-sms-90 { height: 90%!important; }
+    .h-sms-70 { height: 70%!important; }
+}
+
+
+/* SM breakpoint */
+@media (min-height: 576px) {
+    /* CUSTOM WIDTHS */
+    .h-sm-100 { height: 100%!important; }
+    .h-sm-90 { height: 90%!important; }
+    .h-sm-70 { height: 70%!important; }
+}
+
+/* MD breakpoint*/
+@media (min-height: 768px) {    
+    /* CUSTOM WIDTHS */
+    .h-md-100 { height: 100%!important; }
+    .h-md-85 { height: 85%!important; }
+    .h-md-70 { height: 70%!important; }
+}
+
+/* LG breakpoint */
+@media (min-height: 992px) {
+    /* CUSTOM WIDTHS */
+    .h-lg-100 { height: 100%!important; }
+    .h-lg-90 { height: 90%!important; }
+    .h-lg-70 { height: 70%!important; }
+}
+
     </style>
     </head>
     <body>
@@ -50,7 +88,7 @@
                         </div>
                         <div class="row p-5">
                             <div class="col col-6 col-md-4 col-sm-6 h-50">
-                                <div class="card text-white bg-primary mb-3" style="">
+                                <div class="card text-white bg-primary mb-3 h-lg-90 h-sm-90 h-sms-90" style="">
                                     <div class="card-header text-center">Total number of available slot for vaccine (Consumable)</div>
                                     <div class="card-body">
                                     <h5 class="card-title text-center">{{ $total_vaccine_slot }}</h5>
@@ -61,7 +99,7 @@
 
                             <div class="col col-6 col-md-4 col-sm-6">
 
-                                <div class="card text-white bg-secondary mb-3" style="">
+                                <div class="card text-white bg-secondary mb-3  h-lg-90 h-sm-90 h-sms-90" style="">
                                     <div class="card-header text-center">Total number of available slot Covid Vaccine (Consumable)</div>
                                     <div class="card-body">
                                     <h5 class="card-title text-center">{{$total_available_slot_codiv_vaccine}}</h5>
@@ -72,7 +110,7 @@
                             
                             <div class="col col-6 col-md-4 col-sm-6">
 
-                                <div class="card text-white bg-secondary mb-3" style="">
+                                <div class="card text-white bg-secondary mb-3 h-lg-90 h-sm-90 h-sms-90" style="">
                                     <div class="card-header text-center">Total number of available slot for medicine (Consumable)</div>
                                     <div class="card-body">
                                     <h5 class="card-title text-center">{{$total_available_slot_medicine}}</h5>
@@ -81,7 +119,7 @@
                                 </div>
                             </div>
                             <div class="col col-6 col-md-4 col-sm-6">
-                                <div class="card text-white bg-success mb-3" style="">
+                                <div class="card text-white bg-success mb-3 h-lg-90 h-sm-90 h-sms-90" style="">
                                     <div class="card-header text-center">Total number of slot for checkup</div>
                                     <div class="card-body">
                                     <h5 class="card-title text-center">{{$total_slot_checkup}}</h5>
@@ -91,7 +129,7 @@
                             </div>
                             <div class="col col-6 col-md-4 col-sm-6">
 
-                                <div class="card text-white bg-secondary mb-3" style="">
+                                <div class="card text-white bg-secondary mb-3 h-lg-90 h-sm-90 h-sms-90" style="">
                                     <div class="card-header text-center">Total number of distributed medicines</div>
                                     <div class="card-body">
                                     <h5 class="card-title text-center">{{$total_distributed_medicine}}</h5>
@@ -100,7 +138,7 @@
                                 </div>
                             </div>
                             <div class="col col-6 col-md-4 col-sm-6">
-                                <div class="card text-white bg-primary mb-3" style="">
+                                <div class="card text-white bg-primary mb-3 h-lg-90 h-sm-90 h-sms-90" style="">
                                     <div class="card-header text-center">Total number of covid vaccinated residents</div>
                                     <div class="card-body">
                                     <h5 class="card-title text-center">{{$total_covid_vaccinated_residents}}</h5>
@@ -123,7 +161,7 @@
                  </div>
                 <div class="container-fluid overflow-hidden">
                     <div class="row justify-content-center"> 
-                        <div class="card shadow-sm mb-5 col-12 col-lg-5" style="" >
+                        <div class="card shadow-sm mb-5 col-12 col-lg-5 h-lg-90 h-sm-90 h-sms-90" style="">
                             <div class=" card-header text-center p-3 font-weight-bold 
                             bg-semi-grey">
                               Number of Slot per Service
@@ -132,7 +170,7 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading"></div>
                                     <div class="panel-body">
-                                        <canvas id="Number_slot_perservice" height="400" width="600"></canvas>
+                                        <canvas id="Number_slot_perservice" height="400" width="600" class="w-100 h-100"></canvas>
                                     </div>
                                 </div>
                                
@@ -147,13 +185,13 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading"></div>
                                     <div class="panel-body">
-                                        <canvas id="vaccine_slot_dose" height="400" width="700"></canvas>
+                                        <canvas id="vaccine_slot_dose" height="400" width="700" class="w-100 h-100"></canvas>
                                     </div>
                                 </div>
                                
                             </div>
                         </div>
-                        <div class="card shadow-sm mb-5 ml-3 col-12 col-lg-5 offset" style="width: 100%" >
+                        <div class="card shadow-sm mb-5 ml-3 col-12 h-100 w-100 col-lg-5 col-md-5 offset" >
                             <div class=" card-header text-center p-3 font-weight-bold 
                             bg-semi-grey">
                               Covid Vaccinated and Unvaccinated
@@ -162,7 +200,7 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading"></div>
                                     <div class="panel-body">
-                                        <canvas id="vaccinated_unvaccinated_covid" height="400" width="700"></canvas>
+                                        <canvas id="vaccinated_unvaccinated_covid"  class="w-100 h-100"></canvas>
                                     </div>
                                 </div>
                                
@@ -177,7 +215,7 @@
                     </div>
                     <div class="row p-5">
                         <div class="col col-6 col-md-4 col-sm-6">
-                            <div class="card text-white bg-success mb-3" style="">
+                            <div class="card text-white bg-success mb-3 h-lg-90 h-sm-90 h-sms-90" style="">
                                 <div class="card-header text-center">Total number of successfull appointments</div>
                                 <div class="card-body">
                                 <h5 class="card-title text-center">{{$total_appointment_success}}</h5>
@@ -187,7 +225,7 @@
                         </div>
                         <div class="col col-6 col-md-4 col-sm-6">
 
-                            <div class="card text-white bg-danger mb-3" style="">
+                            <div class="card text-white bg-danger mb-3 h-lg-90 h-sm-90 h-sms-90" style="">
                                 <div class="card-header text-center">Total number of Expired appointments</div>
                                 <div class="card-body">
                                 <h5 class="card-title text-center">{{$total_appointment_expired}}</h5>
@@ -197,7 +235,7 @@
                         </div>
                         <div class="col col-6 col-md-4 col-sm-6">
 
-                            <div class="card text-white bg-danger mb-3" style="">
+                            <div class="card text-white bg-danger mb-3 h-lg-90 h-sm-90 h-sms-90" style="">
                                 <div class="card-header text-center">Total number of Canceled appointments</div>
                                 <div class="card-body">
                                 <h5 class="card-title text-center">{{$total_appointment_canceled}}</h5>
@@ -210,7 +248,7 @@
                 </div>
                 <div class="container-fluid overflow-hidden " style="text-align:center">
                     <div class="row justify-content-center"> 
-                        <div class="card shadow-sm mb-5 col-12 col-lg-5" style="" >
+                        <div class="card shadow-sm mb-5 col-12 col-lg-5 h-lg-90 h-sm-90 h-sms-90" style="">
                             <div class=" card-header text-center p-3 font-weight-bold 
                             bg-semi-grey">
                               Appointments Per Months
@@ -219,7 +257,7 @@
                                 <div class="panel panel-default " style="text-align:center">
                                     <div class="panel-heading" ></div>
                                     <div class="panel-body" style="text-align:center">
-                                        <canvas id="appointments_permonths" height="900" width="900"></canvas>
+                                        <canvas id="appointments_permonths" height="900" width="900" class="w-100 h-100"></canvas>
                                     </div>
                                 </div>
                                
@@ -234,7 +272,7 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading"></div>
                                     <div class="panel-body" style="text-align:center">
-                                        <canvas id="mostfrequent" height="900" width="900"></canvas>
+                                        <canvas id="mostfrequent" height="900" width="900" class="w-100 h-100"></canvas>
                                     </div>
                                 </div>
                                
@@ -249,7 +287,7 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading"></div>
                                     <div class="panel-body">
-                                        <canvas id="appointment_status" height="900" width="900"></canvas>
+                                        <canvas id="appointment_status" height="900" width="900" class="w-100 h-100"></canvas>
                                     </div>
                                 </div>
                                
@@ -265,7 +303,7 @@
                     <div class="row p-5">
                         <div class="col col-6 col-md-4 col-sm-6">
 
-                            <div class="card text-white bg-primary mb-3" style="">
+                            <div class="card text-white bg-primary mb-3 h-lg-90 h-sm-90 h-sms-90" style="">
                                 <div class="card-header text-center ">Number Registered Residents</div>
                                 <div class="card-body">
                                 <h5 class="card-title text-center">{{$pie_user_approved1}} </h5>
@@ -275,7 +313,7 @@
                         </div>
                         <div class="col col-6 col-md-4 col-sm-6">
 
-                            <div class="card text-white bg-secondary mb-3" style="">
+                            <div class="card text-white bg-secondary mb-3 h-lg-90 h-sm-90 h-sms-90" style="">
                                 <div class="card-header text-center">Number of Pending Registration of Residents</div>
                                 <div class="card-body">
                                 <h5 class="card-title text-center">{{$pie_user_pending1}}</h5>
@@ -284,7 +322,7 @@
                             </div>
                         </div>
                         <div class="col col-6 col-md-4 col-sm-6">
-                            <div class="card text-white bg-success mb-3" style="">
+                            <div class="card text-white bg-success mb-3 h-lg-90 h-sm-90 h-sms-90" style="">
                                 <div class="card-header text-center">Number of Rejected Registration of Residents</div>
                                 <div class="card-body">
                                 <h5 class="card-title text-center">{{$pie_user_rejected1}}</h5>
@@ -305,7 +343,7 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading"></div>
                                     <div class="panel-body" style="text-align:center">
-                                        <canvas id="pieUser" height="400" width="600"></canvas>
+                                        <canvas id="pieUser" height="400" width="600" class="w-100 h-100"></canvas>
                                     </div>
                                 </div>
                                
@@ -320,7 +358,7 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading"></div>
                                     <div class="panel-body " style="text-align:center">
-                                        <canvas id="registered_user_line_chart" height="900" width="900"></canvas>
+                                        <canvas id="registered_user_line_chart" height="900" width="900" class="w-100 h-100"></canvas>
                                     </div>
                                 </div>
                                

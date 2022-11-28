@@ -32,31 +32,101 @@ class CalendarController extends Controller
             $id = Auth::User()->id;
             
         }
-
-        if(Auth::User()->account_type=='user'){    
-        $schedule_calendar = DB::table('appointments')
-        ->where('user_id',$id)
-        ->where('appointment_status',"pending")
-        ->get();
-
-       
-        $hide_appointment_form = DB::table('appointments')
-        ->where('user_id',$id)
-        ->where('appointment_status',"pending")
-        ->get();
-
-        if($hide_appointment_form->isEmpty()){
-                $hide = "no";
-        }else{
-                $hide = "yes";
-        }
-
+   
+    //update availability
+    $check_availability_vaccine =DB::table('vaccine')
+    ->where('vaccine_slot',"0")
+    ->update(['vaccine_availability'=>"No"]);
  
+ 
+    $check_availability_other_services =DB::table('other_services')
+    ->where('other_services_slot',"0")
+    ->update(['other_services_availability'=>"No"]);
+ 
+        if(Auth::User()->account_type=='user'){    
+            $schedule_calendar = DB::table('appointments')
+            ->where('user_id',$id)
+            ->where('appointment_status',"pending")
+            ->get();
+
+        
+            $hide_appointment_form = DB::table('appointments')
+            ->where('user_id',$id)
+            ->where('appointment_status',"pending")
+            ->get();
+
+            if($hide_appointment_form->isEmpty()){
+                    $hide = "no";
+            }else{
+                    $hide = "yes";
+            }
+
+            foreach ($schedule_calendar as $value) {
+                $color = null;
+                if ($value->service_id == 1){
+                    $color = '#008000';
+                }else if ($value->service_id == 2){
+                    $color = '#6495ED';
+                }else if ($value->service_id == 3){
+                    $color = '#F39C12 ';
+                }else if ($value->service_id == 4){ 
+                    $color = '##3D9AF7';
+                }else if ($value->service_id == 5){
+                    $color = '#F73DE4 ';
+                }else if ($value->service_id == 6){
+                    $color = '#F78F3D';
+                }else if ($value->service_id == 7){
+                    $color = '#FE2AF1';
+                }else if ($value->service_id == 8){
+                    $color = '#070095';
+                }else if ($value->service_id == 9){
+                    $color = '#DC5700';
+                }else if ($value->service_id == 10){
+                    $color = '#AB102C ';
+                }else{
+                    $color = '#6ED8F1';
+                }
+               
+                    $schedules[] = [
+                        'id' =>  $value->id,
+                        'title' => $value->appointment_services,
+                        'start' => $value->appointment_date,
+                        'color' => $color,
+                        'textColor'=> 'white'
+                        // 'vaccinetype' => $appointment2->vaccinetype,
+                        // 'person' => $appointment2->person,
+                ];  
+    
+            }
 
         }else{
                     
-            $schedule_calendar = DB::table('appointments')->get();
+            $schedule_calendar = DB::table('appointments')
+            ->get();
 
+            foreach ($schedule_calendar as $value) {
+                $color = null;
+                if ($value->appointment_status == "expired"){
+                    $color = '#FF5733';
+                }else if ($value->appointment_status == "success"){
+                    $color = '#14A44D';
+                }else if ($value->appointment_status == "pending"){
+                    $color = '#E4A11B';
+                }else if ($value->appointment_status == "canceled"){
+                    $color = '#d9534f';
+                }
+               
+                    $schedules[] = [
+                        'id' =>  $value->id,
+                        'title' => $value->appointment_services,
+                        'start' => $value->appointment_date,
+                        'color' => $color,
+                        'textColor'=> 'white'
+                        // 'vaccinetype' => $appointment2->vaccinetype,
+                        // 'person' => $appointment2->person,
+                ];  
+    
+            }
         }
 
     
@@ -136,43 +206,7 @@ class CalendarController extends Controller
        
         $color = '#0AA52B';
 
-        foreach ($schedule_calendar as $value) {
-            $color = null;
-            if ($value->service_id == 1){
-                $color = '#008000';
-            }else if ($value->service_id == 2){
-                $color = '#6495ED';
-            }else if ($value->service_id == 3){
-                $color = '#F39C12 ';
-            }else if ($value->service_id == 4){ 
-                $color = '##3D9AF7';
-            }else if ($value->service_id == 5){
-                $color = '#F73DE4 ';
-            }else if ($value->service_id == 6){
-                $color = '#F78F3D';
-            }else if ($value->service_id == 7){
-                $color = '#FE2AF1';
-            }else if ($value->service_id == 8){
-                $color = '#070095';
-            }else if ($value->service_id == 9){
-                $color = '#DC5700';
-            }else if ($value->service_id == 10){
-                $color = '#AB102C ';
-            }else{
-                $color = '#6ED8F1';
-            }
-           
-            $schedules[] = [
-                'id' =>  $value->id,
-                'title' => $value->appointment_services,
-                'start' => $value->appointment_date,
-                'color' => $color,
-                'textColor'=> 'white'
-                // 'vaccinetype' => $appointment2->vaccinetype,
-                // 'person' => $appointment2->person,
-        ];  
-
-        }
+  
      //account
         if(Auth::User()->account_type=='admin'){
             return view ('calendar', compact('schedules','others_services','appointment_service','category','vaccine','yes') );
@@ -199,15 +233,17 @@ class CalendarController extends Controller
     }
 
     public function get_dose($id){
-        echo json_encode (DB::table('vaccine')->where('dose',$id)->get());
+        echo json_encode (DB::table('vaccine')->where('dose',$id)->where('vaccine_availability',"Yes")->get());
     }
 
     public function get_other_services ($id){
         echo json_encode (DB::table('services')
         ->join('other_services','services.id',"=",'other_services.service_id')
         ->where('other_services.service_id',$id)
+        ->where('other_services_availability',"Yes")
         ->get());
        
+
     }
 
     public function get_service($id){

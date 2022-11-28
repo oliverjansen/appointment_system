@@ -89,7 +89,7 @@
                 </form>   
                 <div class="modal-footer">
                     {{-- <button type="submit" id="delete_appointment"class="btn btn-danger btn-sm bi bi-x-lg" style="width: 100px"> Cancel --}}
-                    <button id="cancel_appointment_btn"class="btn btn-danger btn-sm bi bi-x-lg" style="width: 100px"> Cancel
+                    <button id="cancel_appointment_btn"class="btn btn-danger btn-sm bi bi-x-lg" style="width: 200px"> Cancel Appointment
                 </button>   
                     {{-- <button type="button" class="btn btn-primary btn-sm w-25" id="cancel" data-dismiss="modal">Back</button> --}}
                 </div>   
@@ -163,19 +163,12 @@
     
     
       @if(Auth::User()->account_type=='admin')
-        <div class="container-fluid text-center p-5 mt-4 mb-4">
-            <h3 class="fw-bolder bg-dark bg-opacity-10 text-light p-4">CALENDAR</h3>
+        <div class="container-fluid text-center mt-4 py-4 p-lg-5 mb-4">
+            <h3 class="fw-bolder bg-dark bg-opacity-10 text-light p-4  col col-12">CALENDAR</h3>
         </div>
+      
     @elseif(Auth::User()->account_type=='user')
-    <div class="container text-center p-4">
-        <div class="alert alert-info alert-dismissible fade show m-4" role="alert">
-            <strong>Reminder: </strong> Make sure you had General Checkup before making an appointment on Medicine
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-        </div>  
-        {{-- <h1 class="fw-bolder bg-opacity-10">CREATE APPOINTMENT</h1> --}}
-    </div>
+    
     @endif
   <div class="container mt-3 mb-5" >
         @if (session('success'))
@@ -200,15 +193,45 @@
         <div class="row">
       
             @if(Auth::User()->account_type=='admin')
-                <div id ="calendar_admin" class=" col  col-lg-12 col-12 h-50 shadow-lg p-4"> 
+                <div id ="calendar_admin" class=" col  col-lg-12 col-11 m-auto h-50 shadow-lg p-4"> 
+                </div>
+                <div class="container-fluid">
+                    <div class="row justify-content-end ">
+                        <fieldset class="col col-11 mx-auto mx-lg-0 col-lg-4 mt-5 bg-white shadow p-4 rounded">
+                            <legend class=" shadow bg-primary rounded p-2 text-white">Appointment Legend</legend>
+                        
+                            <label for="" class=" rounded " style="width: 30px;background-color: #E4A11B ">&nbsp;</label>
+                            <label for="kraken">Peding</label><br>
+                        
+                            <label for="" class=" rounded " style="width: 30px;background-color: #14A44D ">&nbsp;</label>
+                            <label for="sasquatch">Success</label><br>
+                        
+                            <label for="" class=" rounded color-orange" style="width: 30px ">&nbsp;</label>
+                            <label for="mothman">Expired</label><br>
+                            
+                            <label for="" class=" rounded  " style="width: 30px;background-color: #DC4C64 ">&nbsp;</label>
+                            <label for="mothman">Canceled</label>
+                        </fieldset>
+                    </div>
+                 
+                </div>
             @else
             
                 @if($hide == "no")
-                
+                <div class="container text-center p-4">
+                    <div class="alert alert-info alert-dismissible fade show m-4" role="alert">
+                        <strong>Reminder: </strong> Make sure you had General Checkup before making an appointment on Medicine
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>  
+                    {{-- <h1 class="fw-bolder bg-opacity-10">CREATE APPOINTMENT</h1> --}}
+                </div>
                     <div id ="calendar" class=" col col-lg-7  mb-5 col-12 shadow-lg p-4 "> 
+                        
                 @else
                 
-                    <div id ="calendar" class=" col col-lg-12 mb-5 col-12 shadow-lg p-5"> 
+                    <div id ="calendar" class=" col col-lg-12 mb-5 col-11 m-auto mt-5 mt-lg-5 shadow-lg p-5"> 
 
                 @endif
             
@@ -216,13 +239,15 @@
             
         
             @if(Auth::User()->account_type=='user')
+               
+
             </div>
             @if($yes != 0)
 
                 {{-- DIVIDION FOR SIDE FORM--}}
 
                 @if($hide == "no")
-                    <div class=" mb-5 col col-lg-4 offset-lg-1 col-12 align-items-center justify-content-center  text-dark  shadow p-4" >
+                    <div class="col col-lg-4 offset-lg-1 h-100 col-12 align-items-center justify-content-center  text-dark  shadow p-4" >
                         
                         <form action="{{ url('insert_data') }}" id="insert" method="POST" class= "w-100">
 
@@ -440,7 +465,7 @@ $(document).ready(function () {
                     });
 
 
-            }
+            } 
         });
 
         var schedules = @json($schedules);
@@ -648,12 +673,13 @@ $(document).ready(function () {
                          $('#appointment_service_others').append(`<option value="0" disabled selected>Select Category...</option>`);
 
                          response.forEach(element => {
-                        if(response[0].other_services_availability == "Yes"){
+                            
+                      
                             $('#appointment_service_others').append(`<option value="${element['id']}">${element['other_services']}</option>`);
                 
-                        }
+                      
                         
-                        $('#other_services_input').text(response[0].service +" Categories");
+                             $('#other_services_input').text(response[0].service +" Categories");
                         });
                            
                     }
@@ -761,24 +787,20 @@ $(document).ready(function () {
                     }
                 }else if ($vaccine_category == "3"){
                         $id_kids =$('#vaccine_type_others').val();
-                            console.log( $id_kids);
+                            console.log($id_kids);
                             $.ajax({
                             type: "GET",
                             url: "/get_slot_other_vaccine/"+date+"/"+$id_kids,
                             success: function (response) {
-                                // console.log(response);  
+                                console.log(response);  
                                 // console.log(response.vaccine);
                                 $('#available_slot').val(response.otherservices);
                                 $('#availableslot').text(response.otherservices);
                             }
                         });
+                }else{
+                    
                 }
-
-               
-
-               
-        
-                
              }
             }
       

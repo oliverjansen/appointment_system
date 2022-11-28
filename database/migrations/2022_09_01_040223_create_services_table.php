@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('services', function (Blueprint $table) {
             $table->id();
             $table->string('service')->nullable();
-            $table->integer('availableslot')->default(0);
+            // $table->integer('availableslot')->default(0);
             $table->string('availability')->nullable();
             $table->timestamps();
         });

@@ -14,7 +14,7 @@ class services extends Model
     protected $fillable = [
         'service',
         'id',
-        'availableslot',
+        // 'availableslot',
         'availability',
 
     ];

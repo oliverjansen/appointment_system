@@ -10,8 +10,12 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Models\CheckUp;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\File;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\AppointmentDataExport;
 
 use Illuminate\Support\Facades\Auth;
+use PDF;
 
 class AppointmentsController extends Controller
 {
@@ -45,12 +49,12 @@ class AppointmentsController extends Controller
         ->orWhere('appointment_date','LIKE','%'.$request->search_appointments.'%')
         ->orWhere('appointment_expiration_date','LIKE','%'.$request->search_appointments.'%')
         ->orWhere('appointment_status','LIKE','%'.$request->search_appointments.'%')
-        ->paginate(10);
+        ->get();
       }else{
 
         $appointments_admin = DB::table('users')
         ->join('appointments','users.id',"=",'appointments.user_id')
-        ->paginate(10);
+        ->get();
       }
 
   
@@ -63,6 +67,26 @@ class AppointmentsController extends Controller
           }
       
     }
+
+    public function appointment_pdf(){
+
+      $appointments_admin = DB::table('users')
+      ->join('appointments','users.id',"=",'appointments.user_id')
+      ->get();
+
+      $pdf = PDF::loadView('pdf.appointment_pdf', array('appointments_admin' => $appointments_admin))->setPaper('a4','potrait');
+        
+       return $pdf->download('appointment_reports.pdf');
+            
+   }
+
+   public function appointment_excel(){
+
+      return Excel::download(new AppointmentDataExport, 'appointment_records.xlsx');
+          
+ }
+
+
     protected $global_appointmentDate;
     protected $global_today=null;
    
@@ -71,349 +95,355 @@ class AppointmentsController extends Controller
       $request_service = $request ->input ('appointmentservice');
       $service_id =  DB::table('services')->where('id',$request_service)->get();
       if(!$service_id->isEmpty()){
-
-       $appointment = new appointments();
-      // $current_id = Auth::User()->id();
-        if(Auth::User()->id){
-          $current_id = Auth::User()->id;
-          $contactnumber = Auth::User()->contactnumber;
-         
-        }
-
-        $appointment ->user_id = $current_id;
-        $appointment ->user_contactnumber= $contactnumber;
-
-        $randomAppointmentId = rand(0,99999999);
-       
-
-        $today = \Carbon\Carbon::today()->format('Y/m/d');
-        $appointmentDate = \Carbon\Carbon::parse($request ->input ('appointmentdate'))->format('Y/m/d');
-
-        if($appointmentDate < $today){
-          alert()->error('Error!','Invalid Appointment Date.')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+    
+        if($request->available_slot == null || $request->available_slot=="0"){
+          alert()->error('Error!','This service is currently not Available.')->showConfirmButton()->buttonsStyling(true);
           return redirect()->back();
         }else{
-
-          $service_slot=  DB::table('services')
-          ->where('id',$request_service)->get();
-          $appointment_slot =  DB::table('appointments')
-          ->where('appointment_availableslot','<=',0)->get();
-
-          foreach ($appointment_slot as $value) {
-            if ($value->service_id == $request_service) {
-           
-                  if(\Carbon\Carbon::parse($value->appointment_date)->format('Y/m/d') == $appointmentDate ){
-                  
-                    alert()->error('Error!','Service is not Available.')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
-            
-                    return redirect()->back();
-                  }
+          $appointment = new appointments();
+          // $current_id = Auth::User()->id();
+            if(Auth::User()->id){
+              $current_id = Auth::User()->id;
+              $contactnumber = Auth::User()->contactnumber;
+             
             }
-          }
-          
-          // $appointment_max =  DB::table('appointments');
-
-          $appointment_max=  DB::table('users')
-          ->join('appointments','users.id',"=",'appointments.user_id')
-          ->where('user_id' ,"=", $current_id)
-          ->where('appointment_status',"pending")
-          ->get();
-
-
-          foreach ($appointment_max as $value) {
-            if($value->user_id){
-              alert()->error('Error!','You have an ongoing appointment.')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
-              return redirect()->back();
-            }
-
-         
-          
-          }
-       
     
-          $request_category = $request ->input ('appointmentCategory');
-
-          $request_dose = $request ->input ('vaccine_dose_select');
-        
-         
-         $categories_id =  DB::table('categories_vaccine')
-         ->where('id',$request_category)->get();
-
-       
-
-        
-         foreach ($service_id as $value) {
-          $service_name = $value->service;
-          $service_id = $value->id;
-         }
-          
-          
-         foreach ($categories_id as $value) {
-          $categories_name = $value->category;
-          $categories_id = $value->id;
-         
-          }
-         
-          
-          if($service_id == 1){
-        
-            if($request ->input ('appointmentCategory')){
-              $appointment ->appointment_services = $service_name;
-              $appointment ->appointment_vaccine_category = $categories_name;
-      
-                if($categories_id == 1){
-                  //check if the user has complete vaccination of infant
-                  $vaccine_id = $request ->input ('vaccine_type_kids');
-                  $appointment ->service_category_id= $vaccine_id;
-                  // $appointment ->pediatic_id= $vaccine_id;
-                  $slot = $request ->input ('available_slot');
-                  $vaccine_service = $request ->input ('appointmentservice');
-                  $vaccine_type = $request ->input ('vaccine_type_kids');
-
-                  $vaccine_id =  DB::table('vaccine')->where('id',$vaccine_id)->get();
-                  foreach ($vaccine_id as $value) {
-                   $vaccine_type = $value->vaccine_type;
-                   $vaccine_id = $value->id;
-                   }
-                  
-                 
-            
-                      $kk = DB::table('vaccine')
-                      ->where('service_id',$vaccine_service)
-                      ->where('dose',null)
-                      ->where('id',$vaccine_id)
-                      ->update(['vaccine_slot'=> $slot-1]);
-
-                      $appointment ->appointment_vaccine_type = $vaccine_type;
-
-                }else if ($categories_id == 2){
-                  //check if the apointment if the user has success dose 
-                  //for first vaccination and 2nd
-          
-                  $vaccine_id= $request ->input ('vaccine_type_covid');
-                
-                  $appointment ->service_category_id= $vaccine_id;
-                  $request_dose = $request ->input ('vaccine_dose_select');
-
-                  $check_covid_dose = DB::table('appointments')
-                  ->where('user_id',$current_id)
-                  ->where('appointment_status',"success")
-                  ->groupBy('appointment_dose')
-                  ->get('appointment_dose');
-               
-
-                 
-                  // dd($check_covid_dose);
-                  $covid_dose =null;
+            $appointment ->user_id = $current_id;
+            $appointment ->user_contactnumber= $contactnumber;
+    
+            $randomAppointmentId = rand(0,99999999);
            
-
-          
-                
-                  if($check_covid_dose->isEmpty()){
-                    // if($request_dose == "2"){
-                    //   alert()->error('Appointment Failed!','You have to get your 1st dose to be able to make an appointment on the 2nd dose.')->showConfirmButton()->buttonsStyling(true);
-                    //   return redirect()->back();
-                    // }elseif($request_dose == "3"){
-                    //   alert()->error('Appointment Failed!','You have to get 1st dose and 2nd dose to be able to make an appointment on Booster.')->showConfirmButton()->buttonsStyling(true);
-                    //   return redirect->back();
-                    // }
-                  }else{
-                    foreach ($check_covid_dose as $value) {
-                      if($value->appointment_dose == $request_dose){
-                        if($value->appointment_dose <3){
-                       
-                          $covid_dose = $value->appointment_dose ;
-                          alert()->info('You already had this dose.')->showConfirmButton()->buttonsStyling(true);
-
-                          return redirect()->back();
-                        }
-                     
-                      }else{
-
-                        // if($request_dose == "2"){
-
-                        //   $check_covid_12 = DB::table('appointments')
-                        //   ->where('user_id',$current_id)
-                        //   ->where('appointment_status',"success")
-                        //   ->where('appointment_dose',1)
-                        //   ->groupBy('appointment_dose')
-                        //   ->get();
-
-                        //   if($check_covid_12->isEmpty()){
-                        //     alert()->error('Appointment Failed!','You have to get 1st dose before making appointment on 2nd dose.')->showConfirmButton()->buttonsStyling(true);
-
-                        //   return redirect()->back();
-
-                        //   }else{
-
-                          
-                        //   }
-                     
-
-                        //   // return back()->with(['danger' => "You have to get 1st dose and 2nd dose to be able to make an appointment on Booster!"]);
-                        // }else if ($request_dose == "3"){
-
-                        //   $check_covid_12 = DB::table('appointments')
-                        //   ->where('user_id',$current_id)
-                        //   ->where('appointment_status',"success")
-                        //   ->where('appointment_dose',2)
-                        //   ->groupBy('appointment_dose')
-                        //   ->get();
-
-                        //   if($check_covid_12->isEmpty()){
-                        //     alert()->error('Appointment Failed!','You have to get 2st dose before making appointment on booster.')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
-
-                        //   return redirect()->back();
-
-                        //   }
-                        // }
+    
+            $today = \Carbon\Carbon::today()->format('Y/m/d');
+            $appointmentDate = \Carbon\Carbon::parse($request ->input ('appointmentdate'))->format('Y/m/d');
+    
+            if($appointmentDate < $today){
+              alert()->error('Error!','Invalid Appointment Date.')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+              return redirect()->back();
+            }else{
+    
+              $service_slot=  DB::table('services')
+              ->where('id',$request_service)->get();
+              $appointment_slot =  DB::table('appointments')
+              ->where('appointment_availableslot','<=',0)->get();
+    
+              foreach ($appointment_slot as $value) {
+                if ($value->service_id == $request_service) {
+               
+                      if(\Carbon\Carbon::parse($value->appointment_date)->format('Y/m/d') == $appointmentDate ){
                       
+                        alert()->error('Error!','Service is not Available.')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+                
+                        return redirect()->back();
                       }
-                  
-                    }
-                  }
-                  // dd($check_covid_dose);
-                  // dd($covid_dose);
-         
-
-
-
-                  $vaccine_type_covid = $request ->input ('vaccine_type_covid');
-                 
-                  $vaccine_service = $request ->input ('appointmentservice');
+                }
+              }
+              
+              // $appointment_max =  DB::table('appointments');
+    
+              $appointment_max=  DB::table('users')
+              ->join('appointments','users.id',"=",'appointments.user_id')
+              ->where('user_id' ,"=", $current_id)
+              ->where('appointment_status',"pending")
+              ->get();
+    
+    
+              foreach ($appointment_max as $value) {
+                if($value->user_id){
+                  alert()->error('Error!','You have an ongoing appointment.')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+                  return redirect()->back();
+                }
+    
              
-                  //available slot on the vaccine covid category
-                    $slot = $request ->input ('available_slot');
+              
+              }
+           
+        
+              $request_category = $request ->input ('appointmentCategory');
+    
+              $request_dose = $request ->input ('vaccine_dose_select');
+            
              
-                      $kk = DB::table('vaccine')
-                      ->where('service_id',$vaccine_service)
-                      ->where('dose',$request_dose)
-                      ->where('id',$vaccine_type_covid)
-                      ->update(['vaccine_slot'=> $slot-1]);
-
+             $categories_id =  DB::table('categories_vaccine')
+             ->where('id',$request_category)->get();
+    
+           
+    
+            
+             foreach ($service_id as $value) {
+              $service_name = $value->service;
+              $service_id = $value->id;
+             }
+              
+              
+             foreach ($categories_id as $value) {
+              $categories_name = $value->category;
+              $categories_id = $value->id;
+             
+              }
+             
+              
+              if($service_id == 1){
+            
+                if($request ->input ('appointmentCategory')){
+                  $appointment ->appointment_services = $service_name;
+                  $appointment ->appointment_vaccine_category = $categories_name;
+          
+                    if($categories_id == 1){
+                      //check if the user has complete vaccination of infant
+                      $vaccine_id = $request ->input ('vaccine_type_kids');
+                      $appointment ->service_category_id= $vaccine_id;
+                      // $appointment ->pediatic_id= $vaccine_id;
+                      $slot = $request ->input ('available_slot');
+                      $vaccine_service = $request ->input ('appointmentservice');
+                      $vaccine_type = $request ->input ('vaccine_type_kids');
+    
                       $vaccine_id =  DB::table('vaccine')->where('id',$vaccine_id)->get();
                       foreach ($vaccine_id as $value) {
                        $vaccine_type = $value->vaccine_type;
+                       $vaccine_id = $value->id;
                        }
-                      $appointment ->appointment_availableslot = $slot-1;
-                      $appointment ->appointment_vaccine_type = $vaccine_type;
-                      $appointment ->appointment_dose = $request_dose;
+                      
+                     
+                
+                          $kk = DB::table('vaccine')
+                          ->where('service_id',$vaccine_service)
+                          ->where('dose',null)
+                          ->where('id',$vaccine_id)
+                          ->update(['vaccine_slot'=> $slot-1]);
+    
+                          $appointment ->appointment_vaccine_type = $vaccine_type;
+    
+                    }else if ($categories_id == 2){
+                      //check if the apointment if the user has success dose 
+                      //for first vaccination and 2nd
               
-                  
-                }
-
-            }
-          }else{
-
-            if($request ->get('appointment_service_others')){
-              $id = $request ->get('appointment_service_others');
-              $slot = $request ->input ('available_slot');
-
-              if($service_id == "2" ){
-
-
-                  $checkup = DB::table('appointments')
-                  ->where('user_id',$current_id)
-                  ->where('service_id',3)
-                  ->where('appointment_vaccine_category', 'LIKE','%'."general".'%')
-                  ->where('appointment_status',"success")
-                  ->get();
-            
-                  if($checkup->isEmpty()){
-                    alert()->info('Appointment Failed!','Make sure you had General Check up before making an appointment on Medicine.')->showConfirmButton()->buttonsStyling(true);
-
-                  return redirect()->back();
-                    }
-
+                      $vaccine_id= $request ->input ('vaccine_type_covid');
+                    
+                      $appointment ->service_category_id= $vaccine_id;
+                      $request_dose = $request ->input ('vaccine_dose_select');
+    
+                      $check_covid_dose = DB::table('appointments')
+                      ->where('user_id',$current_id)
+                      ->where('appointment_status',"success")
+                      ->groupBy('appointment_dose')
+                      ->get('appointment_dose');
                    
-              }
+    
+                     
+                      // dd($check_covid_dose);
+                      $covid_dose =null;
+               
+    
               
-              // else if ($service_id == "3" && $id == "1"){
-
-              //   $checkup = new CheckUp();
-              //   $checkup->user_id = $current_id;
-              //   $checkup->general_checkup = 1;
-              //   $checkup->save();
-              //   dd("Yes");
-      
-              // }
-
-              // dd($id);
-         
+                    
+                      if($check_covid_dose->isEmpty()){
+                        // if($request_dose == "2"){
+                        //   alert()->error('Appointment Failed!','You have to get your 1st dose to be able to make an appointment on the 2nd dose.')->showConfirmButton()->buttonsStyling(true);
+                        //   return redirect()->back();
+                        // }elseif($request_dose == "3"){
+                        //   alert()->error('Appointment Failed!','You have to get 1st dose and 2nd dose to be able to make an appointment on Booster.')->showConfirmButton()->buttonsStyling(true);
+                        //   return redirect->back();
+                        // }
+                      }else{
+                        foreach ($check_covid_dose as $value) {
+                          if($value->appointment_dose == $request_dose){
+                            if($value->appointment_dose <3){
+                           
+                              $covid_dose = $value->appointment_dose ;
+                              alert()->info('You already had this dose.')->showConfirmButton()->buttonsStyling(true);
+    
+                              return redirect()->back();
+                            }
+                         
+                          }else{
+    
+                            // if($request_dose == "2"){
+    
+                            //   $check_covid_12 = DB::table('appointments')
+                            //   ->where('user_id',$current_id)
+                            //   ->where('appointment_status',"success")
+                            //   ->where('appointment_dose',1)
+                            //   ->groupBy('appointment_dose')
+                            //   ->get();
+    
+                            //   if($check_covid_12->isEmpty()){
+                            //     alert()->error('Appointment Failed!','You have to get 1st dose before making appointment on 2nd dose.')->showConfirmButton()->buttonsStyling(true);
+    
+                            //   return redirect()->back();
+    
+                            //   }else{
+    
+                              
+                            //   }
+                         
+    
+                            //   // return back()->with(['danger' => "You have to get 1st dose and 2nd dose to be able to make an appointment on Booster!"]);
+                            // }else if ($request_dose == "3"){
+    
+                            //   $check_covid_12 = DB::table('appointments')
+                            //   ->where('user_id',$current_id)
+                            //   ->where('appointment_status',"success")
+                            //   ->where('appointment_dose',2)
+                            //   ->groupBy('appointment_dose')
+                            //   ->get();
+    
+                            //   if($check_covid_12->isEmpty()){
+                            //     alert()->error('Appointment Failed!','You have to get 2st dose before making appointment on booster.')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+    
+                            //   return redirect()->back();
+    
+                            //   }
+                            // }
+                          
+                          }
+                      
+                        }
+                      }
+                      // dd($check_covid_dose);
+                      // dd($covid_dose);
              
-              $appointment ->service_category_id= $id;
-
-                DB::table('other_services')
-                ->where('id',$id)
-                ->update(['other_services_slot'=>$slot-1]);
-                $appointment ->appointment_availableslot = $slot-1;
-
-              
-              $request_other_service = $request ->get('appointment_service_others');
+    
+    
+    
+                      $vaccine_type_covid = $request ->input ('vaccine_type_covid');
+                     
+                      $vaccine_service = $request ->input ('appointmentservice');
+                 
+                      //available slot on the vaccine covid category
+                        $slot = $request ->input ('available_slot');
+                 
+                          $kk = DB::table('vaccine')
+                          ->where('service_id',$vaccine_service)
+                          ->where('dose',$request_dose)
+                          ->where('id',$vaccine_type_covid)
+                          ->update(['vaccine_slot'=> $slot-1]);
+    
+                          $vaccine_id =  DB::table('vaccine')->where('id',$vaccine_id)->get();
+                          foreach ($vaccine_id as $value) {
+                           $vaccine_type = $value->vaccine_type;
+                           }
+                          $appointment ->appointment_availableslot = $slot-1;
+                          $appointment ->appointment_vaccine_type = $vaccine_type;
+                          $appointment ->appointment_dose = $request_dose;
+                  
+                      
+                    }
+    
+                }
+              }else{
+    
+                if($request ->get('appointment_service_others')){
+                  $id = $request ->get('appointment_service_others');
+                  $slot = $request ->input ('available_slot');
+    
+                  if($service_id == "2" ){
+    
+    
+                      $checkup = DB::table('appointments')
+                      ->where('user_id',$current_id)
+                      ->where('service_id',3)
+                      ->where('appointment_vaccine_category', 'LIKE','%'."general".'%')
+                      ->where('appointment_status',"success")
+                      ->get();
+                
+                      if($checkup->isEmpty()){
+                        alert()->info('Appointment Failed!','Make sure you had General Check up before making an appointment on Medicine.')->showConfirmButton()->buttonsStyling(true);
+    
+                      return redirect()->back();
+                        }
+    
+                       
+                  }
+                  
+                  // else if ($service_id == "3" && $id == "1"){
+    
+                  //   $checkup = new CheckUp();
+                  //   $checkup->user_id = $current_id;
+                  //   $checkup->general_checkup = 1;
+                  //   $checkup->save();
+                  //   dd("Yes");
+          
+                  // }
+    
+                  // dd($id);
+             
+                 
+                  $appointment ->service_category_id= $id;
+    
+                    DB::table('other_services')
+                    ->where('id',$id)
+                    ->update(['other_services_slot'=>$slot-1]);
+                    $appointment ->appointment_availableslot = $slot-1;
+    
+                  
+                  $request_other_service = $request ->get('appointment_service_others');
+               
+                  $appointment ->service_category_id= $request ->get('appointment_service_others');
+    
+                  $categories_other_service_id =  DB::table('services')
+                  ->join('other_services','services.id',"=",'other_services.service_id')
+                  ->where('other_services.id',$request_other_service)->get();
+      
+                 
+      
+                  foreach ($categories_other_service_id as $value) {
+                   $other_service_name = $value->service;
+                  
+                   $other_service_category = $value->other_services;
+                  }
+    
+                  $appointment ->appointment_services = $other_service_name;
+                  $appointment ->appointment_vaccine_category = $other_service_category;
+    
+                }
            
-              $appointment ->service_category_id= $request ->get('appointment_service_others');
-
-              $categories_other_service_id =  DB::table('services')
-              ->join('other_services','services.id',"=",'other_services.service_id')
-              ->where('other_services.id',$request_other_service)->get();
-  
+            }
+        
+            // echo $mytime->toDateTimeString();
+    
+            $message_schedule = "Service ". $service_name ." has been scheduled!";
+            $expire = Carbon::now()->addHours(48);
+    
+            $expiration_date = "Reminder! \n your slot will be forfeited if you didn't attend your scheduled appointment.";
+            $message_appointment = $message_schedule."\n".$expiration_date;
+            
+            // temporary disabled text message
+            // $this->sendMessage($message_appointment, $contactnumber);
+            
+            // $appointment_expirationdate = Carbon::now()->addHours(48)->toDateTimeString();
+          
+            
+            // $appointment ->appointment_expiration_date = $appointment_expirationdate;
+    
+            //==============================================
+    
+          
+                $message = $request ->input ('appointmentservice');
+              $appointment ->appointment_date = $appointmentDate;
+    
              
-  
-              foreach ($categories_other_service_id as $value) {
-               $other_service_name = $value->service;
+              $appointment ->appointment_id = $randomAppointmentId;
               
-               $other_service_category = $value->other_services;
-              }
-
-              $appointment ->appointment_services = $other_service_name;
-              $appointment ->appointment_vaccine_category = $other_service_category;
-
+              $appointment ->service_id = $request_service;
+            
+                  $kk = null;
+    
+    
+        
+              
+                  $appointment->save();
+              if(Auth::User()->account_type=='admin'){
+                return view('services');
+                }else{
+                  alert()->success('Appointment Created')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+                  return redirect()->route('calendar');
+                }
+        
+           
             }
-       
         }
-    
-        // echo $mytime->toDateTimeString();
-
-        $message_schedule = "Service ". $service_name ." has been scheduled!";
-        $expire = Carbon::now()->addHours(48);
-
-        $expiration_date = "Reminder! \n your slot will be forfeited if you didn't attend your scheduled appointment.";
-        $message_appointment = $message_schedule."\n".$expiration_date;
-        
-        // temporary disabled text message
-        // $this->sendMessage($message_appointment, $contactnumber);
-        
-        // $appointment_expirationdate = Carbon::now()->addHours(48)->toDateTimeString();
-      
-        
-        // $appointment ->appointment_expiration_date = $appointment_expirationdate;
-
-        //==============================================
-
-      
-            $message = $request ->input ('appointmentservice');
-          $appointment ->appointment_date = $appointmentDate;
-
-         
-          $appointment ->appointment_id = $randomAppointmentId;
-          
-          $appointment ->service_id = $request_service;
-        
-              $kk = null;
-
-
-    
-          
-              $appointment->save();
-          if(Auth::User()->account_type=='admin'){
-            return view('services');
-            }else{
-              alert()->success('Appointment Created')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
-              return redirect()->route('calendar');
-            }
-    
-       
-        }
+     
       } else {
 
         if(Auth::User()->account_type=='admin'){

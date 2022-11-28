@@ -5,3 +5,28 @@
 .bg-semi-dark-grey{
     background-color: #5D6D7E;
 }
+
+#toTop {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 25px;
+    z-index: 99;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    background-color:#292b2c;
+    color: white;
+    cursor: pointer;
+    border-radius: 30px;
+    }
+  
+    #toTop:hover {
+    background-color: #555;
+    }
+
+    .color-orange{
+        background-color: #FF5733;
+    }
+
+    

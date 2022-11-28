@@ -1,4 +1,4 @@
-
+<x-guest-layout>
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -27,7 +27,7 @@
                 <div id="logo">
                     <img class="logo" src=""/>
                 </div>
-            </nav>
+            </nav> 
             <section class="banner">
                 <div class="container">
                     <h2>APPOINTMENT SYSTEM</h2>
@@ -113,3 +113,4 @@
     </body>
     </html>
     
+</x-guest-layout>

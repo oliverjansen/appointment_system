@@ -18,7 +18,7 @@ return new class extends Migration
             $table->bigInteger('service_id')->unsigned();
             $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade')->onUpdate('cascade');
             $table->string('category')->nullable();
-            $table->integer('category_vaccine_slot')->nullable();
+            // $table->integer('category_vaccine_slot')->nullable();
             $table->string('category_availability')->nullable();
             $table->timestamps();
         });
