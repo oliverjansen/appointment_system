@@ -866,6 +866,18 @@ public function reschedule_appointment(Request $request){
     }
 
   }
+
+  public function delete_appointment_admin (Request $request){
+
+    $id = $request ->input ('delete_id');
+    $appointment_delete= appointments::find($id);
+    $appointment_delete->delete();
+
+    alert()->success('Successfully Deleted')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+    return redirect()->back();
+ 
+
+  }
   
     
 }

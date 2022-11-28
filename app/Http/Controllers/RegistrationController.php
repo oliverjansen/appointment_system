@@ -57,7 +57,9 @@ class RegistrationController extends Controller
         $approve->update();
       
         if(Auth::User()->account_type=='admin'){
-            return redirect()->back()->with('success', 'Registration Approved');
+      alert()->success('Reistration Approved')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+
+            return redirect()->back();
           }else{
             return redirect()->route('login');
           }
@@ -70,8 +72,13 @@ class RegistrationController extends Controller
         $reject = User::find($reject_id);
         $reject ->status = "rejected";
         $reject->update();
+
         if(Auth::User()->account_type=='admin'){
-            return redirect()->back()->with('danger', 'Registration Rejected');
+
+          
+      alert()->success('Registration Rejected')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+
+            return redirect()->back();
           }else{
             return redirect()->route('login');
           }
@@ -83,12 +90,27 @@ class RegistrationController extends Controller
         $del_reg = User::find($del_reg_id);
         $del_reg->delete();
         if(Auth::User()->account_type=='admin'){
-            return redirect()->back()->with('danger', 'Successfully Deleted');
+
+        
+          alert()->success('Successfully Delete')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+            return redirect()->back();
           }else{
             return redirect()->route('login');
           }
      
     
+    }
+
+    public function delete_workers_account(Request $request){
+      $worker_id = $request ->input ('del_user_id');
+      $delete_account = User::find($worker_id);
+      $delete_account->delete();
+
+     
+      alert()->success('Successfully Delete')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+
+      return redirect()->back();
+
     }
 
     

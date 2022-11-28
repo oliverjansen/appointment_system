@@ -230,6 +230,9 @@
                     <x-jet-responsive-nav-link href="{{ route('calendar') }}" :active="request()->routeIs('calendar')">
                         {{ __('Calendar') }}
                     </x-jet-responsive-nav-link> 
+                    <x-jet-responsive-nav-link href="{{ route('history') }}" :active="request()->routeIs('history')">
+                        {{ __('History') }}
+                    </x-jet-responsive-nav-link> 
                 @endif
              @endif      
 

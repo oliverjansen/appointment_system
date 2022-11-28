@@ -231,7 +231,7 @@
                         
                 @else
                 
-                    <div id ="calendar" class=" col col-lg-12 mb-5 col-11 m-auto mt-5 mt-lg-5 shadow-lg p-5"> 
+                    <div id ="calendar" class=" col col-lg-12 mb-5 col-11 mx-auto mt-5 mt-lg-5 shadow-lg p-5"> 
 
                 @endif
             

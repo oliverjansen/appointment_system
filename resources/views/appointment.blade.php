@@ -75,7 +75,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
 
-        <form action="{{ route ('admin.delete_registration') }}  " method="POST">
+        <form action="{{ route ('delete_appointment_admin') }}  " method="POST">
             @csrf
               
             <div class="modal-header">
@@ -83,7 +83,7 @@
               <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <input type="text"  id="delete_id" name="delete_id" >
+              <input type="text"  id="delete_id" name="delete_id" hidden>
               Are you sure you want to delete this Appointment?
             </div>
             <div class="modal-footer">

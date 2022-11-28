@@ -201,7 +201,10 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function() {
     //appointments searrch
     Route::get('/search_appointments', 'App\Http\Controllers\AppointmentsController@appointments_admin')->name('search_appointments');
    
-
+    Route::post('/delete_appointment_admin', [AppointmentsController::class,'delete_appointment_admin'])->name('delete_appointment_admin');
+    
+    Route::post('/delete_workers_account', [RegistrationController::class,'delete_workers_account'])->name('delete_workers_account');
+  
 
       //appointments reschedule
       Route::get('/get_available_slot/{id}', 'App\Http\Controllers\AppointmentsController@get_available_slot')->name('get_available_slot');

@@ -89,6 +89,34 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal delete workers -->
+  <div class="modal fade" id="delete_workers_account_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <form action="{{ route ('delete_workers_account') }} " method="POST">
+          @csrf
+          {{ csrf_field() }}
+           
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"></h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text"  id="del_user_id" name="del_user_id" hidden>
+          Are you sure you want to delete this Account?
+        </div>
+        <div class="modal-footer">
+         
+          <button type="submit" class="btn btn-primary delete_btn btn-sm w-25">Yes</button>
+          <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">No</button>
+        </div>
+         </form>
+
+      </div>
+    </div>
+  </div>
 <!-- reject modal -->
 
   <div class="modal fade" id="reject_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -278,7 +306,7 @@
       
                           <td> {{$value->account_type}}</td>
                           
-                            <td><button class="btn btn-sm btn-danger ml-2 delete_workers_account bi bi-trash3" value="{{$data->id}}"></button></td>
+                            <td><button class="btn btn-sm btn-danger ml-2 delete_workers_account bi bi-trash3" value="{{$value->id}}"></button></td>
                         </tr>
                         
                       @endforeach
@@ -376,6 +404,15 @@
         });
         
 
+        $(document).on('click','.delete_workers_account',function (e){
+          e.preventDefault();
+            console.log($(this).val());
+
+            $('#delete_workers_account_modal').modal('show');
+
+            $('#del_user_id').val($(this).val());
+        });
+        
           $.ajaxSetup({
           headers: {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

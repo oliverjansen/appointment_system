@@ -45,9 +45,6 @@ class AppointmentDataExport implements FromView, ShouldAutoSize, WithColumnWidth
         return [
             // Style the first row as bold text.
             1    => ['font' => ['bold' => true]],
-            3    => ['font' => ['bold' => true]],
-            
-
 
         ];
     }
