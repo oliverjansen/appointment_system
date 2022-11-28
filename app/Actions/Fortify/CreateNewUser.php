@@ -27,13 +27,11 @@ class CreateNewUser implements CreatesNewUsers
             'lastname' => ['required', 'string', 'max:255'],
             'gender' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
-            'age' => ['required', 'string', 'max:255'],
-
+            'age' => ['required', 'integer', 'max:255'],
             'birthdate' => ['required', 'string', 'max:255'],
-            // 'identification' => ['required', 'string', 'max:255'],
+            'identification' => ['required', 'image', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
             'identificationtype' => ['required', 'string', 'max:255'],
-            'contactnumber' => ['required', 'string', 'max:255'],
-
+            'contactnumber' => ['required', 'numeric', 'digits:11','unique:users'],
             'address' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => $this->passwordRules(),
