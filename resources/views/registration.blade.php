@@ -241,7 +241,7 @@
                           @if($data->status == "approved")
                           <small class="bg-success px-1 rounded text-white">   {{$data->status}}</small>
                           @elseif($data->status == "pending")
-                          <small class="bg-warning px-1 rounded text-white">   {{$data->status}}</small>
+                          <small class="bg-warning px-1 rounded text-dark">   {{$data->status}}</small>
                           @elseif($data->status == "rejected")
                           <small class="bg-danger  px-1 rounded text-white">   {{$data->status}}</small>
 
@@ -254,7 +254,7 @@
                                 <div class="d-flex justify-content-center"> 
                                   <button class="btn btn-sm btn-primary approve bi bi-check" value="{{$data->id}}" style="width: 85px"><small>Approved</small>
                                 </button>
-                                  <button class="btn btn-sm btn-warning  ml-2 rejected bi bi-x-circle text-white" style="width: 85px " value="{{$data->id}}"><small class=""> Reject</small>
+                                  <button class="btn btn-sm btn-warning  ml-2 rejected bi bi-x-circle text-dark" style="width: 85px " value="{{$data->id}}"><small class=""> Reject</small>
                         
                               
                                 </button>

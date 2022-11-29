@@ -18,11 +18,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
     <script  type="text/javascript" src="{{ URL::asset('js/qrcode.min.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/customize.css') }}" >
 
 <style>
      .red-color {
         color:red;
     }
+    
 </style>
 
 </head>
@@ -163,7 +165,7 @@
     
     
       @if(Auth::User()->account_type=='admin')
-        <div class="container-fluid text-center mt-4 py-4 p-lg-5 mb-4">
+        <div class="container-fluid text-center mt-4 py-4 p-lg-5 mb-3">
             <h3 class="fw-bolder bg-dark bg-opacity-10 text-light p-4  col col-12">CALENDAR</h3>
         </div>
       
@@ -193,28 +195,35 @@
         <div class="row">
       
             @if(Auth::User()->account_type=='admin')
-                <div id ="calendar_admin" class=" col  col-lg-12 col-11 m-auto h-50 shadow-lg p-4"> 
+                    <div id ="calendar_admin" class=" col  col-lg-10 col-11 m-auto h-50 shadow-lg p-4"> 
+               
                 </div>
-                <div class="container-fluid">
-                    <div class="row justify-content-end ">
-                        <fieldset class="col col-11 mx-auto mx-lg-0 col-lg-4 mt-5 bg-white shadow p-4 rounded">
-                            <legend class=" shadow bg-primary rounded p-2 text-white">Appointment Legend</legend>
-                        
-                            <label for="" class=" rounded " style="width: 30px;background-color: #E4A11B ">&nbsp;</label>
-                            <label for="kraken">Peding</label><br>
-                        
-                            <label for="" class=" rounded " style="width: 30px;background-color: #14A44D ">&nbsp;</label>
-                            <label for="sasquatch">Success</label><br>
-                        
-                            <label for="" class=" rounded color-orange" style="width: 30px ">&nbsp;</label>
-                            <label for="mothman">Expired</label><br>
-                            
-                            <label for="" class=" rounded  " style="width: 30px;background-color: #DC4C64 ">&nbsp;</label>
-                            <label for="mothman">Canceled</label>
-                        </fieldset>
+            
+
+                
+                    <div class="container">
+                        <div class="row justify-content-end ">
+                            <fieldset class="col col-11 sm-m-auto col-lg-10 mx-auto mt-5  bg-white shadow p-4 rounded">
+                                <legend class=" shadow bg-primary rounded text-center p-2 text-white"><h5>Appointment Legend</h5></legend>
+                                <div class="pl-2">
+                                    <label for="" class=" rounded m-1" style="width: 30px;background-color: #E4A11B ">&nbsp;</label>
+                                    <label for="kraken">Peding</label><br>
+                                
+                                    <label for="" class=" rounded m-1" style="width: 30px;background-color: #14A44D ">&nbsp;</label>
+                                    <label for="sasquatch">Success</label><br>
+                                
+                                    <label for="" class=" rounded m-1 color-orange" style="width: 30px ">&nbsp;</label>
+                                    <label for="mothman">Expired</label><br>
+                                    
+                                    <label for="" class=" rounded  m-1" style="width: 30px;background-color: #DC4C64 ">&nbsp;</label>
+                                    <label for="mothman">Canceled</label>
+                                </div>
+                               
+                            </fieldset>
+                        </div>
+                    
                     </div>
-                 
-                </div>
+          
             @else
             
                 @if($hide == "no")

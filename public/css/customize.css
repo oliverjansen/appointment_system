@@ -21,12 +21,24 @@
     border-radius: 30px;
     }
   
-    #toTop:hover {
-    background-color: #555;
-    }
+#toTop:hover {
+background-color: #555;
+}
 
-    .color-orange{
-        background-color: #FF5733;
-    }
+.color-orange{
+    background-color: #FF5733;
+}
+    
+@media (max-width:900px) {
+    .lg-mr-50 {
+        margin-right: 100px;
+     }
+
+}
+@media (max-width:560px) {
+ .sm-m-auto {
+    margin: auto;
+ }
+}
 
     
