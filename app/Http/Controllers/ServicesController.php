@@ -285,60 +285,67 @@ if($check_others_service_availability == "Yes"){
   $service_id = $request ->input ('service_update_id');
   $category = Category::find($id);
 
-  if(Category::where('id', $id)->exists()){
 
-    if($id == $id){
-      
-    }else{
-      alert()->Error('Error','Category ID Exist!')->showConfirmButton()->buttonsStyling(true);
-      return redirect()->back();
+ if($old_id == $id){
+ 
+
+ }else{
+    $check_id = DB::table('categories_vaccine')
+    ->where('id',$id)
+    ->get();
+    if($check_id->isNotEmpty()){
+
+        alert()->Error('Error','Category ID Exist!')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+        return redirect()->back();
     }
-  
-  }
+ }
 
-  if($category == null){
-     DB::table('categories_vaccine')->where('id',$old_id)->update(['id'=>$id]);
-     $category = Category::find($id);
+ if($category == null){
+  DB::table('categories_vaccine')->where('id',$old_id)->update(['id'=>$id]);
+  $category = Category::find($id);
 
-    //  Category::where('id', $id)->exists();
+       //  Category::where('id', $id)->exists();
 
-    
-    // dd($category);
-  
-  }
-
-
-  $category ->category = $request ->input ('category_update');
-  // if($request->input('available_vaccinecategory_slot')){
-  //   // $category ->category_vaccine_slot = $request ->input ('available_vaccinecategory_slot');
-  // }
-    //update availability of vaccine table
-    
+       
+       // dd($category);
+     
+     }
 
 
-  
-  $check_service_availability = DB::table('services')->where('id', $service_id)->get();
-
-foreach ($check_service_availability as $value) {
-    $check_service_availability = $value->availability;
-}
-
-if($check_service_availability == "Yes"){
-  $others = DB::table('categories_vaccine')->join('vaccine','categories_vaccine.id',"=",'vaccine.category_id')->where('category_id',$request ->input ('category_update_id') )->update(['vaccine_availability' => $request ->input ('choice_category')]);
-  $category ->category_availability = $request ->input ('choice_category');
-  $category->update();
+     $category ->category = $request ->input ('category_update');
+     // if($request->input('available_vaccinecategory_slot')){
+     //   // $category ->category_vaccine_slot = $request ->input ('available_vaccinecategory_slot');
+     // }
+       //update availability of vaccine table
+       
 
 
-}else{
-  $category->update();
-  alert()->warning('Successfully Updated','Turn on the service availability to edit this availability.')->showConfirmButton()->buttonsStyling(true);
-  return redirect()->back();
-}
+     
+     $check_service_availability = DB::table('services')->where('id', $service_id)->get();
+
+   foreach ($check_service_availability as $value) {
+       $check_service_availability = $value->availability;
+   }
+
+   if($check_service_availability == "Yes"){
+     $others = DB::table('categories_vaccine')->join('vaccine','categories_vaccine.id',"=",'vaccine.category_id')->where('category_id',$request ->input ('category_update_id') )->update(['vaccine_availability' => $request ->input ('choice_category')]);
+     $category ->category_availability = $request ->input ('choice_category');
+     $category->update();
+
+
+   }else{
+     $category->update();
+     alert()->warning('Successfully Updated','Turn on the service availability to edit this availability.')->showConfirmButton()->buttonsStyling(true);
+     return redirect()->back();
+   }
+
+ 
+
 
 
 
   if(Auth::User()->account_type=='admin'){
-    alert()->success('Successfully Updated')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+     alert()->success('Successfully Updated')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
 
     return redirect()->back();
   }else{
@@ -346,6 +353,10 @@ if($check_service_availability == "Yes"){
   }
 
 }  
+
+
+
+
 
  public function update_services(Request $request){
  
@@ -356,13 +367,16 @@ if($check_service_availability == "Yes"){
   $appointment ->availability = $request ->input ('choice_service');
   $appointment ->availableslot = $request ->input ('available_slot');
 
+
+if($request ->input ('id') == $request ->input ('service_id')){
+          
   if($id == 1){
+    $update_vaccine_availability = DB::table('services')->join('vaccine','services.id',"=",'vaccine.service_id')->join('categories_vaccine','services.id',"=",'categories_vaccine.service_id')->where('services.id', $id)->get();
     
-  $update_vaccine_availability = DB::table('services')->join('vaccine','services.id',"=",'vaccine.service_id')->join('categories_vaccine','services.id',"=",'categories_vaccine.service_id')->where('services.id', $id)->get();
-  
 
     if($update_vaccine_availability->isEmpty()){
      $check =  DB::table('services')->join('categories_vaccine','services.id',"=",'categories_vaccine.service_id')->where('services.id', $id)->get();
+
       if($check->isEmpty()){
 
       }else{
@@ -372,15 +386,37 @@ if($check_service_availability == "Yes"){
     }else{
       $update_vaccine_availability = DB::table('services')->join('vaccine','services.id',"=",'vaccine.service_id')->join('categories_vaccine','services.id',"=",'categories_vaccine.service_id')->where('services.id', $id)->update(['vaccine_availability'=> $request ->input ('choice_service'),'category_availability'=>$request ->input ('choice_service')]);
       alert()->success('Successfully Updated')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+      $appointment->update();
     }
 
   }else{
     $update_other_services_availability = DB::table('services')->Join('other_services','services.id',"=",'other_services.service_id')->where('service_id',  $id)->update(['other_services_availability'=> $request ->input ('choice_service')]);
+
+ 
   }
-
-
-
   $appointment->update();
+}else{
+
+  $check_existing = DB::table('services')
+  ->where('id',$request ->input ('service_id'))
+  ->get();
+
+  if( $check_existing->isNotEmpty()){
+    alert()->error('Service ID already Exist')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+    return redirect()->back();
+  }else{
+
+   
+    $appointment->update();
+  }
+  
+
+}
+
+
+
+
+
 
   if(Auth::User()->account_type=='admin'){
     alert()->success('Successfully Upated')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);

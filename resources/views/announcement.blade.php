@@ -209,6 +209,8 @@
                           </div>
                       </form> --}}
                       <div class="mt-5">
+
+                       
                         @foreach($announcement as $value)
                           <div class="row ">
                               <div class="card mb-3 col col-10 shadow border-dark" style="margin-left: auto; margin-right:auto;">

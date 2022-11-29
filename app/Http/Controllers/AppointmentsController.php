@@ -23,11 +23,9 @@ class AppointmentsController extends Controller
 
     public function appointment()
     {
-        if(Auth::User()->account_type=='admin'){
+       
             return view('services');
-            }else{
-              return redirect()->route('appointment');
-            }
+   
         
     }
     
@@ -35,6 +33,8 @@ class AppointmentsController extends Controller
     public function get_app(){
 
     }
+
+    
     public function appointments_admin(Request $request)
     {
 
@@ -61,7 +61,7 @@ class AppointmentsController extends Controller
         if(Auth::User()->account_type=='admin'){
             return view('appointment',compact('appointments_admin','user'));
         }elseif(Auth::User()->account_type=='staff'){
-          // return view('appointment',compact('appointments_admin','user'));
+          return view('appointment',compact('appointments_admin','user'));
         }else{
             return redirect()->route('appointment');
           }
@@ -446,7 +446,7 @@ class AppointmentsController extends Controller
      
       } else {
 
-        if(Auth::User()->account_type=='admin'){
+        if(Auth::User()->account_type=='admin' || Auth::User()->account_type=='staff' ){
           return view('services');
           }else{
             return redirect()->route('calendar')->with('warning', "Please insert a service");

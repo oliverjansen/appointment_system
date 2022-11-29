@@ -23,7 +23,9 @@ class StaffMiddleware
 
                 return $next($request);
             }else{
-                return redirect('/')->with("message",'Access Denied as you are not admin');
+                alert()->error('No Access!')->showConfirmButton()->buttonsStyling(true);
+
+                return redirect()->back();
 
             }
         }else{

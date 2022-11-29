@@ -81,8 +81,8 @@
         </div>
         <div class="modal-footer">
          
-          <button type="submit" class="btn btn-primary delete_btn btn-sm w-25">Yes</button>
-          <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">No</button>
+          <button type="submit" class="btn btn-danger delete_btn btn-sm w-25">Yes</button>
+          <button type="button" class="btn btn-primary btn-sm w-25" data-dismiss="modal">No</button>
         </div>
          </form>
 
@@ -138,8 +138,8 @@
         </div>
         <div class="modal-footer">
          
-          <button type="submit" class="btn btn-primary reject_btn btn-sm w-25">Yes</button>
-          <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">No</button>
+          <button type="submit" class="btn btn-danger reject_btn btn-sm w-25">Yes</button>
+          <button type="button" class="btn btn-primary btn-sm w-25" data-dismiss="modal">No</button>
         </div>
          </form>
 
@@ -169,8 +169,8 @@
         </div>
         <div class="modal-footer">
          
-          <button type="submit" class="btn btn-primary approve_btn btn-sm w-25">Yes</button>
-          <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">No</button>
+          <button type="submit" class="btn btn-danger approve_btn btn-sm w-25">Yes</button>
+          <button type="button" class="btn btn-primary btn-sm w-25" data-dismiss="modal">No</button>
         </div>
          </form>
 

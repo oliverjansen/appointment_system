@@ -11,14 +11,13 @@ class LoginController extends Controller
     public function login(){
         if(Auth::User()->account_type=='admin'){
        
-           
             return view ('scanner');
         }else if(Auth::User()->account_type=='user'){
             alert()->success('Login Successful!','')->showConfirmButton(false)->buttonsStyling(false)->autoClose(2000);
               return redirect()->route('calendar');
         }else if(Auth::User()->account_type=='staff'){
             alert()->success('Login Successful!','')->showConfirmButton(false)->buttonsStyling(false)->autoClose(2000);
-            return view ('scanner');
+            return redirect()->route('staff_scanner');
         }
     }
 
@@ -28,10 +27,9 @@ class LoginController extends Controller
            
             return view ('scanner');
         }else if(Auth::User()->account_type=='user'){
-          
               return redirect()->route('calendar');
         }else if(Auth::User()->account_type=='staff'){
-            return view ('scanner');
+            return redirect()->route('staff_scanner');
         }
     }
 

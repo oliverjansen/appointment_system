@@ -667,13 +667,13 @@
                         </table>
                     </div>
                 </div>
-                <div id="add_btn_all" style="display:" class="container">
+                <div id="add_btn_all" style="display: none" class="container">
                     <div class="row justify-content-end">
                         <button class="col col-12 col-lg-2 btn btn-sm add_vaccine_btn mt-5 mb-2  btn-primary bi bi-plus-circle" style="width:170px;"> Add Service Categories</button>
                     </div>
                 </div>   
         
-                <div class="card shadow-sm">
+                <div class="card shadow-sm" id="vaccine_category_div" style="display: none">
                     <div class=" card-header text-center p-3 font-weight-bold  bg-semi-grey">
                         Vaccine Table
                         
@@ -740,7 +740,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card shadow-sm mt-5">
+                <div class="card shadow-sm mt-5" id="vaccine_div" style="display: none">
                     <div class=" card-header text-center p-3 font-weight-bold  bg-semi-grey">
                          Vaccine Table
 
@@ -816,7 +816,7 @@
                 </div>
                
               
-                <div class="card mt-5 shadow-sm mt-5">
+                <div class="card mt-5 shadow-sm mt-5" id="other_service_div" style="display:none;">
                     <div class=" card-header text-center p-3 font-weight-bold  bg-semi-grey ">
                         Other Services Table
                     </div>
@@ -1011,31 +1011,36 @@
             e.preventDefault();
             var  vaccine_table = document.getElementById("vaccine_table");
             var add_btn_all = document.getElementById("add_btn_all");
-            var medicine_type_table = document.getElementById("medicine_type_table");
-            var checkup_table = document.getElementById("checkup_table");
-            var others_table = document.getElementById("others_table");
+
+            var vaccine_category_div = document.getElementById("vaccine_category_div");
+            var vaccine_div = document.getElementById("vaccine_div");
+            var other_service_div = document.getElementById("other_service_div");
+
             var service = $(this).val();
             console.log(service);
             // others_table.style.display = "none";
             // alert(service); 
             if(service == "1" ){
-                // others_table.style.display = "none";
-                // vaccine_table.style.display = "block";
-                // add_btn_all.style.display="block";
-                var target_div = service;
+                other_service_div.style.display = "none";
+                vaccine_div.style.display = "block";
+                vaccine_category_div.style.display="block";
+                add_btn_all.style.display ="block";
+                // var target_div = service;
               
                 scrolldiv();
 
                 function scrolldiv() {
                     window.scroll(0,findPosition(document.getElementById("add_btn_all")));
                 }
+
                 
             }
             else{
-                // $("#other_services_title").text("Others");
-                // add_btn_all.style.display="block";
-                // vaccine_table.style.display = "none";
-                // others_table.style.display ="block";
+                add_btn_all.style.display ="block";
+                other_service_div.style.display = "block";
+                vaccine_div.style.display = "none";
+                vaccine_category_div.style.display="none";
+                
                 scrolldiv();
                 function scrolldiv() {
                     window.scroll(0,findPosition(document.getElementById("others_table")));

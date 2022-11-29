@@ -62,9 +62,9 @@
                             
                             @elseif(Auth::User()->account_type=='staff')
                             <x-jet-nav-link href="{{ route('staff_scanner') }}" :active="request()->routeIs('staff_scanner')">
-                                {{ __('Verify Appointment') }}
+                                {{ __('Verify Appointment') }} 
                             </x-jet-nav-link>
-                            <x-jet-nav-link href="{{ route('appointments') }}" :active="request()->routeIs('appointments')">
+                            <x-jet-nav-link href="{{ route('appointment_staff') }}" :active="request()->routeIs('appointment_staff')">
                                 {{ __('Appointments') }}
                             </x-jet-nav-link>
                             @endif

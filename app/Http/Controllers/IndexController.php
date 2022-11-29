@@ -32,14 +32,29 @@ class IndexController extends Controller
 
 
         //services
-        $service = DB::table('services')
-        ->join('vaccine','services.id',"=",'vaccine.service_id')
-        ->join('other_services','services.id',"=",'other_services.service_id')
-        ->groupBy('services.id')
+        $service_otherservices = DB::table('services')
+        ->get();
+
+        $vaccine =  DB::table('categories_vaccine')
+        ->where('category_availability',"Yes")
+        ->get();
+
+        $medicine =  DB::table('other_services')
+        ->where('other_services_availability',"Yes")
+        ->where('service_id',"=",2)
+        ->get();
+
+        $checkup =  DB::table('other_services')
+        ->where('other_services_availability',"Yes")
+        ->where('service_id',"=",3)
+        ->get();
+
+        $sevices = DB::table('services')
+        ->where('availability',"Yes")
+        ->where('id',">",3)
         ->get();
 
 
-
-        return view('index',compact('announcement','current_date'));
+        return view('index',compact('announcement','current_date','service_otherservices','vaccine','sevices','medicine','checkup'));
     }
 }

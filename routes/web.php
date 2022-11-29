@@ -239,13 +239,18 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function() {
 
 //STAFF
 Route::prefix('staff')->middleware(['auth','isStaff'])->group(function() {
+  Route::match(['get','post'],'/verify_appointment_staff', 'App\Http\Controllers\VerifyAppointmentController@verify_appointment')->name('verify_appointment_staff');
+
     // Route::get('/scanner', 'App\Http\Controllers\VerifyAppointmentController@index')->name('staff.scanner');
+    Route::get('/staff_get_appointment_id/{content}', 'App\Http\Controllers\VerifyAppointmentController@get_appointment_id')->name('staff_get_appointment_id');
+    
+    Route::get('/appointment_staff', 'App\Http\Controllers\AppointmentsController@appointments_admin')->name('appointment_staff');
 
     Route::match(['get','post'],'/staff_verify_appointment', 'App\Http\Controllers\StaffController@verify_appointment')->name('staff_verify_appointment');
     Route::get('/staff_scanner', [StaffController::class, 'index'])->name('staff_scanner');
         
 
-   Route::get('/staff_get_appointment_id/{content}', 'App\Http\Controllers\StaffController@get_appointment_id')->name('staffget_appointment_id');
+  //  Route::get('/staff_get_appointment_id/{content}', 'App\Http\Controllers\StaffController@get_appointment_id')->name('staffget_appointment_id');
 
 });
 

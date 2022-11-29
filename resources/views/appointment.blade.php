@@ -88,8 +88,8 @@
             </div>
             <div class="modal-footer">
             
-              <button type="submit" class="btn btn-primary btn-sm w-25">Yes</button>
-              <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">No</button>
+              <button type="submit" class="btn btn-danger btn-sm w-25">Yes</button>
+              <button type="button" class="btn btn-primary btn-sm w-25" data-dismiss="modal">No</button>
             </div>
          </form>
 
@@ -121,8 +121,8 @@
           <div class="form-group">
             <label for="service" class="col-form-label">Message</label>
             <select name="message_select" id="message_select" class ="mb-3 block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-                  <option value="default_message" selected>Cancel </option>
-                  <option value="add_message">Add  </option>
+                  <option value="default_message" selected>Cancel Appointment</option>
+                  <option value="add_message">Customize Message  </option>
           </select>
             <textarea name="cancel_message" id="cancel_message" cols="30" rows="5" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
 
@@ -132,8 +132,8 @@
         </div>
         <div class="modal-footer">
          
-          <button type="submit" class="btn btn-primary reject_btn btn-sm w-25">Send</button>
-          <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">No</button>
+          <button type="submit" class="btn btn-danger reject_btn btn-sm w-25">Yes</button>
+          <button type="button" class="btn btn-primary btn-sm w-25" data-dismiss="modal">No</button>
         </div>
          </form>
 
@@ -281,6 +281,7 @@
         </div>
         @endif
     </div>
+    @if(Auth::User()->account_type == 'admin')
     <div class="container-fluid mb-2">
         <div class="row justify-content-end ">
           <form action="{{route('appointment_pdf')}}" method="POST" class="" target="__blank">
@@ -300,7 +301,7 @@
 
      
     </div>
-
+    @endif
     <div class="row">
       <div class=" col col-12 col-lg-12">
         <div class="card shadow-sm mb-5" style="">
@@ -316,7 +317,9 @@
                         <th scope="col" class="text-center">Category</th>
                         <th scope="col" class="text-center">Appoitnment Date</th>
                         <th scope="col" class="text-center">Status</th>
+                        @if(Auth::User()->account_type == 'admin')
                         <th scope="col" class="text-center">Action</th>
+                        @endif
                       </tr>
                   </thead>
                   <tbody>
@@ -352,6 +355,7 @@
                             <small class="bg-danger  px-1 rounded text-white">   {{$data->appointment_status}}</small>
 
                             @endif
+                            @if(Auth::User()->account_type == 'admin')
                           </td>
                           <td scope="row" colspan=2 class="d-flex justify-content-center ">
                             @if ($data->appointment_status == "pending") 
@@ -359,7 +363,7 @@
                             @else
                             <button class="btn btn-sm  btn-danger mt-2 mt-lg-0 ml-2 delete_btn bi bi-trash3 " value="{{$data->id}}" style=""></button>
                             @endif
-                                
+                            @endif
                           </td>
                         </tr>
                       @endforeach
