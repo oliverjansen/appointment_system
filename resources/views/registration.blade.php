@@ -252,9 +252,9 @@
                         <td>
                             @if ($data->status !="approved" && $data->status !="rejected" )
                                 <div class="d-flex justify-content-center"> 
-                                  <button class="btn btn-sm btn-primary approve bi bi-check" value="{{$data->id}}" style="width: 85px"><small>Approved</small>
+                                  <button class="btn btn-sm btn-primary approve bi bi-check" value="{{$data->id}}" style="">
                                 </button>
-                                  <button class="btn btn-sm btn-warning  ml-2 rejected bi bi-x-circle text-dark" style="width: 85px " value="{{$data->id}}"><small class=""> Reject</small>
+                                  <button class="btn btn-sm btn-warning  ml-2 rejected bi bi-x-circle text-white" style="" value="{{$data->id}}">
                         
                               
                                 </button>

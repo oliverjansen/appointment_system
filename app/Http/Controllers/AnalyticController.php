@@ -125,9 +125,9 @@ class AnalyticController extends Controller
 
         $sum = User::select('id')->count();
 
-        $pie_user_pending = ($pie_user_pending/$sum)*100.0;
-        $pie_user_approved = ($pie_user_approved/$sum)*100.0;
-        $pie_user_rejected = ($pie_user_rejected/$sum)*100.0;
+        $pie_user_pending = round(($pie_user_pending/$sum)*100.0);
+        $pie_user_approved = round(($pie_user_approved/$sum)*100.0);
+        $pie_user_rejected = round(($pie_user_rejected/$sum)*100.0);
 
 
 
@@ -155,20 +155,23 @@ class AnalyticController extends Controller
         //vaccinated not vaccinated
 
         $vaccincate_covid_user = DB::table('appointments')
-        ->orwhere('appointment_dose',1)
-        ->orwhere('appointment_dose',2)
-        ->orwhere('appointment_dose',3)
+        ->where('appointment_dose',"!=",null)
+        ->where('appointment_status',"success")
         ->groupBy('user_id')
         ->count();
 
 
-        $unVaccinated_covid_user= DB::table('users')
+        $all_user= DB::table('users')
         ->where('status',"approved")
         ->groupBy('status')
         ->count('id');
+      
 
+        $unVaccinated_covid_user = $all_user - $vaccincate_covid_user;
 
-        $unVaccinated_covid_user = $unVaccinated_covid_user - $vaccincate_covid_user;
+        $vaccincate_covid_user = round(($vaccincate_covid_user/$all_user)*100);
+
+        $unVaccinated_covid_user = round(($unVaccinated_covid_user/$all_user)*100);
 
 
         //Appointments per months

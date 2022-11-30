@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Storage;
 class RegistrationController extends Controller
 {
     function registration(Request $request){
-         $datas = User::all();
+       
+
          $workers_table = DB::table('users')->orwhere('account_type',"admin")->orwhere('account_type',"staff")->get();
 
          if ($request->has('search_registration')) {
@@ -36,7 +37,9 @@ class RegistrationController extends Controller
           ->paginate(10);
           // dd($users_search);
         }else{
-          $datas = DB::table('users')->get();
+          $datas = DB::table('users')
+          ->where('account_type',"user")
+          ->get();
           $workers_table = DB::table('users')->orwhere('account_type',"admin")->orwhere('account_type',"staff")->get();
 
         }
@@ -92,14 +95,17 @@ class RegistrationController extends Controller
         $del_reg = User::find($del_reg_id);
        
  
-     
-       
-        if(Storage::disk('public')->exists($del_reg->identification)){
-             
-          
-            Storage::disk('public')->delete($del_reg->identification);
-          
-        }
+    
+       if($del_reg->identification){
+
+          if(Storage::disk('public')->exists($del_reg->identification)){
+              
+            
+              Storage::disk('public')->delete($del_reg->identification);
+            
+          }
+       }
+  
 
 
 

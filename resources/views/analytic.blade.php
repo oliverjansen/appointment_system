@@ -194,7 +194,8 @@
                         <div class="card shadow-sm mb-5 ml-3 col-12 h-100 w-100 col-lg-5 col-md-5 offset" >
                             <div class=" card-header text-center p-3 font-weight-bold 
                             bg-semi-grey">
-                              Covid Vaccinated and Unvaccinated
+                              Covid Vaccinated and Unvaccinated <br>
+                              (Registered Resident)
                             </div>
                             <div class="card-body">
                                 <div class="panel panel-default">
@@ -568,11 +569,11 @@ const pie_covid_slot = new Chart(
 // Vaccinated and not vaccinated ========================================================
 const number_vaccinated_covid_pie = {
   labels: [
-    'Vaccinated',
-    'Unvaccinated',
+    'Vaccinated (%)',
+    'Unvaccinated (%)',
   ],
   datasets: [{
-    label: ["Covid Vaccnine"],
+    label: [""],
     data: [{{$vaccincate_covid_user}}, {{$unVaccinated_covid_user}}],
     backgroundColor: [
       'rgb(255, 99, 132)',
@@ -644,7 +645,7 @@ var appointment_most_frequent_labels =  {{ Js::from($appointment_most_frequent_l
     };
   
     const config_appontment_permonth = {
-        type: 'pie',
+        type: 'bar',
         data: data_most_frequent_serive,
         options: {}
     };
@@ -663,7 +664,6 @@ var appointment_most_frequent_labels =  {{ Js::from($appointment_most_frequent_l
     const data_appontment_status= {
         labels: appointment_status_labels,
         datasets: [{
-            label: 'Frequent Sevice',
             backgroundColor: [     
                 'rgb(255, 99, 132)',
                 'rgb(54, 162, 235)',
@@ -677,9 +677,15 @@ var appointment_most_frequent_labels =  {{ Js::from($appointment_most_frequent_l
     };
   
     const config_appointment_status = {
-        type: 'pie',
+        type: 'bar',
         data: data_appontment_status,
-        options: {}
+        options: {
+            plugins:{
+                legend:{
+                    display: false
+                }
+            }
+        }
     };
   
     const appointment_status = new Chart(

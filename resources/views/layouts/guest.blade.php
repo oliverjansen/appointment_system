@@ -19,10 +19,12 @@
             {{ $slot }}
             <button type="button" class="btn btn-sm bi bi-chevron-double-up"  id="toTop" title="Go to top"></button>  
         </div>
+        
         <script src="https://unpkg.com/sweetalert2@7.18.0/dist/sweetalert2.all.js"></script>
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script type="text/javascript" charset="utf8" src="{{ asset('js/customize.js') }}" ></script>
         
         @include('sweetalert::alert')
+        
     </body>
 </html>
