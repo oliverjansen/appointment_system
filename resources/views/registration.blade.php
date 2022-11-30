@@ -177,12 +177,12 @@
       </div>
     </div>
   </div>
-  <div class="container-fluid text-center p-5 mt-4 mb-4">
+  <div class="container-fluid text-center  pt-5  pb-3 p-lg-5 mt-4 mb-4 ">
     <h3 class="fw-bolder bg-dark bg-opacity-10 text-light p-4
     ">RESIDENTS</h3>
 </div>
   
-  <div class="container-fluid" style="width: 95%; height:100%;">
+  <div class="container-fluid col-12 col-lg-10" style="height:100%;">
       <div>
         @if (session('success'))
            <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -318,7 +318,7 @@
           
             </div>
           </div>
-          <div class="col col-12 col-lg-4">
+          <div class="col col-12 col-lg-4 mb-5">
             <div class="card shadow-sm" style="">
               <div class=" card-header text-center p-3 font-weight-bold bg-semi-grey">
                Add Account

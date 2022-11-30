@@ -12,7 +12,7 @@
         {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script> --}}
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        
+         
         <link rel="stylesheet" type="text/css" href="{{ asset('css/customize.css') }}" >
         <title>Document</title>
     <style>
@@ -58,7 +58,7 @@
     </style>
     </head>
     <body>
-        <div class="container-fluid text-center p-5 mt-4 mb-4">
+        <div class="container-fluid text-center  pt-5  pb-3 p-lg-5 mt-4 mb-4 ">
             <h3 class="fw-bolder bg-dark text-light p-4 bg-opacity-10" >ANALYTICS</h3>
         </div>
     
@@ -81,8 +81,8 @@
                     <button class="btn btn-sm add_service_btn btn-primary mt-2 mb-2  " style="width:120px;">Download</button>
             </div> --}}
                 <div class="container-fluid">
-                    <div class="card shadow-sm mb-5" style="width: 100%" >
-                        <div class=" card-header text-center p-3 font-weight-bold 
+                    <div class="card shadow-sm mb-5 col-12 p-0 col-lg-10  mx-auto" style="" >
+                        <div class=" card-header text-center  font-weight-bold 
                         bg-semi-grey ">
                         Services Analytic
                         </div>
@@ -161,7 +161,7 @@
                  </div>
                 <div class="container-fluid overflow-hidden">
                     <div class="row justify-content-center"> 
-                        <div class="card shadow-sm mb-5 col-12 col-lg-5 h-lg-90 h-sm-90 h-sms-90" style="">
+                        <div class="card shadow-sm mb-5 col-12 col-lg-5 h-lg-90 h-sm-90 h-sms-90 " style="">
                             <div class=" card-header text-center p-3 font-weight-bold 
                             bg-semi-grey">
                               Number of Slot per Service
@@ -176,7 +176,7 @@
                                
                             </div>
                         </div>
-                        <div class="card shadow-sm mb-5 ml-3 col-12 col-lg-5 offset" style="width: 100%" >
+                        <div class="card shadow-sm mb-5 ml-3 col-12 col-lg-5 offset" style="" >
                             <div class=" card-header text-center p-3 font-weight-bold 
                             bg-semi-grey">
                               Number of Slot Covid Dose
@@ -208,7 +208,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card shadow-sm mb-5" style="width: 100%" >
+                <div class="card shadow-sm mb-5 col-lg-10 mx-auto p-0" style="" >
                     <div class=" card-header text-center p-3 font-weight-bold 
                     bg-semi-grey">
                     Appointment Analytic
@@ -295,7 +295,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card shadow-sm mb-5" style="width: 100%" >
+                <div class="card shadow-sm mb-5 col-lg-10 mx-auto" style="" >
                     <div class=" card-header text-center p-3 font-weight-bold 
                     bg-semi-grey">
                     Residents Analytic
@@ -383,7 +383,9 @@
     </body>
     </html>
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script> --}}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.1/dist/chart.umd.min.js"></script>
+    
         <script>
     //         var year = <?php echo $year; ?>;
     //         var user = <?php echo $user; ?>;

@@ -151,13 +151,13 @@
     
          <!-- approve modal -->
     
-         <div class="container-fluid text-center p-5 mt-4 mb-4">
+         <div class="container-fluid text-center  pt-5  pb-3 p-lg-5 mt-4 mb-4 ">
           <h3 class="fw-bolder bg-dark bg-opacity-25 text-light p-4">ANNOUNCEMENT</h3>
           
       </div>
     
     
-      <div class="container   mb-5 table-responsive" style="width: 90%; height:100%;">
+      <div class="container   mb-5 table-responsive col-12 col-lg-9" style=" height:100%;">
         <div>
           @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -185,7 +185,42 @@
 
           </div>
     
-        
+          <div class="col col-12 col-lg-12 shadow">
+    
+    
+              <div class="card-body table-responsive">
+                <table class="table table-hover w-100"  id="reistration_data" >
+                  <thead>
+                      <tr class="text-center">
+                        <th scope="col" class="text-center">Email</th>
+                        <th scope="col" class="text-center" >Fullname</th>
+                       
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {{-- @foreach($datas as $data) --}}
+                          
+                            <tr class="text-center">
+                            <td></td>
+                          
+                            {{-- <td> <button class="btn btn-sm btn-info view bi bi-eye" value="{{$data->id}}"> --}}
+                              </button>
+                            </td>
+                            
+                  
+                    
+                            
+                            </tr>
+                          
+                      {{-- @endforeach --}}
+                  
+                  </tbody>
+                </table> 
+              </div>
+          
+           
+        </div>
+
           <div class="card shadow-sm mb-5" >
             
             {{-- <div class=" card-header text-center p-3 font-weight-bold 
@@ -208,8 +243,10 @@
                           </button>
                           </div>
                       </form> --}}
+      
                       <div class="mt-5">
 
+                        
                        
                         @foreach($announcement as $value)
                           <div class="row ">

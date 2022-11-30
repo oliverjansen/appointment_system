@@ -8,6 +8,8 @@ use App\Models\Vaccine;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 use PDF;
+use Illuminate\Support\Facades\File; 
+use Illuminate\Support\Facades\Storage;
 
 class RegistrationController extends Controller
 {
@@ -88,7 +90,23 @@ class RegistrationController extends Controller
     function delete_registration(Request $request){
         $del_reg_id = $request ->input ('del_id');
         $del_reg = User::find($del_reg_id);
+       
+ 
+     
+       
+        if(Storage::disk('public')->exists($del_reg->identification)){
+             
+          
+            Storage::disk('public')->delete($del_reg->identification);
+          
+        }
+
+
+
         $del_reg->delete();
+
+      
+
         if(Auth::User()->account_type=='admin'){
 
         

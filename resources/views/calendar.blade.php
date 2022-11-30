@@ -236,7 +236,7 @@
                     </div>  
                     {{-- <h1 class="fw-bolder bg-opacity-10">CREATE APPOINTMENT</h1> --}}
                 </div>
-                    <div id ="calendar" class=" col col-lg-7  mb-5 col-12 shadow-lg p-4 "> 
+                    <div id ="calendar" class=" col col-lg-7  mb-5 col-11 mx-auto  shadow-lg p-4 "> 
                         
                 @else
                 
@@ -256,7 +256,7 @@
                 {{-- DIVIDION FOR SIDE FORM--}}
 
                 @if($hide == "no")
-                    <div class="col col-lg-4 offset-lg-1 h-100 col-12 align-items-center justify-content-center  text-dark  shadow p-4" >
+                    <div class="col col-lg-4 offset-lg-1 h-100 col-11 my-4 m-auto ml-lg-5 my-lg-0 align-items-center justify-content-center  text-dark  shadow p-4" >
                         
                         <form action="{{ url('insert_data') }}" id="insert" method="POST" class= "w-100">
 

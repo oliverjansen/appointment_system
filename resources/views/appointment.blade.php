@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/customize.css') }}" >
     
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
     <title>Document</title>
@@ -252,12 +253,12 @@
     </div>
   </div>
 
-  <div class="container-fluid text-center p-5 mt-4 mb-4">
+  <div class="container-fluid text-center  pt-5  pb-3 p-lg-5 mt-4 mb-4 ">
       <h3 class="fw-bolder bg-dark bg-opacity-10 text-light p-4
       ">APPOINTMENTS</h3>
   </div>
 
-  <div class="container    mb-5 table-responsive mb-4" style="width: 90%; height:100%;">
+  <div class="container  col-12 col-lg-9 mb-5 table-responsive mb-4" style="height:100%;">
     <div>
       @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -282,19 +283,19 @@
         @endif
     </div>
     @if(Auth::User()->account_type == 'admin')
-    <div class="container-fluid mb-2">
+    <div class="container-fluid mb-2" style="">
         <div class="row justify-content-end ">
-          <form action="{{route('appointment_pdf')}}" method="POST" class="" target="__blank">
+          <form action="{{route('appointment_pdf')}}" method="POST" class=" col-12 col-lg-2 text-center mb-2 mb-lg-0 p-0" target="__blank">
             @csrf
               {{ csrf_field() }}
-            <button type="submit" class="btn btn-sm btn-primary  bi bi-filetype-pdf" > Generate PDF</button>
+            <button type="submit" class="btn w-100 btn-sm btn-primary bi bi-filetype-pdf" > Generate PDF</button>
 
           </form>
 
-          <form action="{{route('appointment_excel')}}" method="POST" class=" ml-2 " target="__blank">
+          <form action="{{route('appointment_excel')}}" method="POST" class="col-12 col-lg-2 text-center p-0 mr-lg-2" target="__blank ">
             @csrf
             {{ csrf_field() }}
-            <button class="btn btn-sm btn-primary  bi bi-file-earmark-spreadsheet" style=""> Generate Excel</button> 
+            <button class="btn btn-sm btn-primary w-100 bi bi-file-earmark-spreadsheet ml-lg-1 " style=""> Generate Excel</button> 
           </form>
        
         </div>

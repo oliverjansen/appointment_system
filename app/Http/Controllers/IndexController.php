@@ -35,10 +35,34 @@ class IndexController extends Controller
         $service_otherservices = DB::table('services')
         ->get();
 
+        //Vaccine
         $vaccine =  DB::table('categories_vaccine')
         ->where('category_availability',"Yes")
         ->get();
 
+        $pediatric = DB::table('vaccine')
+        ->where('service_id',"1")
+        ->where('category_id',"1")
+        ->where('vaccine_availability',"Yes")
+        ->get();
+
+        $covid = DB::table('vaccine')
+        ->where('service_id',"1")
+        ->where('category_id',"2")
+        ->where('vaccine_availability',"Yes")
+        ->groupBy('dose')
+        ->get();
+        
+        $other_vaccine = DB::table('vaccine')
+        ->where('service_id',"1")
+        ->where('category_id',">",2)
+        ->where('vaccine_availability',"Yes")
+        ->get();
+
+        
+        
+        
+        //others
         $medicine =  DB::table('other_services')
         ->where('other_services_availability',"Yes")
         ->where('service_id',"=",2)
@@ -55,6 +79,7 @@ class IndexController extends Controller
         ->get();
 
 
-        return view('index',compact('announcement','current_date','service_otherservices','vaccine','sevices','medicine','checkup'));
+
+        return view('index',compact('announcement','current_date','service_otherservices','vaccine','sevices','medicine','checkup','pediatric','covid','other_vaccine'));
     }
 }

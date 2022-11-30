@@ -412,11 +412,19 @@
                           var x = document.getElementById("preview");
                           var display_verification = document.getElementById("display_verification");
 
+
                           if (x.style.display == "none") {
                             x.style.display = "block";
                           }
                           
-                          let scanner = new Instascan.Scanner({ video: document.getElementById('preview'), continuous: true, mirror: false, captureImage: false, backgroundScan: true, refractoryPeriod: 1000, scanPeriod: 1 });
+                          let opts = {
+                            video: document.getElementById('preview'),
+                           
+                          }
+                          
+                          let scanner = new Instascan.Scanner(opts);
+
+                        
                           
                           Instascan.Camera.getCameras().then(function (cameras){
                         if(cameras.length>0){

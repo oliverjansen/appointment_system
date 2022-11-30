@@ -552,7 +552,7 @@
       </div>
     </div>
   </div>
-  <div class="container-fluid text-center p-5 mt-4 mb-4 ">
+  <div class="container-fluid text-center pt-5  pb-3 p-lg-5 mt-4 mb-4 ">
     <h3 class="fw-bolder bg-dark text-light p-4">SERVICES</h3>
     <div class=""></div>
 </div>

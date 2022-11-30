@@ -16,6 +16,9 @@
       // When the user clicks on the button, scroll to the top of the document
       $(document).on('click', '#toTop',function(e){
         e.preventDefault();
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
+        // document.body.scrollTop = 0;
+        // document.documentElement.scrollTop = 0;
+
+        $("html, body").animate(
+          { scrollTop: "0" }, 1000);
       });

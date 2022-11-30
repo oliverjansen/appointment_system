@@ -19,11 +19,11 @@
     <body>
     
       
-      <div class="container-fluid text-center p-5 mt-4 mb-4">
+      <div class="container-fluid text-center  pt-5  pb-3 p-lg-5 mt-4 mb-4 ">
         <h3 class="fw-bolder bg-dark bg-opacity-10 text-light p-4">APPOINTMENT HISTORY</h3>
     </div>
       
-      <div class="container-fluid" style="width: 70%; height:100%;">
+      <div class="container-fluid col-12 col-lg-8" style="height:100%;">
           <div>
             @if (session('success'))
                <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -36,19 +36,19 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
            </div>
             @endif
-          </div>
+          </div> 
           
-            <div class="container-fluid" style="">
-                 <div class="card-body container-fluid table-responsive">
-                    <table class="table table-hover  w-100" id="history_table_data" >
+            <div class="container-fluid shadow mb-5" style="">
+                 <div class="card-body col-12 table-responsive ">
+                    <table class="table table-hover w-100" id="history_table_data" >
                     
                       <thead>
                           <tr class="text-center">
-                            <th>Service</th>
-                            <th scope="col"> Category</th>
-                            <th scope="col">Vaccine</th>
-                            <th scope="col">Apointment Date</th>
-                            <th scope="col">Status</th>
+                            <th class="text-center">Service</th>
+                            <th scope="col" class="text-center"> Category</th>
+                            <th scope="col" class="text-center">Vaccine</th>
+                            <th scope="col" class="text-center">Apointment Date</th>
+                            <th scope="col" class="text-center">Status</th>
                       
                           </tr>
                       </thead>

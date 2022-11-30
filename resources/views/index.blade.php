@@ -15,9 +15,12 @@
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet"> --}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
         {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script> --}}
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+        
+        {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" /> --}}
+        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> --}}
+        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script> --}}
+        
         <title>DapitanHealthCenter</title>
         
         <link rel="stylesheet" type="text/css" href="{{ asset('css/index.css') }}" >
@@ -114,7 +117,7 @@
                 <div class="mb-3 sm-text-center" style="border-bottom:2px solid green;"> <h2>Services</h2></div>
                 <div class="shadow rounded p-4 overflow-auto" style="height: 300px">
 
-                    
+                        
                     <h5 class="font-weight-bold  mb-3 border-bottom border-dark p-1 text-center">Vaccnine</h5>
 
                         @if($vaccine->isEmpty())
@@ -122,44 +125,63 @@
                             <li class="list-group-item text-danger">No Available Vaccine!</li>
 
                         </ul>
-                        @endif
-                        @foreach($vaccine as $value)
-                                <ul>
-                                <li class="list-group-item">{{$value->category}}</li>
+                        @else
+                            @if($pediatric->isNotEmpty())
+                                <label for="" class="font-weight-bold">Pediatric Vaccination</label>
+                                @foreach($pediatric as $value)
+                                <li class="pl-5">{{$value->vaccine_type}}</li>
+                                @endforeach
+                            @endif
+                                
+                            @if($covid->isNotEmpty())
+                                <label for="" class="font-weight-bold">Covid</label>
+                                @foreach($covid as $value)
+                                <li class="pl-5">
+                                    @if($value->dose == "1")
+                                    1st dose
+                                    @elseif ($value->dose == "2")
+                                    2nd dose
+                                    @elseif ($value->dose == "3")
+                                    Booster
+                                    @endif
+                            - {{$value->vaccine_type}}</li>
+                            @endforeach
+                            @endif
+                    
+                            @if($other_vaccine->isNotEmpty())
 
-                                </ul>
-                        
-                        @endforeach
-                    <h5 class="font-weight-bold mb-3 border-bottom border-dark p-1 text-center">Medicine</h5>
+                                <label for="" class="font-weight-bold">Others</label>
+                                @foreach($other_vaccine as $value)
+                                <li class="pl-5">{{$value->vaccine_type}}</li>
+                                @endforeach
 
-                    @if($medicine->isEmpty())
-                    <ul>
-                        <li class="list-group-item text-danger">No Available Medicine!</li>
+                            @endif
+                     
 
-                    </ul>
-                    @endif
+                        @endif  
+                     
+                   
 
+                    @if($medicine->isNotEmpty())
+                        <h5 class="font-weight-bold mb-3 mt-3 border-bottom border-dark p-1 text-center">Medicine</h5>
                         @foreach($medicine as $value)
-                                <ul>
-                                    <li class="list-group-item">{{$value->other_services}}</li>
-                                </ul>
+                                
+                        <li class="pl-5">{{$value->other_services}}</li>
                         
+                    
                         @endforeach
-                    <h5 class="font-weight-bold  border-bottom mb-3 border-dark p-1 text-center">Check Up</h5>
-
-                    @if($checkup->isEmpty())
-                    <ul>
-                        <li class="list-group-item text-danger">No Available Checkup!</li>
-
-                    </ul>
                     @endif
-                        @foreach($checkup as $value)
-                                <ul>
-                                    <li class="list-group-item">{{$value->other_services}}</li>
 
-                                </ul>
-            
+                        
+                 
+
+                    @if($checkup->isNotEmpty())
+                        <h5 class="font-weight-bold  mt-3 border-bottom mb-3 border-dark p-1 text-center">Check Up</h5>
+                        @foreach($checkup as $value)
+                            <li class="pl-5">{{$value->other_services}}</li>
                         @endforeach
+                    @endif
+                        
                         @if($sevices->count()>2)
                         <h5 class="font-weight-bold mb-3 border-bottom border-dark p-2 mt-5 ">Other Services </h5>
                             @foreach($sevices as $value)
@@ -197,9 +219,11 @@
         </footer>
 
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-  
-
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> 
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        
      
     </body>
 
