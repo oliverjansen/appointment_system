@@ -62,8 +62,8 @@ class StaffController extends Controller
     //   $canceled_appointment_id = appointments::find($id);
     $queue = DB::table('appointments')->
     where('appointment_date','=',$new_appointment_date)
-    ->get()
-    ->max('appointment_queue');
+    ->get();
+    // ->max('appointment_queue');
     
  
 

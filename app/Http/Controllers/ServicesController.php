@@ -131,12 +131,41 @@ class ServicesController extends Controller
               $vaccine_add ->vaccine_slot = $request ->input ('add_vaccine_slot');
         
               if($request ->input ('vaccine_select') == 2){
-                $vaccine_add ->dose = $request ->input ('covid_select');
+
+                $validate_vaccine = DB::table('vaccine')
+                ->where('dose',$request ->input ('covid_select') )
+                ->where('vaccine_type',"=",$request ->input ('add_vaccine_input'))
+                ->get();
+            
+                if($validate_vaccine->isNotEmpty()){
+
+                  alert()->error('Vaccine Already Exist!')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+                  return redirect()->back();
+
+                }else{
+                  $vaccine_add ->dose = $request ->input ('covid_select');
+                  $vaccine_add ->vaccine_availability = "No";
+                  $vaccine_add->save();
+                }
                
+              }else{
+
+                  $validate_other_vaccine = DB::table('vaccine')
+                  ->where('vaccine_type',"=",$request ->input ('add_vaccine_input'))
+                  ->get();
+
+                  if( $validate_other_vaccine->isNotEmpty()){
+                    alert()->error('Vaccine Already Exist!')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+                    return redirect()->back();
+                  }else{
+                    $vaccine_add ->vaccine_availability = "No";
+                    $vaccine_add->save();
+                  }
+               
+
               }
 
-              $vaccine_add ->vaccine_availability = "No";
-              $vaccine_add->save();
+            
               alert()->success('Successfully Added')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
         // }
       //   else{
@@ -146,35 +175,62 @@ class ServicesController extends Controller
        
       }
 
+
       if ($request ->input ('add_vaccine_category_input') != null){
-
-        $count_categories_vaccine = DB::table('categories_vaccine')
-        ->count();
-
-      
-          if ($count_categories_vaccine <3){
-            $vaccine_category_add = new Category();
           
-            $vaccine_category_add ->category_availability = "";
-            $vaccine_category_add ->service_id = $request ->input ('service_select_id');
-            $vaccine_category_add ->category = $request ->input ('add_vaccine_category_input');
-            $vaccine_category_add->save();
-            alert()->success('Successfully Added')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
-          }else{
-            alert()->error('Error!','You can add vaccine to "OTHERS Category"')->showConfirmButton()->buttonsStyling(true);
-            return redirect()->back();
-          }
+        $validate_categories_vaccine = DB::table('categories_vaccine')->where('category',"=",$request ->input ('add_vaccine_category_input'))->get();
+
+        
+       if($validate_categories_vaccine->isNotEmpty()){
+          alert()->error('Category already Exist!')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+
+          return redirect()->back();
+
+       }else{
+          $count_categories_vaccine = DB::table('categories_vaccine')
+          ->count();
+
+        
+            if ($count_categories_vaccine <3){
+              $vaccine_category_add = new Category();
+            
+              $vaccine_category_add ->category_availability = "";
+              $vaccine_category_add ->service_id = $request ->input ('service_select_id');
+              $vaccine_category_add ->category = $request ->input ('add_vaccine_category_input');
+              $vaccine_category_add->save();
+              alert()->success('Successfully Added')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+            }else{
+              alert()->error('Error!','You can add vaccine to "OTHERS Category"')->showConfirmButton()->buttonsStyling(true);
+              return redirect()->back();
+            }
+       }
+
+        
        
       }
     
       if ($request ->input ('add_other_services_input') != null){
-        $add_other_services = new Other_Services();
-        $add_other_services ->other_services_availability = "No";
-        $add_other_services ->service_id = $request ->input ('add_other_services_input_id');
-        $add_other_services ->other_services_slot = $request ->input ('add_others_service_slot');
-        $add_other_services ->other_services = $request ->input ('add_other_services_input');
-        $add_other_services->save();
-        alert()->success('Successfule Added')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+
+        $validate_other_services = DB::table('other_services')
+        ->where('other_services',$request ->input ('add_other_services_input'))
+        ->get();
+
+        
+        if($validate_other_services->isNotEmpty()){
+          alert()->error('Already Exist!')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+          return redirect()->back();
+
+        }else{
+          $add_other_services = new Other_Services();
+          $add_other_services ->other_services_availability = "No";
+          $add_other_services ->service_id = $request ->input ('add_other_services_input_id');
+          $add_other_services ->other_services_slot = $request ->input ('add_others_service_slot');
+          $add_other_services ->other_services = $request ->input ('add_other_services_input');
+          $add_other_services->save();
+          alert()->success('Successfule Added')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+        }
+
+    
     }
 
 

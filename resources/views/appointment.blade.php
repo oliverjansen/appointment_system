@@ -28,7 +28,52 @@
 </head>
 <body>
   
-  <!-- modal view-->
+  <!-- modal recheck dup-->
+
+  <div class="modal fade" id="recheckup_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Re-CheckUp</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        <form action=" {{ route('update_checkup') }} " method="POST" class="m-2">
+            @csrf
+            {{ csrf_field() }}
+            <input type="text" id="user_id" name="user_id" >
+
+
+        <div class="form-group" id="require_checkup" name="require_checkup">
+            <label for="service" class="col-form-label">Required</label>
+                <div class="form-check ">
+                    <input class="form-check-input" type="radio" name="require"  value="yes">
+                    <label class="form-check-label" for="Yes" >
+                    Yes
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="require" value="no">
+                    <label class="form-check-label" for="No" >
+                    No
+                    </label>
+              </div>    
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-danger btn-sm w-25">Save</button>
+            <button type="button" class="btn btn-primary btn-sm w-25" data-dismiss="modal">cancel</button>
+            
+        </div>
+        </form>
+    </div>
+   
+    </div>
+    </div>
+</div>
+
 
 
 <!-- Modal -->
@@ -283,25 +328,25 @@
         @endif
     </div>
     @if(Auth::User()->account_type == 'admin')
-    <div class="container-fluid mb-2" style="">
-        <div class="row justify-content-end ">
-          <form action="{{route('appointment_pdf')}}" method="POST" class=" col-12 col-lg-2 text-center mb-2 mb-lg-0 p-0" target="__blank">
-            @csrf
-              {{ csrf_field() }}
-            <button type="submit" class="btn w-100 btn-sm btn-primary bi bi-filetype-pdf" > Generate PDF</button>
+        <div class="container-fluid mb-2" style="">
+            <div class="row justify-content-end ">
+              <form action="{{route('appointment_pdf')}}" method="POST" class=" col-12 col-lg-2 text-center mb-2 mb-lg-0 p-0" target="__blank">
+                @csrf
+                  {{ csrf_field() }}
+                <button type="submit" class="btn w-100 btn-sm btn-primary bi bi-filetype-pdf" > Generate PDF</button>
 
-          </form>
+              </form>
 
-          <form action="{{route('appointment_excel')}}" method="POST" class="col-12 col-lg-2 text-center p-0 mr-lg-2" target="__blank ">
-            @csrf
-            {{ csrf_field() }}
-            <button class="btn btn-sm btn-primary w-100 bi bi-file-earmark-spreadsheet ml-lg-1 " style=""> Generate Excel</button> 
-          </form>
-       
+              <form action="{{route('appointment_excel')}}" method="POST" class="col-12 col-lg-2 text-center p-0 mr-lg-2" target="__blank ">
+                @csrf
+                {{ csrf_field() }}
+                <button class="btn btn-sm btn-primary w-100 bi bi-file-earmark-spreadsheet ml-lg-1 " style=""> Generate Excel</button> 
+              </form>
+          
+            </div>
+
+        
         </div>
-
-     
-    </div>
     @endif
     <div class="row">
       <div class=" col col-12 col-lg-12">
@@ -373,7 +418,79 @@
           </div> 
         </div> 
      </div>    
-    </div>    
+    </div>
+
+    @if(Auth::User()->account_type=='admin')
+    <div class="row mt-5">
+      <div class=" col col-12 col-lg-12">
+        <div class="card shadow-sm mb-5" style="">
+          <div class=" card-header text-center p-3 font-weight-bold bg-semi-grey">
+            Re-Checkup
+          </div>
+          <div class="card-body table-responsive w-100" >
+                <table class="table table-hover table-striped " id="re-checkup_table" >
+                  <thead class="">
+                      <tr class="">
+                        <th scope="col" class="text-center">Email</th>
+                        <th scope="col" class="text-center">Services</th>
+                        <th scope="col" class="text-center">Category</th>
+                        <th scope="col" class="text-center">Appoitnment Date</th>
+                        <th scope="col" class="text-center">Status</th>
+                        @if(Auth::User()->account_type == 'admin')
+                        <th scope="col" class="text-center">Action</th>
+                        @endif
+                      </tr>
+                  </thead>
+                  <tbody>
+                      @foreach($generan_checkup_residents as $data)
+                        <tr class="text-center ">
+                          <td>{{$data->email}}</td>
+                          <td>{{$data->appointment_services}}</td>
+                          <td>{{$data->appointment_vaccine_category}}
+                              @if($data->appointment_dose != null)
+                                @if($data->appointment_dose == "1")
+                                     , 1st Dose
+                                @elseif($data->appointment_dose == "2")
+                                     , 2nd Dose
+                                @elseif($data->appointment_dose == "3")
+                                    , Booster
+                                @else
+                                , {{$data->appointment_vaccine_type}} 
+                                @endif
+                                 
+                              @elseif($data->appointment_dose == null && $data->appointment_vaccine_type != null )
+                                , {{$data->appointment_vaccine_type}}
+                              @endif
+                          </td>
+                          <td>{{$newDateFormat3 = \Carbon\Carbon::parse($data->appointment_date)->format('d/m/Y');}}</td>
+                          <td>
+                            @if($data->appointment_status == "success")
+                            <small class="bg-success px-1 rounded text-white">   {{$data->appointment_status}}</small>
+                            @elseif($data->appointment_status == "expired")
+                            <small class="color-orange px-1 rounded text-white">   {{$data->appointment_status}}</small>
+                            @elseif($data->appointment_status == "pending")
+                            <small class="bg-warning px-1 rounded text-white">   {{$data->appointment_status}}</small>
+                            @elseif($data->appointment_status == "canceled")
+                            <small class="bg-danger  px-1 rounded text-white">   {{$data->appointment_status}}</small>
+
+                            @endif
+                            @if(Auth::User()->account_type == 'admin')
+                          </td>
+                          <td scope="row" colspan=2 class="d-flex justify-content-center ">
+                            <button class="btn btn-sm  btn-success mt-2 mt-lg-0 ml-2 recheckup_btn bi bi-pencil-square " value="{{$data->id}}" style=""></button>
+                            <button class="btn btn-sm  btn-danger mt-2 mt-lg-0 ml-2 delete_btn bi bi-trash3 " value="{{$data->id}}" style=""></button>
+                          
+                            @endif
+                          </td>
+                        </tr>
+                      @endforeach
+                  </tbody>
+                </table>
+          </div> 
+        </div> 
+     </div>    
+    </div>
+    @endif
 </div>
 
 
@@ -391,6 +508,41 @@
 
   $(document).ready(function () {
 
+    
+    $(document).on('click', '.recheckup_btn',function (e) {
+          e.preventDefault();
+
+          $('#recheckup_modal').modal('show');
+              var user_id = $(this).val();
+
+              console.log(user_id);
+              $('#user_id').val(user_id);
+                    
+                    $('#require_checkup').find(':radio[name=require][value="no"]').prop('checked', true);
+                     
+    //         $.ajax({
+    //               type: "GET",
+    //               url: "/admin/get_general_checkup/"+user_id,
+    //               success: function (response) {
+    //                   console.log(response);
+    //                 //   $('#user_phoneNo').val(response.user_id.user_contactnumber);
+    //                 //   $('#service').val(response.user_id.appointment_services);
+    //                 //   $('#user_id').val(response.user_id.user_id);
+
+                      
+    //                 //   if(response.service.availability == "Yes"){
+                    
+    //                 // $('#yesandno_service').find(':radio[name=choice_service][value="Yes"]').prop('checked', true);
+    //                 //   }else{
+    //                 //     $('#yesandno_service').find(':radio[name=choice_service][value="No"]').prop('checked', true);
+
+    //                 //   }
+    //               }
+    //           });
+         
+
+
+    });
 
     $(document).on('click', '.cancel_btn',function (e) {
         e.preventDefault();
@@ -439,8 +591,8 @@
                     $('#old_appointment_date').val(response.date[0].appointment_date);
                     $('#service_id').val(response.date[0].service_id);
                     $('#datepicker').val(response.date[0].appointment_date);
-                    $('#available_slot_reschedule').val(response.date[0].appointment_availableslot);
-                    $('#available_slot_reschedule_text').text(response.date[0].appointment_availableslot);
+                    // $('#available_slot_reschedule').val(response.date[0].appointment_availableslot);
+                    // $('#available_slot_reschedule_text').text(response.date[0].appointment_availableslot);
                     $('#new_appointment_date').val(response.date[0].appointment_date);
                     $Mindate =  0;
                   if(response.today){
@@ -593,6 +745,11 @@
       $(document).ready( function () {
             $('#appointment_table').DataTable();
         });
+        $(document).ready( function () {
+     
+        $('#re-checkup_table').DataTable();
+
+      });
   });
 
 </script>

@@ -231,6 +231,8 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function() {
   Route::post('/appointment_excel', [AppointmentsController::class,'appointment_excel'])->name('appointment_excel');
   Route::get('/appointment_excel_view', [AppointmentExcelController::class,'index'])->name('appointment_excel_view');
 
+  Route::post('/update_checkup', [AppointmentsController::class,'update_checkup'])->name('update_checkup');
+  Route::get('/get_general_checkup/{id}', [AppointmentsController::class,'get_general_checkup'])->name('get_general_checkup');
 
   
 });
@@ -306,7 +308,13 @@ Route::get('/get_dose/{id}','App\Http\Controllers\CalendarController@get_dose')-
 
 Route::get('/', 'App\Http\Controllers\IndexController@index')->name('index');
 
+// Route::get('/verify', function () {
+//   return view('verify');
+// })->name('verify');
 
+
+// Route::post('/register', 'App\Http\Controllers\AuthController@create')->name('register_action');
+// Route::post('/verifys', 'App\Http\Controllers\AuthController@verify')->name('verify_action');
 
 
 // Route::middleware([

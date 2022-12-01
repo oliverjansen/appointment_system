@@ -6,15 +6,17 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
        <meta name="csrf-token" content="{{ csrf_token() }}">
-        {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" /> --}}
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script> --}}
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
-        <title>Document</title>
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/customize.css') }}" >
-    </head>
+           {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" /> --}}
+           <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+           {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script> --}}
+           <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+           <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+           <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+           
+           <title>Document</title>
+           <link rel="stylesheet" type="text/css" href="{{ asset('css/customize.css') }}" >
+           <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
+         </head>
     <body>
       
       <!-- modal view-->
@@ -157,7 +159,7 @@
       </div>
     
     
-      <div class="container   mb-5 table-responsive col-12 col-lg-9" style=" height:100%;">
+      <div class="container-fluid   mb-5 table-responsive col-12 col-lg-9" style=" height:100%;">
         <div>
           @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -171,13 +173,13 @@
         </div>
           @endif
           @if ($errors->any())
-          <div class="alert alert-danger">
-              <ul>
-                  @foreach ($errors->all() as $error)
-                  <li>{{ $error }}</li>
-                  @endforeach
-              </ul>
-            </div>
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+              </div>
             @endif
         </div>
           <div class="d-flex justify-content-end mb-3">
@@ -185,110 +187,60 @@
 
           </div>
     
-          <div class="col col-12 col-lg-12 shadow">
-    
-    
-              <div class="card-body table-responsive">
-                <table class="table table-hover w-100"  id="reistration_data" >
-                  <thead>
-                      <tr class="text-center">
-                        <th scope="col" class="text-center">Email</th>
-                        <th scope="col" class="text-center" >Fullname</th>
-                       
-                      </tr>
-                  </thead>
-                  <tbody>
-                      {{-- @foreach($datas as $data) --}}
-                          
-                            <tr class="text-center">
-                            <td></td>
-                          
-                            {{-- <td> <button class="btn btn-sm btn-info view bi bi-eye" value="{{$data->id}}"> --}}
-                              </button>
-                            </td>
-                            
-                  
-                    
-                            
-                            </tr>
-                          
-                      {{-- @endforeach --}}
-                  
-                  </tbody>
-                </table> 
-              </div>
-          
-           
-        </div>
+          <div class="row">
+            {{-- accounts table --}}
+            <div class="col col-12 col-lg-12">
+                <div class="card shadow-sm mb-5 pt-5" style="">
+              
+                  <div class="card-body table-responsive">
+                    <table class="table table-hover w-100"  id="announcement_table" >
+                      <thead>
+                          <tr class="text-center">
+                            <th scope="col" class="text-center">Title</th>
+                            <th scope="col" class="text-center" >Announcement</th>
+                            <th scope="col" class="text-center" >Publish Date</th>
+                            <th scope="col" class="text-center" >Unpublish Date</th>
+                            <th scope="col" class="text-center" >Status</th>
+                            <th scope="col" class="text-center" >Action</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          @foreach($announcement as $data)
+                              
+                                <tr class="text-center">
+                                <td>{{$data->title}}</td>
+                                <td>{{$data->body}}</td>
+                                <td>{{$data->publish_date}}</td>
+                                <td>{{$data->unpublish_date}}</td>
+                                <td>@if(Carbon\Carbon::today()->format('Y-m-d') >= $data->publish_date)
+                                      <small class="bg-success rounded p-1 text-white">posted</small>
+                                    @elseif(Carbon\Carbon::today()->format('Y-m-d') < $data->publish_date)
+                                      <small class="bg-warning rounded p-1 text-black">pending</small>
 
-          <div class="card shadow-sm mb-5" >
-            
-            {{-- <div class=" card-header text-center p-3 font-weight-bold 
-            bg-semi-grey">
-              Announcement
-            </div> --}}
-              <div class="panel panel-default mt-4" >
-                <div class="panel-body">
-                  <div class="container-fluid">
-                    {{-- <form action="{{route('search_appointments')}} " method="GET">
-                      @csrf
-                      {{ csrf_field() }}
-                      <div class="">
-                          <input type="search_appointments" name="search_appointments" id="search" class="form-control w-25 mb-3 float-right" placeholder="search">
-                          <button class="btn mt-1 float-right ">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-                                  <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-                              </svg>
-                          </button>
-                          </div>
-                      </form> --}}
-      
-                      <div class="mt-5">
-
-                        
-                       
-                        @foreach($announcement as $value)
-                          <div class="row ">
-                              <div class="card mb-3 col col-10 shadow border-dark" style="margin-left: auto; margin-right:auto;">
-                              <div class="row justify-content-end mt-2">
-                                <div class="col col-12 col-lg-2">
-                                  <small>Status:</small>
-                                
-                                  @if($value->publish_date <= $current_date)
-                                    <small class="bg-success p-1 rounded"> Posted</small>
-                                  @else()
-                                    <small class="bg-warning p-1 rounded"> Pending</small>
                                   @endif
-                                </div>
-                              </div>
-                                <div class="card-header bg-transparent ">
-                                  <div class="row">
-                                    <div class="col col-12 col-lg-9">
-                                      <b>Publish Date : </b>{{$value->publish_date}}
-                                    </div>
                                   
-                                  </div>
-                                </div>
-                                <div class="card-body text-dark ">
-                                  <h5 class="card-title font-weight-bold"><b>Title: </b>{{$value->title}}</h5>
-                                  <p class="card-text ">{{$value->body}}</p>
-                                </div>
-                                <div class="card-footer bg-transparent"><b>Until: </b>{{$value->unpublish_date}}
-                                  <div class="float-right">
-                                    <button class="btn btn-sm btn-success edit_announcement" value="{{$value->id}}">Edit</button> 
-                                    <button class="btn btn-sm btn-danger delete_btn" value="{{$value->id}}" >Delete</button> 
-                                  </div>
-                                  </div>
-                              </div>
-                          </div>
-                        @endforeach
-                      </div>
+                                
+
+                                
+
+                                <td>
+                                  <button class="btn btn-sm btn-success mt-2 mt-lg-0 ml-lg-1 edit_announcement bi-pencil-square" value="{{$data->id}}"></button>
+                                  <button class="btn btn-sm btn-danger mt-2 mt-lg-0 ml-lg-1 delete_btn bi bi-trash3" value="{{$data->id}}"></button>
+                                </td>
+
+                                
+                                </tr>
+                              
+                          @endforeach
+                      
+                      </tbody>
+                    </table> 
                   </div>
-                    
-                </div>
-              </div> 
-            <div class="card-body table-responsive">
+          
+            </div>
+          </div>
+
+        
       
           </div> 
       </div>       
@@ -298,6 +250,9 @@
     {{-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+    
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap4.min.js"></script>
    
     </body>
     </html>
@@ -306,6 +261,14 @@
     
   $(document).ready(function () {
     
+    $(document).ready( function () {
+            $('#announcement_table').DataTable();
+      });
+
+    
+
+
+
       $(document).on('click','.add_announcement',function(e){
         e.preventDefault();
 

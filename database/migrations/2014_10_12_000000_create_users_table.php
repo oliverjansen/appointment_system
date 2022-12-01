@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('gender')->nullable();
             $table->string('birthdate')->nullable();
             $table->string('age')->nullable();
+            $table->string('barangay')->nullable();
             $table->string('identification')->nullable();
             $table->string('identificationtype')->nullable();
             $table->string('contactnumber')->unique();

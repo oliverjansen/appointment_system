@@ -40,6 +40,8 @@ class RegistrationController extends Controller
           $datas = DB::table('users')
           ->where('account_type',"user")
           ->get();
+
+
           $workers_table = DB::table('users')->orwhere('account_type',"admin")->orwhere('account_type',"staff")->get();
 
         }

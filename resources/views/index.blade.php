@@ -105,7 +105,7 @@
                                 </div>
                             </div>
                             <div class="card-body text-dark ">
-                                <h5 class="card-title font-weight-bold">Title:{{$value->title}}</h5>
+                                <h5 class="card-title font-weight-bold">Title: {{$value->title}}</h5>
                                 <p class="card-text ">{{$value->body}}</p>
                             </div>
                         </div>
@@ -113,7 +113,7 @@
                 @endforeach
                  </div>
             </div>
-            <div class=" col-12 col-lg-10 mx-lg-auto" style="margin-top: 100px;">
+            <div class=" col-12 col-lg-10 mx-lg-auto" style="margin-top: 0px;">
                 <div class="mb-3 sm-text-center" style="border-bottom:2px solid green;"> <h2>Services</h2></div>
                 <div class="shadow rounded p-4 overflow-auto" style="height: 300px">
 
@@ -213,10 +213,7 @@
             
         </section>
       
-        
-        <footer class="bg-dark " style="margin-top: 100px; height:150px;">
-                {{-- <p  class="text-white m-auto">  </p> --}}
-        </footer>
+
 
 
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> 

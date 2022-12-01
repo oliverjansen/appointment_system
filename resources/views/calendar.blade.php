@@ -24,6 +24,10 @@
      .red-color {
         color:red;
     }
+    .bi-eye-slash:hover{
+        color:red;
+
+    }
     
 </style>
 
@@ -54,7 +58,7 @@
                         <div class="row mb-5">
                             <div class="col  mb-5 mb-sm-0">
                                 <div class="row col-12 d-flex justify-content-center" > 
-                                    <a href="" id="hide_qrcode"  name="hide_qrcode" style="visibility: hidden;">Hide</a>
+                                    <a href="" id="hide_qrcode"  class="bi bi-eye-slash red-color " name="hide_qrcode" style="visibility: hidden;"></a>
                                 </div>
                                 <div class="row col-12 d-flex justify-content-center" >
                                     <input type="text" id="input_text" name="input_text" autocomplete="off" hidden>
@@ -293,7 +297,7 @@
                                 <div class="mt-3" id="div_vaccine_type_kids">
                                     <label for="">Vaccine</label>
                                     <select name="vaccine_type_kids" id="vaccine_type_kids" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-                                        <option value="" disabled selected hidden>Select Others...</option>
+                                        <option value="" disabled selected hidden>Select Vaccine...</option>
                                         @foreach ($vaccine_kids as $value)
                                             @if($value->vaccine_availability == "Yes")
                                                 <option value="{{ $value->id }}"> 
@@ -331,6 +335,8 @@
                             
                                     <div class="mt-3" id="div_vaccine_type_others">
                                         <label for="">Others</label>
+                                          
+
                                             <select name="vaccine_type_others" id="vaccine_type_others" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                                                 <option value="" disabled selected hidden>Select Others...</option>
                                                 @foreach ($vaccine_others as $value)
@@ -339,7 +345,7 @@
                                                             {{ $value->vaccine_type }}
                                                         </option>
                                                     @endif
-                                            @endforeach 
+                                                @endforeach 
                                             
                                             </select>
                                         </div>
@@ -352,7 +358,7 @@
                                             </select> 
 
                                     
-                                        </div>
+                                    </div>
                             <div class="mt-4"id="div_appointment_date">
                                     <label for="">Appointment Date</label>
                                     <input type="date" min="{{$current_date}}" max="{{$currentday_plus_30days}}" id="appointmentdate" name="appointmentdate" :value="old('appointmentdate')" required autofocus autocomplete="appointmentdate" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" >
@@ -505,8 +511,10 @@ $(document).ready(function () {
    
         $("#appointmentservice").on('change',function(e){
             e.preventDefault();
-           $id_selected_service = $("#appointmentservice").val();
             
+           $id_selected_service = $("#appointmentservice").val();
+           
+           $("#appointmentCategory").val("");
         //    console.log($id_selected_service);
        
 
@@ -627,6 +635,14 @@ $(document).ready(function () {
                             $("#div_appointmentCategory").show();
                             $("#div_vaccine_type_kids").hide();  
                             $("#div_vaccine_type_others").show();
+                            $("#div_vaccine_type_others").on('change',function(e){
+                                    e.preventDefault();
+                                    $('#appointmentdate').val("");
+                                    $('#available_slot').val("");
+                                    $('#availableslot').text("");
+                                    
+                        });
+
                             $("#div_vaccine_type_covid").hide();
                             $("#div_vaccine_dose").hide();  
 
@@ -656,6 +672,7 @@ $(document).ready(function () {
 
                 $("#div_vaccine_type_kids").hide();  
                 $("#div_vaccine_type_others").hide();  
+
                 $("#div_appointmentCategory").hide();
                 $("#div_laboratory").hide();
                 $("#div_vaccine_type_covid").hide(); 

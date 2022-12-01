@@ -31,13 +31,13 @@ return new class extends Migration
             $table->string('appointment_vaccine_type')->nullable();
             // $table->string('appointment_covid_dose')->nullable();
             // $table->string('appointment_medicine')->nullable();
-            $table->string('appointment_concern')->nullable();
+            // $table->string('appointment_concern')->nullable();
             // $table->string('appointment_information')->nullable();
-            $table->string('appointment_message')->nullable();
-            $table->integer('appointment_queue')->default(0);
-            $table->integer('appointment_availableslot')->nullable();
+            // $table->string('appointment_message')->nullable();
+            // $table->integer('appointment_queue')->default(0);
+            // $table->integer('appointment_availableslot')->nullable();
             $table->date('appointment_date')->nullable();
-            $table->dateTime('appointment_expiration_date')->nullable();
+            // $table->dateTime('appointment_expiration_date')->nullable();
             // $table->string('appointment_expired')->default("no");
             $table->string('appointment_status')->default("pending");
             $table->timestamps();

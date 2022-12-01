@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('pediatic_vaccine', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->string('pediatic_status')->nullable();
-            $table->timestamps();
-        });
+        // Schema::create('pediatic_vaccine', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->bigInteger('user_id')->unsigned();
+        //     $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+        //     $table->string('pediatic_status')->nullable();
+        //     $table->timestamps();
+        // });
     }
 
     /**

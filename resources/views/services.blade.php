@@ -226,7 +226,7 @@
 {{-- Edit modal Services--}}
 
     <div class="modal fade" id="edit_service_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Edit Service</h5>
@@ -1173,7 +1173,9 @@
        
         $("#vaccine_select").on('change',function(e){ 
             e.preventDefault(); 
-            
+            $("#add_vaccine_input").val(null);
+            $("#add_others_service_slot").val(null);
+            $("#add_vaccine_slot").val(null);
            
             var selected_vaccine = $(this).val();
       
@@ -1190,6 +1192,12 @@
        
         $("#service_select").on('change',function(e){ 
             e.preventDefault(); 
+            $("#add_vaccine_category_input").val(null);
+                $("#add_vaccine_input").val(null);
+                $("#add_vaccine_slot").val(null);
+                $("#add_other_services_input").val(null);
+                $("#add_others_service_slot").val(null);
+
             var service_select_id = $(this).val();
            
             $('#service_select_id').val(service_select_id);
@@ -1204,6 +1212,11 @@
                     $('#vaccine_field_whole').show();
                     $('#other_services_field').show();
                     // $("#add_vaccine_category_input").prop('required',true);
+                            $("#add_vaccine_category_input").prop('required',false);
+                            $("#add_vaccine_input").prop('required',false);
+                            $("#add_vaccine_slot").prop('required',false);
+                            $("#add_other_services_input").prop('required',false);
+                            $("#add_others_service_slot").prop('required',false);
 
                     if(response.service_id != null){
                         if (response.service_id.id =="1") {
@@ -1292,6 +1305,14 @@
         $("#column_select").on('change',function(e){ 
             e.preventDefault(); 
             var selected_column = $(this).val();
+
+            
+                $("#add_vaccine_category_input").val(null);
+                $("#add_vaccine_input").val(null);
+                $("#add_vaccine_slot").val(null);
+                $("#add_other_services_input").val(null);
+                $("#add_others_service_slot").val(null);
+
             if (selected_column == "category"){
                 $('#vaccine_field').hide();
                 $('#category_field').show();

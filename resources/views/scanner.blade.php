@@ -464,62 +464,75 @@
                                   url: "/admin/admin_get_appointment_id/"+content,
                                   success: function (response) {
                                       console.log(response);
+                                
+                                      console.log(response.valid);
+                                      if(response.valid == "1"){
+                                          var len = 0;
+                                          if(response['data'] != null){
+                                        
+                                              
+                                              len = response['data'].length;
+                                              
+                                              if(len > 0){
+                                                for(var i=0; i<1; i++){
+                                                      display_verification.style.display = "block";
+                                                      $('#appointment_id').val(response['data'][i].appointment_id);
+                                                      $('#appointment_id_hidden').val(response['data'][i].appointment_id);
+                                                      $('#appointment_id_hidden').val(response['data'][i].appointment_id);
+                                                      $('#appointment_services').val(response['data'][i].appointment_services);
+                                                      $('#appointment_services_hidden').val(response['data'][i].appointment_services);
+                                                      $('#appointment_services_id_hidden').val(response['data'][i].service_id);
 
-                            
-                                        var len = 0;
-                                        if(response['data'] != null){
-                                      
-                                             
-                                            len = response['data'].length;
-                                            
-                                            if(len > 0){
-                                              for(var i=0; i<1; i++){
-                                                display_verification.style.display = "block";
-                                                $('#appointment_id').val(response['data'][i].appointment_id);
-                                                $('#appointment_id_hidden').val(response['data'][i].appointment_id);
-                                                $('#appointment_id_hidden').val(response['data'][i].appointment_id);
-                                                $('#appointment_services').val(response['data'][i].appointment_services);
-                                                $('#appointment_services_hidden').val(response['data'][i].appointment_services);
-                                                $('#appointment_services_id_hidden').val(response['data'][i].service_id);
 
+                                                      $('#appointment_date').val(response['data'][i].appointment_date);
+                                                      $('#appointment_date_hidden').val(response['data'][i].appointment_date);
 
-                                                $('#appointment_date').val(response['data'][i].appointment_date);
-                                                $('#appointment_date_hidden').val(response['data'][i].appointment_date);
+                                                      $('#user_id').val(response['data'][i].user_id);
+                                                      // $('#user_contactnumber').val(response['data'][i].user_contactnumber);
+                                                      // $('#user_contactnumber_hidden').val(response['data'][i].user_contactnumber);
+                                                      $('#user_email').val(response['data'][i].email);
+                                                      $('#user_email_hidden').val(response['data'][i].email);
 
-                                                $('#user_id').val(response['data'][i].user_id);
-                                                // $('#user_contactnumber').val(response['data'][i].user_contactnumber);
-                                                // $('#user_contactnumber_hidden').val(response['data'][i].user_contactnumber);
-                                                $('#user_email').val(response['data'][i].email);
-                                                $('#user_email_hidden').val(response['data'][i].email);
-
-                                                  console.log(response['data'][i].email);
+                                                        console.log(response['data'][i].email);
+                                                          Swal.fire({
+                                                          icon: 'success',
+                                                          title: 'Appointment Found!',
+                                                          showConfirmButton: false,
+                                                          timer: 1500
+                                                        })
+                                                        scanner.stop();
+                                                        
+                                                      }
+                                                    // x.style.display = "none";
+                                                  }else{
                                                     Swal.fire({
-                                                    icon: 'success',
-                                                    title: 'Appointment Found!',
-                                                    showConfirmButton: false,
-                                                    timer: 1500
-                                                  })
-                                                  scanner.stop();
-                                                  
-                                                }
-                                                  // x.style.display = "none";
-                                                }else{
-                                                  Swal.fire({
+                                                      icon: 'error',
+                                                      title: 'Appointment Not Found',
+                                                      text: 'no existing record.',
+                                                      showConfirmButton: false,
+                                                      timer: 1500
+                                                
+                                                    })
+
+                                                        scanner.stop();
+                                                      display_verification.style.display = "none";
+                                                    console.log("dito");
+                                                  }
+                                              
+                                          }
+                                      }else if(response.valid == "2"){
+                                        Swal.fire({
                                                     icon: 'error',
                                                     title: 'Appointment Not Found',
-                                                    text: 'no existing record.',
-                                                    showConfirmButton: false,
-                                                    timer: 1500
+                                                    text: 'your appointment is not today.',
                                               
                                                   })
 
                                                   scanner.stop();
                                               display_verification.style.display = "none";
 
-                                                }
-                                            
-                                        }else {
-                                          Swal.fire({
+                                      }else if(response.valid == "0"){
+                                        Swal.fire({
                                                     icon: 'error',
                                                     title: 'Appointment Not Found',
                                                     text: 'no existing record.',
@@ -528,8 +541,10 @@
 
                                                   scanner.stop();
                                               display_verification.style.display = "none";
+                                      }
 
-                                        }
+
+                                      
                                       
                                     
                                   }, error: function(error) {
@@ -557,142 +572,164 @@
     @elseif(Auth::User()->account_type=='staff')
       <script>
         
-  function initQrCodeScanner(){
-                      
-                      var cancel = document.getElementById('cancel');
-                      var x = document.getElementById("preview");
-                      var display_verification = document.getElementById("display_verification");
+        function initQrCodeScanner(){
 
-                      if (x.style.display == "none") {
-                        x.style.display = "block";
-                      }
-                      
-                      let scanner = new Instascan.Scanner({ video: document.getElementById('preview'), continuous: true, mirror: false, captureImage: false, backgroundScan: true, refractoryPeriod: 1000, scanPeriod: 1 });
-                      
-                      Instascan.Camera.getCameras().then(function (cameras){
-                    if(cameras.length>0){
-                        scanner.start(cameras[0]);
-                        $('[name="options"]').on('change',function(){
-                            if($(this).val()==1){
-                                if(cameras[0]!=""){
-                                    scanner.start(cameras[0]);
-                                }else{
-                                    alert('No Front camera found!');
-                                }
-                            }else if($(this).val()==2){
-                                if(cameras[1]!=""){
-                                    scanner.start(cameras[1]);
-                                }else{
-                                    alert('No Back camera found!');
-                                }
-                            }
-                        });
-                    }else{
-                        console.error('No cameras found.');
-                        alert('No cameras found.');
-                    }
-                }).catch(function(e){
-                    console.error(e);
-                    alert(e);
-                });
+var cancel = document.getElementById('cancel');
+var x = document.getElementById("preview");
+var display_verification = document.getElementById("display_verification");
 
+
+if (x.style.display == "none") {
+  x.style.display = "block";
+}
+
+let opts = {
+  video: document.getElementById('preview'),
+ 
+}
+
+let scanner = new Instascan.Scanner(opts);
+
+
+
+Instascan.Camera.getCameras().then(function (cameras){
+if(cameras.length>0){
+  scanner.start(cameras[0]);
+  $('[name="options"]').on('change',function(){
+      if($(this).val()==1){
+          if(cameras[0]!=""){
+              scanner.start(cameras[0]);
+          }else{
+              alert('No Front camera found!');
+          }
+      }else if($(this).val()==2){
+          if(cameras[1]!=""){
+              scanner.start(cameras[1]);
+          }else{
+              alert('No Back camera found!');
+          }
+      }
+  });
+}else{
+  console.error('No cameras found.');
+  alert('No cameras found.');
+}
+}).catch(function(e){
+console.error(e);
+alert(e);
+});
+
+
+
+scanner.addListener('scan', content => {
+  // scanner.stop();
+  console.log(content);
+
+      $.ajax({
+        type: "GET",
+        url: "/staff/staff_get_appointment_id/"+content,
+        success: function (response) {
+            console.log(response);
       
-
-                      scanner.addListener('scan', content => {
-                        // scanner.stop();
-                        console.log(content);
-
-                            $.ajax({
-                              type: "GET",
-                              url: "/staff/staff_get_appointment_id/"+content,
-                              success: function (response) {
-                                  console.log(response);
-
-                        
-                                    var len = 0;
-                                    if(response['data'] != null){
-                                  
-                                         
-                                        len = response['data'].length;
-                                        
-                                        if(len > 0){
-                                          for(var i=0; i<1; i++){
-                                            display_verification.style.display = "block";
-                                            $('#appointment_id').val(response['data'][i].appointment_id);
-                                            $('#appointment_id_hidden').val(response['data'][i].appointment_id);
-                                            $('#appointment_id_hidden').val(response['data'][i].appointment_id);
-                                            $('#appointment_services').val(response['data'][i].appointment_services);
-                                            $('#appointment_services_hidden').val(response['data'][i].appointment_services);
-                                            $('#appointment_services_id_hidden').val(response['data'][i].service_id);
-
-
-                                            $('#appointment_date').val(response['data'][i].appointment_date);
-                                            $('#appointment_date_hidden').val(response['data'][i].appointment_date);
-
-                                            $('#user_id').val(response['data'][i].user_id);
-                                            // $('#user_contactnumber').val(response['data'][i].user_contactnumber);
-                                            // $('#user_contactnumber_hidden').val(response['data'][i].user_contactnumber);
-                                            $('#user_email').val(response['data'][i].email);
-                                            $('#user_email_hidden').val(response['data'][i].email);
-
-                                              console.log(response['data'][i].email);
-                                                Swal.fire({
-                                                icon: 'success',
-                                                title: 'Appointment Found!',
-                                                showConfirmButton: false,
-                                                timer: 1500
-                                              })
-                                              scanner.stop();
-                                           
-                                              
-                                            }
-                                              // x.style.display = "none";
-                                            }else{
-                                              Swal.fire({
-                                                icon: 'error',
-                                                title: 'Appointment Not Found',
-                                                text: 'no existing record.',
-                                                showConfirmButton: false,
-                                                timer: 1500
-                                          
-                                              })
-
-                                              scanner.stop();
-                                              display_verification.style.display = "none";
-
-                                            }
-                                        
-                                    }else {
-                                      Swal.fire({
-                                                icon: 'error',
-                                                title: 'Appointment Not Found',
-                                                text: 'no existing record.',
-                                          
-                                              })
-
-                                              scanner.stop();
-                                              display_verification.style.display = "none";
-
-                                    }
-                                  
-                                
-                              }, error: function(error) {
-                                console.log(error);
-                                }
-                            });
-
-
-                      
+            console.log(response.valid);
+            if(response.valid == "1"){
+                var len = 0;
+                if(response['data'] != null){
+              
                     
-                    });
-                  
-                      cancel.addEventListener('click', function () {
-                        scanner.stop();
-                        display_verification.style.display = "none";
+                    len = response['data'].length;
+                    
+                    if(len > 0){
+                      for(var i=0; i<1; i++){
+                            display_verification.style.display = "block";
+                            $('#appointment_id').val(response['data'][i].appointment_id);
+                            $('#appointment_id_hidden').val(response['data'][i].appointment_id);
+                            $('#appointment_id_hidden').val(response['data'][i].appointment_id);
+                            $('#appointment_services').val(response['data'][i].appointment_services);
+                            $('#appointment_services_hidden').val(response['data'][i].appointment_services);
+                            $('#appointment_services_id_hidden').val(response['data'][i].service_id);
 
-                      });
+
+                            $('#appointment_date').val(response['data'][i].appointment_date);
+                            $('#appointment_date_hidden').val(response['data'][i].appointment_date);
+
+                            $('#user_id').val(response['data'][i].user_id);
+                            // $('#user_contactnumber').val(response['data'][i].user_contactnumber);
+                            // $('#user_contactnumber_hidden').val(response['data'][i].user_contactnumber);
+                            $('#user_email').val(response['data'][i].email);
+                            $('#user_email_hidden').val(response['data'][i].email);
+
+                              console.log(response['data'][i].email);
+                                Swal.fire({
+                                icon: 'success',
+                                title: 'Appointment Found!',
+                                showConfirmButton: false,
+                                timer: 1500
+                              })
+                              scanner.stop();
+                              
+                            }
+                          // x.style.display = "none";
+                        }else{
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'Appointment Not Found',
+                            text: 'no existing record.',
+                            showConfirmButton: false,
+                            timer: 1500
+                      
+                          })
+
+                              scanner.stop();
+                            display_verification.style.display = "none";
+                          console.log("dito");
+                        }
+                    
+                }
+            }else if(response.valid == "2"){
+              Swal.fire({
+                          icon: 'error',
+                          title: 'Appointment Not Found',
+                          text: 'your appointment is not today.',
+                    
+                        })
+
+                        scanner.stop();
+                    display_verification.style.display = "none";
+
+            }else if(response.valid == "0"){
+              Swal.fire({
+                          icon: 'error',
+                          title: 'Appointment Not Found',
+                          text: 'no existing record.',
+                    
+                        })
+
+                        scanner.stop();
+                    display_verification.style.display = "none";
+            }
+
+
             
-              };  
+            
+          
+        }, error: function(error) {
+          console.log(error);
+          }
+      });
+
+
+
+
+});
+
+cancel.addEventListener('click', function () {
+  scanner.stop();
+  display_verification.style.display = "none";
+
+});
+
+};  
             
         
     

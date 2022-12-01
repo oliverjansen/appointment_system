@@ -13,6 +13,8 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\AppointmentDataExport;
+use App\Models\Vaccine;
+
 
 use Illuminate\Support\Facades\Auth;
 use PDF;
@@ -47,7 +49,6 @@ class AppointmentsController extends Controller
         ->orWhere('appointment_vaccine_category','LIKE','%'.$request->search_appointments.'%')
         ->orWhere('appointment_vaccine_type','LIKE','%'.$request->search_appointments.'%')
         ->orWhere('appointment_date','LIKE','%'.$request->search_appointments.'%')
-        ->orWhere('appointment_expiration_date','LIKE','%'.$request->search_appointments.'%')
         ->orWhere('appointment_status','LIKE','%'.$request->search_appointments.'%')
         ->get();
       }else{
@@ -55,13 +56,23 @@ class AppointmentsController extends Controller
         $appointments_admin = DB::table('users')
         ->join('appointments','users.id',"=",'appointments.user_id')
         ->get();
+
+        $generan_checkup_residents = DB::table('appointments')
+        ->join('users','users.id','=','appointments.user_id')
+        ->where('appointment_vaccine_category','LIKE','%general check%')
+        ->where('appointment_status',"success")
+        ->groupBy('user_id')
+        ->get();
+
+  
+
       }
 
   
         if(Auth::User()->account_type=='admin'){
-            return view('appointment',compact('appointments_admin','user'));
+            return view('appointment',compact('appointments_admin','user','generan_checkup_residents'));
         }elseif(Auth::User()->account_type=='staff'){
-          return view('appointment',compact('appointments_admin','user'));
+          return view('appointment',compact('appointments_admin','user','generan_checkup_residents'));
         }else{
             return redirect()->route('appointment');
           }
@@ -122,10 +133,15 @@ class AppointmentsController extends Controller
               return redirect()->back();
             }else{
     
+              // $service_slot=  DB::table('services')
+              // ->where('id',$request_service)->get();
+              // $appointment_slot =  DB::table('appointments')
+              // ->where('appointment_availableslot','<=',0)->get();
+
               $service_slot=  DB::table('services')
               ->where('id',$request_service)->get();
               $appointment_slot =  DB::table('appointments')
-              ->where('appointment_availableslot','<=',0)->get();
+              ->get();
     
               foreach ($appointment_slot as $value) {
                 if ($value->service_id == $request_service) {
@@ -323,10 +339,27 @@ class AppointmentsController extends Controller
                           foreach ($vaccine_id as $value) {
                            $vaccine_type = $value->vaccine_type;
                            }
-                          $appointment ->appointment_availableslot = $slot-1;
+                          // $appointment ->appointment_availableslot = $slot-1;
                           $appointment ->appointment_vaccine_type = $vaccine_type;
                           $appointment ->appointment_dose = $request_dose;
                   
+                      
+                    }else if($categories_id > 2) {
+
+                      // $appointment ->appointment_vaccine_type = $vaccine_type;
+                      $id = $request ->input ('vaccine_type_others');
+                      $slot = $request ->input ('available_slot');
+
+                      $vaccine_other_category_id = Vaccine::find($id);
+
+
+                      $kk = DB::table('vaccine')
+                          ->where('id',$vaccine_other_category_id->id)
+                          ->update(['vaccine_slot'=> $slot-1]);
+                      
+                      $appointment ->service_category_id = $vaccine_other_category_id->id;
+
+                      $appointment ->appointment_vaccine_type = $vaccine_other_category_id->vaccine_type;
                       
                     }
     
@@ -374,7 +407,7 @@ class AppointmentsController extends Controller
                     DB::table('other_services')
                     ->where('id',$id)
                     ->update(['other_services_slot'=>$slot-1]);
-                    $appointment ->appointment_availableslot = $slot-1;
+                    // $appointment ->appointment_availableslot = $slot-1;
     
                   
                   $request_other_service = $request ->get('appointment_service_others');
@@ -494,7 +527,7 @@ class AppointmentsController extends Controller
 // dd($id);
 $empty_date_slot_others= DB::table('vaccine')->where('id',$id)->get();
 foreach ($empty_date_slot_others as $value) {
-  $slot_other_service = $value->vaccine_slot;
+      $slot_other_service = $value->vaccine_slot;
 }
   
      
@@ -551,7 +584,7 @@ foreach ($empty_date_slot_others as $value) {
     ->where('appointment_status',"pending")
     ->where('appointment_date',$new_appointment_date)
     ->groupBy('appointment_id')
-    ->get(['appointment_availableslot']);
+    ->get();
 
     $appointment_Nodate_category2= DB::table('appointments')
     ->join('categories_vaccine','appointments.service_id',"=",'categories_vaccine.service_id')
@@ -576,11 +609,12 @@ foreach ($empty_date_slot_others as $value) {
     ->where('appointment_status',"pending")
     ->where('appointment_date',$new_appointment_date)
     ->groupBy('appointment_id')
-    ->get(['appointment_availableslot']);
+    ->get();
+    // ->get(['appointment_availableslot']);
 
     if($appointment_Nodate_category1->isNotEmpty()){
         foreach ($appointment_Nodate_category1 as $value) {
-          $slot_schedule = $value->appointment_availableslot;
+          // $slot_schedule = $value->appointment_availableslot;
         }
     }else if ($appointment_Nodate_category2->isNotEmpty()){
       foreach ($appointment_Nodate_category2 as $value) {
@@ -592,7 +626,7 @@ foreach ($empty_date_slot_others as $value) {
       }
     }else if($appointment_Nodate_category4->isNotEmpty()){
       foreach ($appointment_Nodate_category4 as $value) {
-        $slot_schedule = $value->appointment_availableslot;
+        // $slot_schedule = $value->appointment_availableslot;
       }
     }
    
@@ -719,18 +753,19 @@ public function reschedule_appointment(Request $request){
        
         //walang existing na date
           if($new->isEmpty()){
-              appointments::where('appointment_id',$appointment_id)->where('appointment_status',"pending")->where('service_id',$service_id )->update(['appointment_date' => $new_appointment_date, 'appointment_availableslot'=> $new_appointment_slot-1]);
+              appointments::where('appointment_id',$appointment_id)->where('appointment_status',"pending")->where('service_id',$service_id )->update(['appointment_date' => $new_appointment_date]);
             
           }else{
 
-            appointments::where('appointment_date',$old_appointment_date)->where('appointment_status',"pending")->where('service_id',$service_id )->where('appointment_id',$appointment_id)->update(['appointment_date' => $new_appointment_date,'appointment_availableslot'=> $new_appointment_slot-1] );
+            // appointments::where('appointment_date',$old_appointment_date)->where('appointment_status',"pending")->where('service_id',$service_id )->where('appointment_id',$appointment_id)->update(['appointment_date' => $new_appointment_date,'appointment_availableslot'=> $new_appointment_slot-1]);
             
-            appointments::where('appointment_date',$new_appointment_date)->where('appointment_status',"pending")->where('service_id',$service_id )->update(['appointment_availableslot'=> $new_appointment_slot-1]);
+
+            // appointments::where('appointment_date',$new_appointment_date)->where('appointment_status',"pending")->where('service_id',$service_id )->update(['appointment_availableslot'=> $new_appointment_slot-1]);
           
           }
 
         }else{
-          appointments::where('appointment_date',$new_appointment_date)->where('appointment_status',"pending")->where('service_id',$service_id )->update(['appointment_date' => $old_appointment_date, 'appointment_availableslot'=> $new_appointment_slot-1]);
+          // appointments::where('appointment_date',$new_appointment_date)->where('appointment_status',"pending")->where('service_id',$service_id )->update(['appointment_date' => $old_appointment_date, 'appointment_availableslot'=> $new_appointment_slot-1]);
         }
         
         $message ="Your Appointment has been Rescheduled!";
@@ -756,7 +791,7 @@ public function reschedule_appointment(Request $request){
     }else{
       $message = $request->input('cancel_message');
     }
-    $canceled_appointment_id ->appointment_message = $message;
+    // $canceled_appointment_id ->appointment_message = $message;
     $canceled_appointment_id->update();
   
 // ------------------------------------------------------------------------------------
@@ -787,7 +822,7 @@ public function reschedule_appointment(Request $request){
       }else{
         $message = $request->input('cancel_message');
       }
-      $canceled_appointment_id ->appointment_message = $message;
+      // $canceled_appointment_id ->appointment_message = $message;
       $canceled_appointment_id ->appointment_status = "canceled";
       $canceled_appointment_id->update();
     
@@ -827,15 +862,7 @@ public function reschedule_appointment(Request $request){
      * @param Number $recipients Number of recipient
      */
     
-    private function sendMessage($message, $recipient)
-    {
-      
-        $account_sid = getenv("TWILIO_SID");
-        $auth_token = getenv("TWILIO_AUTH_TOKEN");
-        $twilio_number = getenv("TWILIO_NUMBER");
-        $client = new Client($account_sid, $auth_token);
-        $client->messages->create($recipient, ['from' => $twilio_number, 'body' => $message]);
-    }
+
 
 
     public function service_appointment($id){
@@ -877,6 +904,60 @@ public function reschedule_appointment(Request $request){
     return redirect()->back();
  
 
+  }
+
+  public function get_general_checkup($id){
+
+    // $checkup = DB::table('appointments')
+    // ->where('appointment_vaccine_category','LIKE','%general check%')
+    // ->first();
+    // dd($checkup->);
+    // return response()->json([
+
+    //   'checkup'=> $checkup,
+
+    //     ]);
+  }
+
+  public function update_checkup(Request $request){
+
+    $user_id =$request->input('user_id');
+
+    $find = appointments::find($user_id);
+
+    if($request->input('require') == "yes"){
+        $user_has_checkup = DB::table('appointments')
+        ->where('appointment_vaccine_category','LIKE','%general check%')
+        ->where('appointment_status',"success")
+        ->where('user_id',$user_id)
+        ->update(['appointment_status'=>"expired"]);
+
+  
+
+        alert()->success('Successfully Edited','Resident has been notified about the changes.')->showConfirmButton()->buttonsStyling(true);
+        return redirect()->back();
+
+
+    }else{
+      alert()->success('No changes has been made')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+
+      return redirect()->back();
+
+    }
+
+
+
+
+  }
+
+  private function sendMessage($message, $recipient)
+  {
+    
+      $account_sid = getenv("TWILIO_SID");
+      $auth_token = getenv("TWILIO_AUTH_TOKEN");
+      $twilio_number = getenv("TWILIO_NUMBER");
+      $client = new Client($account_sid, $auth_token);
+      $client->messages->create($recipient, ['from' => $twilio_number, 'body' => $message]);
   }
   
     

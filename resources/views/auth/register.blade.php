@@ -49,115 +49,214 @@
         </div>
         <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data" class="mt-5">
             @csrf
-        <div class="container">
-          <div class="row">
-                <div class="col col-12 col-lg-4">
-                    <x-jet-label for="firstname" class="mt-2" value="{{ __('First Name') }}" />
-                    <x-jet-input id="firstname" class="block mt-1 w-full" type="text" name="firstname" :value="old('firstname')" required autofocus autocomplete="firstname" />
+            <div class="container">
+            <div class="row">
+                    <div class="col col-12 col-lg-4">
+                        <x-jet-label for="firstname" class="mt-2" value="{{ __('First Name') }}" />
+                        <x-jet-input id="firstname" class="block mt-1 w-full" type="text" name="firstname" :value="old('firstname')" required autofocus autocomplete="firstname" />
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <x-jet-label for="middlename" class="mt-2" value="{{ __('Middle Name') }}" />
+                        <x-jet-input id="middlename" class="block mt-1 w-full" type="text" name="middlename" :value="old('middlename')" required autofocus autocomplete="middlename" />
+                </div>
+                    <div class="col-12 col-lg-4 ">
+                        <x-jet-label for="lastname" class="mt-2" value="{{ __('Last Name') }}" />
+                        <x-jet-input id="lastname" class="block mt-1 w-full" type="text" name="lastname" :value="old('lastname')" required autofocus autocomplete="lastname" />
+                    </div>
+                </div>
+                <div class="row">
+                <div class="col-12 col-lg-4 second-row">
+                    <x-jet-label for="age"  class="mt-2" value="{{ __('Age') }}" />
+                    <x-jet-input id="age" class="block mt-1 w-full" type="text" name="age" :value="old('age')" required autofocus autocomplete="age" />
+                </div>
+                <div class="col-12 col-lg-4 mt-2">
+                    <x-jet-label for="gender" class="" value="{{ __('Gender') }}" />
+                    <select name="gender" id="gender" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
                 </div>
                 <div class="col-12 col-lg-4">
-                    <x-jet-label for="middlename" class="mt-2" value="{{ __('Middle Name') }}" />
-                    <x-jet-input id="middlename" class="block mt-1 w-full" type="text" name="middlename" :value="old('middlename')" required autofocus autocomplete="middlename" />
-               </div>
-                <div class="col-12 col-lg-4 ">
-                    <x-jet-label for="lastname" class="mt-2" value="{{ __('Last Name') }}" />
-                    <x-jet-input id="lastname" class="block mt-1 w-full" type="text" name="lastname" :value="old('lastname')" required autofocus autocomplete="lastname" />
-                </div>
-            </div>
-            <div class="row">
-            <div class="col-12 col-lg-4 second-row">
-                <x-jet-label for="age"  class="mt-2" value="{{ __('Age') }}" />
-                <x-jet-input id="age" class="block mt-1 w-full" type="text" name="age" :value="old('age')" required autofocus autocomplete="age" />
-            </div>
-            <div class="col-12 col-lg-4 mt-2">
-                <x-jet-label for="gender" class="" value="{{ __('Gender') }}" />
-                <select name="gender" id="gender" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                </select>
-            </div>
-            <div class="col-12 col-lg-4">
-                <x-jet-label for="birthdate" class="mt-2" value="{{ __('Birthdate') }}" />
+                    <x-jet-label for="birthdate" class="mt-2" value="{{ __('Birthdate') }}" />
 
-                <input type="date" id="birthdate" name="birthdate" :value="old('birthdate')" required autofocus autocomplete="birthdate" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-            </div>
+                    <input type="date" id="birthdate" name="birthdate" :value="old('birthdate')" required autofocus autocomplete="birthdate" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                </div>
+            
+                </div>
+
         
-            </div>
+                <div class="mb-2 mt-3">
+                    <x-jet-label for="contactnumber" class="mt-3 " value="{{ __('CellPhone No') }}" />
+                    <div class="flex">
+                        <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                        +63
+                        </span>
+                        <input type="text" id="contactnumber" name="contactnumber" :value="old('contactnumber')" required autofocus autocomplete="contactnumber" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:ring-indigo-200 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-opacity-50 dark:focus:ring-indigo-200" placeholder="">
+                    </div>
+                    
+                </div>
 
+                
+                <div class="row">
+                    {{-- <div class="col-12 col-lg-6">
+                        <x-jet-label for="contactnumber" class="mt-3 " value="{{ __('Contact Number') }}" />
+                        <x-jet-input id="contactnumber" class="block mt-1 w-full" type="text" name="contactnumber" :value="old('contactnumber')" required autofocus autocomplete="contactnumber" />
+                    </div> --}}
+                     <div class="col-12 col-lg-8">
+                        <x-jet-label for="address" class="mt-3" value="{{ __('Address') }}" />
+                        <x-jet-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address')" required autofocus autocomplete="address" />
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <x-jet-label for="barangay" class="ml-1 mt-3" value="{{ __('Barangay') }}" />
+                        <x-jet-input id="barangay" class="block mt-1 w-full" type="text" name="barangay" :value="old('barangay')" required autofocus autocomplete="barangay" />
+                    </div>
+                </div>
+                <div class="row">
+                 
+                </div>
+                <div class="row mt-2">
+                    <div class="col col-12">
+                        <x-jet-label for="email" class="mt-2" value="{{ __('Email') }}" />
+                        <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
+                    </div>
+                </div>
+            
+                <div class="row ">
+                <div class="col">
+                    <x-jet-label for="password" class="mt-2" value="{{ __('Password') }}" />
+                    <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+                </div> 
+            </div>
             <div class="row">
-                <div class="col-12 col-lg-6">
-                    <x-jet-label for="contactnumber" class="mt-3" value="{{ __('Contact Number') }}" />
-                    <x-jet-input id="contactnumber" class="block mt-1 w-full" type="text" name="contactnumber" :value="old('contactnumber')" required autofocus autocomplete="contactnumber" />
-                </div>
-                <div class="col-12 col-lg-6">
-                    <x-jet-label for="address" class="mt-3" value="{{ __('Address') }}" />
-                    <x-jet-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address')" required autofocus autocomplete="address" />
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col col-12">
-                    <x-jet-label for="email" class="mt-2" value="{{ __('Email') }}" />
-                    <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
-                </div>
-            </div>
-          
-            <div class="row ">
-            <div class="col">
-                <x-jet-label for="password" class="mt-2" value="{{ __('Password') }}" />
-                <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <x-jet-label for="password_confirmation" class="mt-2" value="{{ __('Confirm Password') }}" />
-                <x-jet-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
-            </div>
-        </div>
-            <div class="row mt-2">
                 <div class="col">
-                    <x-jet-label for="identificationtype" class="" value="{{ __('Identification Type') }}" />
-                    <x-jet-input id="identificationtype" class="block mt-1 w-full" type="text" name="identificationtype" :value="old('identificationtype')" required autofocus autocomplete="identificationtype" />
+                    <x-jet-label for="password_confirmation" class="mt-2" value="{{ __('Confirm Password') }}" />
+                    <x-jet-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
                 </div>
-            </div> 
-            <div class="row mt-2">
-                <div class="col">
-                <input type="file" id="identification" name="identification" class="">
-
-                </div>
-                {{-- <x-jet-label for="identification" value="{{ __('Identification') }}" />
-                <!-- <x-jet-input id="identification" class="block mt-1 w-full" type="text" name="identification" :value="old('identification')" required /> --> --}}
             </div>
-        </div>
- 
+                <div class="row mt-2 mb-4">
+                    <div class="col">
+                        <x-jet-label for="identificationtype" class="" value="{{ __('Identification Type') }}" />
+                        <select name="identificationtype" id="identificationtype" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" :value="old('identificationtype')" required autofocus autocomplete="identificationtype">
+                            <option value="">Select Identification.. </option>
+                            <option value="drivers license">Driver’s License </option>
+                            <option value="Passport">Passport </option>
+                            <option value="PhilHealth Card">PhilHealth Card </option>
+                            <option value="PRC ID">PRC ID </option>
+                            <option value="SSS ID">SSS ID</option>
+                            <option value="UMID">UMID</option>
+                            <option value="Voter’s ID">Voter’s ID</option>
+                            <option value="PSA">PSA</option>
+                            {{-- <option value="Others">Others</option> --}}
 
-            @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
-                <div class="mt-4">
-                    <x-jet-label for="terms">
-                        <div class="flex items-center">
-                            <x-jet-checkbox name="terms" id="terms"/>
+                        </select>
+              
+                    
+                    </div>
+                    
+                                   
+                                        
+                               
+                                
+                </div> 
+                <div class="row mt-2">
+                    <div class="col">
+                        
+                    <input type="file" id="identification" name="identification" class="">
+                    </div>
+                </div> 
+            </div>
+    
 
-                            <div class="ml-2">
-                                {!! __('I agree to the :terms_of_service and :privacy_policy', [
-                                        'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-sm text-gray-600 hover:text-gray-900">'.__('Terms of Service').'</a>',
-                                        'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-sm text-gray-600 hover:text-gray-900">'.__('Privacy Policy').'</a>',
-                                ]) !!}
+                @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
+                    <div class="mt-4">
+                        <x-jet-label for="terms">
+                            <div class="flex items-center">
+                                <x-jet-checkbox name="terms" id="terms"/>
+
+                                <div class="ml-2">
+                                    {!! __('I agree to the :terms_of_service and :privacy_policy', [
+                                            'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-sm text-gray-600 hover:text-gray-900">'.__('Terms of Service').'</a>',
+                                            'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-sm text-gray-600 hover:text-gray-900">'.__('Privacy Policy').'</a>',
+                                    ]) !!}
+                                </div>
                             </div>
-                        </div>
-                    </x-jet-label>
+                        </x-jet-label>
+                    </div>
+                @endif
+
+                <div class="flex items-center justify-end mt-4">
+                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
+                        {{ __('Already registered?') }}
+                    </a>
+
+                    <x-jet-button class="ml-4">
+                        {{ __('Register') }}
+                    </x-jet-button>
                 </div>
-            @endif
-
-            <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
-                </a>
-
-                <x-jet-button class="ml-4">
-                    {{ __('Register') }}
-                </x-jet-button>
             </div>
-        </div>
-        </form>
+        </form> 
+
+
+        {{-- <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">{{ __('Register') }}</div>
+                        <div class="card-body">
+                            <form method="POST" action="{{ route('register_action') }}">
+                                @csrf
+                                <div class="form-group row">
+                                    <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+                                    <div class="col-md-6">
+                                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                        @error('name')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="contactnumber" class="col-md-4 col-form-label text-md-right">{{ __('Phone Number') }}</label>
+                                    <div class="col-md-6">
+                                        <input id="contactnumber" type="tel" class="form-control @error('contactnumber') is-invalid @enderror" name="contactnumber" value="{{ old('contactnumber') }}" required>
+                                        @error('contactnumber')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                                    <div class="col-md-6">
+                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                                        @error('password')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+                                    <div class="col-md-6">
+                                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-0">
+                                    <div class="col-md-6 offset-md-4">
+                                        <button type="submit" class="btn btn-primary">
+                                            {{ __('Register') }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> --}}
     </x-jet-authentication-card>
 </x-guest-layout>
 

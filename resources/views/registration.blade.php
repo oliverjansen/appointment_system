@@ -180,7 +180,7 @@
   <div class="container-fluid text-center  pt-5  pb-3 p-lg-5 mt-4 mb-4 ">
     <h3 class="fw-bolder bg-dark bg-opacity-10 text-light p-4
     ">RESIDENTS</h3>
-</div>
+  </div>
   
   <div class="container-fluid col-12 col-lg-10" style="height:100%;">
       <div>

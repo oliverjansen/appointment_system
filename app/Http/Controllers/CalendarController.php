@@ -328,7 +328,7 @@ public function delete_appointment(Request $request){
                 ->where('service_id',$service_id)
                 ->get(['vaccine_slot']);
 
-           
+                
                foreach ($update_slot as $value) {
                 $slot = $value->vaccine_slot;
                }
