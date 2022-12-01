@@ -34,7 +34,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
     <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Re-CheckUp</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Follow-Up Checkup</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
         </button>
@@ -44,7 +44,7 @@
         <form action=" {{ route('update_checkup') }} " method="POST" class="m-2">
             @csrf
             {{ csrf_field() }}
-            <input type="text" id="user_id" name="user_id" >
+            <input type="text" id="user_id" name="user_id" hidden>
 
 
         <div class="form-group" id="require_checkup" name="require_checkup">
@@ -421,21 +421,19 @@
     </div>
 
     @if(Auth::User()->account_type=='admin')
-    <div class="row mt-5">
+    {{-- <div class="row mt-5">
       <div class=" col col-12 col-lg-12">
         <div class="card shadow-sm mb-5" style="">
           <div class=" card-header text-center p-3 font-weight-bold bg-semi-grey">
-            Re-Checkup
+            Follow-Up Checkup
           </div>
           <div class="card-body table-responsive w-100" >
                 <table class="table table-hover table-striped " id="re-checkup_table" >
                   <thead class="">
                       <tr class="">
                         <th scope="col" class="text-center">Email</th>
-                        <th scope="col" class="text-center">Services</th>
-                        <th scope="col" class="text-center">Category</th>
-                        <th scope="col" class="text-center">Appoitnment Date</th>
-                        <th scope="col" class="text-center">Status</th>
+                        <th scope="col" class="text-center">Check Up</th>
+                     
                         @if(Auth::User()->account_type == 'admin')
                         <th scope="col" class="text-center">Action</th>
                         @endif
@@ -445,7 +443,6 @@
                       @foreach($generan_checkup_residents as $data)
                         <tr class="text-center ">
                           <td>{{$data->email}}</td>
-                          <td>{{$data->appointment_services}}</td>
                           <td>{{$data->appointment_vaccine_category}}
                               @if($data->appointment_dose != null)
                                 @if($data->appointment_dose == "1")
@@ -461,10 +458,10 @@
                               @elseif($data->appointment_dose == null && $data->appointment_vaccine_type != null )
                                 , {{$data->appointment_vaccine_type}}
                               @endif
-                          </td>
-                          <td>{{$newDateFormat3 = \Carbon\Carbon::parse($data->appointment_date)->format('d/m/Y');}}</td>
-                          <td>
-                            @if($data->appointment_status == "success")
+                          </td> --}}
+                   
+                          {{-- <td> --}}
+                            {{-- @if($data->appointment_status == "success")
                             <small class="bg-success px-1 rounded text-white">   {{$data->appointment_status}}</small>
                             @elseif($data->appointment_status == "expired")
                             <small class="color-orange px-1 rounded text-white">   {{$data->appointment_status}}</small>
@@ -473,9 +470,10 @@
                             @elseif($data->appointment_status == "canceled")
                             <small class="bg-danger  px-1 rounded text-white">   {{$data->appointment_status}}</small>
 
-                            @endif
-                            @if(Auth::User()->account_type == 'admin')
-                          </td>
+                            @endif --}}
+                          {{-- </td> --}}
+                            {{-- @if(Auth::User()->account_type == 'admin')
+                       
                           <td scope="row" colspan=2 class="d-flex justify-content-center ">
                             <button class="btn btn-sm  btn-success mt-2 mt-lg-0 ml-2 recheckup_btn bi bi-pencil-square " value="{{$data->id}}" style=""></button>
                             <button class="btn btn-sm  btn-danger mt-2 mt-lg-0 ml-2 delete_btn bi bi-trash3 " value="{{$data->id}}" style=""></button>
@@ -489,7 +487,7 @@
           </div> 
         </div> 
      </div>    
-    </div>
+    </div> --}}
     @endif
 </div>
 
