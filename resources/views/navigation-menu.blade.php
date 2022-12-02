@@ -18,7 +18,7 @@
 
                         
                     </a>
-                       <a href="{{ route('scanner')}}"><x-jet-application-mark class="block h-9 w-auto" /></a> 
+                       <a href="{{ route('afterlogin')}}"><x-jet-application-mark class="block h-9 w-auto" /></a> 
                
                 </div>
 
