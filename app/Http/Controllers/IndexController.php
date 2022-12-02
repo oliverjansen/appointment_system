@@ -50,8 +50,10 @@ class IndexController extends Controller
         ->where('service_id',"1")
         ->where('category_id',"2")
         ->where('vaccine_availability',"Yes")
-        ->groupBy('dose')
+        // ->groupBy('dose')
         ->get();
+
+        dd($covid);
         
         $other_vaccine = DB::table('vaccine')
         ->where('service_id',"1")
