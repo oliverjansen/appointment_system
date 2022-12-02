@@ -53,7 +53,7 @@ class IndexController extends Controller
         // ->groupBy('dose')
         ->get();
 
-        dd($covid);
+    
         
         $other_vaccine = DB::table('vaccine')
         ->where('service_id',"1")
