@@ -93,8 +93,12 @@ class AnalyticController extends Controller
        
 
         foreach ($year as $key => $value) {
-            $user[] = User::where(DB::raw("DATE_FORMAT(created_at, '%Y')"),$value)->count();
+            $user[] = User::where('created_at',"LIKE",'%'.$value)->count();
+
+            
         }
+
+    
         $year = json_encode($year,JSON_NUMERIC_CHECK);
         $user = json_encode($user,JSON_NUMERIC_CHECK);
 
