@@ -405,7 +405,7 @@
                           </td>
                           <td scope="row" colspan=2 class="d-flex justify-content-center ">
                             @if ($data->appointment_status == "pending") 
-                                <button class="btn btn-sm p-0 btn-warning mt-2 mt-lg-0 ml-2 p-1 cancel_btn bi bi-x-circle text-white" value="{{$data->id}}" style="width: 80px"> Cancel</button>
+                                <button class="btn btn-sm p-0 btn-warning mt-2 mt-lg-0 ml-2 p-1 cancel_btn bi bi-x-circle text-white" value="{{$data->id}}" style="width: 80px"></button>
                             @else
                             <button class="btn btn-sm  btn-danger mt-2 mt-lg-0 ml-2 delete_btn bi bi-trash3 " value="{{$data->id}}" style=""></button>
                             @endif

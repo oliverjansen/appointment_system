@@ -26,18 +26,21 @@ class UserFactory extends Factory
     {
         return [
             'firstname' => $this->faker->firstNameMale(),
-            'middlename' => $this->faker->name(),
+            'middlename' => $this->faker->lastName(),
             'lastname' => $this->faker->lastName(),
-            'gender' => $this->faker->numberBetween(1,60),
+            'gender' => $this->faker->randomElement(['Female','Male']),
             'birthdate' => $this->faker->dateTimeBetween('2000-01-01', '2020-12-31')
             ->format('d/m/Y'), 
-            'age' => $this->faker->randomElement(['Female','Male']),
+            'age' => $this->faker->numberBetween(1,60),
             'email' => $this->faker->unique()->safeEmail(),
-            'contactnumber' => $this->faker->phoneNumber(),
-            'email_verified_at' => now(),
+            'contactnumber' => "+639".$this->faker->randomNumber(9,true),
             'password' => bcrypt('qweqweqwe'),
-            'status' => $this->faker->randomElement(['pending','approved']),
+            'barangay' => $this->faker->randomElement(['502','503','504','505','506','507','508','509','510','511','512','513','514','515','516','517','519','520']),
+            'identification' => $this->faker->randomElement(['images/download1 copy 1.jpg','images/download1 copy 2.jpg','images/download1 copy 3.jpg','images/download1 copy 4.jpg','images/download1 copy 5.jpg','images/download1 copy 6.jpg','images/download1 copy 7.jpg','images/download1 copy 8.jpg','images/download1 copy 2.jpg','images/download1 copy 9.jpg','images/download1 copy 10.jpg','images/download1 copy 11.jpg','images/download1 copy 12.jpg','images/download1 copy 13.jpg','images/download1 copy 14.jpg','images/download1 copy 15.jpg','images/download1 copy 16.jpg','images/download1 copy 17.jpg','images/download1 copy 18.jpg']),
+            'status' => $this->faker->randomElement(['pending','approved','rejected']),
             'remember_token' => Str::random(10),
+            'address' => $this->faker->randomNumber(3,true),
+            'identificationtype' => $this->faker->randomElement(['National ID','PSA','Voters ID','Drivers License','Passport','Philhealth Card','PRC ID','SSS ID', 'UMID', 'Voters ID', 'PSA']),
             'created_at' => $this->faker->dateTimeThisYear(),
         ];
     }

@@ -22,25 +22,27 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-         DB::table('users')->insert([
-            'firstname' => Str::random(10),
-            'middlename'=> Str::random(10),
-            'lastname'=> Str::random(10),
-            'gender'=> Str::random(10),
-            'birthdate'=> Str::random(10),
-            'age'=> Str::random(10),
-           'identification'=> Str::random(10),
-           'identificationtype'=> Str::random(10),
-           'contactnumber'=> Str::random(10),
-           'address'=> Str::random(10),
-           'email'=> "admin@gmail.com",
-           'status'=> "approved",
-          'account_type'=>"admin",
-          'password' =>bcrypt('qweqweqwe'),
-        ]);
-        
-        // User::factory()->times(50)->create();
-        // appointments::factory()->times(50)->create();
+        //  DB::table('users')->insert([
+        //     'firstname' => $this->faker->firstNameMale(),
+        //     'middlename' => $this->faker->lastName(),
+        //     'lastname' => $this->faker->lastName(),
+        //     'gender' => $this->faker->randomElement(['Female','Male']),
+        //     'birthdate' => $this->faker->dateTimeBetween('2000-01-01', '2020-12-31')
+        //     ->format('d/m/Y'), 
+        //     'age' => $this->faker->numberBetween(1,60),
+        //     'email' => "kevin_23@gmail.com",
+        //     'contactnumber' => "+639".$this->faker->randomNumber(9,true),
+        //     'password' => bcrypt('qweqweqwe'),
+        //     'barangay' => $this->faker->randomElement(['502','503','504','505','506','507','508','509','510','511','512','513','514','515','516','517','519','520']),
+        //     'identification' => $this->faker->randomElement(['images/download1 copy 1.jpg','images/download1 copy 2.jpg','images/download1 copy 3.jpg','images/download1 copy 4.jpg','images/download1 copy 5.jpg','images/download1 copy 6.jpg','images/download1 copy 7.jpg','images/download1 copy 8.jpg','images/download1 copy 2.jpg','images/download1 copy 9.jpg','images/download1 copy 10.jpg','images/download1 copy 11.jpg','images/download1 copy 12.jpg','images/download1 copy 13.jpg','images/download1 copy 14.jpg','images/download1 copy 15.jpg','images/download1 copy 16.jpg','images/download1 copy 17.jpg','images/download1 copy 18.jpg']),
+        //     'status' => $this->faker->randomElement(['pending','approved','rejected']),
+        //     'remember_token' => Str::random(10),
+        //     'address' => $this->faker->randomNumber(3,true),
+        //     'identificationtype' => $this->faker->randomElement(['National ID','PSA','Voters ID','Drivers License','Passport','Philhealth Card','PRC ID','SSS ID', 'UMID', 'Voters ID', 'PSA']),
+        //     'created_at' => $this->faker->dateTimeThisYear(),
+        // ]);
+        // User::factory()->times(100)->create();
+        appointments::factory()->times(5)->create();
         // services::factory()->times(10)->create();
 
 

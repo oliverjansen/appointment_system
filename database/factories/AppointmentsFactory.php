@@ -29,14 +29,13 @@ class AppointmentsFactory extends Factory
        
             return [
                 'user_id' => User::factory(),
-                'appointment_id' => $this->faker->numberBetween(),
-                'service_id' => $this->faker->numberBetween(1,3),
-                'appointment_vaccine_category' => $this->faker->numberBetween(1,5),
+                'appointment_id' => $this->faker->numberBetween(1,9),
+                'service_id' => "1",
+                'appointment_vaccine_category' => $this->faker->randomElement(['Covid Vaccination']),  
                 'appointment_dose' => $this->faker->numberBetween(1,3),
-                'appointment_services' => $this->faker->numberBetween(1,3),
-                'appointment_vaccine_type' => services::factory(),
-                'appointment_date' => $this->faker->dateTimeBetween('2021-01-01', '2022-12-31')
-                ->format('d/m/Y'), 
+                'appointment_services' => "vaccine",
+                'appointment_vaccine_type' => $this->faker->randomElement(['Pfizer','Moderna']),
+                'appointment_date' =>$this->faker->dateTimeThisYear(), 
                 'appointment_status' => $this->faker->randomElement(['pending','success','canceled','expired']),  
             ];
        

@@ -109,11 +109,10 @@ class MailerController extends Controller
         require base_path("vendor/autoload.php");
         $mail = new PHPMailer(true);     // Passing `true` enables exceptions
 
-       
+            
         $email_recepient = $request->email;
 
-       
-
+    
 
         
             try {
@@ -131,6 +130,8 @@ class MailerController extends Controller
     
                 $mail->setFrom('dapitanhealthcenter9@gmail.com');
                 $mail->addAddress($request->email);
+
+                
                 // $mail->addCC($request->emailCc);
                 // $mail->addBCC($request->emailBcc);
     
@@ -151,12 +152,12 @@ class MailerController extends Controller
                 // $find_email = DB::table('users')
                 // ->where('email',$check->email)->update(['otp'=>$pin]);
              
-              
+            
 
                 $mail->Subject = "Reset Password - Dapitan Health Center";
                 $mail->Body    =  $body;
     
-              
+                    
                 // $mail->AltBody = plain text version of email body;
     
                 if( !$mail->send() ) {

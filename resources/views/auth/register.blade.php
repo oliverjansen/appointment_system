@@ -145,6 +145,7 @@ height: 150px;
                         <x-jet-label for="identificationtype" class="" value="{{ __('Identification Type') }}" />
                         <select name="identificationtype" id="identificationtype" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" :value="old('identificationtype')"  autofocus autocomplete="identificationtype">
                             <option value="">Select Identification.. </option>
+                            <option value="drivers license">National ID </option>
                             <option value="drivers license">Driver’s License </option>
                             <option value="Passport">Passport </option>
                             <option value="PhilHealth Card">PhilHealth Card </option>

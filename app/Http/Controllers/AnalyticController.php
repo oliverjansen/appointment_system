@@ -103,16 +103,23 @@ class AnalyticController extends Controller
         $user = json_encode($user,JSON_NUMERIC_CHECK);
 
 
-        //REGISTERED RESIDENTS
-        $users = User::select(DB::raw("COUNT(*) as count"), DB::raw("MONTHNAME(created_at) as month_name"))
+
+
+        //
+        //REGISTERED RESIDENTS 
+
+        // $users = DB::table('users')
+        // ->whereYear('created_at',date)
+        $users = User::select(DB::raw("COUNT(*) as count"), 
+        DB::raw("MONTHNAME(created_at) as month_name"))
         ->whereYear('created_at', date('Y'))
-        ->groupBy(DB::raw("month_name"))
+        ->groupBy("month_name")
         ->orderBy('id','ASC')
         ->pluck('count', 'month_name');
 
+
         $user_line_labels = $users->keys();
         $user_line_data = $users->values();
-
         
 
 
@@ -186,6 +193,8 @@ class AnalyticController extends Controller
         ->groupBy(DB::raw("month_name"))
         ->orderBy('id','ASC')
         ->pluck('count', 'month_name');
+
+
 
         $appointment_permonth_line_labels = $users->keys();
         $appointment_permonth_line_data = $users->values();

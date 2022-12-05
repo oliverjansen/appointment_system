@@ -146,12 +146,12 @@ class AppointmentsController extends Controller
               foreach ($appointment_slot as $value) {
                 if ($value->service_id == $request_service) {
                
-                      if(\Carbon\Carbon::parse($value->appointment_date)->format('Y/m/d') == $appointmentDate ){
+                      // if(\Carbon\Carbon::parse($value->appointment_date)->format('Y/m/d') == $appointmentDate ){
                       
-                        alert()->error('Error!','Service is not Available.')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+                      //   alert()->error('Error!','Service is not Available.')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
                 
-                        return redirect()->back();
-                      }
+                      //   return redirect()->back();
+                      // }
                 }
               }
               
@@ -443,8 +443,12 @@ class AppointmentsController extends Controller
             
          
             // temporary disabled text message
-            // $this->sendMessage($message_appointment, $contactnumber);
+
+            $this->sendMessage($message_appointment, $contactnumber);
             
+
+
+            //=====================================
             // $appointment_expirationdate = Carbon::now()->addHours(48)->toDateTimeString();
           
             // dd($message_appointment);
@@ -806,7 +810,8 @@ public function reschedule_appointment(Request $request){
 
     // ------------------------------------------------------------------------------------
     if(Auth::User()->account_type=='admin'){
-      return redirect()->back()->with('success', 'Notification Sent!');
+      alert()->success('Appointment Canceled','the resident will is notified about the cancellation of the appointment.')->showConfirmButton()->buttonsStyling(true);
+      return redirect()->back();
     }else{
       return redirect()->route('login');
     }

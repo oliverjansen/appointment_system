@@ -267,7 +267,7 @@
                         <div class="card shadow-sm mb-5 ml-3 col-12 col-lg-5 offset" style="width: 100%" >
                             <div class=" card-header text-center p-3 font-weight-bold 
                             bg-semi-grey">
-                             Most Frequent Service Appointmented
+                             Most Frequent Service Appointed
                             </div>
                             <div class="card-body">
                                 <div class="panel panel-default">

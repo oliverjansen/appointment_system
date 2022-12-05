@@ -24,7 +24,6 @@ class AppointmentHistoryController extends Controller
      
             $appointmentss = DB::table('appointments')
             ->where('user_id',$id)
-            ->orwhere('appointment_status',"!=","success")
             ->get();
         
         

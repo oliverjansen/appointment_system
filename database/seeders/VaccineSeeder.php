@@ -29,7 +29,7 @@ class VaccineSeeder extends Seeder
             // 'service_id'=> "3",
             // 'category'=> "others",
             // 'category_availability'=> "Yes",
-            User::factory()->times(50)->create();
+            // User::factory()->times(50)->create();
         ]);
     }
 }

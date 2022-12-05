@@ -66,10 +66,10 @@ class RegistrationController extends Controller
 
         $message1 = "Your Registration at Dapitan Health Center has been approved!\n";
         $message2 = "You can now make an appointment.\n";
-        $link = "wwww . dapitanhealthcenter . com";
-        $message3 = "\nFor more information about our services kindly visit our website ".$link;
+        // $link = "wwww . dapitanhealthcenter . com";
+        // $message3 = "\nFor more information about our services kindly visit our website ".$link;
 
-        $message = $message1.$message2.$message3;
+        $message = $message1.$message2;
       
         $recipient= $approve->contactnumber;
     
@@ -77,7 +77,8 @@ class RegistrationController extends Controller
       // $this->sendMessage($message, $recipient);
 
         if(Auth::User()->account_type=='admin'){
-      alert()->success('Reistration Approved')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+
+      alert()->success('Reistration Approved','this resident has been notified about the approval of the account.')->showConfirmButton()->buttonsStyling(true);
 
 
           
@@ -99,15 +100,15 @@ class RegistrationController extends Controller
         if(Auth::User()->account_type=='admin'){
 
           $message1 = "Your registration on Dapitan Health Center has been Declined!\n\n";
-          $link = "wwww . dapitanhealthcenter . com";
+        //   $link = "wwww . dapitanhealthcenter . com";
 
-        $message2= "For more information kindly visit our website ".$link;
-        $message = $message1.$message2;
+        // $message2= "For more information kindly visit our website ".$link;
+        $message = $message1;
         $recipient = $reject->contactnumber;
         
 
-           $this->sendMessage($message, $recipient);
-           dd($recipient);
+          //  $this->sendMessage($message, $recipient);
+ 
       alert()->success('Registration Rejected','The resident will be notified about the status of this registration')->showConfirmButton()->buttonsStyling(true);
 
       
