@@ -90,6 +90,86 @@
     </div>
   </div>
 
+  <div class="modal fade" id="btn_addresident_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+        <div class="modal-header ">
+
+            <h5 class="modal-title" id="header-title"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+          <div class="m-2">
+            <div class="alert alert-danger print-error-msg" style="display:none">
+              <ul></ul>
+            </div>
+          </div>
+             <form  class="m-2" id="resident_form">
+                @csrf
+                {{ csrf_field() }}
+                <div class="row">
+                    <div class="form-group col col-12 col-lg-4">
+                      <label for="service" class="col-form-label">Fist Name</label>
+                      <input type="text" class="form-control" name="firstname" id="firstname" required>
+                    </div>
+                    <div class="form-group col col-12 col-lg-4">
+                      <label for="service" class="col-form-label">Middle Name</label>
+                      <input type="text" class="form-control" name="middlename" id="middlename" required>
+                    </div>
+                    <div class="form-group col col-12 col-lg-4  ">
+                      <label for="service" class="col-form-label">Last Name</label>
+                      <input type="text" class="form-control" name="lastname" id="lastname" required>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col col-12 col-lg-4">
+                    <label for="service" class="col-form-label">Age</label>
+                    <input type="number" class="form-control" name="age" id="age" min="0" required>
+                  </div>
+                  <div class="form-group col col-12 col-lg-4">
+                    <label for="service" class="col-form-label">Gender</label>
+                    <select class="form-select w-100" aria-label="Default select example" name="gender" id="gender" required>
+                      <option selected value="">Select Gender..</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                  
+                    </select>
+                  </div>
+                  <div class="form-group col col-12 col-lg-4">
+                    <label for="service" class="col-form-label">Birthdate</label>
+                    <input type="date" class="form-control" name="birthday" id="birthday" max ="{{$today}}"required>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col col-12 col-lg-6">
+                    <label for="service" class="col-form-label">Address</label>
+                    <input type="text" class="form-control" name="address" id="address" required>
+                  </div>
+                  <div class="form-group col col-12 col-lg-6">
+                    <label for="service" class="col-form-label">Barangay</label>
+                    <input type="text" class="form-control" name="barangay" id="barangay" required>
+                  </div>
+                </div>
+              
+                
+                <input type="text" name="id" id="id" hidden>
+             
+               
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-sm w-25 btn_update_resident" id="btn_update_resident_id" style="">Update</button>
+                        <button type="button" class="btn btn-primary btn-sm w-25 btn_save_resident" id="btn_save_resident" style="">Save</button>
+                        <button type="button" class="btn btn-danger btn-sm w-25" data-dismiss="modal">cancel</button>
+                        
+                    </div>
+            </form>
+        </div>
+       
+        </div>
+    </div>
+</div>
+
   <!-- Modal delete workers -->
   <div class="modal fade" id="delete_workers_account_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -203,7 +283,7 @@
           <div class="col col-12 col-lg-12">
               <div class="card shadow-sm mb-5" style="">
                 <div class=" card-header text-center p-3 font-weight-bold bg-semi-grey">
-                  Residents Table
+                  Registration
                 </div>
        
                 <div class="card-body table-responsive">
@@ -231,7 +311,7 @@
                         <td>{{$data->age}}</td>
                         <td>{{$data->gender}}</td>
                         <td>{{$data->birthdate}}</td>
-                        <td>{{$data->address}}, Barangay{{$data->barangay}}</td>
+                        <td>{{$data->address}}, Barangay {{$data->barangay}}</td>
                         <td>{{$data->contactnumber}}</td>
                         <td> <button class="btn btn-sm btn-info view bi bi-eye" value="{{$data->id}}">
                           </button>
@@ -273,7 +353,100 @@
             
               </div>
           </div>
+          <div class="col col-12  ">
+            
+            <div class="container-fluid ">
+              <div class="row">
+                @if ($errors->any())
+                <div class="text-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                  </div>
+                @endif
+              </div>
+              <div class="row">
+                <div class="col col-12 col-lg-10 ">
+                  <form action="{{route('import_residents')}}" method="POST" enctype="multipart/form-data" class="row mb-lg-1">
+                    @csrf
+                    {{ csrf_field() }}
+              
+                    <input type="file" id="file" name="file" class=" col col-8 col-lg-6 pl-0" required>
+                    <button type="submit" class="col col-4 col-lg-2 btn btn-sm ml-0 btn-success bi bi-upload"> Upload Excel</button>
+                  </form>
+                </div>
 
+                <div class="col col-12 col-lg-2  pr-lg-0 p-0 my-1">
+                  <button class="  col col-12 btn btn-sm btn-primary btn_addresident " style="height: 30px">Add Resident </button>
+                </div>
+            </div>
+            </div>  
+           
+           
+
+       
+                
+            </div>
+         
+          <div class="col col-12 ">
+       
+            <div class="card shadow-sm mb-5" style="">
+              <div class=" card-header text-center p-3 font-weight-bold bg-semi-grey">
+                Residents
+              </div>
+     
+              <div class="card-body table-responsive">
+              
+        
+                <table class="table table-hover w-100"  id="resident_table" >
+                  <thead>
+                      <tr class="text-center">
+                        <th scope="col" style="width:10%"  class="text-center" >Fullname</th>
+                        <th scope="col"  style="width:10%" class="text-center" >Age</th>
+                        <th scope="col"  style="width:10%" class="text-center" >Gender</th>
+                        <th scope="col"  style="width:10%" class="text-center" >Birthdate</th>
+                        <th scope="col"  style="width:10%" class="text-center" >Address</th>
+                        <th scope="col"  style="width:10%" class="text-center" >Action</th>
+                   
+                        
+                      </tr>
+                  </thead>
+                  <tbody>
+                      @foreach($residents_table as $data)
+                  
+                      <tr class="text-center">
+                      <td>{{$data->resident_lastname}},{{$data->resident_firstname}} {{$data->resident_middlename}}</td>
+                      <td>{{$data->resident_age}}</td>
+                      <td>{{$data->resident_gender}}</td>
+                      <td>{{$data->resident_birthdate}}</td>
+                      <td>{{$data->resident_address}}, Barangay{{$data->resident_barangay}}</td>
+                      <td>
+                            <div class="d-flex justify-content-center"> 
+                              <button class="btn btn-sm btn-primary edit_resident bi bi-pencil-square" value="{{$data->id}}" style="">
+                            </button>
+                              <button class="btn btn-sm btn-danger  ml-2 delete_resident bi bi-trash3 text-white" style="" value="{{$data->id}}">
+                    
+                          
+                            </button>
+                  </div>
+                  </td>
+              
+         
+                      
+    
+                      
+                      </tr>
+                    
+                      @endforeach
+                  
+                  </tbody>
+                </table> 
+              </div>
+          
+            </div>
+        </div>
 
            {{-- form to add account --}}
          
@@ -306,7 +479,9 @@
       
                           <td> {{$value->account_type}}</td>
                           
-                            <td><button class="btn btn-sm btn-danger ml-2 delete_workers_account bi bi-trash3" value="{{$value->id}}"></button></td>
+                            <td> 
+                             
+                          </td>
                         </tr>
                         
                       @endforeach
@@ -395,13 +570,67 @@
 
 <script>
     $(document).ready(function () {
+      
+      $(document).on('click','.btn_addresident',function (e){
+          e.preventDefault();
+     
+
+            $('#header-title').text("Add Resident");
+            $('#btn_addresident_modal').modal('show');
+
+            document.getElementById("resident_form").reset();
+            document.getElementById("btn_update_resident_id").style.display = "none";
+            document.getElementById("btn_save_resident").style.display = "block";
+
+           
+        });
+
+        $(document).on('click','.edit_resident',function(e){
+          e.preventDefault();
+
+          $('#header-title').text("Edit Resident");
+          $('#btn_addresident_modal').modal('show');
+          var id = $(this).val();
+
+          console.log(id);
+
+          $.ajax({
+            type: "GET",
+            url: "/admin/edit_resident/"+id,
+            success: function (response) {
+
+              console.log(response);
+
+              $('#firstname').val(response.resident.resident_firstname);
+              $('#middlename').val(response.resident.resident_middlename);
+              $('#lastname').val(response.resident.resident_lastname);
+              $('#age').val(response.resident.resident_age);
+              $('#gender').val(response.resident.resident_gender.toLowerCase());
+              $('#birthday').val(response.resident.resident_birthdate);
+              $('#address').val(response.resident.resident_address);
+              $('#barangay').val(response.resident.resident_barangay);
+              $('#id').val(response.resident.id);
+
+
+
+
+            }
+          });
+
+        });
+
+
 
       $(document).ready( function () {
             $('#reistration_data').DataTable();
         });
         $(document).ready( function () {
             $('#workers_account').DataTable();
+            $('#resident_table').DataTable();
+
         });
+
+
         
 
         $(document).on('click','.delete_workers_account',function (e){
@@ -479,15 +708,19 @@
               
             });
 
+
+            
+
             $(document).on('click', '.btn-addaccount',function (e) {
               e.preventDefault();
               var identification = $(this).val();
                 
-              $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
+                    $.ajaxSetup({
+                      headers: {
+                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                      }
+                  });
+
                     var _token = $("input[name='_token']").val();
                     var name = $("input[name='name']").val();
                     var emailaddress = $("input[name='emailaddress']").val();
@@ -550,6 +783,164 @@
                 }
               
             });
+
+            $(document).on('click', '.btn_save_resident',function (e) {
+              e.preventDefault();
+              var identification = $(this).val();
+              
+               
+
+                    $.ajaxSetup({
+                      headers: {
+                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                      }
+                  });
+
+                    var _token = $("input[name='_token']").val();
+                    var firstname = $("input[name='firstname']").val();
+                    var middlename = $("input[name='middlename']").val();
+                    var lastname = $("input[name='lastname']").val();
+                    var age = $("input[name='age']").val();
+                    var gender= $("#gender").val();
+                    var birthday= $("input[name='birthday']").val();
+                    var address=$("input[name='address']").val();
+                    var barangay= $("input[name='barangay']").val();
+
+                
+                      $.ajax({
+                        url: "{{ route('add_residents') }}",
+                        type: 'POST',
+                        data: { _token:_token, firstname:firstname, middlename:middlename, lastname:lastname, age:age, gender:gender, birthday:birthday,address:address, barangay:barangay },
+                        success: function(data) {
+
+                          console.log(data);
+                          
+                          if($.isEmptyObject(data.error)){
+                           
+       
+
+                              if(data.valid == "yes"){
+                                Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Successfully Added',
+                                text: 'resident has been save.',
+                                showConfirmButton: false,
+                                timer: 1500
+                            
+                              })
+                              setInterval('location.reload()', 1600);
+                            }else{
+                              Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: 'Error',
+                                showConfirmButton: false,
+                                timer: 1500
+                              })
+                            
+                            }
+                          }else{
+                              printErrorMsg(data.error);
+                          }
+                      },
+                          error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert("some error");
+                      }
+                  });
+                  
+                  function printErrorMsg (msg) {
+                  $(".print-error-msg").find("ul").html('');
+                  $(".print-error-msg").css('display','block');
+                  $.each( msg, function( key, value ) {
+                      $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
+                  });
+                }
+              
+            });
+
+            $(document).on('click', '.btn_update_resident',function (e) {
+              e.preventDefault();
+              var identification = $(this).val();
+              
+               
+
+                    $.ajaxSetup({
+                      headers: {
+                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                      }
+                  });
+
+                    var _token = $("input[name='_token']").val();
+                    var firstname = $("input[name='firstname']").val();
+                    var middlename = $("input[name='middlename']").val();
+                    var lastname = $("input[name='lastname']").val();
+                    var age = $("input[name='age']").val();
+                    var gender= $("#gender").val();
+                    var birthday= $("input[name='birthday']").val();
+                    var address=$("input[name='address']").val();
+                    var barangay= $("input[name='barangay']").val();
+
+                
+                      $.ajax({
+                        url: "{{ route('update_residents') }}",
+                        type: 'POST',
+                        data: { _token:_token, firstname:firstname, middlename:middlename, lastname:lastname, age:age, gender:gender, birthday:birthday,address:address, barangay:barangay },
+                        success: function(data) {
+
+                          console.log(data);
+                          
+                          if($.isEmptyObject(data.error)){
+                           
+       
+
+                              if(data.valid == "yes"){
+                                Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Successfully Updated',
+                                text: 'resident has been save.',
+                                showConfirmButton: false,
+                                timer: 1500
+                            
+                              })
+                              setInterval('location.reload()', 1600);
+                            }else{
+                              Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: 'Error',
+                                showConfirmButton: false,
+                                timer: 1500
+                              })
+                            
+                            }
+                          }else{
+                              printErrorMsg(data.error);
+                          }
+                      },
+                          error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert("some error");
+                      }
+                  });
+                  
+                  function printErrorMsg (msg) {
+                  $(".print-error-msg").find("ul").html('');
+                  $(".print-error-msg").css('display','block');
+                  $.each( msg, function( key, value ) {
+                      $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
+                  });
+                }
+              
+            });
+
+        $(document).on('click','.edit_resident',function(e){
+          e.preventDefault();
+
+          document.getElementById("btn_save_resident").style.display = "none";
+          document.getElementById("btn_update_resident_id").style.display = "block";
+
+        })
         
     });
 </script>

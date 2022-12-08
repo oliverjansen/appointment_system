@@ -4,12 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration</title>
-     {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" /> --}}
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script> --}}
-     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" /> --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script> --}}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/customize.css') }}" >
+    
+    <link>
+   
 </head>
 <style>
 .first-row{
@@ -33,9 +38,180 @@ height: 150px;
     font-size: 24px;
     text-align: center;
 }
+
+
+
+
 </style>
 <body >
+ 
 <x-guest-layout>
+        
+{{-- 
+     @if(session()->has('yes'))
+     
+            <script>
+                  $(document).ready(function() {
+                $('#anti_privacy_act_modal').modal('hide');
+
+            });
+            </script>
+        @else
+            <script>
+                 $(document).ready(function() {
+                $('#anti_privacy_act_modal').modal('show');
+            });
+            </script>
+        @endif --}}
+
+
+
+
+
+    <div class="modal fade" id="anti_privacy_act_modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" >
+        <div class="modal-dialog  modal-xl  modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header mb-2 mt-4" >
+              <p class="text-center">
+                <h1 class="font-weight-bold">DATA PRIVACY CONSENT FORM
+                </h1>
+               
+                
+              </p>
+            </div>
+            <div class="modal-body overflow-auto" style="height: 400px">
+              <div class="container ">
+             <div class="row"> 
+                <div class="col col-12 ">
+                    <div class="col text-justify">
+                       <ol>
+                        <i>
+                            <li> 
+                                Dapitan Health Center is committed to ensuring the confidentiality, security and protection of personal data. This document gives details on how the Health Center uses and protects personal data for the purpose of obtaining the consent of data subjects, in pursuant with RA 10173 also known as the Data Privacy Act (DPA) of 2012, its Implementing Rules and Regulation (IRR), and other relevant laws of the Philippines.
+                            </li><br>
+                            <li> 
+                                As a patient and resident of the covered barangay of Dapitan Health Center you are considered as a data subject. Please read the details of this document carefully to ensure informed consent. 
+                            </li><br>
+                            <li> 
+                                <b>I. About Personal Data</b><br>
+                                <li>Personal data refers to all types of :</li><br>
+                                <div class="pl-3 mb-2">
+                                    <ol>
+                                    <li>
+                                       <b> 1.	Personal Information –</b> Referring to any data or information  recorded in a material form or not, from which the identity of the individual is evident or can be reasonably and directly ascertained by the entity holding the information, or when put together with other data or information would directly and certainly identify an individual.
+                                    </li><br>
+                                    <li>
+                                        <b> 2.	Sensitive Information – </b>Referring to (i) An individual’s 	age, gender, birthdate, contact number address, and email (ii) Data or information issued by government agencies which are peculiar to an individual. Includes but not limited to the following: National ID, Driver’s license, Passport, Philhealth, PRC ID, SSS, Umid and Voters ID (iii) Data or Information which are specifically established by an executive order or an Act of Congress to be kept classified.
+                                    </li><br>
+                                    <li>
+                                        <b>  3.	Privileged Information – </b>Referring to any and all forms of personal data which under the Rules of the Court and other pertinent laws constitute a privileged communication.
+                                    </li><br>
+                                
+                                
+                                </ol>
+                                </div>
+                                <li> <b>II. Collection and Use of Personal Data:  </b>Dapitan Health Center generally do not collect personal data unless it is provided to us voluntarily by you directly. We may use the personal data or information in order to perform service processes effectively and efficiently in conformity with corporate policies. In this regard, the Health Center may collect your personal data in order to: 
+                                    <div class="pl-3 mb-2 mt-2"><br>
+                                        <ol>
+                                            <li>1.	Proof that you are resident of the covered barangay of Dapitan health center</li>
+                                            <li>2.	Provide you with the information of the availability of the medicine</li>
+                                            <li>3.	Provide you latest services</li>
+                                        </ol>
+                                    </div>
+
+                                </li><br>
+                            </li>
+                            <li> 
+                               <b>III. Type of Personal Data Collected: </b>  The Health Center may collect the following personal data:
+                                <div class="pl-3 mb-2 mt-2">
+                                    <ol>
+                                        <li>1.	Name</li>
+                                        <li>2.	Age</li>
+                                        <li>3.	Sex</li>
+                                        <li>4.	Birthday</li>
+                                        <li>5.	Contact Number</li>
+                                        <li>6.	Email Address</li>
+                                        <li>7.	Identification</li>
+        
+        
+                                     </ol>
+                                </div>
+                      
+                            </li><br>
+                            <li><b> IV. Confidentiality of Data:</b> Dapitan Health Center shall operate and hold personal data under strict confidentiality. The Dapitan Health Center shall not disclose or share personal information in its possession other entities without your expressed written consent.</li><br>
+                            <li><b>V. Data Protection:</b>
+                                 Dapitan Health Center shall implement appropriate organizational, physical and technical security measures in order to ensure the privacy and protection of personal data in its possession. The security shall aim to protect and secure data from loss, misuse, unauthorized modification, unauthorized access or disclosure , alteration or destruction. The following are the Health Center safeguards:
+                                 <div class="pl-3 mb-2 mt-2">
+                                    <ul>
+                                        <li>• Strict implementation of information security policies</li>
+                                        <li>• Access Restriction to unauthorized personnel</li>
+                                        <li>• Use of secured servers and firewalls</li>
+                                        <li>• Data encryption on computing devices</li>
+    
+                                     </ul>
+                                 </div>
+                             
+                            </li><br>
+                            <li><b>VI. Data Retention: </b>All personal data or information that the Health Center had obtained shall not be retained for a period as specified by law and after the period, all hard and soft copies of personal data or information shall be disposed of and destroyed, through secured means.</li><br>
+                            <li><b>VII. Rights of Data Subjects :</b> As a data subject you have the following rights under Data Privacy Act of 2012: Right to be informed, Right to object, Right to access, Right to rectify or correct erroneous data, Right to erase or block, Right to secure data portability, Right to indemnified for damages, Right to file a complaint.</li><br>
+
+                        </i>
+                    
+                       </ol>
+                    </div>
+    
+                 
+             
+                    
+                </div>
+
+            
+             
+            </div>
+   
+
+            <div class="border border-bottom border-dark mt-3">
+                
+            </div>
+
+      
+                @csrf
+                {{ csrf_field() }}
+            <div class="col mt-5 mb-5"> <i><b>
+                
+                <input type="checkbox" id="choice" name="choice" value="yes" required> 
+                <small class="text-danger" id="require_check"></small>
+                &nbsp;&nbsp;
+                I have read this form and understand its content and voluntarily give my consent for the collection, use, processing, storage and retention of my personal data or information to Dapitan Health Center for the purpose(s) described in this document. I also understand  that my consent does not prevent the existence of other criteria for lawful processing of personal data and does not waive any of my rights under RA 10173 – Data Privacy Act of 2012 and other applicable laws.</b>
+                </i>
+             
+            </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button  onclick="proceed()" id="proceed" value=""class="bg-primary p-1 rounded text-white ">Proceed</button>
+            </div>
+     
+        <script  type="text/javascript">
+            function proceed(){
+                var remember = document.getElementById("choice")
+                if(remember.checked == true){
+                    $('#anti_privacy_act_modal').modal('hide');
+                    
+                }else{
+                    $('#anti_privacy_act_modal').modal('show');
+                     $('#require_check').text("Required field.");
+
+           
+                    
+
+                }
+            }
+        </script>
+          </div>
+        </div>
+      </div>
+
     <x-jet-authentication-card>
         <x-slot name="logo">
             <x-jet-authentication-card-logo />
@@ -172,7 +348,20 @@ height: 150px;
                 </div>
                         
                 <script>
+ 
+ 
  $(document).ready(function () {
+//     let mybutton = document.getElementById("myBtn");
+//     window.onscroll = function() {scrollFunction()};
+//    proceed
+//     function scrollFunction() {
+//             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+//                 mybutton.style.display = "block";
+//             } else {
+//                 mybutton.style.display = "none";
+//             }
+// }
+
     $("#others").hide();
 
     
@@ -243,6 +432,7 @@ height: 150px;
             </div>
         </form> 
 
+   
 
         {{-- <div class="container">
             <div class="row justify-content-center">
@@ -309,5 +499,15 @@ height: 150px;
 
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap4.min.js"></script>
+
+<script>
+     $(document).ready(function() {
+                $('#anti_privacy_act_modal').modal('show');
+        });
+
+</script>
 </body>
 </html>

@@ -9,6 +9,10 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
+use App\Models\Residents;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ResidentImport;
+
 
 class AccountController extends Controller
 {
@@ -77,5 +81,101 @@ class AccountController extends Controller
         
      
         
+    }
+
+    public function add_residents(Request $request){
+
+        $validator = Validator::make($request->all(),[
+            'firstname' => 'required',
+            'middlename' => 'required',
+            'lastname' => 'required',
+            'age' => 'required|integer',
+            'gender' => 'required',
+            'birthday' => 'required',
+            'address' => 'required',
+            'barangay' => 'required',
+        ]);
+
+      
+        
+        if ($validator->passes()) { 
+
+           Residents::create([
+                'resident_firstname' => $request->input('firstname'),
+                'resident_middlename' => $request->input('middlename'),
+                'resident_lastname' => $request->input('lastname'),
+                'resident_gender' => $request->input('gender'),
+                'resident_birthdate' => $request->input('birthday'),
+                'resident_age' => $request->input('age'),
+                'resident_address' => $request->input('address'),
+                'resident_barangay' => $request->input('barangay')
+            ]);
+
+
+            return response()->json(['valid'=>'yes']);
+
+        }else{
+         return response()->json(['error'=>$validator->errors()->all()]);
+
+        }
+
+
+    }
+
+
+
+    public function update_residents(Request $request){
+
+        $validator = Validator::make($request->all(),[
+            'firstname' => 'required',
+            'middlename' => 'required',
+            'lastname' => 'required',
+            'age' => 'required|integer',
+            'gender' => 'required',
+            'birthday' => 'required',
+            'address' => 'required',
+            'barangay' => 'required',
+        ]);
+
+      
+        
+        if ($validator->passes()) { 
+
+            $resident = Residents::find($request->input('id'));
+            $resident->resident_firstname = $request->input('firstname');
+            $resident->resident_middlename = $request->input('middlename');
+            $resident->resident_lastname = $request->input('lastname');
+            $resident->resident_age = $request->input('age');
+            $resident->resident_gender = $request->input('gender');
+            $resident->resident_birthday = $request->input('birthday');
+            $resident->resident_address = $request->input('address');
+            $resident->resident_barangay = $request->input('barangay');
+            $resident->update();
+
+
+            return response()->json(['valid'=>'yes']);
+
+        }else{
+         return response()->json(['error'=>$validator->errors()->all()]);
+
+        }
+
+
+    }
+
+    
+    public function import_residents(Request $request){
+
+
+        $data = $request->validate([
+            'file' => 'required|mimes:xlsx, xls',
+        ]);
+ 
+        Excel::import(new ResidentImport, $request->file('file'));
+
+        
+        alert()->success('Successfully Imported')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+
+        return redirect()->back();
     }
 }

@@ -143,8 +143,27 @@ class VerifyAppointmentController extends Controller
 
         // dd($messages);
         // $this->sendMessage($messages, $recipient);
+       
 
-    
+        try {
+  
+            $basic  = new \Nexmo\Client\Credentials\Basic(getenv("NEXMO_KEY"), getenv("NEXMO_SECRET"));
+            $client = new \Nexmo\Client($basic);
+  
+            $receiverNumber = "+639197740846";
+            $message = "ano na parang testing lang";
+  
+            $message = $client->message()->send([
+                'to' => $recipient,
+                'from' => 'Dapitan',
+                'text' => $messages
+            ]);
+  
+        } catch (Exception $e) {
+            alert()->error('Appointment Failed!', $e->getMessage())->showConfirmButton()->buttonsStyling(true);
+
+        }
+        
 
         $dd = appointments::where("appointment_date",$new_appointment_date)
         ->where("appointment_id",$appointment_id)

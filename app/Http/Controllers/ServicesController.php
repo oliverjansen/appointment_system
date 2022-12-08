@@ -12,9 +12,11 @@ use App\Models\Other_Services;
 use RealRashid\SweetAlert\Facades\Alert;
 
 use Illuminate\Support\Facades\DB;
-
+use App\Models\appointments;
+use Illuminate\Support\Facades\File;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
-
+use App\Exports\ServicesDateExport;
 class ServicesController extends Controller
 {
 
@@ -582,6 +584,53 @@ public function update_vaccine(Request $request){
    return redirect()->route('calendar');
   }
 
+ }
+
+ public function services_excel_view(){
+  $vaccine = DB::table('vaccine')
+  ->join('categories_vaccine','categories_vaccine.id',"=",'vaccine.category_id')
+  ->join('services','services.id',"=",'categories_vaccine.service_id')
+  ->orderBy('categories_vaccine.id','ASC')
+  ->get();
+
+
+  $other_services = DB::table('other_services')
+  ->join('services','services.id',"=",'other_services.service_id')
+  ->orderBy('services.id','ASC')
+  ->get();
+
+ 
+ $vaccine_appointment = DB::table('appointments')
+ ->where('service_id',1)
+ ->where('appointment_status',"success")
+ ->orderBy('appointment_date')
+ ->get();
+
+ 
+
+
+ $appointment_consumed = appointments::select(DB::raw("COUNT(*) as count"), DB::raw(" appointment_vaccine_type as vaccine"),DB::raw("appointment_date"),DB::raw("appointment_vaccine_category"))
+ ->where('appointment_status', "success")
+ ->where('service_id', 1)
+ ->where('appointment_vaccine_type',"!=",null)
+ ->groupBy(DB::raw("appointment_vaccine_type"))
+ ->orderBy('appointment_date','ASC')
+ ->get();
+
+ $appointment_consumed_medicine = appointments::select(DB::raw("COUNT(*) as count"), DB::raw(" appointment_vaccine_type as vaccine"),DB::raw("appointment_date"),DB::raw("appointment_vaccine_category"))
+ ->where('service_id', 2)
+ ->where('appointment_status', "success")
+ ->groupBy(DB::raw("appointment_vaccine_category"))
+ ->orderBy('appointment_date','ASC')
+ ->get();
+
+
+
+    return view ('pdf.services_excel',compact('other_services','vaccine','vaccine_appointment','appointment_consumed','appointment_consumed_medicine'));
+ }
+
+ public function services_excel(Request $request){
+  return Excel::download(new ServicesDateExport, 'reports.xlsx');
  }
    
 }

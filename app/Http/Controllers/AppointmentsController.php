@@ -439,13 +439,34 @@ class AppointmentsController extends Controller
             $expire = Carbon::now()->addHours(48);
     
             $expiration_date = "\n Reminder! \n your slot will be forfeited if you didn't attend your scheduled appointment.";
-            $message_appointment = $message_schedule."\n".$expiration_date;
             
          
             // temporary disabled text message
 
-            $this->sendMessage($message_appointment, $contactnumber);
+            // $this->sendMessage($message_appointment, $contactnumber);
             
+            try {
+  
+              $basic  = new \Nexmo\Client\Credentials\Basic(getenv("NEXMO_KEY"), getenv("NEXMO_SECRET"));
+              $client = new \Nexmo\Client($basic);
+    
+             
+              $message_appointment = $message_schedule."\n".$expiration_date;
+
+    
+              $message = $client->message()->send([
+                  'to' => $contactnumber,
+                  'from' => 'Dapitan',
+                  'text' => $message_appointment
+              ]);
+    
+            
+                
+          } catch (Exception $e) {
+             
+              alert()->error('Appointment Failed!', $e->getMessage())->showConfirmButton()->buttonsStyling(true);
+
+          }
 
 
             //=====================================
@@ -827,15 +848,18 @@ public function reschedule_appointment(Request $request){
     
       if($request ->input ('cancel_message') == null){
         $message1 ="Your " . $service . " Appointment in Dapitan Health Center has been canceled! \n";
-        $link = "wwww . dapitanhealthcenter . com";
+        $link = "dapitanappointment.com";
         $message2= "For more information about our services kindly visit our website ".$link;
-        $message = $message1."\n".$message2;
+        // $message = $message1."\n".$message2;
+        $message = $message1;
+
 
       }else{
-        $link = "wwww . dapitanhealthcenter . com";
+        $link = "dapitanappointment.com";
         $message2= "For more information about our services kindly visit our website ".$link;
         $message1 = $request->input('cancel_message');
-        $message = $message1."\n\n".$message2;
+        // $message = $message1."\n\n".$message2;
+        $message = $message1;
       }
       // $canceled_appointment_id ->appointment_message = $message;
       $canceled_appointment_id ->appointment_status = "canceled";
@@ -846,11 +870,36 @@ public function reschedule_appointment(Request $request){
 
       //temporary disabled function
         // $this->sendMessage($message, $recipient);
+        try {
+  
+          $basic  = new \Nexmo\Client\Credentials\Basic(getenv("NEXMO_KEY"), getenv("NEXMO_SECRET"));
+          $client = new \Nexmo\Client($basic);
+
+         
+          $message_appointment = $message_schedule."\n".$expiration_date;
+
+
+          $message = $client->message()->send([
+              'to' => $recipient,
+              'from' => 'Dapitan',
+              'text' => $message
+          ]);
+
+        
+          alert()->success('Successfullu canceled','resident has been notified about the canceled appointment.')->showConfirmButton()->buttonsStyling(true);
+            
+      } catch (Exception $e) {
+         
+          alert()->error('Appointment Failed!', $e->getMessage())->showConfirmButton()->buttonsStyling(true);
+
+      }
+
+
 
     
       // ------------------------------------------------------------------------------------
       if(Auth::User()->account_type=='admin'){
-        return redirect()->back()->with('success', 'Notification Sent!');
+        return redirect()->back();
       }else{
         return redirect()->route('login');
       }

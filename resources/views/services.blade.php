@@ -39,7 +39,8 @@
 <div class="modal fade" id="add_services_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header ">
+
             <h5 class="modal-title" id="exampleModalLabel">Add Service</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -71,7 +72,7 @@
        
         </div>
     </div>
-    </div>
+</div>
 
     {{-- Add vaccine modal--}}
 
@@ -577,9 +578,17 @@
            @endif
         </div>
         <div class="container">
-            <div class="row justify-content-end">
-                <button class="col col-12 col-lg-2 btn btn-sm add_service_btn btn-primary mt-2 mb-2  bi bi-plus-circle" style="width:120px;"> Add Service</button>
-        </div>
+          
+            <div class="row  justify-content-end ">
+                <form action="{{route('services_excel')}}" method="POST" class="col-12 col-lg-2 mt-lg-2 mb-lg-2 p-0 pr-lg-2 float-left" target="__blank">
+                @csrf
+                {{ csrf_field() }}
+                <button class=" w-100 btn btn-sm btn-success bi bi-download btn_reports"> Reports</button>
+              </form>
+         
+                <button class="col col-12 col-lg-2 mr-lg-0 btn btn-sm add_service_btn float-right btn-primary mt-2 mb-2  bi bi-plus-circle" style="width:120px;"> Add Service</button>
+               
+            </div>
         </div>
      
         <div class="row">

@@ -5,13 +5,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Vaccine;
+use App\Models\Residents;
+
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 use PDF;
 use Illuminate\Support\Facades\File; 
 use Illuminate\Support\Facades\Storage;
 use Twilio\Rest\Client;
-
+use Carbon\Carbon;
 class RegistrationController extends Controller
 {
     function registration(Request $request){
@@ -44,12 +46,13 @@ class RegistrationController extends Controller
 
 
           $workers_table = DB::table('users')->orwhere('account_type',"admin")->orwhere('account_type',"staff")->get();
+          $residents_table = DB::table('residents')->get();
 
         }
-
+        $today = Carbon::today()->format('Y-m-d');
         if(Auth::User()->account_type=='admin'){
           
-            return view ('registration',compact('datas','workers_table'));
+            return view ('registration',compact('datas','workers_table','today','residents_table'));
           }else{
               return redirect()->route('calendar');
   }
@@ -65,7 +68,7 @@ class RegistrationController extends Controller
         $approve->update();
 
         $message1 = "Your Registration at Dapitan Health Center has been approved!\n";
-        $message2 = "You can now make an appointment.\n";
+        $message2 = "\nYou can now make an appointment";
         // $link = "wwww . dapitanhealthcenter . com";
         // $message3 = "\nFor more information about our services kindly visit our website ".$link;
 
@@ -75,6 +78,30 @@ class RegistrationController extends Controller
     
 
       // $this->sendMessage($message, $recipient);
+
+      try {
+  
+        $basic  = new \Nexmo\Client\Credentials\Basic(getenv("NEXMO_KEY"), getenv("NEXMO_SECRET"));
+        $client = new \Nexmo\Client($basic);
+
+       
+        $message_appointment = $message_schedule."\n".$expiration_date;
+
+
+        $message = $client->message()->send([
+            'to' => $recipient,
+            'from' => 'Dapitan',
+            'text' => $message
+        ]);
+
+      
+        alert()->success('Successfullu canceled','resident has been notified about the canceled appointment.')->showConfirmButton()->buttonsStyling(true);
+          
+    } catch (Exception $e) {
+       
+        alert()->error('Appointment Failed!', $e->getMessage())->showConfirmButton()->buttonsStyling(true);
+
+    }
 
         if(Auth::User()->account_type=='admin'){
 
@@ -99,7 +126,7 @@ class RegistrationController extends Controller
 
         if(Auth::User()->account_type=='admin'){
 
-          $message1 = "Your registration on Dapitan Health Center has been Declined!\n\n";
+          $message1 = "Your registration on Dapitan Health Center has been Declined!";
         //   $link = "wwww . dapitanhealthcenter . com";
 
         // $message2= "For more information kindly visit our website ".$link;
@@ -109,6 +136,30 @@ class RegistrationController extends Controller
 
           //  $this->sendMessage($message, $recipient);
  
+
+          try {
+  
+            $basic  = new \Nexmo\Client\Credentials\Basic(getenv("NEXMO_KEY"), getenv("NEXMO_SECRET"));
+            $client = new \Nexmo\Client($basic);
+  
+           
+            $message_appointment = $message_schedule."\n".$expiration_date;
+  
+  
+            $message = $client->message()->send([
+                'to' => $recipient,
+                'from' => 'Dapitan',
+                'text' => $message
+            ]);
+  
+          
+            alert()->success('Successfullu canceled','resident has been notified about the canceled appointment.')->showConfirmButton()->buttonsStyling(true);
+              
+        } catch (Exception $e) {
+           
+            alert()->error('Appointment Failed!', $e->getMessage())->showConfirmButton()->buttonsStyling(true);
+  
+        }
       alert()->success('Registration Rejected','The resident will be notified about the status of this registration')->showConfirmButton()->buttonsStyling(true);
 
       
@@ -192,6 +243,30 @@ class RegistrationController extends Controller
          $client->messages->create($recipient, ['from' => $twilio_number, 'body' => $messages]);
  
  
+     }
+
+     public function proceed(Request $request){
+
+      if($request->isMethod('POST')){
+        $check = $request->input('choice');
+        if($check == "yes"){
+          return back()->with('yes','aaaa');
+        }
+      }else{
+        return redirect()->back();
+      }
+     }  
+
+     public function edit_resident($id){
+
+      $id = Residents::find($id);
+
+      return response()->json([
+        'resident'=> $id,
+
+
+      ]);
+
      }
 
 

@@ -20,6 +20,8 @@ use App\Http\Controllers\PDFController;
 use App\Http\Controllers\appointment_PDF;
 use App\Http\Controllers\AppointmentExcelController;
 use App\Http\Controllers\MailerController;
+use App\Http\Controllers\SMSsend;
+
 
 
 
@@ -53,6 +55,39 @@ use App\Models\user;
 // })->middleware('auth');
 
 Route::get('/successfull', [Controller::class, 'index']);
+
+Route::get('/cleareverything', function () {
+  $clearcache = Artisan::call('cache:clear');
+  echo "Cache cleared<br>";
+
+  $clearview = Artisan::call('view:clear');
+  echo "View cleared<br>";
+
+  $clearconfig = Artisan::call('config:clear');
+  echo "Config cleared<br>";
+
+  $cacheconfig = Artisan::call('config:cache');
+  echo "Config cleared<br>";
+
+  $optimize = Artisan::call('optimize');
+  echo "optimize<br>";
+  
+ 
+});
+
+Route::get('/optimize', function () {
+  $clearcache = Artisan::call('config:cache');
+  echo "config:cache<br>";
+
+  $clearview = Artisan::call('route:cache');
+  echo "route:cache<br>";
+
+  $clearconfig = Artisan::call('view:cache');
+  echo "view:cache<br>";
+ 
+});
+
+
 
 Route::get('/register', function () {
   if (Auth::check()) {
@@ -226,6 +261,10 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function() {
 
 
   //pdf
+  
+  Route::post('/services_excel', [ServicesController::class,'services_excel'])->name('services_excel');
+  Route::get('/services_excel_view', [ServicesController::class,'services_excel_view'])->name('services_excel_view');
+
 
   Route::post('/appointment_pdf', [AppointmentsController::class,'appointment_pdf'])->name('appointment_pdf');
   
@@ -238,6 +277,15 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function() {
   Route::post('/update_checkup', [AppointmentsController::class,'update_checkup'])->name('update_checkup');
   Route::get('/get_general_checkup/{id}', [AppointmentsController::class,'get_general_checkup'])->name('get_general_checkup');
 
+  Route::post('/add_residents', [AccountController::class,'add_residents'])->name('add_residents');
+  
+  Route::post('/import_residents', [AccountController::class,'import_residents'])->name('import_residents');
+  
+  Route::get('/edit_resident/{id}', [RegistrationController::class,'edit_resident'])->name('edit_resident');
+  Route::post('/update_residents', [AccountController::class,'update_residents'])->name('update_residents');
+
+  
+  
   
 });
 
@@ -343,6 +391,7 @@ Route::get("/forgot/password/reset/{token}", [MailerController::class, "showRese
 
 Route::any('/password/reset',[MailerController::class, "resetPassword"])->name('reset.password');
 
+Route::any('/privacy_act',[RegistrationController::class, 'proceed'])->name('privacy_act');
 
 // //inputing the code
 // // Route::post("/email/confirm-code", [MailerController::class, "retrived_code"])->name("retrived_code");
@@ -373,3 +422,5 @@ Route::any('/password/reset',[MailerController::class, "resetPassword"])->name('
 Route::get("/email/confirm-code/new-password", [MailerController::class, "password_reset"])->name("password_reset");
 
 Route::post("/email/confirm-code/password_update", [MailerController::class, "password_update"])->name("password_update");
+
+Route::get('/sendSMS', [SMSsend::class, 'index']);
