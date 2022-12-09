@@ -20,6 +20,5 @@ class Residents extends Model
         'resident_age',
         'resident_address',
         'resident_barangay',
-
     ];
 }

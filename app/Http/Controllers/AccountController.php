@@ -141,22 +141,27 @@ class AccountController extends Controller
         
         if ($validator->passes()) { 
 
+            // dd($request->input('id'));
             $resident = Residents::find($request->input('id'));
+
+          
             $resident->resident_firstname = $request->input('firstname');
             $resident->resident_middlename = $request->input('middlename');
             $resident->resident_lastname = $request->input('lastname');
             $resident->resident_age = $request->input('age');
             $resident->resident_gender = $request->input('gender');
-            $resident->resident_birthday = $request->input('birthday');
+            $resident->resident_birthdate = $request->input('birthday');
             $resident->resident_address = $request->input('address');
             $resident->resident_barangay = $request->input('barangay');
             $resident->update();
 
 
-            return response()->json(['valid'=>'yes']);
+          alert()->success('Successfully Updated')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
 
+            return redirect()->back();
         }else{
-         return response()->json(['error'=>$validator->errors()->all()]);
+            return redirect()->back();
+         
 
         }
 
@@ -175,6 +180,15 @@ class AccountController extends Controller
 
         
         alert()->success('Successfully Imported')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
+
+        return redirect()->back();
+    }
+
+    public function delete_resident(Request $request){
+
+        $id = Residents::find($request->input('resident_id'));
+        $id->delete();
+        alert()->success('Successfully Deleted')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
 
         return redirect()->back();
     }

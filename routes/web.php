@@ -284,6 +284,7 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function() {
   Route::get('/edit_resident/{id}', [RegistrationController::class,'edit_resident'])->name('edit_resident');
   Route::post('/update_residents', [AccountController::class,'update_residents'])->name('update_residents');
 
+  Route::post('/delete_resident', [AccountController::class,'delete_resident'])->name('delete_resident');
   
   
   

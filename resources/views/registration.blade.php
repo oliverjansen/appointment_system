@@ -106,7 +106,7 @@
               <ul></ul>
             </div>
           </div>
-             <form  class="m-2" id="resident_form">
+             <form  action="{{route('update_residents')}}" method="POST" class="m-2" id="resident_form" enctype="multipart/form-data">
                 @csrf
                 {{ csrf_field() }}
                 <div class="row">
@@ -158,7 +158,7 @@
              
                
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary btn-sm w-25 btn_update_resident" id="btn_update_resident_id" style="">Update</button>
+                        <button type="submit" class="btn btn-primary btn-sm w-25 " id="btn_update_resident_id" style="">Update</button>
                         <button type="button" class="btn btn-primary btn-sm w-25 btn_save_resident" id="btn_save_resident" style="">Save</button>
                         <button type="button" class="btn btn-danger btn-sm w-25" data-dismiss="modal">cancel</button>
                         
@@ -190,6 +190,34 @@
         <div class="modal-footer">
          
           <button type="submit" class="btn btn-primary delete_btn btn-sm w-25">Yes</button>
+          <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">No</button>
+        </div>
+         </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal residents -->
+  <div class="modal fade" id="delete_resident_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <form action="{{ route ('delete_resident') }} " method="POST">
+          @csrf
+          {{ csrf_field() }}
+           
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"></h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text"  id="resident_id" name="resident_id" hidden>
+          Are you sure you want to delete this resident?
+        </div>
+        <div class="modal-footer">
+         
+          <button type="submit" class="btn btn-primary  btn-sm w-25">Yes</button>
           <button type="button" class="btn btn-secondary btn-sm w-25" data-dismiss="modal">No</button>
         </div>
          </form>
@@ -941,6 +969,13 @@
           document.getElementById("btn_update_resident_id").style.display = "block";
 
         })
+
+        $(document).on('click','.delete_resident',function(e){
+          e.preventDefault();
+
+          $('#delete_resident_modal').modal('show');
+          $('#resident_id').val($(this).val());
+        });
         
     });
 </script>
