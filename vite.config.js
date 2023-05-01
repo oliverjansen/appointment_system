@@ -1,9 +1,13 @@
-import { defineConfig } from 'vite';
-// import laravel, { refreshPaths } from 'laravel-vite-plugin';
-import laravel from 'laravel-vite-plugin';
+import laravel from 'laravel-vite-plugin'
+import {defineConfig} from 'vite'
 
 export default defineConfig({
-     plugins: [
+    server: {
+        hmr: {
+            host: 'localhost',
+        },
+    },
+    plugins: [
         laravel([
             'resources/css/app.css',
             'resources/js/app.js',

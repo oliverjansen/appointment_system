@@ -66,8 +66,6 @@ height: 150px;
 
 
 
-
-
     <div class="modal fade" id="anti_privacy_act_modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" >
         <div class="modal-dialog  modal-xl  modal-dialog-centered" role="document">
           <div class="modal-content">

@@ -54,9 +54,8 @@
                         </div>
 
                         <div class="card-footer">
-
+                            <a type="button"  href="{{route('login')}}"class="btn btn-secondary float-right text-white btn-sm w-25 ml-1">Cancel </a>
                             <button type="submit" class="btn btn-primary float-right btn-sm w-25">Send </button>
-                            <a type="button"  href="{{route('login')}}"class="btn btn-secondary float-right text-white btn-sm w-25 mr-1">Cancel </a>
                         
                         </div>
                     </div>

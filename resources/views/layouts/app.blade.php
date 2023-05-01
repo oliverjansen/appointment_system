@@ -4,10 +4,18 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-
+        <style>
+            #toTop{
+                height: 35px;
+                 width: 35px;
+                border-radius: 100%;
+            }
+        </style>
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+   
         <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
         <link rel="stylesheet" type="text/css" href="{{ asset('css/customize.css') }}" >
@@ -42,7 +50,7 @@
             <main>
                 
                 {{ $slot }}
-                <button type="button" class="btn btn-sm bi bi-chevron-double-up"  id="toTop" title="Go Above"></button>  
+                <button type="button" class=" bi bi-chevron-double-up"  id="toTop" title="Go Above"></button>  
             </main>
         
         </div>

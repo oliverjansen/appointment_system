@@ -89,7 +89,8 @@ class CreateNewUser implements CreatesNewUsers
             // $extention = $file->getClientOriginalExtension();
             // $filename = time().'.'.$extention;
             // $file->
-
+            
+         
         }
 
         // $contactno = "+63".$input['contactnumber'];
@@ -97,10 +98,8 @@ class CreateNewUser implements CreatesNewUsers
         // dd($contactno);
         // $request->file('identification')->getClientOriginalName();
         
-        Alert::success('Success Title', 'Success Message');
-        
-
-
+      
+    
         // $token = getenv("TWILIO_AUTH_TOKEN");
         // $twilio_sid = getenv("TWILIO_SID");
         // $twilio_verify_sid = getenv("TWILIO_VERIFY_SID");

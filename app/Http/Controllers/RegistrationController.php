@@ -105,7 +105,7 @@ class RegistrationController extends Controller
 
         if(Auth::User()->account_type=='admin'){
 
-      alert()->success('Reistration Approved','this resident has been notified about the approval of the account.')->showConfirmButton()->buttonsStyling(true);
+      alert()->success('Registration Approved','this resident has been notified about the approval of the account.')->showConfirmButton()->buttonsStyling(true);
 
 
           

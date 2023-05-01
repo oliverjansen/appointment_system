@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 use App\Models\User;
 use App\Models\appointments;
+use App\Models\Residents;
+
 use App\Models\services;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -42,7 +44,9 @@ class UserSeeder extends Seeder
         //     'created_at' => $this->faker->dateTimeThisYear(),
         // ]);
         // User::factory()->times(100)->create();
-        appointments::factory()->times(5)->create();
+        // appointments::factory()->times(5)->create();
+        Residents::factory()->times(5)->create();
+
         // services::factory()->times(10)->create();
 
 
