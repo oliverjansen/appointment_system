@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Twilio\Rest\Client;
 use Carbon\Carbon;
+
+
 class RegistrationController extends Controller
 {
     function registration(Request $request){
@@ -67,32 +69,33 @@ class RegistrationController extends Controller
         $approve ->status = "approved";
         $approve->update();
 
-        $message1 = "Your Registration at Dapitan Health Center has been approved!\n";
-        $message2 = "\nYou can now make an appointment";
-        // $link = "wwww . dapitanhealthcenter . com";
-        // $message3 = "\nFor more information about our services kindly visit our website ".$link;
+        // $message1 = "Your Registration at Dapitan Health Center has been approved!\n";
+        // $message2 = "\nYou can now make an appointment";
+        // // $link = "wwww . dapitanhealthcenter . com";
+        // // $message3 = "\nFor more information about our services kindly visit our website ".$link;
 
-        $message = $message1.$message2;
+        // $message = $message1.$message2;
       
-        $recipient= $approve->contactnumber;
+        // $recipient= $approve->contactnumber;
     
 
       // $this->sendMessage($message, $recipient);
 
       try {
   
-        $basic  = new \Nexmo\Client\Credentials\Basic(getenv("NEXMO_KEY"), getenv("NEXMO_SECRET"));
-        $client = new \Nexmo\Client($basic);
+        // $basic  = new \Nexmo\Client\Credentials\Basic(getenv("NEXMO_KEY"), getenv("NEXMO_SECRET"));
+        // $client = new \Nexmo\Client($basic);
 
        
-        $message_appointment = $message_schedule."\n".$expiration_date;
+        // $message_appointment = $message_schedule."\n".$expiration_date;
 
+    //enable to work sms
 
-        $message = $client->message()->send([
-            'to' => $recipient,
-            'from' => 'Dapitan',
-            'text' => $message
-        ]);
+        // $message = $client->message()->send([
+        //     'to' => $recipient,
+        //     'from' => 'Dapitan',
+        //     'text' => $message
+        // ]);
 
       
         alert()->success('Successfullu canceled','resident has been notified about the canceled appointment.')->showConfirmButton()->buttonsStyling(true);
@@ -145,12 +148,13 @@ class RegistrationController extends Controller
            
             $message_appointment = $message_schedule."\n".$expiration_date;
   
-  
-            $message = $client->message()->send([
-                'to' => $recipient,
-                'from' => 'Dapitan',
-                'text' => $message
-            ]);
+      //enable to work sms
+
+            // $message = $client->message()->send([
+            //     'to' => $recipient,
+            //     'from' => 'Dapitan',
+            //     'text' => $message
+            // ]);
   
           
             alert()->success('Successfullu canceled','resident has been notified about the canceled appointment.')->showConfirmButton()->buttonsStyling(true);

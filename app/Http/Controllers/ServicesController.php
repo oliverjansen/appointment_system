@@ -439,10 +439,20 @@ if($request ->input ('id') == $request ->input ('service_id')){
 
       }else{
         DB::table('services')->join('categories_vaccine','services.id',"=",'categories_vaccine.service_id')->where('services.id', $id)->update(['category_availability'=>$request ->input ('choice_service')]);
+        $id = 1;
+        $vaccine = Vaccine::find($id);
+        $slot=  DB::table('vaccine')->where('id', 1)->pluck('vaccine_slot')->first();
+        $vaccine ->vaccine_slot =$slot-1;
+        $vaccine->update();
         alert()->success('Successfully Updated')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
       }
     }else{
       $update_vaccine_availability = DB::table('services')->join('vaccine','services.id',"=",'vaccine.service_id')->join('categories_vaccine','services.id',"=",'categories_vaccine.service_id')->where('services.id', $id)->update(['vaccine_availability'=> $request ->input ('choice_service'),'category_availability'=>$request ->input ('choice_service')]);
+      $id = 1;
+      $vaccine = Vaccine::find($id);
+      $slot=  DB::table('vaccine')->where('id', 1)->pluck('vaccine_slot')->first();
+      $vaccine ->vaccine_slot =$slot-1;
+      $vaccine->update();
       alert()->success('Successfully Updated')->showConfirmButton(false)->buttonsStyling(false)->autoClose(1500);
       $appointment->update();
     }
@@ -452,7 +462,6 @@ if($request ->input ('id') == $request ->input ('service_id')){
 
  
   }
-  $appointment->update();
 }else{
 
   $check_existing = DB::table('services')
@@ -464,9 +473,9 @@ if($request ->input ('id') == $request ->input ('service_id')){
     return redirect()->back();
   }else{
 
-   
     $appointment->update();
   }
+
   
 
 }

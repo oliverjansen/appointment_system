@@ -318,9 +318,7 @@ class AppointmentsController extends Controller
                       }
                       // dd($check_covid_dose);
                       // dd($covid_dose);
-             
-    
-    
+            
     
                       $vaccine_type_covid = $request ->input ('vaccine_type_covid');
                      
@@ -453,12 +451,13 @@ class AppointmentsController extends Controller
              
               $message_appointment = $message_schedule."\n".$expiration_date;
 
-    
-              $message = $client->message()->send([
-                  'to' => $contactnumber,
-                  'from' => 'Dapitan',
-                  'text' => $message_appointment
-              ]);
+              //enable to work sms
+
+              // $message = $client->message()->send([
+              //     'to' => $contactnumber,
+              //     'from' => 'Dapitan',
+              //     'text' => $message_appointment
+              // ]);
     
             
                 
@@ -517,6 +516,28 @@ class AppointmentsController extends Controller
 
   }
 
+  public function inserts(Request $request){
+
+
+    $appointment = new appointments();
+    $appointment ->id = 1;
+    $appointment ->user_id = $request ->input ('user_id');
+    $appointment ->user_contactnumber = $request ->input ('user_contactnumber');
+    $appointment ->appointment_id = $request ->input ('appointment_id');
+    $appointment ->service_id = $request ->input ('service_id');
+    $appointment ->service_category_id= $request ->input ('service_category_id');
+    $appointment ->pediatic_id = $request ->input ('pediatic_id');
+    $appointment ->appointment_services = $request ->input ('appointment_services');
+    $appointment ->appointment_vaccine_category = $request ->input ('appointment_vaccine_category');
+    $appointment ->appointment_vaccine_type =$request ->input ('appointment_vaccine_type');
+    $appointment ->appointment_dose =$request ->input ('appointment_dose');
+    $appointment ->appointment_date =$request ->input ('appointment_date');
+    $appointment ->appointment_status =$request ->input ('appointment_status');
+ 
+    $appointment->save();
+
+    
+  }
 
     public function cancel_appointment($id){
         $user_id = appointments::find($id);
@@ -878,12 +899,13 @@ public function reschedule_appointment(Request $request){
          
           $message_appointment = $message_schedule."\n".$expiration_date;
 
+    //enable to work sms
 
-          $message = $client->message()->send([
-              'to' => $recipient,
-              'from' => 'Dapitan',
-              'text' => $message
-          ]);
+          // $message = $client->message()->send([
+          //     'to' => $recipient,
+          //     'from' => 'Dapitan',
+          //     'text' => $message
+          // ]);
 
         
           alert()->success('Successfullu canceled','resident has been notified about the canceled appointment.')->showConfirmButton()->buttonsStyling(true);

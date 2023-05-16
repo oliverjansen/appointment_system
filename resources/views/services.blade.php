@@ -150,7 +150,7 @@
                         <div id="vaccine_field">
                           
                             <x-jet-label for="service" class="mt-3" value="{{ __('Select Category') }}" />
-                                
+                             
                                 <select name="vaccine_select" id="vaccine_select" class ="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" >
                     
                                     @if($categories->isEmpty())

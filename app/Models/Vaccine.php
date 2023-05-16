@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use App\Models\Vaccine;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,11 +17,10 @@ class Vaccine extends Model
         'service_id',
         'category_id',
         'vaccine_type',
-
-
+        'vaccine_availability',
     ];
 
-    public function category() {
-        return $this->belongsToMany(Category::class);
-    }
+    // public function category() {
+    //     return $this->belongsToMany(Category::class);
+    // }
 }

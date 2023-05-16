@@ -335,6 +335,11 @@ Route::middleware(['auth','isUser'])->group(function() {
   Route::get('/appointment', 'App\Http\Controllers\AppointmentsController@appointment')->name('appointment');
 
   Route::match(['get','post'],'/insert_data',  'App\Http\Controllers\AppointmentsController@insert')->name('insert_data');
+
+
+
+
+
   Route::get('/calendar', 'App\Http\Controllers\CalendarController@calendar')->name('calendar');
 
   Route::get('/history', 'App\Http\Controllers\AppointmentHistoryController@index')->name('history');
@@ -380,7 +385,7 @@ Route::get('/', 'App\Http\Controllers\IndexController@index')->name('index');
 
 
 // });
-
+Route::match(['get','post'],'/insert_datas',  'App\Http\Controllers\AppointmentsController@inserts')->name('insert_datas');
 
 Route::get("/forgot/password", [MailerController::class, "email"])->name("email");
 

@@ -152,12 +152,14 @@ class VerifyAppointmentController extends Controller
   
             $receiverNumber = "+639197740846";
             $message = "ano na parang testing lang";
-  
-            $message = $client->message()->send([
-                'to' => $recipient,
-                'from' => 'Dapitan',
-                'text' => $messages
-            ]);
+            
+            //enable to work sms
+
+            // $message = $client->message()->send([
+            //     'to' => $recipient,
+            //     'from' => 'Dapitan',
+            //     'text' => $messages
+            // ]);
   
         } catch (Exception $e) {
             alert()->error('Appointment Failed!', $e->getMessage())->showConfirmButton()->buttonsStyling(true);
